@@ -1,18 +1,19 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', function () {
-    return view('welcome');
+//Login Page
+Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
+//Proses Login
+Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
+
+
+Route::group(['middleware' => ['auth']], function(){
+    // Admin Dashboard
+    Route::group(['middleware' => ['cekrole:admin']], function(){
+        Route::get('admin',[AdminController::class,'home'])->name('admin.home');
+    });
 });
