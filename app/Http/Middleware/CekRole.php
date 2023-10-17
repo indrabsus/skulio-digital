@@ -16,10 +16,10 @@ class CekRole
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if(Auth::user()->level == $role){
+        if(Auth::user()->role == $role){
             return $next($request);
         }
-        return redirect()->route('index')->with('status', 'Anda tidak punya akses');
+        return redirect()->route('loginpage')->with('status', 'Anda tidak punya akses');
 
     }
 }

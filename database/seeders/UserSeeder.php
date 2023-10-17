@@ -17,19 +17,22 @@ class UserSeeder extends Seeder
             'nama' => 'Administrator',
             'username' => 'admin',
             'password' => bcrypt('admin'),
-            'role' => 'admin'
+            'role' => 'admin',
+            'acc' => 'y'
         ]);
         User::create([
             'nama' => 'Petugas',
             'username' => 'petugas',
             'password' => bcrypt('petugas'),
-            'role' => 'petugas'
+            'role' => 'petugas',
+            'acc' => 'y'
         ]);
         User::create([
             'nama' => 'Member',
             'username' => 'member',
             'password' => bcrypt('member'),
-            'role' => 'member'
+            'role' => 'member',
+            'acc' => 'y'
         ]);
     }
 }

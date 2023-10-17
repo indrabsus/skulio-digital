@@ -27,7 +27,7 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/fonts/boxicons.css" />
+      <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/css/core.css" class="template-customizer-core-css" />
@@ -104,7 +104,7 @@
                   </g>
                 </svg>
               </span>
-              <span class="app-brand-text demo menu-text fw-bold ms-2">dashboard</span>
+              <span class="app-brand-text demo menu-text fw-bold ms-2">Skulio v3</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -114,13 +114,11 @@
 
           <div class="menu-inner-shadow"></div>
 
-          
-
           <ul class="menu-inner py-1">
             <li class="menu-item">
                 <a href="cards-basic.html" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                  <div data-i18n="Basic">Home</div>
+                  <box-icon name='home-alt-2'></box-icon>
+                  <span class="ms-3">Home</span>
                 </a>
               </li>
           </ul>
@@ -163,7 +161,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="{{asset('sneat')}}/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="{{asset('sneat')}}/assets/img/avatars/user.png" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -207,7 +205,7 @@
                   <script>
                     document.write(new Date().getFullYear());
                   </script>
-                  Indra Batara
+                  Skulio Pro v.3 - Digital Team
                 </div>
                 
               </div>
@@ -246,5 +244,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://kit.fontawesome.com/35687c61f0.js" crossorigin="anonymous"></script>
   </body>
 </html>

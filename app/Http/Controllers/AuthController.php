@@ -17,11 +17,11 @@ class AuthController extends Controller
         ]);
         
         if(Auth::attempt($auth)){
-            Auth::user();
+            $auth = Auth::user();
             $role = Auth::user()->level;
            
             return redirect()->route('admin.home');
-
+            
         } else {
             return redirect()->route('loginpage')->with('gagal', 'Username dan Password Salah!');
         }      
