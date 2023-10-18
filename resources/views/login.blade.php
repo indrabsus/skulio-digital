@@ -63,7 +63,7 @@
               <!-- /Logo -->
               <h4 class="mb-2">Login</h4>
               <hr>
-
+              
               <form id="formAuthentication" class="mb-3" action="{{route('loginauth')}}" method="POST">
                 @csrf
                 <div class="mb-3">

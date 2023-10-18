@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Skulio Pro by Digital Team</title>
+      <title>{{ env('APP_NAME') ?? 'Page Title' }}</title>
 
     <meta name="description" content="" />
 
@@ -104,7 +104,7 @@
                   </g>
                 </svg>
               </span>
-              <span class="app-brand-text demo menu-text fw-bold ms-2">Skulio v3</span>
+              <span class="demo menu-text fw-bold ms-2">Skulio Pro</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -113,15 +113,8 @@
           </div>
 
           <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
-                  <box-icon name='home-alt-2'></box-icon>
-                  <span class="ms-3">Home</span>
-                </a>
-              </li>
-          </ul>
+          @include('layouts.menu')
+          
         </aside>
         <!-- / Menu -->
 
@@ -167,7 +160,7 @@
                   <ul class="dropdown-menu dropdown-menu-end">
                    
                     <li>
-                      <a class="dropdown-item" href="javascript:void(0);">
+                      <a class="dropdown-item" wire:navigate href="{{route('logout')}}">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -189,9 +182,7 @@
               <!-- Layout Demo -->
               <div class="card">
                   <div class="card-body">
-                    <h3>Home</h3>
-                    <hr>
-                    <p>Ini Halaman Home</p>
+                    {{ $slot }}
                 </div>
               </div>
             </div>
