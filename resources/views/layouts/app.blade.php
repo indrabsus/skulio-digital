@@ -41,6 +41,10 @@
     <!-- We use those styles to show code examples, you should remove them in your application.-->
     <link href="{{asset('core')}}/css/examples.css" rel="stylesheet">
     <link href="{{asset('core')}}/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
+
+
   </head>
   <body>
     <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
@@ -127,8 +131,11 @@
     <script src="{{asset('core')}}/vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
     <script src="{{asset('core')}}/vendors/@coreui/utils/js/coreui-utils.js"></script>
     <script src="{{asset('core')}}/js/main.js"></script>
+    <script src="{{asset('core')}}/js/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
-    </script>
+        let table = new DataTable('#table-data');
+      </script>
 
   </body>
 </html>

@@ -15,6 +15,6 @@ Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::group(['middleware' => ['auth']], function(){
     // Admin Dashboard
     Route::group(['middleware' => ['cekrole:admin']], function(){
-        Route::get('admin',Dashboard::class)->name('admin / dashboard');
+        Route::get('admin',Dashboard::class)->name('admin.dashboard');
     });
 });

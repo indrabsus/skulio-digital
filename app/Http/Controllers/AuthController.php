@@ -15,16 +15,16 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        
+
         if(Auth::attempt($auth)){
             $auth = Auth::user();
             $role = Auth::user()->level;
-           
-            return redirect()->route('admin / dashboard');
-            
+
+            return redirect()->route('admin.dashboard');
+
         } else {
             return redirect()->route('loginpage')->with('gagal', 'Username dan Password Salah!');
-        }      
+        }
 }
 public function logout(){
     Auth::logout();
