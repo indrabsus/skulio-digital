@@ -16,11 +16,21 @@
         </div>
         @endif
         <div class="col">
-            <button type="button" class="btn btn-primary btn-sm mb-3" data-coreui-toggle="modal" data-coreui-target="#add">
-                Tambah
-              </button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <button type="button" class="btn btn-primary btn-sm mb-3" data-coreui-toggle="modal" data-coreui-target="#add">
+                        Tambah
+                      </button>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="basic-addon1">Cari</span>
+                      </div>
+                </div>
+            </div>
 
-            <table id="table-data" class="display">
+            <table class="table table-stripped">
                 <thead>
                     <tr>
                         <th>No</th>
