@@ -1,8 +1,13 @@
-<ul class="menu-inner py-1">
-    <li class="menu-item">
-        <a wire:navigate href="{{route('admin.dashboard')}}" class="menu-link">
-          <box-icon name='home-alt-2'></box-icon>
-          <span class="ms-3">Home</span>
-        </a>
-      </li>
-  </ul>
+<ul class="sidebar-nav">
+  <li class="sidebar-header">
+    Admin
+  </li>
+
+  <li class="sidebar-item active">
+    <a class="sidebar-link" href="index.html">
+      <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+    </a>
+  </li>
+
+  
+</ul>

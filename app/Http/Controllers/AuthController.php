@@ -20,7 +20,7 @@ class AuthController extends Controller
             $auth = Auth::user();
             $role = Auth::user()->level;
            
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin / dashboard');
             
         } else {
             return redirect()->route('loginpage')->with('gagal', 'Username dan Password Salah!');
