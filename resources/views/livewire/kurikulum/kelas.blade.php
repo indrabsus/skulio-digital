@@ -43,8 +43,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Nama_kelas</th>
                             <th>Jurusan</th>
-                            <th>Singkatan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -52,11 +52,11 @@
                     @foreach ($data as $d)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                            <td>{{$d->nama_kelas}}</td>
                             <td>{{$d->nama_jurusan}}</td>
-                            <td>{{$d->singkatan}}</td>
                             <td>
-                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_jurusan}})'>Ubah</a>
-                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_jurusan}})">Hapus</a>
+                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_kelas}})'>Ubah</a>
+                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_kelas}})">Hapus</a>
                             </td>
                         </tr>
                     @endforeach
@@ -77,19 +77,24 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="">Nama Jurusan</label>
-                    <input type="text" wire:model.live="nama_jurusan" class="form-control">
+                    <label for="">Nama Kelas</label>
+                    <input type="text" wire:model.live="nama_kelas" class="form-control">
                     <div class="text-danger">
-                        @error('nama_jurusan')
+                        @error('nama_kelas')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
                 <div class="form-group">
-                    <label for="">Singkatan</label>
-                    <input type="text" wire:model.live="singkatan" class="form-control">
+                    <label for="">Jurusan</label>
+                    <select class="form-control" wire:model="id_jurusan">
+                        <option value="">Pilih Jurusan</option>
+                        @foreach ($jurusan as $j)
+                            <option value="{{$j->id_jurusan}}">{{$j->nama_jurusan}}</option>
+                        @endforeach
+                    </select>
                     <div class="text-danger">
-                        @error('singkatan')
+                        @error('id_jurusan')
                             {{$message}}
                         @enderror
                     </div>
@@ -114,19 +119,24 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="">Nama Jurusan</label>
-                    <input type="text" wire:model.live="nama_jurusan" class="form-control">
+                    <label for="">Nama Kelas</label>
+                    <input type="text" wire:model.live="nama_kelas" class="form-control">
                     <div class="text-danger">
-                        @error('nama_jurusan')
+                        @error('nama_kelas')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
                 <div class="form-group">
-                    <label for="">Singkatan</label>
-                    <input type="text" wire:model.live="singkatan" class="form-control">
+                    <label for="">Jurusan</label>
+                    <select class="form-control" wire:model="id_jurusan">
+                        <option value="">Pilih Jurusan</option>
+                        @foreach ($jurusan as $j)
+                            <option value="{{$j->id_jurusan}}">{{$j->nama_jurusan}}</option>
+                        @endforeach
+                    </select>
                     <div class="text-danger">
-                        @error('singkatan')
+                        @error('id_jurusan')
                             {{$message}}
                         @enderror
                     </div>

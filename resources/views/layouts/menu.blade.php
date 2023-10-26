@@ -20,6 +20,9 @@
         <li class="nav-item">
           <a href="{{route('admin.jurusan')}}" class="nav-link">Jurusan</a>
         </li>
+        <li class="nav-item">
+          <a href="{{route('admin.kelas')}}" class="nav-link">Kelas</a>
+        </li>
       </ul>
     </div>
   </li>
