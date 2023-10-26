@@ -18,15 +18,22 @@
         @endif
         </div>
         <div class="col">
-            <div class="container">
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-sm mb-3" data-coreui-toggle="modal" data-coreui-target="#add">
+                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                             Tambah
                           </button>
                     </div>
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                            <div class="col-3">
+                                <select class="form-control" wire:model.live="result">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
                             <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
                             <span class="input-group-text" id="basic-addon1">Cari</span>
                           </div>
@@ -48,15 +55,14 @@
                             <td>{{$d->nama_jurusan}}</td>
                             <td>{{$d->singkatan}}</td>
                             <td>
-                                <a href="" class="btn btn-success btn-sm" data-coreui-toggle="modal" data-coreui-target="#edit" wire:click='edit({{$d->id_jurusan}})'><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="" class="btn btn-danger btn-sm" data-coreui-toggle="modal" data-coreui-target="#k_hapus" wire:click="c_delete({{$d->id_jurusan}})"><i class="fa-solid fa-trash"></i></a>
+                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_jurusan}})'>Ubah</a>
+                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_jurusan}})">Hapus</a>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
                 {{$data->links()}}
-            </div>
         </div>
     </div>
 
@@ -67,7 +73,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
-              <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -90,7 +96,7 @@
                   </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
             </div>
           </div>
@@ -104,7 +110,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
-              <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -127,25 +133,26 @@
                   </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
             </div>
           </div>
         </div>
       </div>
+
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
-              <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Apakah anda yakin menghapus data ini?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='delete()'>Save changes</button>
             </div>
           </div>
