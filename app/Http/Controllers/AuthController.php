@@ -18,9 +18,9 @@ class AuthController extends Controller
 
         if(Auth::attempt($auth)){
             $auth = Auth::user();
-            $role = Auth::user()->level;
+            $role = Auth::user()->role;
 
-            return redirect()->route('admin.dashboard');
+            return redirect()->route($role.'.dashboard');
 
         } else {
             return redirect()->route('loginpage')->with('gagal', 'Username dan Password Salah!');

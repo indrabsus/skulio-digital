@@ -5,14 +5,14 @@
           @if(session('sukses'))
         <div class="alert alert-success alert-dismissible">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <h5><i class="icon fas fa-check"></i> Sukses!</h5>
+        <h5>Sukses!</h5>
         {{session('sukses')}}
         </div>
         @endif
         @if(session('gagal'))
         <div class="alert alert-danger alert-dismissible">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <h5><i class="icon fas fa-times"></i> Gagal!</h5>
+        <h5>Gagal!</h5>
         {{session('gagal')}}
         </div>
         @endif
@@ -39,7 +39,8 @@
                           </div>
                     </div>
                 </div>
-                <table class="table table-stripped">
+                <div class="table-responsive">
+                  <table class="table table-stripped">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -62,6 +63,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                </div>
                 {{$data->links()}}
         </div>
     </div>

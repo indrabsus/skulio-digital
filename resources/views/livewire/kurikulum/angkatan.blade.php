@@ -12,7 +12,7 @@
         @if(session('gagal'))
         <div class="alert alert-danger alert-dismissible">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <h5><i class="icon fas fa-times"></i> Gagal!</h5>
+        <h5>Gagal!</h5>
         {{session('gagal')}}
         </div>
         @endif
@@ -39,27 +39,29 @@
                           </div>
                     </div>
                 </div>
+               <div class="table-responsive">
                 <table class="table table-stripped">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tahun Masuk</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($data as $d)
-                        <tr>
-                            <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                            <td>{{$d->tahun_masuk}}</td>
-                            <td>
-                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_angkatan}})'>Ubah</i></a>
-                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_angkatan}})">Hapus</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                  <thead>
+                      <tr>
+                          <th>No</th>
+                          <th>Tahun Masuk</th>
+                          <th>Aksi</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  @foreach ($data as $d)
+                      <tr>
+                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                          <td>{{$d->tahun_masuk}}</td>
+                          <td>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_angkatan}})'>Ubah</i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_angkatan}})">Hapus</a>
+                          </td>
+                      </tr>
+                  @endforeach
+                  </tbody>
+              </table>
+               </div>
                 {{$data->links()}}
         </div>
     </div>
