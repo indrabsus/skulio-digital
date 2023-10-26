@@ -17,7 +17,16 @@ License: For each use you must have a valid license purchased only from above li
   <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="NobleUI">
 	<meta name="keywords" content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
+  <style>
+    .centered-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+  </style>
+  
+  
 	<title>{{env('APP_NAME')}}</title>
 
   <!-- Fonts -->
@@ -43,10 +52,18 @@ License: For each use you must have a valid license purchased only from above li
   <!-- End layout styles -->
 
   <link rel="shortcut icon" href="{{asset('template')}}/assets/images/favicon.png" />
+  <style>
+    .justify-content-center{
+      display: flex;
+      align-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
 	<div class="row justify-content-center">
-        <div class="col-lg-4 mt-5">
+        <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>

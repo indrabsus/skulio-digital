@@ -43,7 +43,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama_kelas</th>
+                            <th>Tingkat</th>
+                            <th>Kelas</th>
                             <th>Jurusan</th>
                             <th>Aksi</th>
                         </tr>
@@ -52,6 +53,7 @@
                     @foreach ($data as $d)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                            <td>{{$d->tingkat}}</td>
                             <td>{{$d->nama_kelas}}</td>
                             <td>{{$d->nama_jurusan}}</td>
                             <td>
@@ -76,7 +78,20 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">Tingkat</label>
+                    <input type="number" wire:model.live="tingkat" class="form-control">
+                    <div class="text-danger">
+                        @error('tingkat')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
                     <label for="">Nama Kelas</label>
                     <input type="text" wire:model.live="nama_kelas" class="form-control">
                     <div class="text-danger">
@@ -85,6 +100,10 @@
                         @enderror
                     </div>
                   </div>
+                </div>
+              </div>
+              
+                
                 <div class="form-group">
                     <label for="">Jurusan</label>
                     <select class="form-control" wire:model="id_jurusan">
@@ -99,6 +118,7 @@
                         @enderror
                     </div>
                   </div>
+                
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
