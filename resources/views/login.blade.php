@@ -1,135 +1,97 @@
 
-<!DOCTYPE html>
-
-<html
-  lang="en"
-  class="light-style layout-wide customizer-hide"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="{{asset('sneat')}}/assets/"
-  data-template="vertical-menu-template-free">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>Login Aplikasi</title>
-
-    <meta name="description" content="" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('sneat')}}/assets/img/favicon/favicon.ico" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/fonts/boxicons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/css/demo.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href="{{asset('sneat')}}/assets/vendor/css/pages/page-auth.css" />
-
-    <!-- Helpers -->
-    <script src="{{asset('sneat')}}/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{asset('sneat')}}/assets/js/config.js"></script>
-  </head>
-
-  <body>
-    <!-- Content -->
-
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner">
-          <!-- Register -->
-          <div class="card">
-            <div class="card-body">
-              <!-- Logo -->
-              
-              <!-- /Logo -->
-              <h4 class="mb-2">Login</h4>
-              <hr>
-              
-              <form id="formAuthentication" class="mb-3" action="{{route('loginauth')}}" method="POST">
-                @csrf
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email or Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="username"
-                    placeholder="Enter your email or username"
-                    autofocus />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+<!DOCTYPE html><!--
+  * CoreUI - Free Bootstrap Admin Template
+  * @version v4.2.2
+  * @link https://coreui.io/product/free-bootstrap-admin-template/
+  * Copyright (c) 2023 creativeLabs Łukasz Holeczek
+  * Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
+  -->
+  <html lang="en">
+    <head>
+      <base href="./">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+      <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+      <meta name="author" content="Łukasz Holeczek">
+      <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+      <title>CoreUI Free Bootstrap Admin Template</title>
+      <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+      <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+      <link rel="manifest" href="assets/favicon/manifest.json">
+      <meta name="msapplication-TileColor" content="#ffffff">
+      <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+      <meta name="theme-color" content="#ffffff">
+      <!-- Vendors styles-->
+      <link rel="stylesheet" href="{{asset('core')}}/vendors/simplebar/css/simplebar.css">
+      <link rel="stylesheet" href="{{asset('core')}}/css/vendors/simplebar.css">
+      <!-- Main styles for this application-->
+      <link href="{{asset('core')}}/css/style.css" rel="stylesheet">
+      <!-- We use those styles to show code examples, you should remove them in your application.-->
+      <link href="c{{asset('core')}}/ss/examples.css" rel="stylesheet">
+    </head>
+    <body>
+      <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="card-group d-block d-md-flex row">
+                <div class="card col-md-7 p-4 mb-0">
+                  <div class="card-body">
+                    <form action="{{route('loginauth')}}" method="post">
+                      @csrf
+                      <h1>Login</h1>
+                      <p class="text-medium-emphasis">Sign In to your account</p>
+                      <div class="input-group mb-3"><span class="input-group-text">
+                          <svg class="icon">
+                            <use xlink:href="{{asset('core')}}/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                          </svg></span>
+                        <input class="form-control" type="text" placeholder="Username" name="username">
+                      </div>
+                      <div class="input-group mb-4"><span class="input-group-text">
+                          <svg class="icon">
+                            <use xlink:href="{{asset('core')}}/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                          </svg></span>
+                        <input class="form-control" type="password" placeholder="Password" name="password">
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <button class="btn btn-primary px-4" type="submit">Login</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-                
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                <div class="card col-md-5 text-white bg-primary py-5">
+                  <div class="card-body text-center">
+                    <div>
+                      <h2>Sign up</h2>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                      <button class="btn btn-lg btn-outline-light mt-3" type="button">Register Now!</button>
+                    </div>
+                  </div>
                 </div>
-              </form>
-
-              {{-- <p class="text-center">
-                <span>New on our platform?</span>
-                <a href="auth-register-basic.html">
-                  <span>Create an account</span>
-                </a>
-              </p> --}}
+              </div>
             </div>
           </div>
-          <!-- /Register -->
         </div>
       </div>
-    </div>
-
-    <!-- / Content -->
-
-   
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-
-    <script src="{{asset('sneat')}}/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="{{asset('sneat')}}/assets/vendor/libs/popper/popper.js"></script>
-    <script src="{{asset('sneat')}}/assets/vendor/js/bootstrap.js"></script>
-    <script src="{{asset('sneat')}}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="{{asset('sneat')}}/assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
-    <!-- Main JS -->
-    <script src="{{asset('sneat')}}/assets/js/main.js"></script>
-
-    <!-- Page JS -->
-
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-  </body>
-</html>
+      <!-- CoreUI and necessary plugins-->
+      <script src="{{asset('core')}}/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+      <script src="{{asset('core')}}/vendors/simplebar/js/simplebar.min.js"></script>
+      <script>
+      </script>
+  
+    </body>
+  </html>

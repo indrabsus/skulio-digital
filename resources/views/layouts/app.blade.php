@@ -41,6 +41,7 @@
     <!-- We use those styles to show code examples, you should remove them in your application.-->
     <link href="{{asset('core')}}/css/examples.css" rel="stylesheet">
     <link href="{{asset('core')}}/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 
 
@@ -86,7 +87,7 @@
           </ul>
           <ul class="header-nav ms-3">
             <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="avatar avatar-md"><img class="avatar-img" src="{{asset('core')}}/assets/img/avatars/8.jpg" alt="user@email.com"></div>
+                <div class="avatar avatar-md"><img class="avatar-img" src="{{asset('core')}}/assets/img/avatars/user.png" alt="user@email.com"></div>
               </a>
               <div class="dropdown-menu dropdown-menu-end pt-0">
 
@@ -118,8 +119,8 @@
             </div>
       </div>
       <footer class="footer">
-        <div><a href="https://coreui.io">CoreUI </a><a href="https://coreui.io">Bootstrap Admin Template</a> © 2023 creativeLabs.</div>
-        <div class="ms-auto">Powered by&nbsp;<a href="https://coreui.io/docs/">CoreUI UI Components</a></div>
+        <div><a href="https://batara.art">Skulio Pro</a> © 2023 Digital Team.</div>
+        <div class="ms-auto">Powered by&nbsp;<a href="https://coreui.io/docs/">CoreUI</a></div>
       </footer>
     </div>
     <!-- CoreUI and necessary plugins-->
