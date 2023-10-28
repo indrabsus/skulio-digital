@@ -23,6 +23,12 @@
         <li class="nav-item">
           <a href="{{route('admin.kelas')}}" class="nav-link">Kelas</a>
         </li>
+        <li class="nav-item">
+          <a href="" class="nav-link">Roles</a>
+        </li>
+        <li class="nav-item">
+          <a href="" class="nav-link">Mata Pelajaran</a>
+        </li>
       </ul>
     </div>
   </li>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Role;
 use App\Livewire\Kurikulum\Angkatan;
 use App\Livewire\Kurikulum\Jurusan;
 use App\Livewire\Kurikulum\Kelas;
@@ -22,5 +23,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('admin/jurusan',Jurusan::class)->name('admin.jurusan');
         Route::get('admin/angkatan',Angkatan::class)->name('admin.angkatan');
         Route::get('admin/kelas',Kelas::class)->name('admin.kelas');
+        Route::get('admin/roles',Role::class)->name('admin.roles');
     });
 });
