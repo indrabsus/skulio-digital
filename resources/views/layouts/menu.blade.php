@@ -27,7 +27,7 @@
           <a href="{{route('admin.mapel')}}" class="nav-link">Mata Pelajaran</a>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link">Roles</a>
+            <a href="{{route('admin.roles')}}" class="nav-link">Roles</a>
           </li>
       </ul>
     </div>
