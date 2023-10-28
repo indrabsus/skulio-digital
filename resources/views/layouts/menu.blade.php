@@ -8,6 +8,20 @@
 
 <li class="nav-item">
     <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
+      <i class="link-icon" data-feather="server"></i>
+      <span class="link-title">Admin</span>
+      <i class="link-arrow" data-feather="chevron-down"></i>
+    </a>
+    <div class="collapse" id="angkatan">
+      <ul class="nav sub-menu">
+        <li class="nav-item">
+            <a href="{{route('admin.roles')}}" class="nav-link">Roles</a>
+          </li>
+      </ul>
+    </div>
+  </li>
+<li class="nav-item">
+    <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
       <i class="link-icon" data-feather="book-open"></i>
       <span class="link-title">Kurikulum</span>
       <i class="link-arrow" data-feather="chevron-down"></i>
@@ -26,9 +40,6 @@
         <li class="nav-item">
           <a href="{{route('admin.mapel')}}" class="nav-link">Mata Pelajaran</a>
         </li>
-        <li class="nav-item">
-            <a href="{{route('admin.roles')}}" class="nav-link">Roles</a>
-          </li>
       </ul>
     </div>
   </li>
