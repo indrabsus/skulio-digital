@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_kelas');
             $table->string('nama_kelas');
             $table->foreignId('id_jurusan')->references('id_jurusan')->on('jurusan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('tingkat');
             $table->timestamps();
         });
