@@ -7,6 +7,7 @@ use App\Livewire\Kurikulum\Jurusan;
 use App\Livewire\Kurikulum\Kelas;
 
 use App\Livewire\Kurikulum\mapel;
+use App\Livewire\Sarpras\Ruangan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,5 +26,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('admin/angkatan',Angkatan::class)->name('admin.angkatan');
         Route::get('admin/kelas',Kelas::class)->name('admin.kelas');
         Route::get('admin/mapel',mapel::class)->name('admin.mapel');
+        Route::get('admin/ruangan',Ruangan::class)->name('admin.ruangan');
     });
 });
