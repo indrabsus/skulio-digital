@@ -8,7 +8,7 @@
 
 <li class="nav-item">
     <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
-      <i class="link-icon" data-feather="anchor"></i>
+      <i class="link-icon" data-feather="book-open"></i>
       <span class="link-title">Kurikulum</span>
       <i class="link-arrow" data-feather="chevron-down"></i>
     </a>

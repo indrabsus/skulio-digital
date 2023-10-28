@@ -4,13 +4,14 @@ namespace App\Livewire\Kurikulum;
 
 use App\Models\Angkatan;
 use App\Models\Jurusan;
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Kelas as TabelKelas;
 use Livewire\WithPagination;
 
 class Kelas extends Component
 {
-    public $id_kelas, $nama_kelas, $id_jurusan, $tingkat;
+    public $id_kelas, $nama_kelas, $id_jurusan, $tingkat, $id_user;
     use WithPagination;
 
     public $cari = '';
@@ -28,10 +29,17 @@ class Kelas extends Component
             'id_jurusan' => 'required',
             'tingkat' => 'required',
         ]);
+        $user = User::create([
+            'username' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
+            'password' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
+            'role' => 'verifikator',
+            'acc' => 'y'
+        ]);
         $data = TabelKelas::create([
             'nama_kelas' => $this->nama_kelas,
             'id_jurusan' => $this->id_jurusan,
             'tingkat' => $this->tingkat,
+            'id_user' => $user->id,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -65,9 +73,12 @@ class Kelas extends Component
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
+        $data = TabelKelas::where('id_kelas', $id)->first();
         $this->id_kelas = $id;
+        $this->id_user = $data->id_user;
     }
     public function delete(){
+        User::where('id', $this->id_user)->delete();
         TabelKelas::where('id_kelas',$this->id_kelas)->delete();
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
