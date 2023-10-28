@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('admin/jurusan',Jurusan::class)->name('admin.jurusan');
         Route::get('admin/angkatan',Angkatan::class)->name('admin.angkatan');
         Route::get('admin/kelas',Kelas::class)->name('admin.kelas');
-        Route::get('admin/mapel',mapel::class)->name('admin.mapel');
+        Route::get('admin/mapel',Mapel::class)->name('admin.mapel');
+        Route::get('admin/role',Role::class)->name('admin.roles');
+        Route::get('admin/ruangan',Ruangan::class)->name('admin.ruangan');
     });
 });
