@@ -1,4 +1,3 @@
-<li class="nav-item nav-category">Admin</li>
 <li class="nav-item">
   <a href="{{route('admin.dashboard')}}" class="nav-link">
     <i class="link-icon" data-feather="home"></i>
@@ -6,55 +5,37 @@
   </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
-      <i class="link-icon" data-feather="server"></i>
-      <span class="link-title">Admin</span>
-      <i class="link-arrow" data-feather="chevron-down"></i>
-    </a>
-    <div class="collapse" id="angkatan">
-      <ul class="nav sub-menu">
-        <li class="nav-item">
-            <a href="{{route('admin.roles')}}" class="nav-link">Roles</a>
-          </li>
-      </ul>
-    </div>
-  </li>
-<li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
-      <i class="link-icon" data-feather="book-open"></i>
-      <span class="link-title">Kurikulum</span>
-      <i class="link-arrow" data-feather="chevron-down"></i>
-    </a>
-    <div class="collapse" id="angkatan">
-      <ul class="nav sub-menu">
-        <li class="nav-item">
-          <a href="{{route('admin.angkatan')}}" class="nav-link">Angkatan</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{route('admin.jurusan')}}" class="nav-link">Jurusan</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{route('admin.kelas')}}" class="nav-link">Kelas</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{route('admin.mapel')}}" class="nav-link">Mata Pelajaran</a>
-        </li>
-      </ul>
-    </div>
-  </li>
+@php
+$currentMenu = null;
+@endphp
 
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#angkatan" role="button" aria-expanded="false" aria-controls="angkatan">
-      <i class="link-icon" data-feather="anchor"></i>
-      <span class="link-title">Sarpras</span>
-      <i class="link-arrow" data-feather="chevron-down"></i>
-    </a>
-    <div class="collapse" id="angkatan">
-      <ul class="nav sub-menu">
+@foreach ($menus as $menu)
+    @if ($menu->nama_role !== $currentMenu)
+        @php
+        $currentMenu = $menu->nama_role;
+        @endphp
+
         <li class="nav-item">
-          <a href="{{route('admin.ruangan')}}" class="nav-link">Ruangan</a>
+            <a class="nav-link" data-bs-toggle="collapse" href="#{{ $menu->nama_menu }}" role="button" aria-expanded="false" aria-controls="{{ $menu->nama_menu }}">
+                <i class="link-icon" data-feather="{{$menu->icon}}"></i>
+                <span class="link-title">{{ ucwords($menu->nama_role) }}</span>
+                <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="{{ $menu->nama_menu }}">
+                <ul class="nav sub-menu">
+    @endif
+
+    <li class="nav-item">
+        <a href="{{ route($menu->name) }}" class="nav-link">
+            <span class="link-title" style="margin-left: 10px;">{{ $menu->nama_menu }}</span>
+        </a>
+    </li>
+
+    @if ($loop->last || $menu->nama_role !== $menus[$loop->index + 1]->nama_role)
+                </ul>
+            </div>
         </li>
-      </ul>
-    </div>
-  </li>
+    @endif
+@endforeach
+
+

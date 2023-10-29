@@ -2,13 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\Role;
-use App\Livewire\Kurikulum\Angkatan;
-use App\Livewire\Kurikulum\Jurusan;
-use App\Livewire\Kurikulum\Kelas;
-
-use App\Livewire\Kurikulum\Mapel;
-use App\Livewire\Sarpras\Ruangan;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,16 +12,16 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
-
 Route::group(['middleware' => ['auth']], function(){
-    // Admin Dashboard
-    Route::group(['middleware' => ['cekrole:admin']], function(){
-        Route::get('admin/dashboard',Dashboard::class)->name('admin.dashboard');
-        Route::get('admin/jurusan',Jurusan::class)->name('admin.jurusan');
-        Route::get('admin/angkatan',Angkatan::class)->name('admin.angkatan');
-        Route::get('admin/kelas',Kelas::class)->name('admin.kelas');
-        Route::get('admin/mapel',Mapel::class)->name('admin.mapel');
-        Route::get('admin/role',Role::class)->name('admin.roles');
-        Route::get('admin/ruangan',Ruangan::class)->name('admin.ruangan');
-    });
+    Route::get('admin.dashboard',Dashboard::class)->name('admin.dashboard');
 });
+
+$data = Menu::all();
+foreach ($data as $item) {
+    // Determine the middleware based on $item->parent
+    $middleware = 'cekrole:' . $item->akses_role;
+
+    // Define the route without grouping
+    Route::middleware($middleware)->get($item->path, $item->class)->name($item->name);
+}
+

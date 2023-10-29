@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,8 @@ class AuthController extends Controller
 
         if(Auth::attempt($auth)){
             $auth = Auth::user();
-            $role = Auth::user()->role;
+            $data = Role::where('id_role', Auth::user()->id_role)->first();
+            $role = $data->nama_role;
 
             return redirect()->route($role.'.dashboard');
 

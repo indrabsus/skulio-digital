@@ -69,7 +69,6 @@ License: For each use you must have a valid license purchased only from above li
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>
                             <h5 class="text-muted fw-normal mb-4">Log in to your account.</h5>
                             <form class="forms-sample" method="post" action="{{route('loginauth')}}">
-                                @csrf
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">Username</label>
                                 <input type="text" class="form-control" name="username" placeholder="Masukan Username">

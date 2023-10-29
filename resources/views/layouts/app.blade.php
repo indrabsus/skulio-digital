@@ -46,6 +46,9 @@ License: For each use you must have a valid license purchased only from above li
   <link rel="shortcut icon" href="{{asset('template')}}//assets/images/favicon.png" />
 </head>
 <body>
+	@php
+    $menus = App\Models\Menu::leftJoin('roles','roles.id_role','menu.id_role')->get();
+@endphp
 	<div class="main-wrapper">
 
 		<!-- partial:partials/_sidebar.html -->

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
+        Schema::create('menu', function (Blueprint $table) {
+            $table->id('id_menu');
+            $table->string('path');
+            $table->string('class');
+            $table->string('name');
+            $table->string('akses_role');
             $table->foreignId('id_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
-            $table->enum('acc',['y','n']);
-            $table->rememberToken();
+            $table->string('nama_menu');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('menu');
     }
 };
