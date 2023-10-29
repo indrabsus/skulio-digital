@@ -17,14 +17,14 @@ Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('admin.dashboard', Dashboard::class)->name('admin.dashboard');
-    $set = new Controller;
-    // Now, move the Menu::all() and route definition here
-    $data = $set->routeMenu();
-    foreach ($data as $item) {
-        // Determine the middleware based on $item->parent
-        $middleware = 'cekrole:' . $item->akses_role;
+    // $set = new Controller;
+    // // Now, move the Menu::all() and route definition here
+    // $data = $set->routeMenu();
+    // foreach ($data as $item) {
+    //     // Determine the middleware based on $item->parent
+    //     $middleware = 'cekrole:' . $item->akses_role;
 
-        // Define the route without grouping
-        Route::middleware($middleware)->get($item->path, $item->class)->name($item->name);
-    };
+    //     // Define the route without grouping
+    //     Route::middleware($middleware)->get($item->path, $item->class)->name($item->name);
+    // };
 });
