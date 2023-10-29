@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Livewire\Admin\Dashboard;
-use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
 
 //Login Page
@@ -16,7 +15,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('admin.dashboard', Dashboard::class)->name('admin.dashboard');
 
     // Now, move the Menu::all() and route definition here
-    $data = Menu::all();
+    $data = DB::table('menu')->get();
     foreach ($data as $item) {
         // Determine the middleware based on $item->parent
         $middleware = 'cekrole:' . $item->akses_role;
