@@ -32,7 +32,7 @@ class Kelas extends Component
         $user = User::create([
             'username' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
             'password' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
-            'role' => 'verifikator',
+            'id_role' => 4,
             'acc' => 'y'
         ]);
         $data = TabelKelas::create([

@@ -25,5 +25,9 @@ class RoleSeeder extends Seeder
             'nama_role' => 'sarpras',
             'icon' => 'layers',
         ]);
+        Role::create([
+            'nama_role' => 'verifikator',
+            'icon' => 'activity',
+        ]);
     }
 }
