@@ -106,7 +106,7 @@
               </div>
               
                 
-                <div class="form-group">
+              <div class="form-group">
                     <label for="">Jurusan</label>
                     <select class="form-control" wire:model="id_jurusan">
                         <option value="">Pilih Jurusan</option>

@@ -8,9 +8,9 @@ use App\Models\Role;
 use App\Models\Ruangan;
 use Livewire\WithPagination;
 
-class Barang extends Component
+class barang extends Component
 {
-    public $id_barang, $kode_barang, $nama_barang, $volume, $satuan, $tahun_masuk, $sumber, $jenis_barang,$id_ruangan, $id_role;
+    public $id_barang, $kode_barang, $nama_barang, $volume, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role;
     use WithPagination;
 
     public $cari = '';
@@ -19,7 +19,7 @@ class Barang extends Component
     {
         $ruangan = Ruangan::all();
         $role = Role::all();
-        $data  = TabelBarang::leftJoin('ruangan','ruangan.id_ruangan','barang.id_ruangan')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelBarang::leftJoin('ruangan','ruangan.id_ruangan','barang.id_ruangan')-> leftJoin('roles','roles.id_role','barang.id_role')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.Sarpras.barang', compact('data','ruangan','role'));
     }
     public function insert(){
@@ -30,7 +30,7 @@ class Barang extends Component
             'satuan'=> 'required',
             'tahun_masuk'=> 'required',
             'sumber'=> 'required',
-            'jenis_barang'=> 'required',
+            'jenis'=> 'required',
             'id_ruangan' => 'required',
             'id_role'=> 'required',
             
@@ -43,7 +43,7 @@ class Barang extends Component
             'satuan'=> $this->satuan,
             'tahun_masuk'=> $this->tahun_masuk,
             'sumber'=> $this->sumber,
-            'jenis_barang'=> $this->jenis_barang,
+            'jenis'=> $this->jenis,
             'id_ruangan' => $this->id_ruangan,
             'id_role'=> $this->id_role,
         ]) ;
@@ -58,7 +58,7 @@ class Barang extends Component
         $this->satuan = '';
         $this->tahun_masuk = '';
         $this->sumber = '';
-        $this->jenis_barang = '';
+        $this->jenis = '';
         $this->id_ruangan = '';
         $this->id_role = '';
     }
@@ -70,7 +70,7 @@ class Barang extends Component
         $this->satuan = $data->satuan;
         $this->tahun_masuk = $data->tahun_masuk;
         $this->sumber = $data->sumber;
-        $this->jenis_barang = $data->jenis_barang;
+        $this->jenis = $data->jenis;
         $this->id_ruangan = $data->id_ruangan;
         $this->id_role = $data->id_role;
     }
@@ -82,7 +82,7 @@ class Barang extends Component
             'satuan'=> 'required',
             'tahun_masuk'=> 'required',
             'sumber'=> 'required',
-            'jenis_barang'=> 'required',
+            'jenis'=> 'required',
             'id_ruangan' => 'required',
             'id_role'=> 'required',
         ]);
@@ -93,7 +93,7 @@ class Barang extends Component
             'satuan'=> $this->satuan,
             'tahun_masuk'=> $this->tahun_masuk,
             'sumber'=> $this->sumber,
-            'jenis_barang'=> $this->jenis_barang,
+            'jenis'=> $this->jenis,
             'id_ruangan' => $this->id_ruangan,
             'id_role'=> $this->id_role,
         ]);
