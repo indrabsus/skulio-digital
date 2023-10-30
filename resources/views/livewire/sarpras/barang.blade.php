@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="">volume</label>
+                                <label for="">Volume</label>
                                 <input type="text" wire:model.live="volume" class="form-control">
                                 <div class="text-danger">
                                     @error('volume')
@@ -131,8 +131,14 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="">satuan</label>
-                                <input type="text" wire:model.live="satuan" class="form-control">
+                                <label for="">Satuan</label>
+                                <select class="form-control" wire:model.live="satuan">
+                                    <option value="">Pilih Satuan</option>
+                                    <option value="unit">Unit</option>
+                                    <option value="set">Set</option>
+                                    <option value="pack">Pack</option>
+                                    <option value="dus">Dus</option>
+                                </select>
                                 <div class="text-danger">
                                     @error('satuan')
                                         {{ $message }}
@@ -143,14 +149,14 @@
 
                         <div class="form-group">
                             <label for="">Sumber Barang</label>
-                            <select class="form-control" wire:model.live="sumber_barang">
+                            <select class="form-control" wire:model.live="sumber">
                                 <option value="">Pilih Sumber Barang</option>
                                 <option value="bos">Bos</option>
                                 <option value="yayasan">Yayasan</option>
                             </select>
 
                             <div class="text-danger">
-                                @error('sumber_barang')
+                                @error('sumber')
                                     {{ $message }}
                                 @enderror
                             </div>
@@ -256,7 +262,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="">volume</label>
+                                <label for="">Volume</label>
                                 <input type="text" wire:model.live="volume" class="form-control">
                                 <div class="text-danger">
                                     @error('volume')
@@ -267,8 +273,14 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="">satuan</label>
-                                <input type="text" wire:model.live="satuan" class="form-control">
+                                <label for="">Satuan</label>
+                                <select class="form-control" wire:model.live="satuan">
+                                    <option value="">Pilih Satuan</option>
+                                    <option value="unit">Unit</option>
+                                    <option value="Set">Set</option>
+                                    <option value="pack">Pack</option>
+                                    <option value="dus">Dus</option>
+                                </select>
                                 <div class="text-danger">
                                     @error('satuan')
                                         {{ $message }}
@@ -294,7 +306,7 @@
 
                         <div class="form-group">
                             <label for="">Jenis Barang</label>
-                            <select class="form-control" wire:model.live="jenis">
+                            <select class="form-control" wire:model.live ="jenis">
                                 <option value="">Pilih Jenis Barang</option>
                                 <option value="ab">Alat dan Bahan</option>
                                 <option value="b">Barang</option>

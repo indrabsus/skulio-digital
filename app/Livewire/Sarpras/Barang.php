@@ -64,6 +64,7 @@ class barang extends Component
     }
     public function edit($id){
         $data = TabelBarang::where('id_barang', $id)->first();
+        $this->id_barang = $data->id_barang;
         $this->kode_barang = $data->kode_barang;
         $this->nama_barang = $data->nama_barang;
         $this->volume =  $data->volume;
