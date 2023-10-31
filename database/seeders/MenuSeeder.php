@@ -14,6 +14,7 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
+            'sort' => 1,
             'path' => 'admin/dashboard',
             'class' => 'App\Livewire\Admin\Dashboard',
             'name' => 'admin.dashboard',
@@ -22,6 +23,16 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Dashboard',
         ]);
         Menu::create([
+            'sort' => 2,
+            'path' => 'admin/parentmenu',
+            'class' => 'App\Livewire\Admin\ParentMenu',
+            'name' => 'admin.parentmenu',
+            'parent_menu' => 1,
+            'akses_role' => 1,
+            'nama_menu' => 'Parent Menu',
+        ]);
+        Menu::create([
+            'sort' => 3,
             'path' => 'admin/role',
             'class' => 'App\Livewire\Admin\Role',
             'name' => 'admin.role',
@@ -30,6 +41,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Role',
         ]);
         Menu::create([
+            'sort' => 11,
             'path' => 'admin/angkatan',
             'class' => 'App\Livewire\Kurikulum\Angkatan',
             'name' => 'admin.angkatan',
@@ -38,6 +50,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Angkatan'
         ]);
         Menu::create([
+            'sort' => 12,
             'path' => 'admin/jurusan',
             'class' => 'App\Livewire\Kurikulum\Jurusan',
             'name' => 'admin.jurusan',
@@ -46,6 +59,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Jurusan'
         ]);
         Menu::create([
+            'sort' => 13,
             'path' => 'admin/kelas',
             'class' => 'App\Livewire\Kurikulum\Kelas',
             'name' => 'admin.kelas',
@@ -54,6 +68,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Kelas'
         ]);
         Menu::create([
+            'sort' => 14,
             'path' => 'admin/mapel',
             'class' => 'App\Livewire\Kurikulum\Mapel',
             'name' => 'admin.mapel',
@@ -62,6 +77,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Mapel'
         ]);
         Menu::create([
+            'sort' => 21,
             'path' => 'admin/ruangan',
             'class' => 'App\Livewire\Sarpras\Ruangan',
             'name' => 'admin.ruangan',
@@ -70,6 +86,7 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Ruangan'
         ]);
         Menu::create([
+            'sort' => 22,
             'path' => 'admin/barang',
             'class' => 'App\Livewire\Sarpras\Barang',
             'name' => 'admin.barang',

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->id('id_menu');
+            $table->bigInteger('sort');
             $table->string('path');
             $table->string('class');
             $table->string('name');

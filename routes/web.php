@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
-use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 
 

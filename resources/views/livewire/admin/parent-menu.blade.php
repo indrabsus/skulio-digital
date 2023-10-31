@@ -44,7 +44,8 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Role</th>
+                          <th>Parent Menu</th>
+                          <th>Icon</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -52,10 +53,10 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_role}}</td>
+                          <td>{{$d->parent_menu}}</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_role}})'>Ubah</i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_role}})">Hapus</a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_parent}})'>Ubah</i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_parent}})">Hapus</a>
                           </td>
                       </tr>
                   @endforeach
@@ -77,10 +78,10 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="">Nama Role</label>
-                    <input type="text" wire:model.live="nama_role" class="form-control">
+                    <label for="">Parent Menu</label>
+                    <input type="text" wire:model.live="parent_menu" class="form-control">
                     <div class="text-danger">
-                        @error('nama_role')
+                        @error('parent_menu')
                             {{$message}}
                         @enderror
                     </div>
@@ -115,15 +116,17 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="">Nama Role</label>
-                    <input type="text" wire:model.live="nama_role" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_role')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Parent Menu</label>
+                        <input type="text" wire:model.live="parent_menu" class="form-control">
+                        <div class="text-danger">
+                            @error('parent_menu')
+                                {{$message}}
+                            @enderror
+                        </div>
+                      </div>
+                </div>
                     <div class="form-group">
                         <label for="">Icon</label>
                         <input type="text" wire:model.live="icon" class="form-control">

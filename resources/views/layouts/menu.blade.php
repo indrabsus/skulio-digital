@@ -1,9 +1,3 @@
-<li class="nav-item">
-  <a href="{{route('admin.dashboard')}}" class="nav-link">
-    <i class="link-icon" data-feather="home"></i>
-    <span class="link-title">Dashboard</span>
-  </a>
-</li>
 
 @php
 $currentMenu = null;
@@ -16,7 +10,7 @@ $currentMenu = null;
         @endphp
 
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#{{ $menu->nama_menu }}" role="button" aria-expanded="false" aria-controls="{{ $menu->nama_menu }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#{{ $menu->nama_menu }}" role="button" aria-expanded="false" aria-controls="{{ str_replace(' ', '', strtolower($menu->nama_menu)) }}">
                 <i class="link-icon" data-feather="{{$menu->icon}}"></i>
                 <span class="link-title">{{ ucwords($menu->parent_menu) }}</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
