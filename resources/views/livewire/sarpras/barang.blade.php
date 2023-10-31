@@ -68,7 +68,7 @@
                                 <td>{{ $d->satuan }}</td>
                                 <td>{{ $d->sumber }}</td>
                                 <td>{{ $d->tahun_masuk }}</td>
-                                <td>{{ $d->jenis }}</td>
+                                <td>{{ $d->jenis == 'ab' ? 'Alat dan Bahan' : 'Barang' }}</td>
                                 <td>{{ $d->nama_ruangan }}</td>
                                 <td>{{ $d->nama_role}}</td>
                                 <td>
