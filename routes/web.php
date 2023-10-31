@@ -16,7 +16,6 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
 Route::group(['middleware' => ['auth']], function(){
-    Route::get('admin/dashboard', Dashboard::class)->name('admin.dashboard');
     $set = new Controller;
     // Now, move the Menu::all() and route definition here
     $data = $set->routeMenu();

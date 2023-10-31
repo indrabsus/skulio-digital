@@ -14,10 +14,18 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
+            'path' => 'admin/dashboard',
+            'class' => 'App\Livewire\Admin\Dashboard',
+            'name' => 'admin.dashboard',
+            'parent_menu' => 1,
+            'akses_role' => 1,
+            'nama_menu' => 'Dashboard',
+        ]);
+        Menu::create([
             'path' => 'admin/role',
             'class' => 'App\Livewire\Admin\Role',
             'name' => 'admin.role',
-            'parent_menu' => 'Admin',
+            'parent_menu' => 1,
             'akses_role' => 1,
             'nama_menu' => 'Role',
         ]);
@@ -25,7 +33,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/angkatan',
             'class' => 'App\Livewire\Kurikulum\Angkatan',
             'name' => 'admin.angkatan',
-            'parent_menu' => 'Kurikulum',
+            'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Angkatan'
         ]);
@@ -33,7 +41,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/jurusan',
             'class' => 'App\Livewire\Kurikulum\Jurusan',
             'name' => 'admin.jurusan',
-            'parent_menu' => 'Kurikulum',
+            'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Jurusan'
         ]);
@@ -41,7 +49,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/kelas',
             'class' => 'App\Livewire\Kurikulum\Kelas',
             'name' => 'admin.kelas',
-            'parent_menu' => 'Kurikulum',
+            'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Kelas'
         ]);
@@ -49,7 +57,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/mapel',
             'class' => 'App\Livewire\Kurikulum\Mapel',
             'name' => 'admin.mapel',
-            'parent_menu' => 'Kurikulum',
+            'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Mapel'
         ]);
@@ -57,7 +65,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/ruangan',
             'class' => 'App\Livewire\Sarpras\Ruangan',
             'name' => 'admin.ruangan',
-            'parent_menu' => 'Sarpras',
+            'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Ruangan'
         ]);
@@ -65,7 +73,7 @@ class MenuSeeder extends Seeder
             'path' => 'admin/barang',
             'class' => 'App\Livewire\Sarpras\Barang',
             'name' => 'admin.barang',
-            'parent_menu' => 'Sarpras',
+            'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Barang'
         ]);

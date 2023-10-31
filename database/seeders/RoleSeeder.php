@@ -14,20 +14,16 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         Role::create([
-            'nama_role' => 'admin',
-            'icon' => 'hash',
+            'nama_role' => 'admin'
         ]);
         Role::create([
-            'nama_role' => 'kurikulum',
-            'icon' => 'book-open',
+            'nama_role' => 'kurikulum'
         ]);
         Role::create([
-            'nama_role' => 'sarpras',
-            'icon' => 'layers',
+            'nama_role' => 'sarpras'
         ]);
         Role::create([
-            'nama_role' => 'verifikator',
-            'icon' => 'activity',
+            'nama_role' => 'verifikator'
         ]);
     }
 }
