@@ -16,13 +16,13 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
 Route::group(['middleware' => ['auth']], function(){
-    Route::get('admin.dashboard', Dashboard::class)->name('admin.dashboard');
+    Route::get('admin/dashboard', Dashboard::class)->name('admin.dashboard');
     $set = new Controller;
     // Now, move the Menu::all() and route definition here
     $data = $set->routeMenu();
     foreach ($data as $item) {
         // Determine the middleware based on $item->parent
-        $middleware = 'cekrole:' . $item->akses_role;
+        $middleware = 'cekrole:' . $item->nama_role;
 
         // Define the route without grouping
         Route::middleware($middleware)->get($item->path, $item->class)->name($item->name);
