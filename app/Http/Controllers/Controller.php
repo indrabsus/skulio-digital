@@ -11,6 +11,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
     public function routeMenu(){
-        return Menu::all();
+        return Menu::leftJoin('roles','roles.id_role','menu.akses_role')->get();
     }
 }

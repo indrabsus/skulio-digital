@@ -10,15 +10,15 @@ $currentMenu = null;
 @endphp
 
 @foreach ($menus as $menu)
-    @if ($menu->nama_role !== $currentMenu)
+    @if ($menu->parent_menu !== $currentMenu)
         @php
-        $currentMenu = $menu->nama_role;
+        $currentMenu = $menu->parent_menu;
         @endphp
 
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#{{ $menu->nama_menu }}" role="button" aria-expanded="false" aria-controls="{{ $menu->nama_menu }}">
                 <i class="link-icon" data-feather="{{$menu->icon}}"></i>
-                <span class="link-title">{{ ucwords($menu->nama_role) }}</span>
+                <span class="link-title">{{ ucwords($menu->parent_menu) }}</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
             <div class="collapse" id="{{ $menu->nama_menu }}">
@@ -31,7 +31,7 @@ $currentMenu = null;
         </a>
     </li>
 
-    @if ($loop->last || $menu->nama_role !== $menus[$loop->index + 1]->nama_role)
+    @if ($loop->last || $menu->parent_menu !== $menus[$loop->index + 1]->parent_menu)
                 </ul>
             </div>
         </li>

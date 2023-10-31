@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('path');
             $table->string('class');
             $table->string('name');
-            $table->string('akses_role');
-            $table->foreignId('id_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('parent_menu');
+            $table->foreignId('akses_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama_menu');
             $table->timestamps();
         });
