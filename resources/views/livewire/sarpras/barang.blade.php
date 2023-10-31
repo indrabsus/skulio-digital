@@ -97,7 +97,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Kode Barang</label>
                                 <input type="text" wire:model.live="kode_barang" class="form-control">
                                 <div class="text-danger">
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Nama Barang</label>
                                 <input type="text" wire:model.live="nama_barang" class="form-control">
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Volume</label>
                                 <input type="text" wire:model.live="volume" class="form-control">
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Satuan</label>
                                 <select class="form-control" wire:model.live="satuan">
@@ -147,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="">Sumber Barang</label>
                             <select class="form-control" wire:model.live="sumber">
                                 <option value="">Pilih Sumber Barang</option>
@@ -162,7 +162,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="">Jenis Barang</label>
                             <select class="form-control" wire:model.live ="jenis">
                                 <option value="">Pilih Jenis Barang</option>
@@ -177,7 +177,7 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Tahun Masuk</label>
                                 <input type="text" wire:model.live="tahun_masuk" class="form-control">
                                 <div class="text-danger">
@@ -189,7 +189,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Ruangan</label>
                         <select class="form-control" wire:model="id_ruangan">
                             <option value="">Pilih Ruangan</option>
@@ -203,10 +203,10 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Role</label>
+                    <div class="form-group mb-3">
+                        <label for="">Unit</label>
                         <select class="form-control" wire:model="id_role">
-                            <option value="">Pilih Role</option>
+                            <option value="">Pilih Unit</option>
                             @foreach ($role as $r)
                                 <option value="{{ $r->id_role }}">{{ $r->nama_role }}</option>
                             @endforeach
@@ -239,7 +239,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Kode Barang</label>
                                 <input type="text" wire:model.live="kode_barang" class="form-control">
                                 <div class="text-danger">
@@ -249,7 +249,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Nama Barang</label>
                                 <input type="text" wire:model.live="nama_barang" class="form-control">
@@ -260,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Volume</label>
                                 <input type="text" wire:model.live="volume" class="form-control">
@@ -271,13 +271,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Satuan</label>
                                 <select class="form-control" wire:model.live="satuan">
                                     <option value="">Pilih Satuan</option>
                                     <option value="unit">Unit</option>
-                                    <option value="Set">Set</option>
+                                    <option value="set">Set</option>
                                     <option value="pack">Pack</option>
                                     <option value="dus">Dus</option>
                                 </select>
@@ -289,7 +289,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="">Sumber Barang</label>
                             <select class="form-control" wire:model.live="sumber">
                                 <option value="">Pilih Sumber Barang</option>
@@ -304,7 +304,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="">Jenis Barang</label>
                             <select class="form-control" wire:model.live ="jenis">
                                 <option value="">Pilih Jenis Barang</option>
@@ -319,7 +319,7 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Tahun Masuk</label>
                                 <input type="text" wire:model.live="tahun_masuk" class="form-control">
                                 <div class="text-danger">
@@ -331,7 +331,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Ruangan</label>
                         <select class="form-control" wire:model="id_ruangan">
                             <option value="">Pilih Ruangan</option>
@@ -345,10 +345,10 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Role</label>
+                    <div class="form-group mb-3">
+                        <label for="">Unit</label>
                         <select class="form-control" wire:model="id_role">
-                            <option value="">Pilih Role</option>
+                            <option value="">Pilih Unit</option>
                             @foreach ($role as $r)
                                 <option value="{{ $r->id_role }}">{{ $r->nama_role }}</option>
                             @endforeach
