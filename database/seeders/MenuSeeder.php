@@ -14,63 +14,59 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
-            'sort' => 1,
-            'parent_menu' => 1,
-            'akses_role' => 1,
-            'nama_menu' => 'Dashboard',
-        ]);
-        Menu::create([
-            'sort' => 2,
-            'parent_menu' => 1,
-            'akses_role' => 1,
-            'nama_menu' => 'Parent Menu',
-        ]);
-        Menu::create([
-            'sort' => 3,
-            'parent_menu' => 1,
-            'akses_role' => 1,
-            'nama_menu' => 'Sub Menu',
-        ]);
-        Menu::create([
-            'sort' => 4,
-            'parent_menu' => 1,
-            'akses_role' => 1,
+            'path' => 'admin/role',
+            'class' => 'App\Livewire\Admin\Role',
+            'name' => 'admin.roles',
+            'akses_role' => 'admin',
+            'id_role' => 1,
             'nama_menu' => 'Role',
         ]);
         Menu::create([
-            'sort' => 11,
-            'parent_menu' => 2,
-            'akses_role' => 1,
+            'path' => 'admin/angkatan',
+            'class' => 'App\Livewire\Kurikulum\Angkatan',
+            'name' => 'admin.angkatan',
+            'akses_role' => 'admin',
+            'id_role' => 2,
             'nama_menu' => 'Angkatan'
         ]);
         Menu::create([
-            'sort' => 12,
-            'parent_menu' => 2,
-            'akses_role' => 1,
+            'path' => 'admin/jurusan',
+            'class' => 'App\Livewire\Kurikulum\Jurusan',
+            'name' => 'admin.jurusan',
+            'akses_role' => 'admin',
+            'id_role' => 2,
             'nama_menu' => 'Jurusan'
         ]);
         Menu::create([
-            'sort' => 13,
-            'parent_menu' => 2,
-            'akses_role' => 1,
+            'path' => 'admin/kelas',
+            'class' => 'App\Livewire\Kurikulum\Kelas',
+            'name' => 'admin.kelas',
+            'akses_role' => 'admin',
+            'id_role' => 2,
             'nama_menu' => 'Kelas'
         ]);
         Menu::create([
-            'sort' => 14,
-            'parent_menu' => 2,
-            'akses_role' => 1,
+            'path' => 'admin/mapel',
+            'class' => 'App\Livewire\Kurikulum\Mapel',
+            'name' => 'admin.mapel',
+            'akses_role' => 'admin',
+            'id_role' => 2,
             'nama_menu' => 'Mapel'
         ]);
         Menu::create([
-            'sort' => 21,
-            'parent_menu' => 3,
-            'akses_role' => 1,
+            'path' => 'admin/ruangan',
+            'class' => 'App\Livewire\Sarpras\Ruangan',
+            'name' => 'admin.ruangan',
+            'akses_role' => 'admin',
+            'id_role' => 3,
             'nama_menu' => 'Ruangan'
         ]);
         Menu::create([
-            'sort' => 22,
-            'parent_menu' => 3,
-            'akses_role' => 1,
+            'path' => 'admin/barang',
+            'class' => 'App\Livewire\Sarpras\Barang',
+            'name' => 'admin.barang',
+            'akses_role' => 'admin',
+            'id_role' => 3,
             'nama_menu' => 'Barang'
         ]);
     }

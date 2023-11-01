@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 
 class Role extends Component
 {
-    public $nama_role, $id_role;
+    public $nama_role, $id_role, $icon;
     use WithPagination;
 
     public $cari = '';
@@ -20,10 +20,12 @@ class Role extends Component
     }
     public function insert(){
         $this->validate([
-            'nama_role' => 'required'
+            'nama_role' => 'required',
+            'icon' => 'required'
         ]);
         $data = TabelRole::create([
-            'nama_role' => strtolower($this->nama_role)
+            'nama_role' => strtolower($this->nama_role),
+            'icon'=> $this->icon,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -31,10 +33,12 @@ class Role extends Component
     }
     public function clearForm(){
         $this->nama_role = '';
+        $this->icon = '';
     }
     public function edit($id){
         $data = TabelRole::where('id_role', $id)->first();
         $this->nama_role = $data->nama_role;
+        $this->icon = $data->icon;
         $this->id_role = $data->id_role;
     }
     public function update(){
@@ -44,6 +48,7 @@ class Role extends Component
         ]);
         $data = TabelRole::where('id_role', $this->id_role)->update([
             'nama_role' => strtolower($this->nama_role),
+            'icon'=> $this->icon,
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();

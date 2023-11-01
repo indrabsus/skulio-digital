@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('barang', function (Blueprint $table) {
-            $table->id('id_barang');
+        Schema::create('distribusi', function (Blueprint $table) {
+            $table->id('id_distribusi');
+            $table->foreignId('id_barang')->references('id_barang')->on('barang')->onDelete('cascade')->onUpdate('cascade');
             $table->string('kode_barang');
             $table->string('nama_barang');
             $table->bigInteger('volume');
@@ -20,8 +21,8 @@ return new class extends Migration
             $table->bigInteger('tahun_masuk');
             $table->enum('sumber', ['bos','yayasan']);
             $table->enum('jenis', ['ab','b']);
-            $table->foreignId('id_ruangan')->references('id_ruangan')->on('ruangan')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('id_ruangan');
+            $table->string('id_role');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('barang');
+        Schema::dropIfExists('distribusi');
     }
 };
