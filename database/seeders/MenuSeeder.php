@@ -71,10 +71,17 @@ class MenuSeeder extends Seeder
             'sort' => 22,
             'parent_menu' => 3,
             'akses_role' => 1,
+            'nama_menu' => 'Pengajuan'
+        ]);
+        
+        Menu::create([
+            'sort' => 23,
+            'parent_menu' => 3,
+            'akses_role' => 1,
             'nama_menu' => 'Barang'
         ]);
         Menu::create([
-            'sort' => 23,
+            'sort' => 24,
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Distribusi'
