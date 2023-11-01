@@ -228,7 +228,7 @@
     </div>
 
     {{-- Disribusi --}}
-    <div class="modal fade" id="Distribusi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    <div class="modal fade" id="distribusi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -540,7 +540,7 @@
             $('#k_hapus').modal('hide');
         })
         window.addEventListener('closeModal', event => {
-            $('#Distribusi').modal('hide');
+            $('#distribusi').modal('hide');
         })
     </script>
 
