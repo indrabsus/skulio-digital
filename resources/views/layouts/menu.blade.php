@@ -20,7 +20,7 @@ $currentMenu = null;
     @endif
 
     <li class="nav-item">
-        <a href="{{ route($menu->name) }}" class="nav-link">
+        <a href="{{ route($menu->nama_role.'.'.strtolower(str_replace(' ','', $menu->nama_menu))) }}" class="nav-link">
             <span class="link-title" style="margin-left: 10px;">{{ $menu->nama_menu }}</span>
         </a>
     </li>

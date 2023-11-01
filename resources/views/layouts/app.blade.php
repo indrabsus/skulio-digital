@@ -47,7 +47,9 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <body>
 	@php
-    $menus = App\Models\Menu::leftJoin('parent_menu','parent_menu.id_parent','menu.parent_menu')->orderBy('sort','asc')->get();
+    $menus = App\Models\Menu::leftJoin('parent_menu','parent_menu.id_parent','menu.parent_menu')
+    ->leftJoin('roles','roles.id_role','menu.akses_role')
+    ->orderBy('sort','asc')->get();
 @endphp
 	<div class="main-wrapper">
 

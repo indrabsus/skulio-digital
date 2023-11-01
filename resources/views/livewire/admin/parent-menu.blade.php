@@ -54,6 +54,7 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->parent_menu}}</td>
+                          <td>{{$d->icon}}</td>
                           <td>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_parent}})'>Ubah</i></a>
                               <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_parent}})">Hapus</a>
@@ -86,8 +87,7 @@
                         @enderror
                     </div>
                   </div>
-            </div>
-            <div class="modal-body">
+
                 <div class="form-group">
                     <label for="">Icon</label>
                     <input type="text" wire:model.live="icon" class="form-control">
@@ -97,7 +97,7 @@
                         @enderror
                     </div>
                   </div>
-            </div>
+                </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
@@ -126,7 +126,7 @@
                             @enderror
                         </div>
                       </div>
-                </div>
+
                     <div class="form-group">
                         <label for="">Icon</label>
                         <input type="text" wire:model.live="icon" class="form-control">
@@ -136,6 +136,7 @@
                             @enderror
                         </div>
                       </div>
+                    </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

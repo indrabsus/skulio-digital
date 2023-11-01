@@ -86,17 +86,6 @@
                     </div>
                   </div>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="">Icon</label>
-                    <input type="text" wire:model.live="icon" class="form-control">
-                    <div class="text-danger">
-                        @error('icon')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
@@ -124,15 +113,6 @@
                         @enderror
                     </div>
                   </div>
-                    <div class="form-group">
-                        <label for="">Icon</label>
-                        <input type="text" wire:model.live="icon" class="form-control">
-                        <div class="text-danger">
-                            @error('icon')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

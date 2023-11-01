@@ -45,9 +45,6 @@
                       <tr>
                           <th>Sort</th>
                           <th>Nama Menu</th>
-                          <th>Path</th>
-                          <th>Class</th>
-                          <th>Route Name</th>
                           <th>Parent Menu</th>
                           <th>Akses Role</th>
                           <th>Aksi</th>
@@ -58,9 +55,6 @@
                       <tr>
                           <td>{{ $d->sort }}</td>
                           <td>{{$d->nama_menu}}</td>
-                          <td>{{$d->path}}</td>
-                          <td>{{$d->class}}</td>
-                          <td>{{$d->name}}</td>
                           <td>{{$d->parent_menu}}</td>
                           <td>{{$d->nama_role}}</td>
                           <td>
@@ -95,26 +89,12 @@
                         @enderror
                     </div>
                   </div>
-            
+
                 <div class="form-group mb-3">
                     <label for="">Nama Menu</label>
                     <input type="text" wire:model.live="nama_menu" class="form-control">
                     <div class="text-danger">
                         @error('nama_menu')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Class</label>
-                    <select class="form-control" wire:model.live="class">
-                        <option value="">Pilih Class</option>
-                        @foreach ($parent as $p)
-                            <option value="{{$p->parent_menu}}">{{$p->parent_menu}}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-danger">
-                        @error('parent_menu')
                             {{$message}}
                         @enderror
                     </div>
@@ -166,26 +146,53 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Parent Menu</label>
-                        <input type="text" wire:model.live="parent_menu" class="form-control">
-                        <div class="text-danger">
-                            @error('parent_menu')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
-                </div>
-                    <div class="form-group">
-                        <label for="">Icon</label>
-                        <input type="text" wire:model.live="icon" class="form-control">
-                        <div class="text-danger">
-                            @error('icon')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
+                <div class="form-group mb-3">
+                    <label for="">Sort</label>
+                    <input type="text" wire:model.live="sort" class="form-control">
+                    <div class="text-danger">
+                        @error('sort')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+
+                <div class="form-group mb-3">
+                    <label for="">Nama Menu</label>
+                    <input type="text" wire:model.live="nama_menu" class="form-control">
+                    <div class="text-danger">
+                        @error('nama_menu')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Parent Menu</label>
+                    <select class="form-control" wire:model.live="parent_menu">
+                        <option value="">Pilih Parent</option>
+                        @foreach ($parent as $p)
+                            <option value="{{$p->id_parent}}">{{$p->parent_menu}}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('parent_menu')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Akses Role</label>
+                    <select class="form-control" wire:model.live="akses_role">
+                        <option value="">Pilih Role</option>
+                        @foreach ($role as $r)
+                            <option value="{{$r->id_role}}">{{$r->nama_role}}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('akses_role')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
