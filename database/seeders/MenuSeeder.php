@@ -73,5 +73,11 @@ class MenuSeeder extends Seeder
             'akses_role' => 1,
             'nama_menu' => 'Barang'
         ]);
+        Menu::create([
+            'sort' => 23,
+            'parent_menu' => 3,
+            'akses_role' => 1,
+            'nama_menu' => 'Distribusi'
+        ]);
     }
 }
