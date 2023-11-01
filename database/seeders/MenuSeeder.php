@@ -38,6 +38,12 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Role',
         ]);
         Menu::create([
+            'sort' => 5,
+            'parent_menu' => 1,
+            'akses_role' => 1,
+            'nama_menu' => 'Data User',
+        ]);
+        Menu::create([
             'sort' => 11,
             'parent_menu' => 2,
             'akses_role' => 1,
