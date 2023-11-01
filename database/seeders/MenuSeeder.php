@@ -69,5 +69,13 @@ class MenuSeeder extends Seeder
             'id_role' => 3,
             'nama_menu' => 'Barang'
         ]);
+        Menu::create([
+            'path' => 'admin/Distribusi',
+            'class' => 'App\Livewire\Sarpras\Distribusi',
+            'name' => 'admin.distribusi',
+            'akses_role' => 'admin',
+            'id_role' => 3,
+            'nama_menu' => 'Distribusi'
+        ]);
     }
 }
