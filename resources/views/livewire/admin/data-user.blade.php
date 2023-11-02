@@ -221,6 +221,19 @@
                         @enderror
                     </div>
                   </div>
+                  <div class="form-group mb-3">
+                    <label for="">ACC</label>
+                    <select class="form-control" wire:model.live="acc">
+                        <option value="">Pilih ACC</option>
+                        <option value="y">Yes</option>
+                        <option value="n">No</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('accl')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
