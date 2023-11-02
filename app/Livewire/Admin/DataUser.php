@@ -10,14 +10,14 @@ use Livewire\WithPagination;
 
 class DataUser extends Component
 {
-    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat;
+    public $id_role, $id_user, $id_data, $nama_lengkap, $acc, $jenkel, $no_hp, $alamat;
     use WithPagination;
 
     public $cari = '';
     public $result = 10;
     public function render()
     {
-        $role = Role::where('id_role','<>', 1)->get();
+        $role = Role::where('id_role','<>', 1)->where('id_role','<>', 4)->get();
         $data  = TabelDataUser::where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->leftJoin('users','users.id','=','data_user.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
@@ -43,7 +43,7 @@ class DataUser extends Component
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
             'no_hp'=> $this->no_hp, 
-            'alamat'=> $this->alamat
+            'alamat'=> $this->alamat,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -64,15 +64,25 @@ class DataUser extends Component
         $this->no_hp = $data->no_hp;
         $this->alamat = $data->alamat;
         $this->id_data = $id;
+        $this->id_role = $data->id_role;
+        $this->acc = $data->acc;
     }
     public function update(){
         $this->validate([
+            'id_role' => 'required',
             'id_user' => 'required',
             'nama_lengkap'=> 'required',
             'jenkel' => 'required',
             'no_hp'=> 'required',
             'alamat'=> 'required',
         ]);
+
+        $user = User::where('id', $this->id_user)->update([
+            'id_role' => $this->id_role,
+            'acc' => $this->acc,
+        ]);
+
+
         $data = TabelDataUser::where('id_data', $this->id_data)->update([
             'id_user' => $this->id_user,
             'nama_lengkap'=> $this->nama_lengkap,
@@ -80,6 +90,7 @@ class DataUser extends Component
             'no_hp'=> $this->no_hp, 
             'alamat'=> $this->alamat
         ]);
+       
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
         $this->dispatch('closeModal');
