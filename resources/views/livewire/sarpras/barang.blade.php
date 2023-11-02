@@ -1,6 +1,5 @@
 <div>
     <div class="row">
-
         <div class="container">
             @if (session('sukses'))
                 <div class="alert alert-success alert-dismissible">
