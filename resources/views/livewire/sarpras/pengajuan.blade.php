@@ -66,11 +66,8 @@
                                 <td>{{ $d->jenis == 'ab' ? 'Alat dan Bahan' : 'Barang' }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal"
-                                        data-bs-target="#edit" wire:click='edit({{ $d->id_pengajuan }})'>Ubah</i></a>
-                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal"
-                                        data-bs-target="#k_hapus"
-                                        wire:click="c_delete({{ $d->id_pengajuan }})">Hapus</a>
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_pengajuan}})'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_pengajuan}})"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -92,7 +89,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Nama Barang</label>
                         <input type="text" wire:model.live="nama_barang" class="form-control">
                         <div class="text-danger">
@@ -101,7 +98,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Volume</label>
                         <input type="text" wire:model.live="volume" class="form-control">
                         <div class="text-danger">
@@ -110,7 +107,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Satuan</label>
                         <select class="form-control" wire:model.live="satuan">
                             <option value="">Pilih Satuan</option>
@@ -125,7 +122,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Bulan Masuk</label>
                         <select class="form-control" wire:model.live="bulan_masuk">
                             <option value="">Pilih Bulan</option>
@@ -195,7 +192,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Nama Barang</label>
                         <input type="text" wire:model.live="nama_barang" class="form-control">
                         <div class="text-danger">
@@ -204,7 +201,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Volume</label>
                         <input type="text" wire:model.live="volume" class="form-control">
                         <div class="text-danger">
@@ -213,7 +210,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Satuan</label>
                         <select class="form-control" wire:model.live="satuan">
                             <option value="">Pilih Satuan</option>
@@ -228,7 +225,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Bulan Masuk</label>
                         <select class="form-control" wire:model.live="bulan_masuk">
                             <option value="">Pilih Bulan</option>
