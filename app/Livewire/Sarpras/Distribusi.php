@@ -42,7 +42,7 @@ class Distribusi extends Component
         $data = TabelDistribusi::create([
             'kode_barang' => $this->kode_barang,
             'nama_barang' => $this->nama_barang,
-            'volume'=> $this->volume,
+            'volume'=> ($this->volume),
             'satuan'=> $this->satuan,
             'tahun_masuk'=> $this->tahun_masuk,
             'sumber'=> $this->sumber,

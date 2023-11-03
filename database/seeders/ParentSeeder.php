@@ -25,5 +25,10 @@ class ParentSeeder extends Seeder
             'parent_menu' => 'Sarpras',
             'icon' => 'layers',
         ]);
+       ParentMenu::create([
+            'parent_menu' => 'BankMini',
+            'icon' => 'dollar-sign',
+        ]); 
+        
     }
 }

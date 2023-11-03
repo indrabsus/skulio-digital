@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Kurikulum;
+namespace App\Livewire\BankMini;
 
 use App\Models\Angkatan;
 use App\Models\Jurusan;
@@ -9,7 +9,7 @@ use Livewire\Component;
 use App\Models\Kelas as TabelKelas;
 use Livewire\WithPagination;
 
-class Kelas extends Component
+class TabunganSiswa extends Component
 {
     public $id_kelas, $nama_kelas, $id_jurusan, $tingkat, $id_user;
     use WithPagination;

@@ -64,7 +64,7 @@
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                                 <td>{{ $d->kode_barang }}</td>
                                 <td>{{ $d->nama_barang }}</td>
-                                <td>{{ $d->volume }}</td>
+                                <td>{{ $d->volume}}</td>
                                 <td>{{ $d->satuan }}</td>
                                 <td>{{ $d->sumber }}</td>
                                 <td>{{ $d->tahun_masuk }}</td>
@@ -122,7 +122,7 @@
                         <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Volume</label>
-                                <input type="text" wire:model.live="volume" class="form-control">
+                                <input type="number" pattern="[0-9]+" wire:model.live="volume" class="form-control">
                                 <div class="text-danger">
                                     @error('volume')
                                         {{ $message }}

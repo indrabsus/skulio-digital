@@ -92,5 +92,11 @@ class MenuSeeder extends Seeder
             'akses_role' => 1,
             'nama_menu' => 'Distribusi'
         ]);
+        Menu::create([
+            'sort' => 25,
+            'parent_menu' => 4,
+            'akses_role' => 1,
+            'nama_menu' => 'TabunganSiswa'
+        ]);
     }
 }

@@ -47,7 +47,7 @@ class ParentMenu extends Component
             'icon' => 'required'
         ]);
         $data = TabelParent::where('id_parent', $this->id_parent)->update([
-            'parent_menu' => strtolower($this->parent_menu),
+            'parent_menu' => $this->parent_menu,
             'icon'=> $this->icon,
         ]);
         session()->flash('sukses','Data berhasil diedit');
