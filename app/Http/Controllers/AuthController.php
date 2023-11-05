@@ -22,7 +22,7 @@ class AuthController extends Controller
             $data = Role::where('id_role', Auth::user()->id_role)->first();
             $role = $data->nama_role;
 
-            return redirect()->route($role.'.dashboard');
+            return redirect()->route('dashboard');
 
         } else {
             return redirect()->route('loginpage')->with('gagal', 'Username dan Password Salah!');

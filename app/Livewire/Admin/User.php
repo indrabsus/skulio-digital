@@ -30,8 +30,8 @@ class User extends Component
             'username'=> 'required'
         ]);
         $pass = Setingan::where('id_setingan',1)->first();
-        $user = User::create([
-            'username'=> substr(rand(100, 999).strtolower(str_replace(' ','', $this->nama_lengkap)),0,10),
+        $user = TabelUser::create([
+            'username'=> strtolower(str_replace(' ','', $this->username)),
             'password' => bcrypt($pass->default_password),
             'id_role' => $this->id_role,
             'acc' => 'y'

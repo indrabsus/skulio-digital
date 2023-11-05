@@ -1,4 +1,3 @@
-
 @php
 $currentMenu = null;
 @endphp
@@ -8,7 +7,6 @@ $currentMenu = null;
         @php
         $currentMenu = $menu->parent_menu;
         @endphp
-
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#{{ str_replace(' ','', $menu->parent_menu) }}" role="button" aria-expanded="false" aria-controls="{{ str_replace(' ', '', strtolower($menu->parent_menu)) }}">
                 <i class="link-icon" data-feather="{{$menu->icon}}"></i>
@@ -31,5 +29,3 @@ $currentMenu = null;
         </li>
     @endif
 @endforeach
-
-

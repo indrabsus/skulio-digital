@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,6 +16,7 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
 Route::group(['middleware' => ['auth']], function(){
+    Route::get('app',Dashboard::class)->name('dashboard');
     $set = new Controller;
     // Now, move the Menu::all() and route definition here
     $data = $set->routeMenu();
