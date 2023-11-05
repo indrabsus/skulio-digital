@@ -41,7 +41,13 @@ class MenuSeeder extends Seeder
             'sort' => 5,
             'parent_menu' => 1,
             'akses_role' => 1,
-            'nama_menu' => 'Data User',
+            'nama_menu' => 'User',
+        ]);
+        Menu::create([
+            'sort' => 51,
+            'parent_menu' => 4,
+            'akses_role' => 1,
+            'nama_menu' => 'Data Karyawan',
         ]);
         Menu::create([
             'sort' => 11,
@@ -66,6 +72,12 @@ class MenuSeeder extends Seeder
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Mapel'
+        ]);
+        Menu::create([
+            'sort' => 15,
+            'parent_menu' => 2,
+            'akses_role' => 1,
+            'nama_menu' => 'Data Siswa'
         ]);
         Menu::create([
             'sort' => 21,

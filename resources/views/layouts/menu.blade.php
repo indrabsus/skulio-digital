@@ -10,12 +10,12 @@ $currentMenu = null;
         @endphp
 
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#{{ $menu->nama_menu }}" role="button" aria-expanded="false" aria-controls="{{ str_replace(' ', '', strtolower($menu->nama_menu)) }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#{{ str_replace(' ','', $menu->parent_menu) }}" role="button" aria-expanded="false" aria-controls="{{ str_replace(' ', '', strtolower($menu->parent_menu)) }}">
                 <i class="link-icon" data-feather="{{$menu->icon}}"></i>
                 <span class="link-title">{{ ucwords($menu->parent_menu) }}</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse" id="{{ $menu->nama_menu }}">
+            <div class="collapse" id="{{ str_replace(' ','', $menu->parent_menu) }}">
                 <ul class="nav sub-menu">
     @endif
 

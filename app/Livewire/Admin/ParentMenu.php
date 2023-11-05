@@ -24,7 +24,7 @@ class ParentMenu extends Component
             'icon' => 'required'
         ]);
         $data = TabelParent::create([
-            'parent_menu' => strtolower($this->parent_menu),
+            'parent_menu' => ucwords($this->parent_menu),
             'icon'=> $this->icon,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
@@ -47,7 +47,7 @@ class ParentMenu extends Component
             'icon' => 'required'
         ]);
         $data = TabelParent::where('id_parent', $this->id_parent)->update([
-            'parent_menu' => strtolower($this->parent_menu),
+            'parent_menu' => ucwords($this->parent_menu),
             'icon'=> $this->icon,
         ]);
         session()->flash('sukses','Data berhasil diedit');

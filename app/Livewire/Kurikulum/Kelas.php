@@ -4,6 +4,7 @@ namespace App\Livewire\Kurikulum;
 
 use App\Models\Angkatan;
 use App\Models\Jurusan;
+use App\Models\Setingan;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Kelas as TabelKelas;
@@ -11,7 +12,7 @@ use Livewire\WithPagination;
 
 class Kelas extends Component
 {
-    public $id_kelas, $nama_kelas, $id_jurusan, $tingkat, $id_user;
+    public $id_kelas, $nama_kelas, $id_jurusan, $tingkat, $id_user, $id_angkatan;
     use WithPagination;
 
     public $cari = '';
@@ -20,7 +21,10 @@ class Kelas extends Component
     {
         $angkatan = Angkatan::all();
         $jurusan = Jurusan::all();
-        $data  = TabelKelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->where('nama_kelas', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelKelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+        ->leftJoin('angkatan','angkatan.id_angkatan','kelas.id_angkatan')
+        ->leftJoin('users','users.id','kelas.id_user')
+        ->where('nama_kelas', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.kelas', compact('data','jurusan','angkatan'));
     }
     public function insert(){
@@ -28,11 +32,13 @@ class Kelas extends Component
             'nama_kelas' => 'required',
             'id_jurusan' => 'required',
             'tingkat' => 'required',
+            'id_angkatan' => 'required',
         ]);
+        $set = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
-            'username' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
-            'password' => str_replace(' ','', strtolower($this->tingkat.$this->nama_kelas)),
-            'id_role' => 4,
+            'username' => rand(100000, 999999),
+            'password' => bcrypt($set->default_password),
+            'id_role' => 5,
             'acc' => 'y'
         ]);
         $data = TabelKelas::create([
@@ -40,6 +46,7 @@ class Kelas extends Component
             'id_jurusan' => $this->id_jurusan,
             'tingkat' => $this->tingkat,
             'id_user' => $user->id,
+            'id_angkatan' => $this->id_angkatan,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -49,13 +56,16 @@ class Kelas extends Component
         $this->nama_kelas = '';
         $this->id_jurusan = '';
         $this->tingkat = '';
+        $this->id_angkatan = '';
     }
     public function edit($id){
-        $data = TabelKelas::where('id_kelas', $id)->first();
+        $data = TabelKelas::leftJoin('angkatan','angkatan.id_angkatan','=','kelas.id_angkatan')
+        ->where('id_kelas', $id)->first();
         $this->nama_kelas = $data->nama_kelas;
         $this->id_kelas = $data->id_kelas;
         $this->id_jurusan = $data->id_jurusan;
         $this->tingkat = $data->tingkat;
+        $this->id_angkatan = $data->id_angkatan;
     }
     public function update(){
         $this->validate([

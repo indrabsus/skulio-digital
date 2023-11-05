@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ParentSeeder::class,
             MenuSeeder::class,
+            SetinganSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

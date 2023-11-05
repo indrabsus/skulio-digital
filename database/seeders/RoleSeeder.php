@@ -23,7 +23,19 @@ class RoleSeeder extends Seeder
             'nama_role' => 'sarpras'
         ]);
         Role::create([
+            'nama_role' => 'manajemen'
+        ]);
+        Role::create([
             'nama_role' => 'verifikator'
+        ]);
+        Role::create([
+            'nama_role' => 'guru'
+        ]);
+        Role::create([
+            'nama_role' => 'tendik'
+        ]);
+        Role::create([
+            'nama_role' => 'siswa'
         ]);
     }
 }

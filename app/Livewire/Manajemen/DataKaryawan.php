@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Manajemen;
 
+use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Setingan;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\DataUser as TabelDataUser;
 use Livewire\WithPagination;
 
-class DataUser extends Component
+class DataKaryawan extends Component
 {
-    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat;
+    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user;
     use WithPagination;
 
     public $cari = '';
@@ -22,7 +24,7 @@ class DataUser extends Component
         ->leftJoin('users','users.id','=','data_user.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
         ->paginate($this->result);
-        return view('livewire.admin.data-user', compact('data','role'));
+        return view('livewire.manajemen.data-karyawan', compact('data','role'));
     }
     public function insert(){
         $this->validate([
@@ -32,9 +34,10 @@ class DataUser extends Component
             'no_hp'=> 'required',
             'alamat'=> 'required',
         ]);
+        $set = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
             'username'=> substr(rand(100, 999).strtolower(str_replace(' ','', $this->nama_lengkap)),0,10),
-            'password' => bcrypt(env('DEFAULT_PASS')),
+            'password' => bcrypt($set->default_password),
             'id_role' => $this->id_role,
             'acc' => 'y'
         ]);
@@ -57,13 +60,15 @@ class DataUser extends Component
         $this->alamat = '';
     }
     public function edit($id){
-        $data = TabelDataUser::where('id_data', $id)->first();
+        $data = TabelDataUser::leftJoin('users','users.id','=','data_user.id_user')
+        ->where('id_data', $id)->first();
         $this->id_user = $data->id_user;
         $this->nama_lengkap = $data->nama_lengkap;
         $this->jenkel = $data->jenkel;
         $this->no_hp = $data->no_hp;
         $this->alamat = $data->alamat;
         $this->id_data = $id;
+        $this->id_role = $data->id_role;
     }
     public function update(){
         $this->validate([
@@ -90,6 +95,17 @@ class DataUser extends Component
     public function delete(){
         TabelDataUser::where('id_data',$this->id_data)->delete();
         session()->flash('sukses','Data berhasil dihapus');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
+
+    public function c_reset($id){
+        $this->id_user = $id;
+    }
+    public function p_reset(){
+        $set = new Controller;
+        $set->resetPass($this->id_user);
+        session()->flash('sukses','Password berhasil direset');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
