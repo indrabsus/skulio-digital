@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 
+
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 
