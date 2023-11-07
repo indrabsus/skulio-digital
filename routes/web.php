@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth']], function(){
         // Determine the middleware based on $item->parent
         $middleware = 'cekrole:' . $item->nama_role;
         $path = $item->nama_role.'/'.strtolower(str_replace(' ','', $item->nama_menu));
-        $cls = 'App\Livewire\\'.ucwords($item->parent_menu).'\\'.str_replace(' ','', $item->nama_menu);
+        $cls = 'App\Livewire\\'.str_replace(' ','',ucwords($item->parent_menu)).'\\'.str_replace(' ','', $item->nama_menu);
         $rname = $item->nama_role.'.'.strtolower(str_replace(' ','', $item->nama_menu));
 
         // Define the route without grouping
