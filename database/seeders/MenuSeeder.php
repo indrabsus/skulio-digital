@@ -43,12 +43,7 @@ class MenuSeeder extends Seeder
             'akses_role' => 1,
             'nama_menu' => 'User',
         ]);
-        Menu::create([
-            'sort' => 51,
-            'parent_menu' => 4,
-            'akses_role' => 1,
-            'nama_menu' => 'Data Karyawan',
-        ]);
+
         Menu::create([
             'sort' => 11,
             'parent_menu' => 2,
@@ -91,7 +86,7 @@ class MenuSeeder extends Seeder
             'akses_role' => 1,
             'nama_menu' => 'Pengajuan'
         ]);
-        
+
         Menu::create([
             'sort' => 23,
             'parent_menu' => 3,
@@ -103,6 +98,24 @@ class MenuSeeder extends Seeder
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Distribusi'
+        ]);
+        Menu::create([
+            'sort' => 51,
+            'parent_menu' => 4,
+            'akses_role' => 1,
+            'nama_menu' => 'Data Karyawan',
+        ]);
+        Menu::create([
+            'sort' => 61,
+            'parent_menu' => 5,
+            'akses_role' => 1,
+            'nama_menu' => 'Buku Online',
+        ]);
+        Menu::create([
+            'sort' => 62,
+            'parent_menu' => 5,
+            'akses_role' => 1,
+            'nama_menu' => 'Data Peminjam',
         ]);
     }
 }

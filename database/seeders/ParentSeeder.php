@@ -29,5 +29,9 @@ class ParentSeeder extends Seeder
             'parent_menu' => 'Manajemen',
             'icon' => 'target',
         ]);
+        ParentMenu::create([
+            'parent_menu' => 'Perpustakaan',
+            'icon' => 'book',
+        ]);
     }
 }

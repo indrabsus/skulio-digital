@@ -18,12 +18,8 @@
         @endif
         </div>
         <div class="col">
-                <div class="row justify-content-between mt-2">
-                    <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
-                          </button>
-                    </div>
+                <div class="row justify-content-end mt-2">
+
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-3">
@@ -44,9 +40,8 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Nama Peminjam</th>
+                          <th>Nama Siswa</th>
                           <th>Kelas</th>
-                          <th>Nama Buku</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -54,12 +49,10 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_peminjam}}</td>
-                          <td>{{$d->id_kelas}}</td>
-                          <td>{{$d->nama_buku}}</td>
+                          <td>{{$d->nama_lengkap}}</td>
+                          <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_peminjam}})"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#pinjam" wire:click='pinjam({{$d->id_siswa}})'>Pinjam</a>
                           </td>
                       </tr>
                   @endforeach
@@ -71,54 +64,8 @@
     </div>
 
 
-    {{-- Add Modal --}}
-    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="">Nama Peminjam</label>
-                    <input type="text" wire:model.live="nama_peminjam" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_peminjam')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Kelas</label>
-                    <input type="text" wire:model.live="id_kelas" class="form-control">
-                    <div class="text-danger">
-                        @error('id_kelas')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Nama Buku</label>
-                    <input type="text" wire:model.live="nama_buku" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_buku')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     {{-- Edit Modal --}}
-    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="pinjam" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -127,29 +74,6 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="">Nama Peminjam</label>
-                    <input type="text" wire:model.live="nama_peminjam" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_peminjam')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">Kelas</label>
-                    <select class="form-control" wire:model="id_kelas">
-                        <option value="">Pilih Kelas</option>
-                        @foreach ($kelas as $k)
-                            <option value="{{$k->id_kelas}}">{{$k->nama_kelas}}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-danger">
-                        @error('id_kelas')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
                     <label for="">Nama Buku</label>
                     <input type="text" wire:model.live="nama_buku" class="form-control">
                     <div class="text-danger">
@@ -161,7 +85,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='prosesPinjam()'>Save changes</button>
             </div>
           </div>
         </div>
@@ -186,7 +110,7 @@
       </div>
       <script>
         window.addEventListener('closeModal', event => {
-            $('#add').modal('hide');
+            $('#pinjam').modal('hide');
         })
         window.addEventListener('closeModal', event => {
             $('#edit').modal('hide');

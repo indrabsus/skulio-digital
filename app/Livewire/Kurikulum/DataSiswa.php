@@ -3,6 +3,7 @@
 namespace App\Livewire\Kurikulum;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataPeminjam;
 use App\Models\Kelas;
 use App\Models\Setingan;
 use App\Models\User;
@@ -46,10 +47,12 @@ class DataSiswa extends Component
             'id_user' => $user->id,
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp, 
+            'no_hp'=> $this->no_hp,
             'alamat'=> $this->alamat,
             'id_kelas' => $this->id_kelas,
-        ]) ;
+        ]);
+
+
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
@@ -85,7 +88,7 @@ class DataSiswa extends Component
             'id_user' => $this->id_user,
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp, 
+            'no_hp'=> $this->no_hp,
             'alamat'=> $this->alamat,
             'id_kelas' => $this->id_kelas,
         ]);
