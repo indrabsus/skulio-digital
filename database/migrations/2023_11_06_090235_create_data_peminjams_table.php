@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('data_peminjam', function (Blueprint $table) {
             $table->id("id_peminjam");
-            $table->foreignId('id_data')->references('id_data')->on('data_user')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('id_siswa')->references('id_siswa')->on('data_siswa')->onUpdate('cascade')->onDelete('cascade');
             $table->string("nama_peminjam");
-            $table->string("kelas");
+            $table->foreignId('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
             $table->string("nama_buku");
             $table->timestamps();
         });
