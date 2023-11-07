@@ -27,7 +27,7 @@ class barang extends Component
         $this->validate([
             'kode_barang' => 'required',
             'nama_barang' => 'required',
-            'volume'=> 'required',
+            'volume'=> 'required|numeric|min:1',
             'satuan'=> 'required',
             'tahun_masuk'=> 'required',
             'sumber'=> 'required',
@@ -95,7 +95,7 @@ class barang extends Component
         $this->validate([
             'kode_barang' => 'required',
             'nama_barang' => 'required',
-            'volume'=> 'required',
+            'volume'=> 'required|numeric|min:1',
             'satuan'=> 'required',
             'tahun_masuk'=> 'required',
             'sumber'=> 'required',
@@ -104,33 +104,40 @@ class barang extends Component
             'id_role'=> 'required',
         ]);
         $tabelbarang = TabelBarang::where('id_barang', $this->id_barang)->first();
-        $data = TabelBarang::where('id_barang', $this->id_barang)->update([
-            'kode_barang' => $this->kode_barang,
-            'nama_barang' => $this->nama_barang,
-            'volume'=> $tabelbarang->volume - $this->volume,
-            'satuan'=> $this->satuan,
-            'tahun_masuk'=> $this->tahun_masuk,
-            'sumber'=> $this->sumber,
-            'jenis'=> $this->jenis,
-            'id_ruangan' => $this->id_ruangan,
-            'id_role'=> $this->id_role,
-        ]);
 
-        $data = TabelDistribusi ::create([
-            'id_barang'=> $this->id_barang,
-            'kode_barang' => $this->kode_barang,
-            'nama_barang' => $this->nama_barang,
-            'volume'=> $this->volume,
-            'satuan'=> $this->satuan,
-            'tahun_masuk'=> $this->tahun_masuk,
-            'sumber'=> $this->sumber,
-            'jenis'=> $this->jenis,
-            'id_ruangan' => $this->id_ruangan,
-            'id_role'=> $this->id_role,
-        ]);
-        session()->flash('sukses','Data berhasil distribusikan');
+        if((int)$this->volume > (int)$tabelbarang->volume){
+            session()->flash('gagal','Volume tidak sesuai');
         $this->clearForm();
         $this->dispatch('closeModal');
+        } else {
+            $data = TabelBarang::where('id_barang', $this->id_barang)->update([
+                'kode_barang' => $this->kode_barang,
+                'nama_barang' => $this->nama_barang,
+                'volume'=> (int)$tabelbarang->volume - (int)$this->volume,
+                'satuan'=> $this->satuan,
+                'tahun_masuk'=> $this->tahun_masuk,
+                'sumber'=> $this->sumber,
+                'jenis'=> $this->jenis,
+                'id_ruangan' => $this->id_ruangan,
+                'id_role'=> $this->id_role,
+            ]);
+    
+            $data = TabelDistribusi ::create([
+                'id_barang'=> $this->id_barang,
+                'kode_barang' => $this->kode_barang,
+                'nama_barang' => $this->nama_barang,
+                'volume'=> $this->volume,
+                'satuan'=> $this->satuan,
+                'tahun_masuk'=> $this->tahun_masuk,
+                'sumber'=> $this->sumber,
+                'jenis'=> $this->jenis,
+                'id_ruangan' => $this->id_ruangan,
+                'id_role'=> $this->id_role,
+            ]);
+            session()->flash('sukses','Data berhasil distribusikan');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+        }
     }
 
 

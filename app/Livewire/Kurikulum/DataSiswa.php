@@ -8,6 +8,7 @@ use App\Models\Setingan;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\DataSiswa as TabelSiswa;
+use App\Models\TabunganSiswa;
 use Livewire\WithPagination;
 
 class DataSiswa extends Component
@@ -42,7 +43,7 @@ class DataSiswa extends Component
             'id_role' => 8,
             'acc' => 'y'
         ]);
-        $data = TabelSiswa::create([
+        $data2 = TabelSiswa::create([
             'id_user' => $user->id,
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
@@ -50,6 +51,13 @@ class DataSiswa extends Component
             'alamat'=> $this->alamat,
             'id_kelas' => $this->id_kelas,
         ]) ;
+
+
+        TabunganSiswa::create([
+            "id_siswa" => $data2->id_siswa,
+            "jumlah_saldo" => 0,
+        ]);
+
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
