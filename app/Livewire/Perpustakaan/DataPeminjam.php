@@ -25,6 +25,7 @@ class DataPeminjam extends Component
         $angkatan = Angkatan::all();
         $data  = DataSiswa::leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+        ->orderBy('id_siswa','desc')
         ->where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
         return view('livewire.perpustakaan.data-peminjam', compact('data','kelas','jurusan','angkatan'));

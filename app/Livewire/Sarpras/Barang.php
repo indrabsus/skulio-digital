@@ -20,7 +20,9 @@ class barang extends Component
     {
         $ruangan = Ruangan::all();
         $role = Role::all();
-        $data  = TabelBarang::leftJoin('ruangan','ruangan.id_ruangan','barang.id_ruangan')-> leftJoin('roles','roles.id_role','barang.id_role')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelBarang::leftJoin('ruangan','ruangan.id_ruangan','barang.id_ruangan')-> leftJoin('roles','roles.id_role','barang.id_role')->
+        orderBy('id_barang','desc')->
+        where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.Sarpras.barang', compact('data','ruangan','role'));
     }
     public function insert(){

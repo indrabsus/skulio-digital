@@ -17,7 +17,8 @@ class BukuOnline extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelBukuOnline::where('nama_buku', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelBukuOnline::orderBy('id_buku_online','desc')->
+        where('nama_buku', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.perpustakaan.buku-online', compact('data'));
     }
     public function insert(){

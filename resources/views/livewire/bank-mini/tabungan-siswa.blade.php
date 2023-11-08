@@ -42,6 +42,7 @@
                           <th>No</th>
                           <th>Nama Siswa</th>
                            <th>Jenis kelamin</th>          
+                           <th>Kelas</th>          
                           <th>No_Hp</th>                    
                           <th>Jumlah Saldo</th>                    
                           <th>Aksi</th>
@@ -53,6 +54,7 @@
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-Laki' : 'Prempuan'  }}</td>
+                          <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>Rp.{{ number_format($d->jumlah_saldo)}}</td>
                           <td>
@@ -142,6 +144,7 @@
         </div>
       </div>
     </div>
+  </div>
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');

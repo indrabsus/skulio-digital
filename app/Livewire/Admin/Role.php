@@ -15,7 +15,7 @@ class Role extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelRole::where('nama_role', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelRole::orderBy('id_role','desc')->where('nama_role', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.admin.role', compact('data'));
     }
     public function insert(){

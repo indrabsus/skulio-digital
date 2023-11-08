@@ -21,7 +21,8 @@ class Distribusi extends Component
 
         $ruangan = Ruangan::all();
         $role = Role::all();
-        $data  = TabelDistribusi::leftJoin('ruangan','ruangan.id_ruangan','distribusi.id_ruangan')-> leftJoin('roles','roles.id_role','distribusi.id_role')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelDistribusi::leftJoin('ruangan','ruangan.id_ruangan','distribusi.id_ruangan')-> leftJoin('roles','roles.id_role','distribusi.id_role')->
+        orderBy('id_distribusi','desc')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.Sarpras.distribusi', compact('data','ruangan','role'));
     }
     public function insert(){

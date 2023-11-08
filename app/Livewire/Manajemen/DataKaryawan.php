@@ -20,7 +20,8 @@ class DataKaryawan extends Component
     public function render()
     {
         $role = Role::where('id_role','<>', 1)->get();
-        $data  = TabelDataUser::where('nama_lengkap', 'like','%'.$this->cari.'%')
+        $data  = TabelDataUser::orderBy('id_data','desc')->
+        where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->leftJoin('users','users.id','=','data_user.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
         ->paginate($this->result);

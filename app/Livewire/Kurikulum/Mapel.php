@@ -15,7 +15,7 @@ class mapel extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelMapel::where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelMapel::orderBy('id_mapel','desc')->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.mapel', compact('data'));
     }
     public function insert(){

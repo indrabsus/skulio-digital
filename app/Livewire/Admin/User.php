@@ -21,6 +21,7 @@ class User extends Component
         $role = Role::all();
         $data  = TabelUser::where('username', 'like','%'.$this->cari.'%')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
+        ->orderBy('id','desc')
         ->paginate($this->result);
         return view('livewire.admin.user', compact('data','role'));
     }

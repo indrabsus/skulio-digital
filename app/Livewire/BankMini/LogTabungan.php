@@ -17,6 +17,7 @@ class LogTabungan extends Component
     {
         $data  = TabelLog::leftJoin('tabungan_siswa','tabungan_siswa.id_tabungan','log_tabungan.id_tabungan')
         ->leftJoin('data_siswa','data_siswa.id_siswa','tabungan_siswa.id_siswa')
+        ->orderBy('id_log_tabungan','desc')
         ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.bank-mini.log-tabungan', compact('data'));
     }

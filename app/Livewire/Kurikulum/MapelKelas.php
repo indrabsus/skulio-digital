@@ -22,6 +22,7 @@ class MapelKelas extends Component
         $data  = TabelMapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->orderBy('id_mapelkelas','desc')
         ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.mapel-kelas', compact('data','mapel','kelas'));
     }

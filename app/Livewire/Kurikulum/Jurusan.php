@@ -15,7 +15,7 @@ class Jurusan extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelJurusan::where('nama_jurusan', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelJurusan::orderBy('id_jurusan','desc')->where('nama_jurusan', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.jurusan', compact('data'));
     }
     public function insert(){

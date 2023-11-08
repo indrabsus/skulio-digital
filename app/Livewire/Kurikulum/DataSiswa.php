@@ -25,6 +25,7 @@ class DataSiswa extends Component
         $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->orderBy('id_siswa','desc')
         ->where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
         return view('livewire.kurikulum.data-siswa', compact('data','kelas'));

@@ -15,7 +15,7 @@ class Angkatan extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelAngkatan::where('tahun_masuk', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelAngkatan::orderBy('id_angkatan','desc')->where('tahun_masuk', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.angkatan', compact('data'));
     }
     public function insert(){

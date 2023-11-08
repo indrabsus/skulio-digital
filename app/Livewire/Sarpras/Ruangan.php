@@ -14,7 +14,8 @@ class Ruangan extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelRuangan::where('nama_ruangan', 'like','%'.$this->cari.'%')->paginate($this->result);
+        $data  = TabelRuangan::orderBy('id_ruangan','desc')->
+        where('nama_ruangan', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.sarpras.ruangan', compact('data'));
     }
     public function insert(){
