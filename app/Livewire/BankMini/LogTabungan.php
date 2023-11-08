@@ -2,7 +2,6 @@
 
 namespace App\Livewire\BankMini;
 
-use App\Models\DataUser;
 use Livewire\Component;
 use App\Models\LogTabungan as TabelLog;
 use Livewire\WithPagination;

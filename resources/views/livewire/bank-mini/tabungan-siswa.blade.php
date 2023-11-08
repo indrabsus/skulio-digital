@@ -1,6 +1,5 @@
 <div>
     <div class="row">
-
         <div class="container">
           @if(session('sukses'))
         <div class="alert alert-success alert-dismissible">
@@ -55,7 +54,7 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-Laki' : 'Prempuan'  }}</td>
                           <td>{{$d->no_hp}}</td>
-                          <td>Rp.{{ number_format($d->jumlah_saldo) }}</td>
+                          <td>Rp.{{ number_format($d->jumlah_saldo)}}</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#debit" wire:click='debit({{$d->id_siswa}})'><i class="fa-solid fa-wallet"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#kredit" wire:click="kredit({{$d->id_siswa}})"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>
@@ -97,7 +96,6 @@
                         @enderror
                     </div>
                   </div>
-            
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

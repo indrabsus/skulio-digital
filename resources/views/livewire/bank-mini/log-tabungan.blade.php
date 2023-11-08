@@ -53,10 +53,10 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->nominal}}</td>
+                          <td>Rp.{{number_format($d->nominal) }}</td>
                           <td>{{$d->no_invoice}}</td>
                           <td>{{$d->jenis == 'db' ? 'Debit' : 'kredit' }}</td>
-                          <td>{{$d->log}}</td>
+                          <td>{{$d->log}} {{number_format($d->nominal) }}</td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -65,7 +65,6 @@
                 {{$data->links()}}
         </div>
     </div>
-    
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');

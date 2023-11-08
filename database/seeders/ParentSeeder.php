@@ -33,5 +33,9 @@ class ParentSeeder extends Seeder
             'parent_menu' => 'Perpustakaan',
             'icon' => 'book',
         ]);
+        ParentMenu::create([
+            'parent_menu' => 'BankMini',
+            'icon' => 'dollar-sign',
+        ]);
     }
 }

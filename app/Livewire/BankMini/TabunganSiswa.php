@@ -67,8 +67,7 @@ class TabunganSiswa extends Component
             "nominal" => $this->nominal,
             'jenis' => "db",
             'no_invoice'=> 'DB'.date("dmyhis"),
-            "log"=> "contoh log"
-
+            "log"=> " $this->nama_lengkap Sudah menabung sebesar Rp.",
         ]);
 
         TabelTabungan::where('id_siswa', $this->id_siswa)->update([
@@ -94,15 +93,6 @@ class TabunganSiswa extends Component
            'nominal'=> 'required',
         ]);
 
-        $data3 = LogTabungan::create([
-            'id_tabungan'=> $this->id_tabungan,
-            "nominal" => $this->nominal,
-            'jenis' => "kd",
-            'no_invoice'=> 'DB'.date("dmyhis"),
-            "log"=> "contoh log"
-
-        ]);
-
         $tabeltabunga = TabelTabungan::where('id_siswa', $this->id_siswa)->first();
 
 
@@ -111,6 +101,15 @@ class TabunganSiswa extends Component
       $this->clearForm();
       $this->dispatch('closeModal');
       } else {
+
+        $data3 = LogTabungan::create([
+            'id_tabungan'=> $this->id_tabungan,
+            "nominal" => $this->nominal,
+            'jenis' => "kd",
+            'no_invoice'=> 'DB'.date("dmyhis"),
+            "log"=> " $this->nama_lengkap Sudah mengabil uang sebesar Rp."
+
+        ]);
          
         TabelTabungan::where('id_siswa', $this->id_siswa)->update([
           "jumlah_saldo" => DB::raw("jumlah_saldo - $data3->nominal")

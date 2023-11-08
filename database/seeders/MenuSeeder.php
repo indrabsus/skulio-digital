@@ -117,5 +117,18 @@ class MenuSeeder extends Seeder
             'akses_role' => 1,
             'nama_menu' => 'Data Peminjam',
         ]);
+        Menu::create([
+            'sort' => 71,
+            'parent_menu' => 6,
+            'akses_role' => 1,
+            'nama_menu' => 'Tabungan Siswa',
+        ]);
+        Menu::create([
+            'sort' => 72,
+            'parent_menu' => 6,
+            'akses_role' => 1,
+            'nama_menu' => 'Log Tabungan',
+        ]);
+        
     }
 }
