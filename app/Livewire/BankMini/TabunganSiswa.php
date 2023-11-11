@@ -26,34 +26,13 @@ class TabunganSiswa extends Component
         -> where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.bank-mini.tabungan-siswa', compact('data'));
     }
-  public function insert(){
-        $this->validate([
-            'id_siswa' => 'required',
-            'id_log_tabungan' => 'required',
-        ]);
-
-        $data2 = TabelSiswa::create([
-            'jenkel'=> $this->jenkel,
-            'nama_kelas'=> $this->nama_kelas,
-            'no_hp'=> $this->no_hp, 
-            'alamat'=> $this->alamat,
-        ]);
-
-        $data = TabelTabungan::create([
-            'id_siswa' => $this->id_siswa,
-        ]);
-        session()->flash('sukses','Data berhasil ditambahkan');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-    }
-
 
     public function clearForm(){
         $this->nominal = '';
     }
 
 
-    public function debit($id){
+    public function kd($id){
        $data1 = TabelSiswa::where('data_siswa.id_siswa', $id)->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
        ->leftJoin('tabungan_siswa','tabungan_siswa.id_siswa','=','data_siswa.id_siswa')
@@ -67,30 +46,42 @@ class TabunganSiswa extends Component
        $this->singkatan = $data1->singkatan;
     }
     
-    public function debitmasuk(){
+    public function kdMasuk(){
         $this->validate([
            'nominal'=> 'required',
         ]);
+        $invoice = 'KD'.date("dmyh").$this->id_siswa;
+        $countKd = LogTabungan::where('no_invoice', $invoice)
+        ->where('nominal', $this->nominal)
+        ->count();
         
-        $data3 = LogTabungan::create([
-            'id_tabungan'=> $this->id_tabungan,
-            "nominal" => $this->nominal,
-            'jenis' => "db",
-            'no_invoice'=> 'DB'.date("dmyhis"),
-            "log"=> " $this->nama_lengkap , $this->tingkat $this->singkatan $this->nama_kelas Sudah mengambil uang sebesar Rp.",
-        ]);
-
-        TabelTabungan::where('id_siswa', $this->id_siswa)->update([
-          "jumlah_saldo" => DB::raw("jumlah_saldo + $data3->nominal")
-      ]);
-
+        if($countKd > 0 ){
+            session()->flash('gagal','Siswa sudah menabung, silakan coba 1 jam lagi');
+            $this->clearForm();
+            $this->dispatch('closeModal');
         
-        session()->flash('sukses','Data debit berhasil masuk');
-        $this->clearForm();
-        $this->dispatch('closeModal');
+        } else {
+            $data3 = LogTabungan::create([
+                'id_tabungan'=> $this->id_tabungan,
+                "nominal" => $this->nominal,
+                'jenis' => "kd",
+                'no_invoice'=> $invoice,
+                "log"=> " $this->nama_lengkap , $this->tingkat $this->singkatan $this->nama_kelas Sudah menabung sebesar Rp.".number_format($this->nominal),
+            ]);
+    
+            TabelTabungan::where('id_siswa', $this->id_siswa)->update([
+              "jumlah_saldo" => DB::raw("jumlah_saldo + $data3->nominal")
+          ]);
+    
+            
+            session()->flash('sukses','Data Kredit berhasil masuk');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+        }
+        
     }
 
-    public function kredit($id){
+    public function db($id){
       $data1 = TabelSiswa::where('data_siswa.id_siswa', $id)->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
       ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
       ->leftJoin('tabungan_siswa','tabungan_siswa.id_siswa','=','data_siswa.id_siswa')
@@ -103,7 +94,7 @@ class TabunganSiswa extends Component
       $this->tingkat = $data1->tingkat;
       $this->singkatan = $data1->singkatan;
      }
-    public function kreditkeluar(){
+    public function dbKeluar(){
         $this->validate([
            'nominal'=> 'required',
         ]);
@@ -120,9 +111,9 @@ class TabunganSiswa extends Component
         $data3 = LogTabungan::create([
             'id_tabungan'=> $this->id_tabungan,
             "nominal" => $this->nominal,
-            'jenis' => "kd",
-            'no_invoice'=> 'DB'.date("dmyhis"),
-            "log"=> " $this->nama_lengkap , $this->tingkat $this->singkatan $this->nama_kelas Sudah menerima uang sebesar Rp."
+            'jenis' => "db",
+            'no_invoice'=> 'KD'.date("dmyhis").$this->id_siswa,
+            "log"=> " $this->nama_lengkap , $this->tingkat $this->singkatan $this->nama_kelas Sudah menerima uang sebesar Rp.".number_format($this->nominal)
 
         ]);
          
@@ -130,7 +121,7 @@ class TabunganSiswa extends Component
           "jumlah_saldo" => DB::raw("jumlah_saldo - $data3->nominal")
       ]);
 
-          session()->flash('sukses','Data kredit Berhasil di ambil');
+          session()->flash('sukses','Data Debit Berhasil di proses');
           $this->clearForm();
           $this->dispatch('closeModal');
       }

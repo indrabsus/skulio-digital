@@ -50,6 +50,16 @@
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
+                  @php
+                      $kd = App\Models\LogTabungan::leftJoin('tabungan_siswa','tabungan_siswa.id_tabungan','log_tabungan.id_tabungan')
+                      ->where('id_siswa', $d->id_siswa)
+                      ->where('jenis','kd')
+                      ->sum('nominal');
+                      $db = App\Models\LogTabungan::leftJoin('tabungan_siswa','tabungan_siswa.id_tabungan','log_tabungan.id_tabungan')
+                      ->where('id_siswa', $d->id_siswa)
+                      ->where('jenis','db')
+                      ->sum('nominal');
+                  @endphp
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
@@ -57,9 +67,10 @@
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>Rp.{{ number_format($d->jumlah_saldo)}}</td>
+                          <td>{{$kd - $db}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#debit" wire:click='debit({{$d->id_siswa}})'><i class="fa-solid fa-wallet"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#kredit" wire:click="kredit({{$d->id_siswa}})"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#kd" wire:click='kd({{$d->id_siswa}})'><i class="fa-solid fa-wallet"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#db" wire:click="db({{$d->id_siswa}})"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -70,8 +81,8 @@
         </div>
     </div>
 
-    {{-- debit --}}
-    <div class="modal fade" id="debit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    {{-- kredit --}}
+    <div class="modal fade" id="kd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -101,14 +112,14 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='debitmasuk()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='kdMasuk()'>Save changes</button>
             </div>
           </div>
         </div>
       </div>
 
-    {{-- kredit --}}
-    <div class="modal fade" id="kredit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    {{-- debit --}}
+    <div class="modal fade" id="db" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -139,7 +150,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" wire:click='kreditkeluar'>Save changes</button>
+            <button type="button" class="btn btn-primary" wire:click='dbKeluar'>Save changes</button>
           </div>
         </div>
       </div>
@@ -150,10 +161,10 @@
             $('#add').modal('hide');
         })
         window.addEventListener('closeModal', event => {
-            $('#debit').modal('hide');
+            $('#db').modal('hide');
         })
         window.addEventListener('closeModal', event => {
-            $('#kredit').modal('hide');
+            $('#kd').modal('hide');
         })
       </script>
 

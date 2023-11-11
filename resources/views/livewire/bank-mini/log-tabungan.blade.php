@@ -55,8 +55,8 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>Rp.{{number_format($d->nominal) }}</td>
                           <td>{{$d->no_invoice}}</td>
-                          <td>{{$d->jenis == 'db' ? 'Debit' : 'kredit' }}</td>
-                          <td>{{$d->log}} {{number_format($d->nominal) }}</td>
+                          <td>{{$d->jenis == 'db' ? 'Debit' : 'Kredit' }}</td>
+                          <td>{{$d->log}}</td>
                       </tr>
                   @endforeach
                   </tbody>
