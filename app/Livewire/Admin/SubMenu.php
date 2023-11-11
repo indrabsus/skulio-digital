@@ -11,7 +11,7 @@ use Route;
 
 class SubMenu extends Component
 {
-    public $id_menu, $parent_menu, $akses_role, $nama_menu, $sort;
+    public $id_menu, $parent_menu, $akses_role, $nama_menu;
     use WithPagination;
 
     public $cari = '';
@@ -22,19 +22,17 @@ class SubMenu extends Component
         $role = Role::all();
         $data  = TabelMenu::leftJoin('parent_menu','parent_menu.id_parent','menu.parent_menu')
         ->leftJoin('roles','roles.id_role','menu.akses_role')
-        ->orderBy('sort','asc')
+        ->orderBy('id_parent','asc')
         ->where('nama_menu', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.admin.sub-menu', compact('data','parent','role'));
     }
     public function insert(){
         $this->validate([
-            'sort' => 'required|numeric',
             'parent_menu' => 'required',
             'akses_role' => 'required',
             'nama_menu' => 'required',
         ]);
         $data = TabelMenu::create([
-            'sort'=> $this->sort,
             'parent_menu'=> $this->parent_menu,
             'akses_role'=> $this->akses_role,
             'nama_menu'=> $this->nama_menu,
@@ -44,14 +42,12 @@ class SubMenu extends Component
         $this->dispatch('closeModal');
     }
     public function clearForm(){
-        $this->sort = '';
         $this->parent_menu = '';
         $this->akses_role = '';
         $this->nama_menu = '';
     }
     public function edit($id){
         $data = TabelMenu::where('id_menu', $id)->first();
-        $this->sort = $data->sort;
         $this->parent_menu = $data->parent_menu;
         $this->akses_role = $data->akses_role;
         $this->nama_menu = $data->nama_menu;
@@ -59,13 +55,11 @@ class SubMenu extends Component
     }
     public function update(){
         $this->validate([
-            'sort' => 'required|numeric',
             'parent_menu' => 'required',
             'akses_role' => 'required',
             'nama_menu' => 'required',
         ]);
         $data = TabelMenu::where('id_menu', $this->id_menu)->update([
-            'sort'=> $this->sort,
             'parent_menu'=> $this->parent_menu,
             'akses_role'=> $this->akses_role,
             'nama_menu'=> $this->nama_menu,

@@ -50,7 +50,7 @@ License: For each use you must have a valid license purchased only from above li
     $menus = App\Models\Menu::leftJoin('parent_menu','parent_menu.id_parent','menu.parent_menu')
     ->leftJoin('roles','roles.id_role','menu.akses_role')
 	->where('id_role', Auth::user()->id_role)
-    ->orderBy('sort','asc')->get();
+    ->orderBy('id_parent','asc')->get();
 	@endphp
 	<div class="main-wrapper">
 

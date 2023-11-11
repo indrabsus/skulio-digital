@@ -43,9 +43,8 @@
                 <table class="table table-stripped">
                   <thead>
                       <tr>
-                          <th>Sort</th>
+                        <th>Parent Menu</th>
                           <th>Nama Menu</th>
-                          <th>Parent Menu</th>
                           <th>Akses Role</th>
                           <th>Aksi</th>
                       </tr>
@@ -53,9 +52,8 @@
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
-                          <td>{{ $d->sort }}</td>
+                        <td>{{$d->parent_menu}}</td>
                           <td>{{$d->nama_menu}}</td>
-                          <td>{{$d->parent_menu}}</td>
                           <td>{{$d->nama_role}}</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_menu}})'><i class="fa-solid fa-edit"></i></i></a>
@@ -80,16 +78,6 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Sort</label>
-                    <input type="text" wire:model.live="sort" class="form-control">
-                    <div class="text-danger">
-                        @error('sort')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
                 <div class="form-group mb-3">
                     <label for="">Nama Menu</label>
                     <input type="text" wire:model.live="nama_menu" class="form-control">
@@ -146,16 +134,6 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Sort</label>
-                    <input type="text" wire:model.live="sort" class="form-control">
-                    <div class="text-danger">
-                        @error('sort')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
                 <div class="form-group mb-3">
                     <label for="">Nama Menu</label>
                     <input type="text" wire:model.live="nama_menu" class="form-control">

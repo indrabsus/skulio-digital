@@ -14,117 +14,93 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
-            'sort' => 1,
-            'parent_menu' => 1,
-            'akses_role' => 1,
-            'nama_menu' => 'Dashboard',
-        ]);
-        Menu::create([
-            'sort' => 2,
             'parent_menu' => 1,
             'akses_role' => 1,
             'nama_menu' => 'Parent Menu',
         ]);
         Menu::create([
-            'sort' => 3,
             'parent_menu' => 1,
             'akses_role' => 1,
             'nama_menu' => 'Sub Menu',
         ]);
         Menu::create([
-            'sort' => 4,
             'parent_menu' => 1,
             'akses_role' => 1,
             'nama_menu' => 'Role',
         ]);
         Menu::create([
-            'sort' => 5,
             'parent_menu' => 1,
             'akses_role' => 1,
             'nama_menu' => 'User',
         ]);
 
         Menu::create([
-            'sort' => 11,
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Angkatan'
         ]);
         Menu::create([
-            'sort' => 12,
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Jurusan'
         ]);
         Menu::create([
-            'sort' => 13,
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Kelas'
         ]);
         Menu::create([
-            'sort' => 14,
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Mapel'
         ]);
         Menu::create([
-            'sort' => 15,
             'parent_menu' => 2,
             'akses_role' => 1,
             'nama_menu' => 'Data Siswa'
         ]);
         Menu::create([
-            'sort' => 21,
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Ruangan'
         ]);
         Menu::create([
-            'sort' => 22,
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Pengajuan'
         ]);
 
         Menu::create([
-            'sort' => 23,
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Barang'
         ]);
         Menu::create([
-            'sort' => 24,
             'parent_menu' => 3,
             'akses_role' => 1,
             'nama_menu' => 'Distribusi'
         ]);
         Menu::create([
-            'sort' => 51,
             'parent_menu' => 4,
             'akses_role' => 1,
             'nama_menu' => 'Data Karyawan',
         ]);
         Menu::create([
-            'sort' => 61,
             'parent_menu' => 5,
             'akses_role' => 1,
             'nama_menu' => 'Buku Online',
         ]);
         Menu::create([
-            'sort' => 62,
             'parent_menu' => 5,
             'akses_role' => 1,
             'nama_menu' => 'Data Peminjam',
         ]);
         Menu::create([
-            'sort' => 71,
             'parent_menu' => 6,
             'akses_role' => 1,
             'nama_menu' => 'Tabungan Siswa',
         ]);
         Menu::create([
-            'sort' => 72,
             'parent_menu' => 6,
             'akses_role' => 1,
             'nama_menu' => 'Log Tabungan',
