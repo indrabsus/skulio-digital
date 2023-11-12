@@ -41,33 +41,32 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Siswa</th>
-                           <th>Jenis kelamin</th>          
-                           <th>Kelas</th>          
-                          <th>No_Hp</th>                    
-                          <th>Jumlah Saldo</th>                    
+                           <th>Jenis kelamin</th>
+                           <th>Kelas</th>
+                          <th>No_Hp</th>
+                          <th>Jumlah Saldo</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                   @php
-                      $kd = App\Models\LogTabungan::leftJoin('tabungan_siswa','tabungan_siswa.id_tabungan','log_tabungan.id_tabungan')
-                      ->where('id_siswa', $d->id_siswa)
+                      $kd = App\Models\LogTabungan::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+                      ->where('log_tabungan.id_siswa', $d->id_siswa)
                       ->where('jenis','kd')
                       ->sum('nominal');
-                      $db = App\Models\LogTabungan::leftJoin('tabungan_siswa','tabungan_siswa.id_tabungan','log_tabungan.id_tabungan')
-                      ->where('id_siswa', $d->id_siswa)
+                      $db = App\Models\LogTabungan::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+                      ->where('log_tabungan.id_siswa', $d->id_siswa)
                       ->where('jenis','db')
                       ->sum('nominal');
                   @endphp
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-Laki' : 'Prempuan'  }}</td>
+                          <td>{{$d->jenkel == 'l' ? 'Laki-Laki' : 'Perempuan'  }}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->no_hp}}</td>
-                          <td>Rp.{{ number_format($d->jumlah_saldo)}}</td>
-                          <td>{{$kd - $db}}</td>
+                          <td>Rp.{{number_format($kd - $db,0,',','.')}}</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#kd" wire:click='kd({{$d->id_siswa}})'><i class="fa-solid fa-wallet"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#db" wire:click="db({{$d->id_siswa}})"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>

@@ -18,9 +18,10 @@ class User extends Component
     public $result = 10;
     public function render()
     {
-        $role = Role::all();
+        $role = Role::where('id_role','<>', 6)->where('id_role','<>', 7)->where('id_role','<>', 8)->get();
         $data  = TabelUser::where('username', 'like','%'.$this->cari.'%')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
+        ->where('users.id_role','<>', 6)->where('users.id_role','<>', 7)->where('users.id_role','<>', 8)
         ->orderBy('id','desc')
         ->paginate($this->result);
         return view('livewire.admin.user', compact('data','role'));

@@ -54,12 +54,6 @@ class DataSiswa extends Component
             'id_kelas' => $this->id_kelas,
         ]) ;
 
-
-        TabunganSiswa::create([
-            "id_siswa" => $data2->id_siswa,
-            "jumlah_saldo" => 0,
-        ]);
-
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');

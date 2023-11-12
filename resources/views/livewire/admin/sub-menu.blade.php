@@ -88,6 +88,15 @@
                     </div>
                   </div>
                 <div class="form-group mb-3">
+                    <label for="">Nama Class</label>
+                    <input type="text" wire:model.live="class" class="form-control">
+                    <div class="text-danger">
+                        @error('class')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
                     <label for="">Parent Menu</label>
                     <select class="form-control" wire:model.live="parent_menu">
                         <option value="">Pilih Parent</option>
@@ -139,6 +148,15 @@
                     <input type="text" wire:model.live="nama_menu" class="form-control">
                     <div class="text-danger">
                         @error('nama_menu')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Nama Class</label>
+                    <input type="text" wire:model.live="class" class="form-control">
+                    <div class="text-danger">
+                        @error('class')
                             {{$message}}
                         @enderror
                     </div>
