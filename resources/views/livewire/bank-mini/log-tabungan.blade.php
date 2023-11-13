@@ -47,7 +47,9 @@
                             <th>No Invoice</th>
                             <th>Jenis</th>
                             <th>log</th>
+                            @if (Auth::user()->id_role == 1)
                             <th>Hapus</th>
+                          @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +63,9 @@
                                 <td>{{ $d->jenis == 'db' ? 'Debit' : 'Kredit' }}
                                 </td>
                                 <td>{{ date('d M Y h:i A') }}</td>
+                                @if (Auth::user()->id_role == 1)
                                 <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete({{$d->id_log_tabungan}})"><i class="fa-solid fa-trash"></i></a></td>
+                          @endif
                             </tr>
                         @endforeach
                     </tbody>
