@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id("id_peminjam");
             $table->foreignId('id_siswa')->references('id_siswa')->on('data_siswa')->onUpdate('cascade')->onDelete('cascade');
             $table->string("nama_buku");
-            $table->string("tanggal_kembali");
             $table->enum('kembali',['y','n']);
             $table->timestamps();
         });

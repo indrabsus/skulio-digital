@@ -1,7 +1,7 @@
 <div>
     <div>
         <div class="row">
-    
+
             <div class="container">
               @if(session('sukses'))
             <div class="alert alert-success alert-dismissible">
@@ -20,7 +20,7 @@
             </div>
             <div class="col">
                     <div class="row justify-content-end mt-2">
-    
+
                         <div class="col-lg-3">
                             <div class="input-group input-group-sm mb-3">
                               <div class="col-3">
@@ -45,7 +45,6 @@
                               <th>Nama Buku</th>
                               <th>Tanggal Peminjam</th>
                               <th>Sudah Di Kembalikan</th>
-                              <th>Tanggal Di Kembalikan</th>
                               <th>Aksi</th>
                           </tr>
                       </thead>
@@ -55,15 +54,15 @@
                               <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                               <td>{{$d->nama_lengkap}}</td>
                               <td>{{$d->nama_buku}}</td>
-                              <td>{{date('d M Y')}}</td>
-                              <td>@if ($d->kembali == 'y')
+                              <td>{{date('d M Y', strtotime($d->created_at))}}</td>
+                              <td>
+                                @if ($d->created_at == $d->updated_at)
+                                <i class="fa-solid fa-times"></i>
+                                @else
                                 <i class="fa-solid fa-check"></i>
-                              @else
-                              <i class="fa-solid fa-times"></i>
-                              @endif</td>
-                              <td>{{$d->tanggal_kembali}}</td>
-
-                              <td>@if ($d->kembali == 'y')
+                                @endif
+                              </td>
+                              <td>@if ($d->created_at != $d->updated_at)
                                 <button disabled type="button" href="" class="btn btn-secondary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> sudah kembali</button>
                               @else
                               <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> kembalikan</a>
@@ -76,8 +75,8 @@
                     {{$data->links()}}
             </div>
         </div>
-    
-    
+
+
         {{-- Kembali Modal --}}
         <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
             <div class="modal-dialog">
@@ -125,7 +124,7 @@
                 $('#k_hapus').modal('hide');
             })
           </script>
-    
+
     </div>
-    
+
 </div>
