@@ -112,6 +112,12 @@ class MenuSeeder extends Seeder
             'class' => 'Perpustakaan\DataPeminjam',
         ]);
         Menu::create([
+            'parent_menu' => 5,
+            'akses_role' => 1,
+            'nama_menu' => 'Status Pinjam',
+            'class' => 'Perpustakaan\DaftarPeminjamBuku',
+        ]);
+        Menu::create([
             'parent_menu' => 6,
             'akses_role' => 1,
             'nama_menu' => 'Tabungan Siswa',
@@ -121,6 +127,12 @@ class MenuSeeder extends Seeder
             'parent_menu' => 6,
             'akses_role' => 1,
             'nama_menu' => 'Log Tabungan',
+            'class' => 'BankMini\LogTabungan',
+        ]);
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 8,
+            'nama_menu' => 'Tabunganku',
             'class' => 'BankMini\LogTabungan',
         ]);
 

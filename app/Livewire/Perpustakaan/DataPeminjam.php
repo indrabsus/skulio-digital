@@ -44,7 +44,6 @@ class DataPeminjam extends Component
         TabelDataPeminjam::create([
             'id_siswa' => $this->id_siswa,
             'nama_buku' => $this->nama_buku,
-            'kembali' => 'n'
         ]);
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();

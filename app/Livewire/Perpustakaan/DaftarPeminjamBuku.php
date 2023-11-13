@@ -36,7 +36,6 @@ class DaftarPeminjamBuku extends Component
         ]);
         $data = DataPeminjam::leftJoin('data_siswa','data_siswa.id_siswa','data_peminjam.id_siswa')->where('id_peminjam', $this->id_peminjam)->update([
             'nama_buku' => $this->nama_buku,
-            'kembali'=> 'y',
             'nama_lengkap' => $this->nama_lengkap,
         ]);
         session()->flash('sukses','Data berhasil diedit');
