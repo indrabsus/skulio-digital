@@ -2,6 +2,7 @@
 
 namespace App\Livewire\BankMini;
 
+use Auth;
 use Livewire\Component;
 use App\Models\LogTabungan as TabelLog;
 use App\Models\LogTabungan as ModelsLogTabungan;
@@ -17,10 +18,20 @@ class LogTabungan extends Component
     public $result = 10;
     public function render()
     {
-        $data  = TabelLog::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
-        ->orderBy('id_log_tabungan','desc')
-        ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
-        return view('livewire.bank-mini.log-tabungan', compact('data'));
+        if(Auth::user()->id_role == '8') {
+            $data  = TabelLog::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+            ->orderBy('id_log_tabungan','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->where('id_user', Auth::user()->id)
+            ->paginate($this->result);
+            return view('livewire.bank-mini.log-tabungan', compact('data'));
+        } else {
+            $data  = TabelLog::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+            ->orderBy('id_log_tabungan','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
+            return view('livewire.bank-mini.log-tabungan', compact('data'));
+        }
+
     }
     public function insert(){
         $this->validate([
