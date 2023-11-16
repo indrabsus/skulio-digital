@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PdfController;
 use App\Livewire\Admin\Dashboard;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/listtest',[ExamController::class,'listTest'])->name('listtest');
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');

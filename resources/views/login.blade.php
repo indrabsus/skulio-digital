@@ -64,24 +64,51 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <body>
 	<div class="row justify-content-center">
+
         <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
+                        <div class="container">
+                            @if(session('sukses'))
+                          <div class="alert alert-success alert-dismissible">
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          <h5>Sukses!</h5>
+                          {{session('sukses')}}
+                          </div>
+                          @endif
+                          @if(session('gagal'))
+                          <div class="alert alert-danger alert-dismissible">
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          <h5>Gagal!</h5>
+                          {{session('gagal')}}
+                          </div>
+                          @endif
+                          </div>
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>
                             <h5 class="text-muted fw-normal mb-4">Log in to your account.</h5>
                             <form class="forms-sample" method="post" action="{{route('loginauth')}}">
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">Username</label>
                                 <input type="text" class="form-control" name="username" placeholder="Masukan Username">
+                                <div class="text-danger">
+                                    @error('username')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">Password</label>
                                 <input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="Masukan Password">
+                                <div class="text-danger">
+                                    @error('password')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div>
                                 <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Login</button>
                             </div>
-                            <a href="register.html" class="d-block mt-3 text-muted">Not a user? Sign up</a>
+                            <a href="{{ route('registerpage') }}" class="d-block mt-3 text-muted">Tidak punya akun? Daftar disini!</a>
                             </form>
                     </div>
                 </div>

@@ -69,20 +69,6 @@ License: For each use you must have a valid license purchased only from above li
                     <div class="card-body">
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>
                             <h5 class="text-muted fw-normal mb-4">Pendaftaran Skulio.</h5>
-
-                            <form action="" method="get">
-                                <div class="mb-3">
-                                    <div class="row">
-                                        <label for="userEmail" class="form-label">Nama Lengkap</label>
-                                        <div class="col-lg-9">
-                                            <input type="text" class="form-control" name="nama_lengkap" placeholder="Masukan Nama Lengkap">
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <button class="btn btn-success btn-sm" type="submit">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                             <?php
                             $nama = '';
                             $username = '';
@@ -91,15 +77,48 @@ License: For each use you must have a valid license purchased only from above li
                                 $username = rand(100,999).strtolower(str_replace(' ','', $_GET['nama_lengkap']));
                             }
                             ?>
+                            <form action="" method="get">
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <label for="userEmail" class="form-label">Nama Lengkap</label>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" name="nama_lengkap" placeholder="Masukan Nama Lengkap" value="{{ $nama ? ucwords($nama) : ''}}">
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button class="btn btn-success btn-sm" type="submit">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
                             <form class="forms-sample" method="post" action="{{route('register')}}">
                                 <input type="text" class="form-control" name="nama_lengkap" value="{{ $nama }}" hidden>
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" value="{{ $username }}" readonly>
+                                <input type="text" class="form-control" name="username" value="{{ substr($username,0,10) }}" readonly>
+                                <div class="text-danger">
+                                    @error('username')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">No Handphone</label>
                                 <input type="text" class="form-control" name="no_hp" autocomplete="current-password" placeholder="Masukan No Hp">
+                                <div class="text-danger">
+                                    @error('no_hp')
+                                        {{$message}}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userPassword" class="form-label">NIS</label>
+                                <input type="text" class="form-control" name="nis" autocomplete="current-password" placeholder="Masukan NIS">
+                                <div class="text-danger">
+                                    @error('nis')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">Jenis Kelamin</label>
@@ -108,6 +127,11 @@ License: For each use you must have a valid license purchased only from above li
                                     <option value="l">Laki-laki</option>
                                     <option value="p">Perempuan</option>
                                 </select>
+                                <div class="text-danger">
+                                    @error('jenkel')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">Kelas</label>
@@ -117,11 +141,16 @@ License: For each use you must have a valid license purchased only from above li
                                         <option value="{{ $k->id_kelas }}">{{ $k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas }}</option>
                                     @endforeach
                                 </select>
+                                <div class="text-danger">
+                                    @error('id_kelas')
+                                        {{$message}}
+                                    @enderror
+                                </div>
                             </div>
                             <div>
                                 <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Login</button>
                             </div>
-                            <a href="register.html" class="d-block mt-3 text-muted">Not a user? Sign up</a>
+                            <a href="{{ route('loginpage') }}" class="d-block mt-3 text-muted">Sudah punya akun? Login disini</a>
                             </form>
                     </div>
                 </div>
