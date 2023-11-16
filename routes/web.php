@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Route;
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
+Route::get('/register',[AuthController::class,'registerpage'])->name('registerpage');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
 
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
+Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('app',Dashboard::class)->name('dashboard');
