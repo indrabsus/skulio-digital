@@ -42,7 +42,9 @@
                     <thead>
                         <tr>
                             <th>Print</th>
+                            @if (Auth::user()->id_role == 1)
                             <th>Nama Siswa</th>
+                            @endif
                             <th>Nominal</th>
                             <th>No Invoice</th>
                             <th>Jenis</th>

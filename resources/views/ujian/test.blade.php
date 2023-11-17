@@ -20,7 +20,9 @@
 
 
 <iframe src="{{$test->link}}" frameborder="0" target="_self"></iframe>
-
+@php
+    $us = App\Models\DataSiswa::where('id_user', Auth::user()->id)->first();
+@endphp
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -28,7 +30,38 @@
     function onFocus(){ console.log('browser window activated'); }
 function onBlur(){
 
-  window.location = '{{route('cit')}}'
+//   window.location = '{{route('cit')}}'
+  $.ajax({
+    url: '{{route('cit')}}', // Ganti dengan URL endpoint Anda
+    type: 'GET',
+    success: function(response) {
+        // Tambahkan logika di sini untuk menangani respons dari server jika diperlukan
+        console.log('Data berhasil disimpan ke database');
+    },
+    error: function(xhr, status, error) {
+        // Tambahkan logika di sini untuk menangani kesalahan jika diperlukan
+        console.error(error);
+    }
+});
+let nama = '{{ $us->nama_lengkap }}'
+let tokenTelegram = '6019753763:AAGy5F-9h3jAKgLM38AhaiIM5LZ3oyYfXFM';
+let grupId = -926083732;
+let kelas = '{{ Illuminate\Support\Facades\Session::get('nama_kelas') }}';
+let ujian = '{{ Illuminate\Support\Facades\Session::get('nama_ujian') }}';
+$.ajax({
+                    url: 'https://api.telegram.org/bot' + tokenTelegram + '/sendMessage',
+                    method: 'GET',
+                    data: {
+                        chat_id: grupId,
+                        text: text
+                    },
+                    success: function(response) {
+                        console.log('Pesan terkirim ke Telegram');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error mengirim pesan ke Telegram: ' + error);
+                    }
+                });
 }
 
 
@@ -53,7 +86,21 @@ if(document.hasFocus()){
     inter = setInterval(()=>{
         if(!document.hasFocus()){
 
-          window.location = '{{route('cit')}}';
+        //   window.location = '{{route('cit')}}';
+        // jQuery AJAX request
+    $.ajax({
+    url: '{{route('cit')}}', // Ganti dengan URL endpoint Anda
+    type: 'GET',
+    success: function(response) {
+        // Tambahkan logika di sini untuk menangani respons dari server jika diperlukan
+        console.log('Data berhasil disimpan ke database');
+    },
+    error: function(xhr, status, error) {
+        // Tambahkan logika di sini untuk menangani kesalahan jika diperlukan
+        console.error(error);
+    }
+});
+
             iframeFocused = false;
             onBlur();
             clearInterval(inter);
@@ -99,17 +146,6 @@ var x = setInterval(function() {
 }, 1000);
 
 </script>
-<!-- <script>
-  var timeout;
-document.onmousemove = function(){
-  clearTimeout(timeout);
-  timeout = setTimeout(function(){alert("Kamu ga aktif selama 6 detik (dianggap kecurangan)");}, 6000);
-}
-</script> -->
-<script>
-  $('iframe').contents().mousemove( function(e) {
-    console.log( e.clientX, e.clientY );
-});
-</script>
+
 
 @endsection
