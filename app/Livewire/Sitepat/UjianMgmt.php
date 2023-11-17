@@ -48,7 +48,7 @@ class UjianMgmt extends Component
         $this->token = '';
     }
     public function insert(){
-        $this->validate([
+        $input = $this->validate([
             'nama_ujian' => 'required',
             'kelasku' => 'required',
             'waktu' => 'required',
@@ -59,7 +59,7 @@ class UjianMgmt extends Component
         for($no=0; $no < count($this->kelasku); $no++){
             Ujian::create([
                 'nama_ujian' => $this->nama_ujian,
-                'id_kelas' => $this->id_kelas[$no],
+                'id_kelas' => $this->kelasku[$no],
                 'waktu' => $this->waktu,
                 'link' => $this->link,
                 'token' => $this->token,

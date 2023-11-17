@@ -25,14 +25,15 @@
         </div>
     </div>
     @endif
-      <div class="row justify-content-between mt-2">
-
+      <div class="row justify-content-end mt-2">
+        @if (Auth::user()->id_role == 1)
         <div class="col-lg-6">
             <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                 Tambah
               </button>
 
         </div>
+        @endif
         <div class="col-lg-3">
             <div class="input-group input-group-sm mb-3">
               <div class="col-3">
@@ -59,13 +60,18 @@
                 <th>Token</th>
                 <th>Publish</th>
                 <th>Aksi</th>
-                @endif
 
+                @endif
+                <th>Ujian</th>
             </tr>
             @foreach ($data as $d)
                 <tr>
                     <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                    <td><a href="{{$d->link}}" target="_blank">{{ $d->nama_ujian }}</a></td>
+                    <td>@if (Auth::user()->id_role == 8)
+                        {{ $d->nama_ujian }}
+                    @else
+                    <a href="{{$d->link}}" target="_blank">{{ $d->nama_ujian }}</a>
+                    @endif</td>
                     <td>{{ $d->waktu }} Menit</td>
                     <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                     @if (Auth::user()->id_role == 1)
@@ -80,6 +86,9 @@
                         <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_ujian}})"><i class="fa-solid fa-trash"></i></a>
                       </td>
                       @endif
+                      <td>
+                        <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Mulai</a>
+                      </td>
                 </tr>
             @endforeach
         </table>
@@ -120,7 +129,7 @@
                   <label for="">Pilih Kelas</label>
                   @foreach ($kelas as $k)
                   <div class="form-check">
-                  <input class="form-check-input" type="checkbox" wire:model="id_kelas" value="{{ $k->id_kelas }}">
+                  <input class="form-check-input" type="checkbox" wire:model="kelasku" value="{{ $k->id_kelas }}">
                   <label class="form-check-label">{{ $k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas }}</label>
                   </div>
                   @endforeach
