@@ -25,15 +25,15 @@
         </div>
     </div>
     @endif
-      <div class="row justify-content-end mt-2">
-        @if (Auth::user()->id_role == 1)
+      <div class="row justify-content-between mt-2">
         <div class="col-lg-6">
+          @if (Auth::user()->id_role == 1)
             <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                 Tambah
               </button>
 
+              @endif
         </div>
-        @endif
         <div class="col-lg-3">
             <div class="input-group input-group-sm mb-3">
               <div class="col-3">
