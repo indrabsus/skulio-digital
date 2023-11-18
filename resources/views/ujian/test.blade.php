@@ -43,25 +43,26 @@ function onBlur(){
         console.error(error);
     }
 });
-let nama = '{{ $us->nama_lengkap }}'
-let tokenTelegram = '6019753763:AAGy5F-9h3jAKgLM38AhaiIM5LZ3oyYfXFM';
-let grupId = -926083732;
-let kelas = '{{ Illuminate\Support\Facades\Session::get('nama_kelas') }}';
-let ujian = '{{ Illuminate\Support\Facades\Session::get('nama_ujian') }}';
-$.ajax({
-                    url: 'https://api.telegram.org/bot' + tokenTelegram + '/sendMessage',
-                    method: 'GET',
-                    data: {
-                        chat_id: grupId,
-                        text: text
-                    },
-                    success: function(response) {
-                        console.log('Pesan terkirim ke Telegram');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error mengirim pesan ke Telegram: ' + error);
-                    }
-                });
+// let nama = '{{ $us->nama_lengkap }}'
+// let tokenTelegram = '6019753763:AAGy5F-9h3jAKgLM38AhaiIM5LZ3oyYfXFM';
+// let grupId = -926083732;
+// let kelas = '{{ Illuminate\Support\Facades\Session::get('nama_kelas') }}';
+// let ujian = '{{ Illuminate\Support\Facades\Session::get('nama_ujian') }}';
+// let text = nama+', Kelas '+kelas+' telah terdeteksi kecurangan dalam Ujian '+ujian
+// $.ajax({
+//                     url: 'https://api.telegram.org/bot' + tokenTelegram + '/sendMessage',
+//                     method: 'GET',
+//                     data: {
+//                         chat_id: grupId,
+//                         text: text
+//                     },
+//                     success: function(response) {
+//                         console.log('Pesan terkirim ke Telegram');
+//                     },
+//                     error: function(xhr, status, error) {
+//                         console.error('Error mengirim pesan ke Telegram: ' + error);
+//                     }
+//                 });
 }
 
 
@@ -100,6 +101,26 @@ if(document.hasFocus()){
         console.error(error);
     }
 });
+// let nama = '{{ $us->nama_lengkap }}'
+// let tokenTelegram = '6019753763:AAGy5F-9h3jAKgLM38AhaiIM5LZ3oyYfXFM';
+// let grupId = -926083732;
+// let kelas = '{{ Illuminate\Support\Facades\Session::get('nama_kelas') }}';
+// let ujian = '{{ Illuminate\Support\Facades\Session::get('nama_ujian') }}';
+// let text = nama+', Kelas '+kelas+' telah terdeteksi kecurangan dalam Ujian '+ujian
+// $.ajax({
+//                     url: 'https://api.telegram.org/bot' + tokenTelegram + '/sendMessage',
+//                     method: 'GET',
+//                     data: {
+//                         chat_id: grupId,
+//                         text: text
+//                     },
+//                     success: function(response) {
+//                         console.log('Pesan terkirim ke Telegram');
+//                     },
+//                     error: function(xhr, status, error) {
+//                         console.error('Error mengirim pesan ke Telegram: ' + error);
+//                     }
+//                 });
 
             iframeFocused = false;
             onBlur();

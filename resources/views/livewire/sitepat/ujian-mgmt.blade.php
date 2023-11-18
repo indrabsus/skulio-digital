@@ -72,7 +72,7 @@
                 $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
                 if($us){
                 $logi = App\Models\LogUjian::where('id_ujian',$d->id_ujian)->where('id_siswa', $us->id_siswa)->first();
-                $count = App\Models\LogUjian::where('status', 'proses')->count();
+                $count = App\Models\LogUjian::where('status', 'proses')->where('id_siswa',$us->id_siswa)->count();
             }
 
             @endphp
