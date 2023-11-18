@@ -50,7 +50,7 @@ class DataSiswa extends Component
             'no_hp'=> $this->no_hp,
             'nis'=> $this->nis,
             'id_kelas' => $this->id_kelas,
-        ]) ;
+        ]);
 
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
