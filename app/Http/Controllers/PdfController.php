@@ -14,6 +14,8 @@ class PdfController extends Controller
     ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
     ->where('id_log_tabungan', $id)->first();
     $pdf = Pdf::loadView('pdf.logtabungan', compact('data'));
-    return $pdf->stream($data->no_invoice.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
+     //return $pdf->download('test.pdf');
+     return $pdf->stream($data->no_invoice.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
     }
 }
+
