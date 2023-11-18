@@ -48,7 +48,7 @@
                           <th>Nama Lengkap</th>
                           <th>Jenis Kelamin</th>
                           <th>No Hp</th>
-                          <th>Alamat</th>
+                          <th>NIS</th>
                           <th>Kelas</th>
                           <th>Acc</th>
                           <th>Aksi</th>
@@ -62,12 +62,12 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->no_hp}}</td>
-                          <td>{{$d->alamat}}</td>
+                          <td>{{$d->nis}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>@if ($d->acc == 'y')
-                            <i class="fa-solid fa-check"></i>
+                            <button class="btn btn-outline-success btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-check"></i></button>
                           @else
-                          <i class="fa-solid fa-times"></i>
+                          <button class="btn btn-outline-danger btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-times"></i></button>
                           @endif</td>
                           <td>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_siswa}})'><i class="fa-solid fa-edit"></i></i></a>
@@ -113,10 +113,10 @@
                     </div>
                   </div>
                 <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
+                    <label for="">NIS</label>
+                    <input type="text" wire:model.live="nis" class="form-control">
                     <div class="text-danger">
-                        @error('alamat')
+                        @error('nis')
                             {{$message}}
                         @enderror
                     </div>
@@ -147,7 +147,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -187,10 +187,10 @@
                     </div>
                   </div>
                 <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
+                    <label for="">NIS</label>
+                    <input type="text" wire:model.live="nis" class="form-control">
                     <div class="text-danger">
-                        @error('alamat')
+                        @error('nis')
                             {{$message}}
                         @enderror
                     </div>
@@ -221,7 +221,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -230,6 +230,9 @@
           </div>
         </div>
       </div>
+
+
+
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
@@ -239,7 +242,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin menghapus data ini? 
+                Apakah anda yakin menghapus data ini?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

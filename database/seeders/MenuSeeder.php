@@ -135,6 +135,18 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Tabunganku',
             'class' => 'BankMini\LogTabungan',
         ]);
+        Menu::create([
+            'parent_menu' => 7,
+            'akses_role' => 1,
+            'nama_menu' => 'Manajemen Ujian',
+            'class' => 'Sitepat\UjianMgmt',
+        ]);
+        Menu::create([
+            'parent_menu' => 7,
+            'akses_role' => 8,
+            'nama_menu' => 'Ujianku',
+            'class' => 'Sitepat\UjianMgmt',
+        ]);
 
     }
 }

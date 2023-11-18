@@ -15,7 +15,7 @@ class AuthController extends Controller
         return view('login');
     }
     public function registerpage(){
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_kelas')->get();
+        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->get();
         return view('register', compact('kelas'));
     }
     public function register(Request $request){
@@ -25,10 +25,11 @@ class AuthController extends Controller
             'nama_lengkap' => 'required',
             'jenkel' => 'required',
             'id_kelas' => 'required',
+            'nis' => 'required',
         ]);
         $user = User::create([
             'username' => $request->username,
-            'password' => bcrypt($request->no_hp),
+            'password' => bcrypt($request->nis),
             'id_role' => 8,
             'acc' => 'n',
         ]);
@@ -37,7 +38,7 @@ class AuthController extends Controller
             'nama_lengkap' => ucwords($request->nama_lengkap),
             'jenkel' => $request->jenkel,
             'no_hp' => $request->no_hp,
-            'alamat' => '-',
+            'nis' => $request->nis,
             'id_kelas' => $request->id_kelas,
         ]);
         return redirect()->route('loginpage')->with('sukses','Pendaftaran berhasil, silakan tunggu ACC Admin untuk login!');
@@ -51,7 +52,7 @@ class AuthController extends Controller
         if(Auth::attempt($auth)){
             if(Auth::user()->acc == 'n'){
                 Auth::logout();
-    return redirect()->route('loginpage');
+    return redirect()->route('loginpage')->with('gagal','Akun anda belum diaktifkan oleh Admin!');
             } else {
                 $data = Role::where('id_role', Auth::user()->id_role)->first();
                 $role = $data->nama_role;

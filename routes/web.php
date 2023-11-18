@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PdfController;
 use App\Livewire\Admin\Dashboard;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -9,6 +10,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/listtest',[ExamController::class,'listTest'])->name('listtest');
+Route::get('{id}/token/',[ExamController::class,'token'])->name('token');
+Route::any('cektoken', [ExamController::class,'masukUjian'])->name('cektoken');
+Route::get('done',[ExamController::class,'done'])->name('done');
+Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
@@ -21,6 +27,12 @@ Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 Route::group(['middleware' => ['auth']], function(){
+
+    Route::group(['middleware' => ['test']], function(){
+        Route::get('siswa/test', [ExamController::class,'test'])->name('test');
+    });
+
+
     Route::get('app',Dashboard::class)->name('dashboard');
     $set = new Controller;
     // $cek = $set->routeMenu();

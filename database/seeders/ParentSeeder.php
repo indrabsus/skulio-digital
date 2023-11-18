@@ -37,5 +37,9 @@ class ParentSeeder extends Seeder
             'parent_menu' => 'BankMini',
             'icon' => 'dollar-sign',
         ]);
+        ParentMenu::create([
+            'parent_menu' => 'Sitepat',
+            'icon' => 'eye',
+        ]);
     }
 }
