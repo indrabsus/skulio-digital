@@ -23,12 +23,7 @@ class UserSeeder extends Seeder
             'id_role' => 1,
             'acc' => 'y'
         ]);
-        User::create([
-            'username' => 'petugasbank',
-            'password' => bcrypt('bankminisakuci2023'),
-            'id_role' => 9,
-            'acc' => 'y'
-        ]);
+        
 
         //Dummy
         Angkatan::create([
@@ -64,6 +59,12 @@ class UserSeeder extends Seeder
             'jenkel' => 'l',
             'no_hp'=> '081354654533',
             'nis' => '123456'
+        ]);
+        User::create([
+            'username' => 'petugasbank',
+            'password' => bcrypt('bankminisakuci2023'),
+            'id_role' => 9,
+            'acc' => 'y'
         ]);
     }
 }
