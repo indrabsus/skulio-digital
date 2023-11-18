@@ -136,5 +136,12 @@ class MenuSeeder extends Seeder
             'class' => 'BankMini\LogTabungan',
         ]);
 
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 1,
+            'nama_menu' => 'Laporan Tabungan',
+            'class' => 'BankMini\LaporanTabungan',
+        ]);
+
     }
 }
