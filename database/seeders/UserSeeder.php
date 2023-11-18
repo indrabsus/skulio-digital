@@ -23,6 +23,12 @@ class UserSeeder extends Seeder
             'id_role' => 1,
             'acc' => 'y'
         ]);
+        User::create([
+            'username' => 'petugasbank',
+            'password' => bcrypt('bankminisakuci2023'),
+            'id_role' => 9,
+            'acc' => 'y'
+        ]);
 
         //Dummy
         Angkatan::create([

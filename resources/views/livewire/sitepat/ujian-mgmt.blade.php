@@ -49,7 +49,7 @@
               </div>
         </div>
     </div>
-    <div class="responsive">
+    <div class="table-responsive">
         <table class="table table-responsive">
             <tr>
                 <th>No</th>

@@ -41,35 +41,21 @@
                 <table class="table table-stripped">
                     <thead>
                         <tr>
-                            <th>Print</th>
-                            @if (Auth::user()->id_role == 1)
+                            <th>No</th>
                             <th>Nama Siswa</th>
-                            @endif
-                            <th>Nominal</th>
-                            <th>No Invoice</th>
-                            <th>Jenis</th>
-                            <th>log</th>
-                            @if (Auth::user()->id_role == 1)
-                            <th>Hapus</th>
-                          @endif
+                            <th>Kelas</th>
+                            <th>Ujian</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($data as $d)
                             <tr>
-                                <td><a href="{{ route('printLog', ['id_log' => $d->id_log_tabungan]) }}" class="btn btn-primary btn-sm" target="_blank"><i class="fa-solid fa-print"></i></a>
-                                </td>
-                                @if (Auth::user()->id_role == 1)
-                                <td>{{ $d->nama_lengkap }}</td>
-                                @endif
-                                <td>Rp.{{ number_format($d->nominal,0,',','.') }}</td>
-                                <td>{{ $d->no_invoice }}</td>
-                                <td>{{ $d->jenis == 'db' ? 'Debit' : 'Kredit' }}
-                                </td>
-                                <td>{{ date('d M Y h:i A') }}</td>
-                                @if (Auth::user()->id_role == 1)
-                                <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete({{$d->id_log_tabungan}})"><i class="fa-solid fa-trash"></i></a></td>
-                          @endif
+                                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                                <td>{{$d->nama_lengkap}}</td>
+                                <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
+                                <td>{{$d->nama_ujian}}</td>
+                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_logc}})"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                         @endforeach
                     </tbody>
