@@ -20,7 +20,7 @@ class LaporanTabungan extends Component
     {
         $this->sumkredit = DB::table('log_tabungan')->where('jenis', 'db')->sum('nominal');
 
-        $this->sumdebit = DB::table('log_tabungan')->where('jenis', 'kd')->sum('nominal');
+        $this->sumdebit = DB::table('log_tabungan')->where('jenis', 'kd')->sum('nominal') - $this->sumkredit;
 
         $this->count = DB::table('log_tabungan')->distinct()->pluck('id_siswa')->count();
 
