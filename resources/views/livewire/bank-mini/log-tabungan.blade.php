@@ -22,33 +22,35 @@
                 <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
                         <div class="col-3">
-                            <select class="form-control" wire:model.live="bln">
-                                <option value="">Pilih Bulan</option>
-                                <option value="01">Januari</option>
-                                <option value="02">Februari</option>
-                                <option value="03">Maret</option>
-                                <option value="04">April</option>
-                                <option value="05">Mei</option>
-                                <option value="06">Juni</option>
-                                <option value="07">Juli</option>
-                                <option value="08">Agustus</option>
-                                <option value="09">September</option>
-                                <option value="10">Oktober</option>
-                                <option value="11">November</option>
-                                <option value="12">Desember</option>
-                            </select>
+                                <form action="{{route('printTabunganBulanan')}}" method="get" target="_blank">
+                                <select class="form-control" name="bln">
+                                    <option value="">Pilih Bulan</option>
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04">April</option>
+                                    <option value="05">Mei</option>
+                                    <option value="06">Juni</option>
+                                    <option value="07">Juli</option>
+                                    <option value="08">Agustus</option>
+                                    <option value="09">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-control" name="thn">
+                                    <option value="">Pilih Tahun</option>
+                                    <option value="{{date('Y') - 1}}">{{date('Y') - 1}}</option>
+                                    <option value="{{date('Y') }}">{{date('Y') }}</option>
+                                    <option value="{{date('Y') + 1}}">{{date('Y') + 1}}</option>
+                                </select>
+                            </div>
+                            <button class="input-group-text" type="submit">Print</button>
+                        </form>
                         </div>
-                        <div class="col-3">
-                            <select class="form-control" wire:model="thn">
-                                <option value="">Pilih Tahun</option>
-                                <option value="{{date('Y') - 1}}">{{date('Y') - 1}}</option>
-                                <option value="{{date('Y') }}">{{date('Y') }}</option>
-                                <option value="{{date('Y') + 1}}">{{date('Y') + 1}}</option>
-                            </select>
-                        </div>
-                        <a href="{{route('printTabunganBulanan',['bln' => $bln, 'thn' => $thn])}}" target="__blank" class="input-group-text" id="basic-addon1">Print</a>
                     </div>
-                </div>
                 <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-3">
                         <div class="col-3">
@@ -77,6 +79,7 @@
                             <th>No Invoice</th>
                             <th>Jenis</th>
                             <th>log</th>
+                            <th>Petugas</th>
                             @if (Auth::user()->id_role == 1)
                             <th>Hapus</th>
                           @endif
@@ -95,6 +98,7 @@
                                 <td>{{ $d->jenis == 'db' ? 'Debit' : 'Kredit' }}
                                 </td>
                                 <td>{{ date('d M Y h:i A') }}</td>
+                                <td>{{$d->username}}</td>
                                 @if (Auth::user()->id_role == 1)
                                 <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete({{$d->id_log_tabungan}})"><i class="fa-solid fa-trash"></i></a></td>
                           @endif

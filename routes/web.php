@@ -17,7 +17,7 @@ Route::get('done',[ExamController::class,'done'])->name('done');
 Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
 
-Route::get('printTabunganBulanan/{thn?}/{bln?}',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
+Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');

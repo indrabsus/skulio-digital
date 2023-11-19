@@ -21,6 +21,7 @@ class LogTabungan extends Component
     {
         if(Auth::user()->id_role == '8') {
             $data  = TabelLog::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+            ->leftJoin('users','users.id','log_tabungan.id_petugas')
             ->orderBy('id_log_tabungan','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('id_user', Auth::user()->id)
@@ -28,6 +29,7 @@ class LogTabungan extends Component
             return view('livewire.bank-mini.log-tabungan', compact('data'));
         } else {
             $data  = TabelLog::leftJoin('data_siswa','data_siswa.id_siswa','log_tabungan.id_siswa')
+            ->leftJoin('users','users.id','log_tabungan.id_petugas')
             ->orderBy('id_log_tabungan','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
             return view('livewire.bank-mini.log-tabungan', compact('data'));
