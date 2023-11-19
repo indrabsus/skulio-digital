@@ -16,6 +16,9 @@ Route::any('cektoken', [ExamController::class,'masukUjian'])->name('cektoken');
 Route::get('done',[ExamController::class,'done'])->name('done');
 Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
+
+Route::get('printTabunganBulanan/{thn?}/{bln?}',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
+
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
 Route::get('/register',[AuthController::class,'registerpage'])->name('registerpage');

@@ -18,21 +18,12 @@ class LaporanTabungan extends Component
     public $result = 10;
     public function render()
     {
-        $this->sumkredit = DB::table('log_tabungan')->where('jenis', 'db')->sum('nominal');
-
-        $this->sumdebit = DB::table('log_tabungan')->where('jenis', 'kd')->sum('nominal');
-
-        $this->count = DB::table('log_tabungan')->distinct()->pluck('id_siswa')->count();
+        $sumkredit = DB::table('log_tabungan')->where('jenis', 'kd')->sum('nominal');
+        $sumdebit = DB::table('log_tabungan')->where('jenis', 'db')->sum('nominal');
+        $total = $sumkredit - $sumdebit;
+        $count = DB::table('log_tabungan')->distinct()->pluck('id_siswa')->count();
 
         $data  = TabelLaporan::orderBy('id_laporan','desc')->where('jumlah_nasabah', 'like','%'.$this->cari.'%')->paginate($this->result);
-        return view('livewire.bank-mini.laporan-tabungan', compact('data'));
+        return view('livewire.bank-mini.laporan-tabungan', compact('data','sumkredit','sumdebit','total', 'count'));
     }
-
-
-    public $sumdebit;
-    public $sumkredit;
-    public $count;
-
-
-
 }

@@ -11,9 +11,10 @@ use Livewire\WithPagination;
 
 class LogTabungan extends Component
 {
-    public  $nominal, $jenis , $no_invoice, $log, $id_log  ;
+    public  $nominal, $jenis , $no_invoice, $log, $id_log;
     use WithPagination;
-
+    public $bln ='';
+    public $thn='';
     public $cari = '';
     public $result = 10;
     public function render()
