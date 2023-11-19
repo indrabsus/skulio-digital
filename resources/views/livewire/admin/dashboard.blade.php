@@ -7,7 +7,7 @@
     <h5>Developer:</h5>
     <ul>
         <li>Indra Batara, S.Pd</li>
-        <li>Ridwan X PPLG 1</li>
+        <li>Ridhwan X PPLG 1</li>
         <li>Fergie XI PPLG 3</li>
         <li>Rizki Ramadhan XI PPLG 4</li>
         <li>Fathur XI PPLG 1</li>
