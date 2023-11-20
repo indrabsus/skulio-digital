@@ -85,15 +85,15 @@ class ExamController extends Controller
         $id = Session::get('id_ujian');
         $test = DB::table('ujian')->where('id_ujian',$id)->first();
         $us = DataSiswa::where('id_user', Auth::user()->id)->first();
-        if($test->id_ujian )
-        LogUjian::create([
-            'id_ujian' => Session::get('id_ujian'),
-            'id_siswa' => $us->id_siswa,
-            'nama' => $us->nama_lengkap,
-            'nama_kelas' => Session::get('nama_kelas'),
-            'nama_ujian' => Session::get('nama_ujian'),
-            'status' => 'proses'
-        ]);
+        // if($test->id_ujian )
+        // LogUjian::create([
+        //     'id_ujian' => Session::get('id_ujian'),
+        //     'id_siswa' => $us->id_siswa,
+        //     'nama' => $us->nama_lengkap,
+        //     'nama_kelas' => Session::get('nama_kelas'),
+        //     'nama_ujian' => Session::get('nama_ujian'),
+        //     'status' => 'proses'
+        // ]);
         return view('ujian.test', compact('test'));
     }
     public function logc(){
