@@ -148,7 +148,7 @@ License: For each use you must have a valid license purchased only from above li
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Login</button>
+                                <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Register</button>
                             </div>
                             <a href="{{ route('loginpage') }}" class="d-block mt-3 text-muted">Sudah punya akun? Login disini</a>
                             </form>
