@@ -16,11 +16,11 @@
       @endif
       </div>
       @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
-      <div class="row">
-        <div class="col mb-3">
+      <div class="row justify-content-between">
+        <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>
         </div>
-        <div class="col mb-3">
+        <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-danger btn-sm" wire:click="disallow()"><i class="fa-solid fa-times"></i> Disallow All</button>
         </div>
     </div>

@@ -105,16 +105,16 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 								</div>
                 <ul class="list-unstyled p-1">
-                  <li class="dropdown-item py-2">
+                  {{-- <li class="dropdown-item py-2">
                     <a href="pages/general/profile.html" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="user"></i>
                       <span>Profile</span>
                     </a>
-                  </li>
+                  </li> --}}
                   <li class="dropdown-item py-2">
-                    <a href="javascript:;" class="text-body ms-0">
+                    <a href="{{ route('ubahpassword') }}" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="edit"></i>
-                      <span>Edit Profile</span>
+                      <span>Ubah Password</span>
                     </a>
                   </li>
                   <li class="dropdown-item py-2">
@@ -150,7 +150,7 @@ License: For each use you must have a valid license purchased only from above li
 			<!-- partial:partials/_footer.html -->
 			<footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
 				<p class="text-muted mb-1 mb-md-0">Copyright © <?= date('Y') ?> <a href="https://www.batara.art" target="_blank">Skulio Pro</a>.</p>
-				<p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p>
+				<p class="text-muted">Powered by Zakola Sakuci</p>
 			</footer>
 			<!-- partial -->
 
