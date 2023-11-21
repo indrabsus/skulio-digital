@@ -15,7 +15,7 @@
       </div>
       @endif
       </div>
-      @if (Auth::user()->id_role == 1)
+      @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
       <div class="row">
         <div class="col mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>
@@ -27,7 +27,7 @@
     @endif
       <div class="row justify-content-between mt-2">
         <div class="col-lg-6">
-          @if (Auth::user()->id_role == 1)
+          @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
             <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                 Tambah
               </button>
@@ -56,7 +56,7 @@
                 <th>Nama Test</th>
                 <th>Waktu</th>
                 <th>Kelas</th>
-                @if (Auth::user()->id_role == 1)
+                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
                 <th>Token</th>
                 <th>Publish</th>
                 <th>Aksi</th>
@@ -85,7 +85,7 @@
                     @endif</td>
                     <td>{{ $d->waktu }} Menit</td>
                     <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-                    @if (Auth::user()->id_role == 1)
+                    @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
                     <td>{{$d->token}}</td>
                     <td>
 
