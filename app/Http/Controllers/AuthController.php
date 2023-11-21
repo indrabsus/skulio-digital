@@ -25,7 +25,7 @@ class AuthController extends Controller
             'nama_lengkap' => 'required',
             'jenkel' => 'required',
             'id_kelas' => 'required',
-            'nis' => 'required',
+            'nis' => 'required|unique:data_siswa',
         ]);
         $user = User::create([
             'username' => $request->username,
