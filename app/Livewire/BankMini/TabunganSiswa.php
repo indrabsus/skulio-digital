@@ -2,6 +2,7 @@
 
 namespace App\Livewire\BankMini;
 
+use Auth;
 use Livewire\Component;
 use App\Models\TabunganSiswa as TabelTabungan;
 use App\Models\LogTabungan;
@@ -59,6 +60,7 @@ class TabunganSiswa extends Component
         } else {
             $data3 = LogTabungan::create([
                 'id_siswa'=> $this->id_siswa,
+                'id_petugas'=> Auth::user()->id,
                 "nominal" => $this->nominal,
                 'jenis' => "kd",
                 'no_invoice'=> $invoice,
@@ -108,6 +110,7 @@ class TabunganSiswa extends Component
 
             $data3 = LogTabungan::create([
                 'id_siswa'=> $this->id_siswa,
+                'id_petugas'=> Auth::user()->id,
                 "nominal" => $this->nominal,
                 'jenis' => "db",
                 'no_invoice'=> 'DB'.date("dmyh").$this->id_siswa,

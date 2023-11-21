@@ -9,7 +9,6 @@ Contact: nobleui123@gmail.com
 Purchase: https://1.envato.market/nobleui_admin
 License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
 -->
-
 <html lang="en">
 <head>
 	<meta charset="UTF-8">

@@ -46,7 +46,7 @@ class ExamController extends Controller
             }
             Session::put('id_ujian', $id_ujian);
             Session::put('nama_ujian', $test->nama_ujian);
-            Session::put('nama_kelas',$data->nama_kelas);
+            Session::put('nama_kelas',$data->tingkat.' '.$data->singkatan.' '.$data->nama_kelas);
             $end = Session::get('start') + $test->waktu * 60 *1000;
             $sisa = $end - time();
             $us = DataSiswa::where('id_user', Auth::user()->id)->first();
@@ -55,45 +55,41 @@ class ExamController extends Controller
             ->count();
 
         if( $cek < 1){
-            return redirect()->route('test');
-        } else {
-        Session::flush();
-            return redirect()->route('dashboard')->with('sukses', 'Anda sudah menyelesaikan Test tersebut');
-        }
-
-            // return redirect()->route('test');
-        } else {
-            return redirect()->route('dashboard')->with('gagal', 'Kode Token Salah');
-        }
-    }
-    public function done(){
-        $us = DataSiswa::where('id_user', Auth::user()->id)->first();
-        LogUjian::create([
+            LogUjian::create([
             'id_ujian' => Session::get('id_ujian'),
             'id_siswa' => $us->id_siswa,
             'nama' => $us->nama_lengkap,
             'nama_kelas' => Session::get('nama_kelas'),
             'nama_ujian' => Session::get('nama_ujian'),
+            'status' => 'proses'
+        ]);
+            return redirect()->route('test');
+        } else {
+            Session::flush();
+            Auth::logout();
+            return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan Test tersebut');
+        }
+
+            // return redirect()->route('test');
+        } else {
+            Session::flush();
+            Auth::logout();
+            return redirect()->route('loginpage')->with('gagal', 'Kode Token Salah');
+        }
+    }
+    public function done(){
+        LogUjian::where('id_ujian', Session::get('id_ujian'))->update([
             'status' => 'done'
         ]);
 
         Auth::logout();
         Session::flush();
-        return redirect()->route('dashboard')->with('status', 'Anda berhasil logout');
+        return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
     }
     public function test(){
         $id = Session::get('id_ujian');
         $test = DB::table('ujian')->where('id_ujian',$id)->first();
-        $us = DataSiswa::where('id_user', Auth::user()->id)->first();
-        // if($test->id_ujian )
-        // LogUjian::create([
-        //     'id_ujian' => Session::get('id_ujian'),
-        //     'id_siswa' => $us->id_siswa,
-        //     'nama' => $us->nama_lengkap,
-        //     'nama_kelas' => Session::get('nama_kelas'),
-        //     'nama_ujian' => Session::get('nama_ujian'),
-        //     'status' => 'proses'
-        // ]);
+
         return view('ujian.test', compact('test'));
     }
     public function logc(){
@@ -114,6 +110,5 @@ class ExamController extends Controller
             $text = $nama." dari kelas ".$kelas." dalam ujian ".$ujian;
             Http::get('https://api.telegram.org/bot'.$tokenTelegram.'/sendMessage?chat_id='.$grupId.'&text='.$text." terdeteksi melakukan kecurangan.");
         }
-        return redirect()->route('test');
     }
 }

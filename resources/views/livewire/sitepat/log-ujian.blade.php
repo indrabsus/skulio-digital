@@ -20,37 +20,7 @@
         <div class="col">
             <div class="row justify-content-between mt-2">
                 <div class="col-lg-6">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="col-3">
-                                <form action="{{route('printTabunganBulanan')}}" method="get" target="_blank">
-                                <select class="form-control" name="bln">
-                                    <option value="">Pilih Bulan</option>
-                                    <option value="01">Januari</option>
-                                    <option value="02">Februari</option>
-                                    <option value="03">Maret</option>
-                                    <option value="04">April</option>
-                                    <option value="05">Mei</option>
-                                    <option value="06">Juni</option>
-                                    <option value="07">Juli</option>
-                                    <option value="08">Agustus</option>
-                                    <option value="09">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <select class="form-control" name="thn">
-                                    <option value="">Pilih Tahun</option>
-                                    <option value="{{date('Y') - 1}}">{{date('Y') - 1}}</option>
-                                    <option value="{{date('Y') }}">{{date('Y') }}</option>
-                                    <option value="{{date('Y') + 1}}">{{date('Y') + 1}}</option>
-                                </select>
-                            </div>
-                            <button class="input-group-text" type="submit">Print</button>
-                        </form>
-                        </div>
-                    </div>
+                </div>
                 <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-3">
                         <div class="col-3">
@@ -71,37 +41,29 @@
                 <table class="table table-stripped">
                     <thead>
                         <tr>
-                            <th>Print</th>
-                            @if (Auth::user()->id_role == 1)
+                            <th>No</th>
                             <th>Nama Siswa</th>
-                            @endif
-                            <th>Nominal</th>
-                            <th>No Invoice</th>
-                            <th>Jenis</th>
-                            <th>log</th>
-                            <th>Petugas</th>
-                            @if (Auth::user()->id_role == 1)
-                            <th>Hapus</th>
-                          @endif
+                            <th>Kelas</th>
+                            <th>Ujian</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($data as $d)
                             <tr>
-                                <td><a href="{{ route('printLog', ['id_log' => $d->id_log_tabungan]) }}" class="btn btn-primary btn-sm" target="_blank"><i class="fa-solid fa-print"></i></a>
+                                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                                <td>{{$d->nama_lengkap}}</td>
+                                <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
+                                <td>{{$d->nama_ujian}}</td>
+                                <td>
+                                    @if ($d->status == 'proses')
+                                    <span class="badge bg-success">Proses</span>
+                                    @else
+                                    <span class="badge bg-primary">Selesai</span>
+                                    @endif
                                 </td>
-                                @if (Auth::user()->id_role == 1)
-                                <td>{{ $d->nama_lengkap }}</td>
-                                @endif
-                                <td>Rp.{{ number_format($d->nominal,0,',','.') }}</td>
-                                <td>{{ $d->no_invoice }}</td>
-                                <td>{{ $d->jenis == 'db' ? 'Debit' : 'Kredit' }}
-                                </td>
-                                <td>{{ date('d M Y h:i A') }}</td>
-                                <td>{{$d->username}}</td>
-                                @if (Auth::user()->id_role == 1)
-                                <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete({{$d->id_log_tabungan}})"><i class="fa-solid fa-trash"></i></a></td>
-                          @endif
+                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_log}})"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                         @endforeach
                     </tbody>

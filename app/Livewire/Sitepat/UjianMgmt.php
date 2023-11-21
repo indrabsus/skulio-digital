@@ -26,6 +26,7 @@ class UjianMgmt extends Component
             ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
             ->where('ujian.nama_ujian', 'like','%'.$this->cari.'%')
             ->where('data_siswa.id_user', Auth::user()->id)
+            ->where('ujian.acc', 'y')
             ->orderBy('ujian.created_at', 'desc')
             ->paginate($this->result);
             return view('livewire.sitepat.ujian-mgmt', compact('data','kelas'));

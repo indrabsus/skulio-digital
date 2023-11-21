@@ -25,15 +25,15 @@
         </div>
     </div>
     @endif
-      <div class="row justify-content-end mt-2">
-        @if (Auth::user()->id_role == 1)
+      <div class="row justify-content-between mt-2">
         <div class="col-lg-6">
+          @if (Auth::user()->id_role == 1)
             <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                 Tambah
               </button>
 
+              @endif
         </div>
-        @endif
         <div class="col-lg-3">
             <div class="input-group input-group-sm mb-3">
               <div class="col-3">
@@ -49,7 +49,7 @@
               </div>
         </div>
     </div>
-    <div class="responsive">
+    <div class="table-responsive">
         <table class="table table-responsive">
             <tr>
                 <th>No</th>
@@ -62,9 +62,20 @@
                 <th>Aksi</th>
 
                 @endif
+                @if (Auth::user()->id_role == 8)
                 <th>Ujian</th>
+                @endif
             </tr>
+
             @foreach ($data as $d)
+            @php
+                $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
+                if($us){
+                $logi = App\Models\LogUjian::where('id_ujian',$d->id_ujian)->where('id_siswa', $us->id_siswa)->first();
+                $count = App\Models\LogUjian::where('status', 'proses')->where('id_siswa',$us->id_siswa)->count();
+            }
+
+            @endphp
                 <tr>
                     <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                     <td>@if (Auth::user()->id_role == 8)
@@ -76,7 +87,9 @@
                     <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                     @if (Auth::user()->id_role == 1)
                     <td>{{$d->token}}</td>
-                    <td>@if ($d->acc == 'y')
+                    <td>
+
+                        @if ($d->acc == 'y')
                       <i class="fa fa-check" aria-hidden="true"></i>
                     @else
                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -86,9 +99,26 @@
                         <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_ujian}})"><i class="fa-solid fa-trash"></i></a>
                       </td>
                       @endif
+                      @if (Auth::user()->id_role == 8)
                       <td>
-                        <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Mulai</a>
-                      </td>
+                        @if ($logi)
+                        @if ($logi->status == 'done')
+                        <button class="btn btn-outline-primary" disabled>Berakhir</button>
+                    @else
+                    <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Lanjutkan</a>
+                    @endif
+
+                    @else
+                    @if ($count < 1)
+                    <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Mulai</a>
+                    @else
+                    <button class="btn btn-outline-danger btn-sm" disabled><i class="fa fa-times" aria-hidden="true"></i></button>
+                    @endif
+
+                        @endif
+
+                       </td>
+                      @endif
                 </tr>
             @endforeach
         </table>

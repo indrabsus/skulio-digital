@@ -143,9 +143,49 @@ class MenuSeeder extends Seeder
         ]);
         Menu::create([
             'parent_menu' => 7,
+            'akses_role' => 1,
+            'nama_menu' => 'Log Ujian',
+            'class' => 'Sitepat\LogUjian',
+        ]);
+        Menu::create([
+            'parent_menu' => 7,
+            'akses_role' => 1,
+            'nama_menu' => 'Log Kecurangan',
+            'class' => 'Sitepat\LogKecurangan',
+        ]);
+        Menu::create([
+            'parent_menu' => 7,
             'akses_role' => 8,
             'nama_menu' => 'Ujianku',
             'class' => 'Sitepat\UjianMgmt',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 1,
+            'nama_menu' => 'Laporan Tabungan',
+            'class' => 'BankMini\LaporanTabungan',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 9,
+            'nama_menu' => 'Tabungan Siswa',
+            'class' => 'BankMini\TabunganSiswa',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 9,
+            'nama_menu' => 'Log Tabungan',
+            'class' => 'BankMini\LogTabungan',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 6,
+            'akses_role' => 9,
+            'nama_menu' => 'Laporan Tabungan',
+            'class' => 'BankMini\LaporanTabungan',
         ]);
 
     }

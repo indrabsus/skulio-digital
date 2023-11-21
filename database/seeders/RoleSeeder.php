@@ -37,5 +37,8 @@ class RoleSeeder extends Seeder
         Role::create([
             'nama_role' => 'siswa'
         ]);
+        Role::create([
+            'nama_role' => 'bankmini'
+        ]);
     }
 }
