@@ -73,11 +73,13 @@ class Kelas extends Component
             'nama_kelas' => 'required',
             'id_jurusan' => 'required',
             'tingkat' => 'required',
+            'id_angkatan' => 'required',
         ]);
         $data = TabelKelas::where('id_kelas', $this->id_kelas)->update([
             'nama_kelas' => $this->nama_kelas,
             'id_jurusan' => $this->id_jurusan,
             'tingkat' => $this->tingkat,
+            'id_angkatan' => $this->id_angkatan,
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();

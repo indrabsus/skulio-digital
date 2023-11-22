@@ -84,40 +84,67 @@ License: For each use you must have a valid license purchased only from above li
                           @endif
                           </div>
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>
-                            <h5 class="text-muted fw-normal mb-4">Log in to your account.</h5>
-                            <form class="forms-sample" method="post" action="{{route('loginauth')}}">
-                            <div class="mb-3">
-                                <label for="userEmail" class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" placeholder="Masukan Username">
+                            <h5 class="text-muted fw-normal mb-4">Lupa Username</h5>
+                            <form class="forms-sample" method="get" action="">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="userEmail" class="form-label">NIS</label>
+                                            <input type="text" class="form-control" name="nis" placeholder="Masukan NIS" value="{{old('nis')}}">
+                                            <div class="text-danger">
+                                                @error('nis')
+                                                    {{$message}}
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="userPassword" class="form-label">No Hp</label>
+                                            <input type="text" class="form-control" name="no_hp" value="{{old('no_hp')}}" placeholder="Masukan No Hp">
+                                            <div class="text-danger">
+                                                @error('no_hp')
+                                                    {{$message}}
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            <div>
+                                <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Cek Username</button>
+                            </div>
+                            </form>
+                            @if (isset($_GET['nis']) && $_GET['no_hp'])
+                                @php
+                                    $data = DB::table('users')->leftJoin('data_siswa','data_siswa.id_user','users.id')->where('data_siswa.nis',$_GET['nis'])->where('no_hp', $_GET['no_hp'])->first();
+                                @endphp
+                            @else
+                                @php
+                                    $data= NULL;
+                                @endphp
+                            @endif
+                            @if (isset($data))
+                            <div class="mb-3 mt-3">
+                                <input type="text" class="form-control" name="username" placeholder="Username Anda" value="{{$data->username}}" disabled>
                                 <div class="text-danger">
                                     @error('username')
                                         {{$message}}
                                     @enderror
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="userPassword" class="form-label">Password</label>
-                                <input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="Masukan Password">
+                            @else
+                            <div class="mb-3 mt-3">
+                                <input type="text" class="form-control" name="username" placeholder="Username Anda" value="User tidak ditemukan!" disabled>
                                 <div class="text-danger">
-                                    @error('password')
+                                    @error('username')
                                         {{$message}}
                                     @enderror
                                 </div>
                             </div>
-                            <div>
-                                <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Login</button>
-                            </div>
-                            <div class="row justify-content-between">
-                                <div class="col-lg-3">
-                                    <a href="{{ route('registerpage') }}" class="d-block mt-3 text-muted">Tidak punya akun? Daftar disini!</a>
-                                </div>
-                                <div class="col-lg-3">
-                                    <a href="{{ route('lupausername') }}" class="d-block mt-3 text-muted">Lupa username? Klik disini!</a>
-                                </div>
-                            </div>
-
-
-                            </form>
+                            @endif
+                            <a href="{{ route('loginpage') }}" class="d-block mt-3 text-muted">Kembali ke Halaman Login</a>
                     </div>
                 </div>
         </div>

@@ -29,4 +29,10 @@ class Controller extends BaseController
             'password'=> bcrypt($set->default_password),
         ]);
     }
+    public function changePassword($id,$pass){
+        $ganti = User::where('id',$id)->update([
+            'password' => bcrypt($pass)
+        ]);
+        return $ganti;
+    }
 }

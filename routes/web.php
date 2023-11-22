@@ -5,22 +5,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PdfController;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\UbahPassword;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/listtest',[ExamController::class,'listTest'])->name('listtest');
-Route::get('{id}/token/',[ExamController::class,'token'])->name('token');
-Route::any('cektoken', [ExamController::class,'masukUjian'])->name('cektoken');
-Route::get('done',[ExamController::class,'done'])->name('done');
-Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
 
 Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
+Route::get('/lupausername',[AuthController::class,'lupausername'])->name('lupausername');
 Route::get('/register',[AuthController::class,'registerpage'])->name('registerpage');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
@@ -30,9 +27,20 @@ Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 Route::group(['middleware' => ['auth']], function(){
+    Route::any('/updatepassword',[AuthController::class,'updatePassword'])->name('updatepassword');
+    Route::get('/ubahpass', UbahPassword::class)->name('ubahpassword');
+
+
+    Route::get('/listtest',[ExamController::class,'listTest'])->name('listtest');
+    Route::get('{id}/token/',[ExamController::class,'token'])->name('token');
+    Route::any('cektoken', [ExamController::class,'masukUjian'])->name('cektoken');
+    Route::get('done',[ExamController::class,'done'])->name('done');
+    Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
     Route::group(['middleware' => ['test']], function(){
         Route::get('siswa/test', [ExamController::class,'test'])->name('test');
+
+
     });
 
 

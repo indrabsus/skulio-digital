@@ -14,6 +14,9 @@ class AuthController extends Controller
     public function loginpage(){
         return view('login');
     }
+    public function lupausername(){
+        return view('lupausername');
+    }
     public function registerpage(){
         $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->get();
         return view('register', compact('kelas'));
@@ -25,7 +28,7 @@ class AuthController extends Controller
             'nama_lengkap' => 'required',
             'jenkel' => 'required',
             'id_kelas' => 'required',
-            'nis' => 'required',
+            'nis' => 'required|unique:data_siswa',
         ]);
         $user = User::create([
             'username' => $request->username,
@@ -68,5 +71,26 @@ class AuthController extends Controller
 public function logout(){
     Auth::logout();
     return redirect()->route('loginpage');
+}
+
+public function updatePassword(Request $request){
+    $request->validate([
+        'old_pass' => 'required',
+        'password' => 'required|min:4',
+        'k_pass' => 'required'
+    ]);
+    $global = new Controller;
+    $user = User::where('id', Auth::user()->id)->first();
+    if(password_verify($request->old_pass, $user->password)){
+        if($request->password == $request->k_pass){
+            $global->changePassword(Auth::user()->id, $request->password);
+        } else {
+            return redirect()->route('ubahpassword')->with('gagal', 'Password dan Konfirmasi Password harus sama!');
+        }
+    } else {
+        return redirect()->route('ubahpassword')->with('gagal', 'Masukan Password Saat ini dengan benar!');
+    }
+
+    return redirect()->route('ubahpassword')->with('sukses', 'Pastikan akan mencatat password baru anda!');
 }
 }
