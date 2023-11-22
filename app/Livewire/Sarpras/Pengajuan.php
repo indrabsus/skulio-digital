@@ -19,7 +19,7 @@ class Pengajuan extends Component
 
         $role = Role::all();
         $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')->
-        whereRaw('nama_barang', 'like','%'.$this->cari.'%')
+        where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
         return view('livewire.sarpras.pengajuan', compact('data','role'));
     }
