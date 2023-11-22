@@ -24,7 +24,12 @@ class DataSiswa extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->orderBy('id_siswa','desc')
-        ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+        ->where(function ($query) {
+            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                ->orWhere('no_hp', 'like', '%' . $this->cari . '%')
+                ->orWhere('nis', 'like', '%' . $this->cari . '%');
+            // Tambahkan orWhere untuk setiap kolom yang ingin Anda cari
+        })
         ->paginate($this->result);
         return view('livewire.kurikulum.data-siswa', compact('data','kelas'));
     }
