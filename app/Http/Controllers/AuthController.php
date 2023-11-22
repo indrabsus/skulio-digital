@@ -14,6 +14,9 @@ class AuthController extends Controller
     public function loginpage(){
         return view('login');
     }
+    public function lupausername(){
+        return view('lupausername');
+    }
     public function registerpage(){
         $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->get();
         return view('register', compact('kelas'));

@@ -17,6 +17,7 @@ Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
+Route::get('/lupausername',[AuthController::class,'lupausername'])->name('lupausername');
 Route::get('/register',[AuthController::class,'registerpage'])->name('registerpage');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
