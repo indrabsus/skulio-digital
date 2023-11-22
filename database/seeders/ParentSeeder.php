@@ -41,5 +41,9 @@ class ParentSeeder extends Seeder
             'parent_menu' => 'Sitepat',
             'icon' => 'eye',
         ]);
+        ParentMenu::create([
+            'parent_menu' => 'PPDB',
+            'icon' => 'users',
+        ]);
     }
 }

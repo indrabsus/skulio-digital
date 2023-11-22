@@ -182,10 +182,38 @@ class MenuSeeder extends Seeder
         ]);
 
         Menu::create([
-            'parent_menu' => 6,
-            'akses_role' => 9,
-            'nama_menu' => 'Laporan Tabungan',
-            'class' => 'BankMini\LaporanTabungan',
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Master PPDB',
+            'class' => 'Ppdb\MasterPpdb',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Jurusan PPDB',
+            'class' => 'Ppdb\JurusanPpdb',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Kelas PPDB',
+            'class' => 'Ppdb\KelasPpdb',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Siswa PPDB',
+            'class' => 'Ppdb\SiswaPpdb',
+        ]);
+
+        Menu::create([
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Log PPDB',
+            'class' => 'Ppdb\LogPpdb',
         ]);
 
     }
