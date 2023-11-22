@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 
 class Pengajuan extends Component
 {
-    public $id_pengajuan, $nama_barang, $volume, $satuan, $bulan_masuk,$jenis ,$id_role;
+    public $id_pengajuan, $nama_barang, $volume, $satuan, $bulan_pengajuan, $tahun_arkas ,$id_role, $jenis, $perkiraan_harga;
     use WithPagination;
 
     public $cari = '';
@@ -28,20 +28,22 @@ class Pengajuan extends Component
             'nama_barang' => 'required',
             'volume'=> 'required',
             'satuan'=> 'required',
-            'bulan_masuk'=> 'required',
+            'bulan_pengajuan'=> 'required',
             'jenis'=> 'required',
+            'tahun_arkas'=> 'required',
             'id_role'=> 'required',
-
-
+            'perkiraan_harga'=> 'required',
         ]);
 
         $data = TabelPengajuan::create([
             'nama_barang' => $this->nama_barang,
             'volume'=> $this->volume,
             'satuan'=> $this->satuan,
-            'bulan_masuk'=> $this->bulan_masuk,
+            'bulan_pengajuan'=> $this->bulan_pengajuan,
             'jenis'=> $this->jenis,
+            'tahun_arkas'=> $this->tahun_arkas,
             'id_role'=> $this->id_role,
+            'perkiraan_harga'=> $this->perkiraan_harga,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -51,9 +53,11 @@ class Pengajuan extends Component
         $this->nama_barang = '';
         $this->volume = '';
         $this->satuan = '';
-        $this->bulan_masuk = '';
+        $this->bulan_pengajuan = '';
         $this->jenis = '';
+        $this->tahun_arkas = '';
         $this->id_role = '';
+        $this->perkiraan_harga = '';
     }
     public function edit($id){
         $data = TabelPengajuan::where('id_pengajuan', $id)->first();
@@ -61,9 +65,11 @@ class Pengajuan extends Component
         $this->nama_barang = $data->nama_barang;
         $this->volume =  $data->volume;
         $this->satuan = $data->satuan;
-        $this->bulan_masuk = $data->bulan_masuk;
+        $this->bulan_pengajuan = $data->bulan_pengajuan;
         $this->jenis = $data->jenis;
+        $this->tahun_arkas = $data->tahun_arkas;
         $this->id_role = $data->id_role;
+        $this->perkiraan_harga = $data->perkiraan_harga;
     }
 
 
@@ -72,18 +78,21 @@ class Pengajuan extends Component
             'nama_barang' => 'required',
             'volume'=> 'required',
             'satuan'=> 'required',
-            'bulan_masuk'=> 'required',
+            'bulan_pengajuan'=> 'required',
             'jenis'=> 'required',
+            'tahun_arkas'=> 'required',
             'id_role'=> 'required',
-
+            'perkiraan_harga'=> 'required',
         ]);
         $data = TabelPengajuan::where('id_pengajuan', $this->id_pengajuan)->update([
             'nama_barang' => $this->nama_barang,
             'volume'=> $this->volume,
             'satuan'=> $this->satuan,
-            'bulan_masuk'=> $this->bulan_masuk,
+            'bulan_pengajuan'=> $this->bulan_pengajuan,
             'jenis'=> $this->jenis,
+            'tahun_arkas'=> $this->tahun_arkas,
             'id_role'=> $this->id_role,
+            'perkiraan_harga'=> $this->perkiraan_harga,
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
@@ -92,7 +101,6 @@ class Pengajuan extends Component
     public function c_delete($id){
         $data = TabelPengajuan::where('id_pengajuan', $id)->first();
         $this->id_pengajuan = $id;
-
     }
     public function delete(){
         TabelPengajuan::where('id_pengajuan',$this->id_pengajuan)->delete();

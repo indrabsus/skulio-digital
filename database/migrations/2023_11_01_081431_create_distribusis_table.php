@@ -14,15 +14,10 @@ return new class extends Migration
         Schema::create('distribusi', function (Blueprint $table) {
             $table->id('id_distribusi');
             $table->foreignId('id_barang')->references('id_barang')->on('barang')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('kode_barang');
-            $table->string('nama_barang');
             $table->bigInteger('volume');
             $table->string('satuan');
-            $table->bigInteger('tahun_masuk');
-            $table->enum('sumber', ['bos','yayasan']);
-            $table->enum('jenis', ['ab','b']);
-            $table->string('id_ruangan');
-            $table->string('id_role');
+            $table->foreignId('id_ruangan')->references('id_ruangan')->on('ruangan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

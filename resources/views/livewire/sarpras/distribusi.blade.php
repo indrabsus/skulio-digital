@@ -42,15 +42,13 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kode Barang</th>
                             <th>Nama Barang</th>
-                            <th>Volume</th>
-                            <th>Satuan</th>
+                            <th>Jumlah</th>
                             <th>Sumber</th>
                             <th>Tahun Masuk</th>
-                            <th>jenis barang</th>
+                            <th>Jenis Barang</th>
                             <th>Ruangan</th>
-                            <th>Role</th>
+                            <th>Unit</th>
                             <th>aksi</th>
                         </tr>
                     </thead>
@@ -58,13 +56,11 @@
                         @foreach ($data as $d)
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                                <td>{{ $d->kode_barang }}</td>
                                 <td>{{ $d->nama_barang }}</td>
-                                <td>{{ $d->volume }}</td>
-                                <td>{{ $d->satuan }}</td>
+                                <td>{{ $d->volume }} {{ $d->satuan }}</td>
                                 <td>{{ $d->sumber }}</td>
                                 <td>{{ $d->tahun_masuk }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Alat dan Bahan' : 'Barang' }}</td>
+                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ $d->nama_ruangan }}</td>
                                 <td>{{ $d->nama_role}}</td>
                                 <td>

@@ -47,11 +47,13 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
-                            <th>Volume</th>
-                            <th>Satuan</th>
-                            <th>Bulan Masuk</th>
-                            <th>Jenis Barang</th>
-                            <th>Nama Role</th>
+                            <th>Jumlah</th>
+                            <th>Bulan Pengajuan</th>
+                            <th>Jenis</th>
+                            <th>Tahun Arkas</th>
+                            <th>Harga Satuan</th>
+                            <th>Total</th>
+                            <th>Unit</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -60,10 +62,12 @@
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                                 <td>{{ $d->nama_barang }}</td>
-                                <td>{{ $d->volume }}</td>
-                                <td>{{ $d->satuan }}</td>
-                                <td>{{ $d->bulan_masuk }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Alat dan Bahan' : 'Barang' }}</td>
+                                <td>{{ $d->volume }} {{ $d->satuan }}</td>
+                                <td>{{ $d->bulan_pengajuan }}</td>
+                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
+                                <td>{{ $d->tahun_arkas }}</td>
+                                <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
+                                <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>
                                     <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_pengajuan}})'><i class="fa-solid fa-edit"></i></i></a>
@@ -123,8 +127,17 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Bulan Masuk</label>
-                        <select class="form-control" wire:model.live="bulan_masuk">
+                        <label for="">Perkiraan Harga Satuan</label>
+                        <input type="number" wire:model.live="perkiraan_harga" class="form-control">
+                        <div class="text-danger">
+                            @error('perkiraan_harga')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Bulan Pengajuan</label>
+                        <select class="form-control" wire:model.live="bulan_pengajuan">
                             <option value="">Pilih Bulan</option>
                             <option value="Januari">Januari</option>
                             <option value="Februari">Februari</option>
@@ -140,7 +153,7 @@
                             <option value="Desember">Desember</option>
                         </select>
                         <div class="text-danger">
-                            @error('bulan_masuk')
+                            @error('bulan_pengajuan')
                                 {{ $message }}
                             @enderror
                         </div>
@@ -149,8 +162,22 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis">
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Alat dan Bahan</option>
-                            <option value="b">Barang</option>
+                            <option value="ab">Barang Habis Pakai</option>
+                            <option value="b">Barang Modal</option>
+                        </select>
+                        <div class="text-danger">
+                            @error('jenis')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Tahun Arkas</label>
+                        <select class="form-control" wire:model.live ="tahun_arkas">
+                            <option value="">Pilih Tahun Arkas</option>
+                            <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                            <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -210,6 +237,7 @@
                             @enderror
                         </div>
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="">Satuan</label>
                         <select class="form-control" wire:model.live="satuan">
@@ -226,8 +254,17 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Bulan Masuk</label>
-                        <select class="form-control" wire:model.live="bulan_masuk">
+                        <label for="">Perkiraan Harga Satuan</label>
+                        <input type="number" wire:model.live="perkiraan_harga" class="form-control">
+                        <div class="text-danger">
+                            @error('perkiraan_harga')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Bulan Pengajuan</label>
+                        <select class="form-control" wire:model.live="bulan_pengajuan">
                             <option value="">Pilih Bulan</option>
                             <option value="Januari">Januari</option>
                             <option value="Februari">Februari</option>
@@ -243,7 +280,7 @@
                             <option value="Desember">Desember</option>
                         </select>
                         <div class="text-danger">
-                            @error('bulan_masuk')
+                            @error('bulan_pengajuan')
                                 {{ $message }}
                             @enderror
                         </div>
@@ -252,8 +289,22 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis">
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Alat dan Bahan</option>
-                            <option value="b">Barang</option>
+                            <option value="ab">Barang Habis Pakai</option>
+                            <option value="b">Barang Modal</option>
+                        </select>
+                        <div class="text-danger">
+                            @error('jenis')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Tahun Arkas</label>
+                        <select class="form-control" wire:model.live ="tahun_arkas">
+                            <option value="">Pilih Tahun Arkas</option>
+                            <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                            <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')

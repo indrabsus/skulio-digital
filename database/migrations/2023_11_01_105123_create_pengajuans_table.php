@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->bigInteger('volume');
             $table->string('satuan');
-            $table->string('bulan_masuk');
+            $table->string('bulan_pengajuan');
+            $table->bigInteger('tahun_arkas');
+            $table->bigInteger('perkiraan_harga');
             $table->enum('jenis', ['ab','b']);
             $table->foreignId('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

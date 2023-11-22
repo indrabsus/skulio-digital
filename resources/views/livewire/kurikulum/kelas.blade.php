@@ -45,6 +45,7 @@
                         <tr>
                             <th>No</th>
                             <th>Kelas</th>
+                            <th>Jumlah Siswa</th>
                             <th>Jurusan</th>
                             <th>Tahun Masuk</th>
                             <th>Verifikator</th>
@@ -56,6 +57,7 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                             <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
+                            <td>{{ DB::table('data_siswa')->where('id_kelas', $d->id_kelas)->count() }}</td>
                             <td>{{$d->nama_jurusan}}</td>
                             <td>{{$d->tahun_masuk}}</td>
                             <td>{{$d->username}}</td>
@@ -136,7 +138,7 @@
                         @enderror
                     </div>
                   </div>
-                
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -210,7 +212,7 @@
                         @enderror
                     </div>
                   </div>
-                
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 
 class barang extends Component
 {
-    public $id_barang, $kode_barang, $nama_barang, $volume, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role;
+    public $id_barang, $nama_barang, $volume, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role, $tahun_arkas;
     use WithPagination;
 
     public $cari = '';
@@ -27,7 +27,6 @@ class barang extends Component
     }
     public function insert(){
         $this->validate([
-            'kode_barang' => 'required',
             'nama_barang' => 'required',
             'volume'=> 'required|numeric|min:1',
             'satuan'=> 'required',
@@ -36,11 +35,11 @@ class barang extends Component
             'jenis'=> 'required',
             'id_ruangan' => 'required',
             'id_role'=> 'required',
+            'tahun_arkas'=> 'required',
 
         ]);
 
         $data = TabelBarang::create([
-            'kode_barang' => $this->kode_barang,
             'nama_barang' => $this->nama_barang,
             'volume'=> $this->volume,
             'satuan'=> $this->satuan,
@@ -49,13 +48,13 @@ class barang extends Component
             'jenis'=> $this->jenis,
             'id_ruangan' => $this->id_ruangan,
             'id_role'=> $this->id_role,
+            'tahun_arkas'=> $this->tahun_arkas,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
     public function clearForm(){
-        $this->kode_barang = '';
         $this->nama_barang = '';
         $this->volume = '';
         $this->satuan = '';
@@ -64,11 +63,11 @@ class barang extends Component
         $this->jenis = '';
         $this->id_ruangan = '';
         $this->id_role = '';
+        $this->tahun_arkas = '';
     }
     public function edit($id){
         $data = TabelBarang::where('id_barang', $id)->first();
         $this->id_barang = $data->id_barang;
-        $this->kode_barang = $data->kode_barang;
         $this->nama_barang = $data->nama_barang;
         $this->volume =  $data->volume;
         $this->satuan = $data->satuan;
@@ -77,12 +76,12 @@ class barang extends Component
         $this->jenis = $data->jenis;
         $this->id_ruangan = $data->id_ruangan;
         $this->id_role = $data->id_role;
+        $this->tahun_arkas = $data->tahun_arkas;
     }
 
     public function Distribusi($id){
         $data = TabelBarang::where('id_barang', $id)->first();
         $this->id_barang = $data->id_barang;
-        $this->kode_barang = $data->kode_barang;
         $this->nama_barang = $data->nama_barang;
         $this->volume =  $data->volume;
         $this->satuan = $data->satuan;
@@ -91,19 +90,12 @@ class barang extends Component
         $this->jenis = $data->jenis;
         $this->id_ruangan = $data->id_ruangan;
         $this->id_role = $data->id_role;
+        $this->tahun_arkas = $data->tahun_arkas;
     }
 
     public function Prosesdistribusi(){
         $this->validate([
-            'kode_barang' => 'required',
-            'nama_barang' => 'required',
             'volume'=> 'required|numeric|min:1',
-            'satuan'=> 'required',
-            'tahun_masuk'=> 'required',
-            'sumber'=> 'required',
-            'jenis'=> 'required',
-            'id_ruangan' => 'required',
-            'id_role'=> 'required',
         ]);
         $tabelbarang = TabelBarang::where('id_barang', $this->id_barang)->first();
 
@@ -113,7 +105,6 @@ class barang extends Component
         $this->dispatch('closeModal');
         } else {
             $data = TabelBarang::where('id_barang', $this->id_barang)->update([
-                'kode_barang' => $this->kode_barang,
                 'nama_barang' => $this->nama_barang,
                 'volume'=> (int)$tabelbarang->volume - (int)$this->volume,
                 'satuan'=> $this->satuan,
@@ -123,16 +114,11 @@ class barang extends Component
                 'id_ruangan' => $this->id_ruangan,
                 'id_role'=> $this->id_role,
             ]);
-    
+
             $data = TabelDistribusi ::create([
                 'id_barang'=> $this->id_barang,
-                'kode_barang' => $this->kode_barang,
-                'nama_barang' => $this->nama_barang,
                 'volume'=> $this->volume,
                 'satuan'=> $this->satuan,
-                'tahun_masuk'=> $this->tahun_masuk,
-                'sumber'=> $this->sumber,
-                'jenis'=> $this->jenis,
                 'id_ruangan' => $this->id_ruangan,
                 'id_role'=> $this->id_role,
             ]);
@@ -145,7 +131,6 @@ class barang extends Component
 
     public function update(){
         $this->validate([
-            'kode_barang' => 'required',
             'nama_barang' => 'required',
             'volume'=> 'required',
             'satuan'=> 'required',
@@ -156,7 +141,6 @@ class barang extends Component
             'id_role'=> 'required',
         ]);
         $data = TabelBarang::where('id_barang', $this->id_barang)->update([
-            'kode_barang' => $this->kode_barang,
             'nama_barang' => $this->nama_barang,
             'volume'=> $this->volume,
             'satuan'=> $this->satuan,

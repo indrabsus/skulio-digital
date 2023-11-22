@@ -45,15 +45,14 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kode Barang</th>
                             <th>Nama Barang</th>
-                            <th>Volume</th>
-                            <th>Satuan</th>
+                            <th>Jumlah</th>
+                            <th>Tahun Arkas</th>
                             <th>Sumber</th>
                             <th>Tahun Masuk</th>
-                            <th>jenis barang</th>
+                            <th>Jenis</th>
                             <th>Ruangan</th>
-                            <th>Role</th>
+                            <th>Unit</th>
                             <th>aksi</th>
                         </tr>
                     </thead>
@@ -61,13 +60,12 @@
                         @foreach ($data as $d)
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                                <td>{{ $d->kode_barang }}</td>
                                 <td>{{ $d->nama_barang }}</td>
-                                <td>{{ $d->volume }}</td>
-                                <td>{{ $d->satuan }}</td>
+                                <td>{{ $d->volume }} {{ $d->satuan }}</td>
+                                <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->sumber }}</td>
                                 <td>{{ $d->tahun_masuk }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Alat dan Bahan' : 'Barang' }}</td>
+                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ $d->nama_ruangan }}</td>
                                 <td>{{ $d->nama_role}}</td>
                                 <td>
@@ -96,17 +94,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group mb-3">
-                                <label for="">Kode Barang</label>
-                                <input type="text" wire:model.live="kode_barang" class="form-control">
-                                <div class="text-danger">
-                                    @error('kode_barang')
-                                        {{ $message }}
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Nama Barang</label>
@@ -166,8 +153,8 @@
                             <label for="">Jenis Barang</label>
                             <select class="form-control" wire:model.live ="jenis">
                                 <option value="">Pilih Jenis Barang</option>
-                                <option value="ab">Alat dan Bahan</option>
-                                <option value="b">Barang</option>
+                                <option value="ab">Barang Habis Pakai</option>
+                                <option value="b">Barang Modal</option>
                             </select>
                             <div class="text-danger">
                                 @error('jenis')
@@ -182,6 +169,17 @@
                                 <input type="text" wire:model.live="tahun_masuk" class="form-control">
                                 <div class="text-danger">
                                     @error('tahun_masuk')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label for="">Tahun Arkas</label>
+                                <input type="text" wire:model.live="tahun_arkas" class="form-control">
+                                <div class="text-danger">
+                                    @error('tahun_arkas')
                                         {{ $message }}
                                     @enderror
                                 </div>
@@ -237,18 +235,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label for="">Kode Barang</label>
-                            <input type="text" wire:model.live="kode_barang" class="form-control" disabled>
-                            <div class="text-danger">
-                                @error('kode_barang')
-                                    {{ $message }}
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 mb-3">
+                    <div class="col-lg-12 mb-3">
                         <div class="form-group">
                             <label for="">Nama Barang</label>
                             <input type="text" wire:model.live="nama_barang" class="form-control" disabled>
@@ -307,8 +294,8 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis" disabled>
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Alat dan Bahan</option>
-                            <option value="b">Barang</option>
+                            <option value="ab">Barang Habis Pakai</option>
+                            <option value="b">Barang Modal</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -323,6 +310,17 @@
                             <input type="text" wire:model.live="tahun_masuk" class="form-control" disabled>
                             <div class="text-danger">
                                 @error('tahun_masuk')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                            <label for="">Tahun Arkas</label>
+                            <input type="text" wire:model.live="tahun_arkas" class="form-control" disabled>
+                            <div class="text-danger">
+                                @error('tahun_arkas')
                                     {{ $message }}
                                 @enderror
                             </div>
@@ -379,17 +377,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group mb-3">
-                                <label for="">Kode Barang</label>
-                                <input type="text" wire:model.live="kode_barang" class="form-control">
-                                <div class="text-danger">
-                                    @error('kode_barang')
-                                        {{ $message }}
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="">Nama Barang</label>
@@ -449,8 +436,8 @@
                             <label for="">Jenis Barang</label>
                             <select class="form-control" wire:model.live ="jenis">
                                 <option value="">Pilih Jenis Barang</option>
-                                <option value="ab">Alat dan Bahan</option>
-                                <option value="b">Barang</option>
+                                <option value="ab">Barang Habis Pakai</option>
+                                <option value="b">Barang Modal</option>
                             </select>
                             <div class="text-danger">
                                 @error('jenis')
@@ -465,6 +452,17 @@
                                 <input type="text" wire:model.live="tahun_masuk" class="form-control">
                                 <div class="text-danger">
                                     @error('tahun_masuk')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label for="">Tahun Arkas</label>
+                                <input type="text" wire:model.live="tahun_arkas" class="form-control">
+                                <div class="text-danger">
+                                    @error('tahun_arkas')
                                         {{ $message }}
                                     @enderror
                                 </div>
