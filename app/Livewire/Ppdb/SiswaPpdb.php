@@ -3,11 +3,13 @@
 namespace App\Livewire\Ppdb;
 
 use App\Http\Controllers\Controller;
+use App\Models\JurusanPpdb;
 use App\Models\KelasPpdb;
 use App\Models\LogPpdb;
 use App\Models\LogTabungan;
 use App\Models\MasterPpdb;
 use App\Models\Setingan;
+use App\Models\SiswaBaru;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SiswaPpdb as TabelSiswaPpdb;
@@ -15,27 +17,25 @@ use Livewire\WithPagination;
 
 class SiswaPpdb extends Component
 {
-    public $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nik_siswa,$nisn,$bayar_daftar, $id_kelas, $jenkel, $no_hp, $nis, $nama_lengkap;
+    public $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
     use WithPagination;
 
     public $cari = '';
     public $result = 10;
     public function render()
-    {   
+    {
+        $jurusan = JurusanPpdb::all();
         $master_ppdb = MasterPpdb::all();
         $kelas_ppdb = KelasPpdb::all();
-        $data  = TabelSiswaPpdb::leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_ppdb.id_kelas')
-        ->orderBy('id_siswa','desc')
+        $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
         ->where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
-        return view('livewire.ppdb.siswa-ppdb', compact('data','kelas_ppdb'));
+        return view('livewire.ppdb.siswa-ppdb', compact('data','kelas_ppdb','jurusan'));
     }
     public function insert(){
         $this->validate([
-            'id_kelas'=> 'required',
             'jenkel' => 'required',
             'no_hp'=> 'required',
-            'nis'=> 'required|unique:data_siswa',
             'nama_lengkap'=> 'required',
             'nama_ayah'=> 'required',
             'nama_ibu'=> 'required',
@@ -50,8 +50,6 @@ class SiswaPpdb extends Component
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
             'no_hp'=> $this->no_hp,
-            'nis'=> $this->nis,
-            'id_kelas' => $this->id_kelas,
             'nama_ayah' => $this->nama_ayah,
             'nama_ibu' => $this->nama_ibu,
             'asal_sekolah' => $this->asal_sekolah,
@@ -67,11 +65,9 @@ class SiswaPpdb extends Component
         $this->dispatch('closeModal');
     }
     public function clearForm(){
-        $this->id_kelas = '';
         $this->nama_lengkap = '';
         $this->jenkel = '';
         $this->no_hp = '';
-        $this->nis = '';
         $this->id_kelas = '';
         $this->nama_ayah = '';
         $this->nama_ibu = '';
@@ -81,6 +77,7 @@ class SiswaPpdb extends Component
         $this->minat_jurusan2 = '';
         $this->nisn = '';
         $this->bayar_daftar = '';
+        $this->nom2 = '';
     }
     public function edit($id){
 
@@ -88,9 +85,7 @@ class SiswaPpdb extends Component
         $this->nama_lengkap = $data->nama_lengkap;
         $this->jenkel = $data->jenkel;
         $this->no_hp = $data->no_hp;
-        $this->nis = $data->nis;
         $this->id_user = $id;
-        $this->id_kelas = $data->id_kelas;
         $this->id_siswa = $data->id_siswa;
         $this->nama_ayah = $data->nama_ayah;
         $this->nama_ibu = $data->nama_ibu;
@@ -98,15 +93,13 @@ class SiswaPpdb extends Component
         $this->minat_jurusan1 = $data->minat_jurusan1;
         $this->minat_jurusan2 = $data->minat_jurusan2;
         $this->nik_siswa = $data->nik_siswa;
-        $this->nisn = $data->id_siswa;
+        $this->nisn = $data->nisn;
         $this->bayar_daftar = $data->bayar_daftar;
     }
     public function update(){
             $this->validate([
-                'id_kelas'=> 'required',
                 'jenkel' => 'required',
                 'no_hp'=> 'required',
-                'nis'=> 'required',
                 'nama_lengkap'=> 'required',
                 'nama_ayah'=> 'required',
                 'nama_ibu'=> 'required',
@@ -117,13 +110,11 @@ class SiswaPpdb extends Component
                 'nisn'=> 'required',
                 'bayar_daftar'=> 'required',
             ]);
- 
+
         $data = TabelSiswaPpdb::where('id_siswa', $this->id_siswa)->update([
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
             'no_hp'=> $this->no_hp,
-            'nis'=> $this->nis,
-            'id_kelas' => $this->id_kelas,
             'nama_ibu' => $this->nama_ibu,
             'asal_sekolah' => $this->asal_sekolah,
             'minat_jurusan1' => $this->minat_jurusan1,
@@ -133,7 +124,7 @@ class SiswaPpdb extends Component
             'bayar_daftar' => $this->bayar_daftar,
         ]);
 
-        
+
 
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
@@ -142,49 +133,95 @@ class SiswaPpdb extends Component
 
     public function ppdb($id){
 
-        $data = TabelSiswaPpdb::where('id_siswa', $id)->first();
-        $this->nama_lengkap = $data->nama_lengkap;
-        $this->id_siswa = $data->id_siswa;
-        
+        $nom = LogPpdb::where('id_siswa', $id)->where('jenis', 'p')->sum('nominal');
+        $this->nom = $nom;
+        $this->id_siswa = $id;
+
     }
     public function insertppdb(){
+        $cek = LogPpdb::where('no_invoice', 'P'.date('dmYh').$this->id_siswa)
+        ->count();
+        $max = MasterPpdb::where('tahun', date('Y'))->first();
+        // $crn = LogPpdb::where('id_siswa', $this->id_siswa)->where('jenis', 'p')->sum('nominal');
+        $inputnow = $this->nom + $this->nom2;
+        if($inputnow > $max->ppdb){
+            session()->flash('gagal','Melebihi jumlah nominal!');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+        } else {
+            if($cek < 1) {
+                $data = LogPpdb::create([
+                    'id_siswa'=> $this->id_siswa,
+                    'nominal'=> $this->nom2,
+                    'no_invoice' => 'P'.date('dmYh').$this->id_siswa,
+                    'jenis'=>'p'
 
-        $data = MasterPpdb::where('tahun', $_GET['tahun'])->first();
-        $data = LogPpdb::create([
-            'id_siswa'=> $this->id_siswa,
-            'id_ppdb'=> $data->daftar,
-            'nominal'=> 0,
-            'jenis'=>'p'
+                ]);
 
-        ]);
-
-        session()->flash('sukses','Data berhasil diedit');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-
+                session()->flash('sukses','Berhasil membayar!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            } else {
+                session()->flash('gagal','Tunggu beberapa saat!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            }
+        }
     }
-
-
 
      public function daftar($id){
         $siswa = TabelSiswaPpdb::where('id_siswa', $id)->first();
-        if ($siswa->bayar_daftar == 'n') {
-            TabelSiswaPpdb::where('id_siswa', $id)->update([
-                'bayar_daftar' => 'y'
-            ]);
-
-            $data = MasterPpdb::where('tahun', $_GET['tahun'])->first();
-            $data = LogPpdb::create([
-                'id_siswa'=> $this->id_siswa,
-                'nominal'=> $data->daftar,
-                'jenis'=>'d'
-    
-            ]);
+        $cek = LogPpdb::where('no_invoice', 'D'.date('dmYh').$siswa->id_siswa)->count();
+        if($cek < 1){
+            if ($siswa->bayar_daftar == 'n') {
+                $data = MasterPpdb::where('tahun', date('Y'))->first();
+                if($data) {
+                    $data = LogPpdb::create([
+                        'id_siswa'=> $siswa->id_siswa,
+                        'nominal'=> $data->daftar,
+                        'no_invoice' =>'D'.date('dmYh').$siswa->id_siswa,
+                        'jenis'=>'d'
+                    ]);
+                    TabelSiswaPpdb::where('id_siswa', $id)->update([
+                        'bayar_daftar' => 'y'
+                    ]);
+                    session()->flash('sukses','Berhasil daftar!');
+                }
+            }
         } else {
-            TabelSiswaPpdb::where('id_siswa', $id)->update([
-                'bayar_daftar' => 'n'
-            ]);
-        } 
+            session()->flash('gagal','Tunggu beberapa saat!');
+        }
+    }
+    public function ckelas($id){
+        $data = TabelSiswaPpdb::where('id_siswa',$id)->first();
+        $this->minat_jurusan1 = $data->minat_jurusan1;
+        $this->minat_jurusan2 = $data->minat_jurusan2;
+        $this->id_siswa = $id;
+    }
+    public function insertkelas(){
+        $cek = SiswaBaru::where('id_siswa', $this->id_siswa)->count();
+        $kls = KelasPpdb::where('id_kelas', $this->kelas)->first();
+        $htng = SiswaBaru::where('id_kelas', $this->kelas)->count();
+        if($htng < $kls->max) {
+            if($cek  < 1){
+                SiswaBaru::create([
+                    'id_siswa' => $this->id_siswa,
+                    'id_kelas' => $this->kelas
+                ]);
+                session()->flash('sukses','Berhasil memilih kelas!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            } else {
+                session()->flash('gagal','Sudah memilih kelas!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            }
+        } else {
+            session()->flash('gagal','Kelas sudah penuh!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+        }
+
     }
 }
 

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kelas_ppdb', function (Blueprint $table) {
             $table->id('id_kelas');
             $table->string('nama_kelas');
+            $table->foreignId('id_jurusan')->references('id_jurusan')->on('jurusan_ppdb')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('max');
             $table->timestamps();
         });

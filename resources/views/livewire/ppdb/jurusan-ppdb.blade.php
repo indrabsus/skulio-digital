@@ -46,6 +46,7 @@
                           <th>No</th>
                           <th>Nama Jurusan</th>
                           <th>Tahun</th>
+                          <th>Aksi</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -151,7 +152,7 @@
           </div>
         </div>
       </div>
-        
+
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">

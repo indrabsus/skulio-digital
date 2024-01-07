@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('log_ppdb', function (Blueprint $table) {
-            $table->id('id_log');
+        Schema::create('siswa_baru', function (Blueprint $table) {
+            $table->id('id_siswa_baru');
             $table->foreignId('id_siswa')->references('id_siswa')->on('siswa_ppdb')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('nominal');
-            $table->string('no_invoice');
-            $table->enum('jenis', ['d','p','l'] );
+            $table->foreignId('id_kelas')->references('id_kelas')->on('kelas_ppdb')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('log_ppdb');
+        Schema::dropIfExists('siswa_barus');
     }
 };

@@ -46,20 +46,20 @@
                           <th>No</th>
                           <th>Daftar</th>
                           <th>PPDB</th>
+                          <th>Tahun</th>
                           <th>Token Telegram</th>
                           <th>Chat Id</th>
-                          <th>Tahun</th>
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->daftar}}</td>
-                          <td>{{$d->ppdb}}</td>
+                          <td>Rp.{{number_format($d->daftar,0,',','.')}}</td>
+                          <td>Rp.{{number_format($d->ppdb,0,',','.')}}</td>
+                          <td>{{$d->tahun}}</td>
                           <td>{{$d->token_telegram}}</td>
                           <td>{{$d->chat_id}}</td>
-                          <td>{{$d->tahun}}</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_ppdb}})'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_ppdb}})"><i class="fa-solid fa-trash"></i></a>

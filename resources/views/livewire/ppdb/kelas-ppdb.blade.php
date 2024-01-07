@@ -45,7 +45,9 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Kelas</th>
+                          <th>Jurusan</th>
                           <th>Max</th>
+                          <th>Aksi</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -53,6 +55,7 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_kelas}}</td>
+                          <td>{{$d->nama_jurusan}}</td>
                           <td>{{$d->max}}</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_kelas}})'><i class="fa-solid fa-edit"></i></i></a>
@@ -82,6 +85,20 @@
                     <input type="text" wire:model.live="nama_kelas" class="form-control">
                     <div class="text-danger">
                         @error('nama_kelas')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="">Jurusan</label>
+                    <select class="form-control" wire:model="id_jurusan">
+                        <option value="">Pilihan Jurusan</option>
+                        @foreach ($jurusan as $j)
+                            <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('id_jurusan')
                             {{$message}}
                         @enderror
                     </div>
@@ -124,6 +141,20 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label for="">Jurusan</label>
+                    <select class="form-control" wire:model="id_jurusan">
+                        <option value="">Pilihan Jurusan</option>
+                        @foreach ($jurusan as $j)
+                            <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('id_jurusan')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label for="">Max</label>
                     <input type="text" wire:model.live="max" class="form-control">
                     <div class="text-danger">
@@ -140,7 +171,7 @@
           </div>
         </div>
     </div>
-    
+
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">

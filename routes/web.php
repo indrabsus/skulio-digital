@@ -21,6 +21,7 @@ Route::get('/lupausername',[AuthController::class,'lupausername'])->name('lupaus
 Route::get('/register',[AuthController::class,'registerpage'])->name('registerpage');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
+Route::get('/{id_log}/ppdbLog', [PdfController::class, 'siswaPpdb'])->name('ppdbLog');
 
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');

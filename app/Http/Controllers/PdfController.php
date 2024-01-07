@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogPpdb;
 use App\Models\LogTabungan;
+use App\Models\Setingan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -32,5 +34,15 @@ class PdfController extends Controller
      //return $pdf->download('test.pdf');
      return $pdf->stream($request->bln.'-'.$request->thn.'-tabungan-siswa.pdf');
     }
+
+    public function siswaPpdb($id){
+        $set = Setingan::where('id_setingan', 1)->first();
+        $data = LogPpdb::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->where('id_log',$id)
+        ->select('nama_lengkap','asal_sekolah','nominal','jenis','log_ppdb.created_at')
+        ->first();
+        $pdf = Pdf::loadView('pdf.logsiswappdb', compact('data','set'));
+         //return $pdf->download('test.pdf');
+         return $pdf->stream($data->no_invoice.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
+        }
 }
 

@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('siswa_ppdb', function (Blueprint $table) {
             $table->id('id_siswa');
-            $table->foreignId('id_kelas')->references('id_kelas')->on('kelas_ppdb')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('nama_lengkap'); 
+            $table->string('nama_lengkap');
             $table->enum('jenkel',['l','p']);
             $table->string('no_hp');
-            $table->string('nis');
             $table->string('nisn');
             $table->string('nik_siswa');
             $table->string('nama_ayah');
@@ -25,7 +23,7 @@ return new class extends Migration
             $table->string('asal_sekolah');
             $table->string('minat_jurusan1');
             $table->string('minat_jurusan2');
-            $table->string('bayar_daftar');
+            $table->enum('bayar_daftar',['y','n','l']);
             $table->timestamps();
         });
     }
