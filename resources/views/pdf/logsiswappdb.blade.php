@@ -4,17 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href={{ asset('template/assets/css/bootstrap.min.css') }}>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         .test {
             font-size: 20px;
             font-weight: bold;
             text-align: center;
         }
+
         .note {
             font-style: italic;
             float: left;
             font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table td {
+            padding: 5px;
+            border: none;
+            border-bottom: 1px solid #000;
+        }
+
+        .text-right {
+            text-align: right;
         }
     </style>
     <title>Struk Pembayaran PPDB</title>
@@ -23,7 +46,7 @@
     <div class="test">
         <div class="test">{{ $set->nama_instansi }}</div>
         <span class="test">Struk Pembayaran PPDB</span>
-    <p class="test">{{ $data->no_invoice }}</p>
+        <p class="test">{{ $data->no_invoice }}</p>
     </div>
     <table class="table table-sm mt-3">
         <tr>
@@ -50,7 +73,5 @@
     <p class="text-right">Cimahi, {{ date('d M Y', strtotime($data->created_at))}}</p>
     <br>
     <p class="text-right">.....................</p>
-
 </body>
 </html>
-
