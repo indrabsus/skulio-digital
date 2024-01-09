@@ -19,7 +19,7 @@ class LogPpdb extends Component
     {
         $siswa_ppdb = SiswaPpdb::all();
         $data  = TabelLogPpdb ::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->orderBy('id_log','desc')->where('nama_lengkap', 'like','%'.$this->cari.'%')
-        ->select('nama_lengkap','nominal','jenis','log_ppdb.created_at','id_log')
+        ->select('nama_lengkap','nominal','jenis','log_ppdb.created_at','id_log','no_invoice')
         ->paginate($this->result);
         return view('livewire.ppdb.log-ppdb', compact('data','siswa_ppdb'));
     }
