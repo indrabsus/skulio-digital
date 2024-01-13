@@ -19,17 +19,26 @@ class SiswaPpdb extends Component
 {
     public $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
     use WithPagination;
+    public $filter = 'all';
 
     public $cari = '';
     public $result = 10;
     public function render()
     {
+        if($this->filter == 'all'){
+            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->paginate($this->result);
+        } else{
+            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->where('bayar_daftar', $this->filter)
+            ->paginate($this->result);
+        }
         $jurusan = JurusanPpdb::all();
         $master_ppdb = MasterPpdb::all();
         $kelas_ppdb = KelasPpdb::all();
-        $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
-        ->where('nama_lengkap', 'like','%'.$this->cari.'%')
-        ->paginate($this->result);
+
         return view('livewire.ppdb.siswa-ppdb', compact('data','kelas_ppdb','jurusan'));
     }
     public function insert(){
@@ -61,6 +70,16 @@ class SiswaPpdb extends Component
         ]);
 
         session()->flash('sukses','Data berhasil ditambahkan');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
+    public function c_delete($id){
+        $this->id_siswa = $id;
+    }
+    public function delete(){
+        TabelSiswaPpdb::where('id_siswa',$this->id_siswa)->delete();
+        LogPpdb::where('id_siswa',$this->id_siswa)->delete();
+        session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
@@ -212,7 +231,10 @@ class SiswaPpdb extends Component
                 $this->clearForm();
                 $this->dispatch('closeModal');
             } else {
-                session()->flash('gagal','Sudah memilih kelas!');
+                SiswaBaru::where('id_siswa', $this->id_siswa)->update([
+                    'id_kelas' => $this->kelas
+                ]);
+                session()->flash('sukses','Sudah pindah kelas!');
                 $this->clearForm();
                 $this->dispatch('closeModal');
             }
@@ -223,6 +245,33 @@ class SiswaPpdb extends Component
         }
 
     }
+    public function c_hkelas($id){
+        $this->id_siswa = $id;
+    }
+    public function hapusKelas(){
+        SiswaBaru::where('id_siswa', $this->id_siswa)->delete();
+        session()->flash('sukses','Berhasil hapus kelas!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+    }
+
+    public function c_undur($id){
+        $this->id_siswa = $id;
+    }
+    public function mengundurkandiri(){
+        LogPpdb::where('id_siswa', $this->id_siswa)->update([
+            'jenis' => 'l'
+        ]);
+
+        TabelSiswaPpdb::where('id_siswa', $this->id_siswa)->update([
+            'bayar_daftar' => 'l'
+        ]);
+
+        session()->flash('sukses','Berhasil Mengundurkan Diri!');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+    }
+
 }
 
 

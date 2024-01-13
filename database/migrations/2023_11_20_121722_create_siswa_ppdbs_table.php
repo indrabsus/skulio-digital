@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('siswa_ppdb', function (Blueprint $table) {
             $table->id('id_siswa');
             $table->string('nama_lengkap');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
             $table->enum('jenkel',['l','p']);
             $table->string('no_hp');
+            $table->string('agama');
+            $table->string('alamat');
             $table->string('nisn');
             $table->string('nik_siswa');
             $table->string('nama_ayah');

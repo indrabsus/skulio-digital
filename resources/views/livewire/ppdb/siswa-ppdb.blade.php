@@ -20,13 +20,16 @@
 
         <div class="col">
                 <div class="row justify-content-between mt-2">
+
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
-                          </button>
-                    </div>
-                    <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                          <div class="col-3">
+                            <select class="form-control" wire:model.live="filter">
+                                <option value="all">Semua</option>
+                                <option value="y">Sudah Bayar</option>
+                                <option value="n">Belum Bayar</option>
+                            </select>
+                        </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -51,15 +54,17 @@
                           <th>NISN</th>
                           <th>Kelas</th>
                           <th>Nominal</th>
-                          <th>Bayar</th>
+                          <th>Kelola</th>
+                          @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
+                          @endif
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td>{{$d->nama_lengkap}} {{ $d->bayar_daftar == 'l' ? ' - Mengundurkan Diri' : '' }}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>{{$d->asal_sekolah}}</td>
                           <td>{{$d->nisn}}</td>
@@ -68,7 +73,11 @@
                                 $kelas = App\Models\SiswaBaru::leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')->where('id_siswa', $d->id_siswa)->first();
 
                             @endphp
-                            {{ $kelas == NULL ? '-' : $kelas->nama_kelas}}
+                            @if ($kelas == NULL)
+                                 -
+                            @else
+                                <button class="btn btn-outline-danger btn-sm" <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#c_hkelas" wire:click="c_hkelas({{ $d->id_siswa }})">{{ $kelas->nama_kelas }}</button>
+                            @endif
                           </td>
                           <td>
                             @php
@@ -80,21 +89,23 @@
                           </td>
                           <td>@if ($d->bayar_daftar == 'y')
                             <button class="btn btn-outline-success btn-sm" disabled><i class="fa-solid fa-check"></i></button>
-                          @else
-                          <button class="btn btn-outline-danger btn-sm" wire:click="daftar({{ $d->id_siswa }})"><i class="fa-solid fa-times"></i></button>
-                          @endif
-                          @if ($d->bayar_daftar == 'y')
-                          <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#bayarppdb" wire:click="ppdb({{ $d->id_siswa }})"><i class="fa-solid fa-wallet"></i></button>
-                        @else
-                        <button disabled class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-wallet"></i></button>
+                            @else
+                            <button class="btn btn-outline-danger btn-sm" wire:click="daftar({{ $d->id_siswa }})"><i class="fa-solid fa-times"></i></button>
+                            @endif
+                            @if ($d->bayar_daftar == 'y')
+                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#bayarppdb" wire:click="ppdb({{ $d->id_siswa }})"><i class="fa-solid fa-wallet"></i></button>
+                            @else
+                            <button disabled class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-wallet"></i></button>
                         @endif
+                            <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#ckelas" wire:click='ckelas({{$d->id_siswa}})'><i class="fa-solid fa-share"></i></a>
                         </td>
+                        @if (Auth::user()->id_role == 1)
                           <td>
-
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#ckelas" wire:click='ckelas({{$d->id_siswa}})'><i class="fa-solid fa-share"></i></a>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_siswa}})'><i class="fa-solid fa-edit"></i></a>
                               <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_siswa}})"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#c_undur" wire:click='c_undur({{$d->id_siswa}})'><i class="fa-solid fa-share"></i></a>
                             </td>
+                        @endif
                       </tr>
                   @endforeach
                   </tbody>
@@ -409,6 +420,44 @@
         </div>
       </div>
 
+
+    <div class="modal fade" id="c_undur" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Undur Diri</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah siswa ini mengundurkan diri?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='mengundurkandiri()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="modal fade" id="c_hkelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Undur Diri</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hapus kelas?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='hapusKelas()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal fade" id="bayarppdb" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
@@ -497,6 +546,12 @@
         })
         window.addEventListener('closeModal', event => {
             $('#ckelas').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_undur').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_hkelas').modal('hide');
         })
       </script>
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PPDBController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
+Route::get('rekapharianppdb',[PdfController::class,'rekapharianppdb'])->name('rekapharianppdb');
 
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
@@ -23,6 +25,8 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
 Route::get('/{id_log}/ppdbLog', [PdfController::class, 'siswaPpdb'])->name('ppdbLog');
 
+Route::get('ppdb',[PPDBController::class,'formppdb'])->name('formppdb');
+Route::post('postppdb',[PPDBController::class,'postppdb'])->name('postppdb');
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::post('regproses',[AuthController::class,'register'])->name('register');

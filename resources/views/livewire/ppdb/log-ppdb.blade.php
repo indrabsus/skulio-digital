@@ -20,10 +20,10 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
                     <div class="col-8">
-                        <form action="" method="get">
+                        <form action="{{ route('rekapharianppdb') }}" method="get" target="_blank">
                             <div class="input-group input-group-sm mb-3">
                                 <div class="col-3">
-                                    <input type="date" class="form-control" wire:model.live="date">
+                                    <input type="date" class="form-control" name="date">
                               </div>
                                  <button class="input-group-text" id="basic-addon1">Print</button>
                                 </div>
@@ -55,7 +55,9 @@
                           <th>No Invoice</th>
                           <th>Jenis</th>
                           <th>Waktu</th>
+                          @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
+                          @endif
                       </tr>
                   </thead>
                   <tbody>
@@ -65,12 +67,21 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>Rp.{{number_format($d->nominal,0,',','.')}}</td>
                           <td>{{ $d->no_invoice }}</td>
-                          <td>{{ $d->jenis == 'd' ? 'Daftar' : 'PPDB' }}</td>
+                          <td>
+                            @if ($d->jenis == 'd')
+                                Daftar
+                            @elseif($d->jenis == 'p')
+                                PPDB
+                            @else
+                            Mengundurkan Diri
+                            @endif</td>
                           <td>{{ date('d-m-Y h:i A', strtotime($d->created_at)) }}</td>
+                          @if (Auth::user()->id_role == 1)
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_log}})'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_log}})"><i class="fa-solid fa-trash"></i></a>
                           </td>
+                          @endif
                       </tr>
                   @endforeach
                   </tbody>

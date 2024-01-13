@@ -215,6 +215,12 @@ class MenuSeeder extends Seeder
             'nama_menu' => 'Log PPDB',
             'class' => 'Ppdb\LogPpdb',
         ]);
+        Menu::create([
+            'parent_menu' => 8,
+            'akses_role' => 1,
+            'nama_menu' => 'Laporan PPDB',
+            'class' => 'Ppdb\Laporan',
+        ]);
 
     }
 }

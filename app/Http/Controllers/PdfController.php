@@ -44,5 +44,19 @@ class PdfController extends Controller
          //return $pdf->download('test.pdf');
          return $pdf->stream($data->no_invoice.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
         }
+
+        public function rekapharianppdb(Request $request){
+            $date = $request->date;
+
+            $data = LogPpdb::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')
+            ->where('log_ppdb.created_at', 'like','%'.$request->date.'%')
+            ->select('nama_lengkap','asal_sekolah','log_ppdb.created_at','jenis','nominal')
+            ->get();
+            $daftar = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','d')->sum('nominal');
+            $ppdb = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','p')->sum('nominal');
+            $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.rekapharianppdb', compact('data','date','daftar','ppdb'));
+         //return $pdf->download('test.pdf');
+         return $pdf->stream($request->date.'-ppdb-harian.pdf');
+        }
 }
 

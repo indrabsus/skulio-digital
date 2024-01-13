@@ -7,13 +7,19 @@
                     <td>Pendaftar Total</td><td>{{$pendaftar}}</td>
                 </tr>
                 <tr>
-                    <td>Bayar Pendaftaran</td><td>{{$sudahdaftar}}</td>
+                    <td>Hanya Daftar (Belum bayar PPDB)</td><td>{{$hanyadaftar}}</td>
                 </tr>
                 <tr>
-                    <td>Kurang dari Rp.1000.000</td><td>{{$kurangsejuta}}</td>
+                    <td>Total Siswa yang sudah Bayar Pendaftaran</td><td>{{$sudahdaftar}}</td>
+                </tr>
+                <tr>
+                    <td>Kurang dari Rp.1000.000 (Sudah Bayar)</td><td>{{$kurangsejuta}}</td>
                 </tr>
                 <tr>
                     <td>Lebih dari Rp.1000.000 (Belum Lunas)</td><td>{{$lebihsejuta}}</td>
+                </tr>
+                <tr>
+                    <td>Mengundurkan Diri</td><td>{{$mengundurkan}}</td>
                 </tr>
                 <tr>
                     <td>Lunas</td><td>{{$lunas}}</td>

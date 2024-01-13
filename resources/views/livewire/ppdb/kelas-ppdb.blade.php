@@ -47,7 +47,10 @@
                           <th>Nama Kelas</th>
                           <th>Jurusan</th>
                           <th>Max</th>
+                          <th>Terisi</th>
+                          @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
+                          @endif
                       </tr>
                   </thead>
                   <tbody>
@@ -58,9 +61,17 @@
                           <td>{{$d->nama_jurusan}}</td>
                           <td>{{$d->max}}</td>
                           <td>
+                            @php
+                                $cek = App\Models\SiswaBaru::where('id_kelas', $d->id_kelas)->count();
+                            @endphp
+                            {{ $cek }}
+                          </td>
+                          @if (Auth::user()->id_role == 1)
+                          <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_kelas}})'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_kelas}})"><i class="fa-solid fa-trash"></i></a>
                           </td>
+                          @endif
                       </tr>
                   @endforeach
                   </tbody>
