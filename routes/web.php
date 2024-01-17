@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-    Route::get('app',Dashboard::class)->name('dashboard');
+    Route::get('dashboard',Dashboard::class)->name('dashboard');
     $set = new Controller;
     // $cek = $set->routeMenu();
     // Now, move the Menu::all() and route definition here
