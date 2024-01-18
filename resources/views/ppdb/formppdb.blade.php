@@ -11,7 +11,7 @@
                     @endif
             <div class="card">
                 <div class="card-header">
-                    <h3>Daftar Siswa Baru</h3>
+                    <h3>Pendaftaran Siswa Baru</h3>
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
