@@ -73,16 +73,17 @@
                                 <div class="form-group mb-3">
                                     <label for="jenkel">Jenis Kelamin</label>
                                     <select name="jenkel" class="form-control">
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="l">Laki-laki</option>
-                                        <option value="p">Perempuan</option>
+                                        <option value="" {{ old('jenkel') == '' ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
+                                        <option value="l" {{ old('jenkel') == 'l' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="p" {{ old('jenkel') == 'p' ? 'selected' : '' }}>Perempuan</option>
                                     </select>
                                     <div class="text-danger">
                                         @error('jenkel')
-                                            {{$message}}
+                                            {{ $message }}
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group mb-3">
@@ -107,24 +108,22 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                                 <div class="form-group mb-3">
                                     <label for="agama">Agama</label>
                                     <select name="agama" class="form-control">
-                                        <option value="">Pilih Agama</option>
-                                        <option value="islam">Islam</option>
-                                        <option value="kristen">Kristen</option>
-                                        <option value="hindu">Hindu</option>
-                                        <option value="budha">Budha</option>
+                                        <option value="" {{ old('agama') == '' ? 'selected' : '' }}>Pilih Agama</option>
+                                        <option value="islam" {{ old('agama') == 'islam' ? 'selected' : '' }}>Islam</option>
+                                        <option value="kristen" {{ old('agama') == 'kristen' ? 'selected' : '' }}>Kristen</option>
+                                        <option value="hindu" {{ old('agama') == 'hindu' ? 'selected' : '' }}>Hindu</option>
+                                        <option value="budha" {{ old('agama') == 'budha' ? 'selected' : '' }}>Budha</option>
                                     </select>
                                     <div class="text-danger">
                                         @error('agama')
-                                            {{$message}}
+                                            {{ $message }}
                                         @enderror
                                     </div>
                                 </div>
+
                             </div>
                             <div class="col-lg-6">
 
@@ -206,32 +205,36 @@
                                             <label for="">Minat Jurusan 1</label><br>
 
                                             @foreach ($jurusan as $j)
-                                            <input type="radio" name="minat_jurusan1" value="{{ $j->nama_jurusan }}">
+                                            <input type="radio" name="minat_jurusan1" value="{{ $j->nama_jurusan }}" {{ old('minat_jurusan1') == $j->nama_jurusan ? 'checked' : '' }}>
                                             <label for="">{{ $j->nama_jurusan }}</label><br>
                                             @endforeach
+
                                             <div class="text-danger">
                                                 @error('minat_jurusan1')
                                                     {{ $message }}
                                                 @enderror
                                             </div>
+                                        </div>
                                     </div>
-                                    </div>
+
                                     <div class="col-lg-6">
                                         <div class="form-group mb-3">
                                             <label for="">Minat Jurusan 2</label><br>
 
                                             @foreach ($jurusan as $j)
-                                            <input type="radio" name="minat_jurusan2" value="{{ $j->nama_jurusan }}">
+                                            <input type="radio" name="minat_jurusan2" value="{{ $j->nama_jurusan }}" {{ old('minat_jurusan2') == $j->nama_jurusan ? 'checked' : '' }}>
                                             <label for="">{{ $j->nama_jurusan }}</label><br>
                                             @endforeach
+
                                             <div class="text-danger">
                                                 @error('minat_jurusan2')
                                                     {{ $message }}
                                                 @enderror
                                             </div>
-                                    </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
