@@ -34,8 +34,16 @@
                             Tambah
                           </button>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
+                            <div class="form-group">
+                                <select class="form-control" wire:model.live="cari_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                    @foreach($kelas as $k)
+                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -44,7 +52,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                            <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
+                            <input type="text" class="form-control" placeholder="Cari Nama/Nis/No Hp" aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
                             <span class="input-group-text" id="basic-addon1">Cari</span>
                           </div>
                     </div>

@@ -7,22 +7,8 @@ use Rats\Zkteco\Lib\ZKTeco;
 
 class FingerPrint extends Controller
 {
-    public function user(){
-        $zk = new ZKTeco('192.168.30.33');
-        $zk->connect();
-        $data = $zk->getUser();
-        $log = $zk->getAttendance();
-        dd($data);
-
-        return view('absen', compact('data'));
-    }
-    public function insertUser(){
-        $zk = new ZKTeco('192.168.30.33');
-        $zk->connect();
-        $zk->setUser(1002,1002,'Batara','',2,0);
-    }
     public function rawlogsc(){
-        $zk = new ZKTeco('192.168.30.33');
+        $zk = new ZKTeco('192.168.30.33',4370);
         $zk->connect();
         $log = $zk->getAttendance();
 
@@ -37,9 +23,5 @@ class FingerPrint extends Controller
     public function rawlog(){
         return view('fingerprint.rawlog');
     }
-    public function clear(){
-        $zk = new ZKTeco('192.168.30.33');
-        $zk->connect();
-        $zk->clearAttendance();
-    }
+
 }
