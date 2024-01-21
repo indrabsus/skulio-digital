@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\FingerPrint;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PPDBController;
 use App\Livewire\Admin\Dashboard;
@@ -11,6 +12,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
 
+// Fingerprint
+Route::get('user',[FingerPrint::class,'user'])->name('userfp');
+Route::get('clear',[FingerPrint::class,'clear'])->name('clear');
+Route::get('rawlogsc',[FingerPrint::class,'rawlogsc'])->name('rawlogsc');
+Route::get('rawlog',[FingerPrint::class,'rawlog'])->name('rawlog');
+Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp');
 
 
 

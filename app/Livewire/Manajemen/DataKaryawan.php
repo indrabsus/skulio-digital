@@ -9,10 +9,11 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\DataUser as TabelDataUser;
 use Livewire\WithPagination;
+use Rats\Zkteco\Lib\ZKTeco;
 
 class DataKaryawan extends Component
 {
-    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user;
+    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $nama_pendek;
     use WithPagination;
 
     public $cari = '';
@@ -28,12 +29,15 @@ class DataKaryawan extends Component
         return view('livewire.manajemen.data-karyawan', compact('data','role'));
     }
     public function insert(){
+        $zk = new ZKTeco('192.168.30.33');
+        $zk->connect();
         $this->validate([
             'id_role' => 'required',
             'nama_lengkap'=> 'required',
             'jenkel' => 'required',
             'no_hp'=> 'required',
             'alamat'=> 'required',
+            'nama_pendek'=> 'required',
         ]);
         $set = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
@@ -42,13 +46,15 @@ class DataKaryawan extends Component
             'id_role' => $this->id_role,
             'acc' => 'y'
         ]);
+
         $data = TabelDataUser::create([
             'id_user' => $user->id,
             'nama_lengkap'=> ucwords($this->nama_lengkap),
             'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp, 
+            'no_hp'=> $this->no_hp,
             'alamat'=> $this->alamat
         ]) ;
+        $zk->setUser($user->id, $user->id, $this->nama_pendek,'',0,0);
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
@@ -83,7 +89,7 @@ class DataKaryawan extends Component
             'id_user' => $this->id_user,
             'nama_lengkap'=> $this->nama_lengkap,
             'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp, 
+            'no_hp'=> $this->no_hp,
             'alamat'=> $this->alamat
         ]);
         session()->flash('sukses','Data berhasil diedit');
@@ -91,10 +97,14 @@ class DataKaryawan extends Component
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
-        $this->id_data = $id;
+        $this->id_user = $id;
     }
     public function delete(){
-        TabelDataUser::where('id_data',$this->id_data)->delete();
+        $zk = new ZKTeco('192.168.30.33');
+        $zk->connect();
+        $zk->removeUser($this->id_user);
+        User::where('id',$this->id_user)->delete();
+
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');

@@ -19,9 +19,14 @@
         </div>
         <div class="col">
                 <div class="row justify-content-between mt-2">
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
+                            Tarik Data
+                          </button>
+                    </div>
+                    <div class="col-lg-3">
+                        <button type="button" class="btn btn-success btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#izin">
+                            Izin/Sakit
                           </button>
                     </div>
                     <div class="col-lg-3">
@@ -44,13 +49,10 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Username</th>
-                          <th>Nama Lengkap</th>
-                          <th>Jenis Kelamin</th>
-                          <th>No Hp</th>
-                          <th>Alamat</th>
+                          <th>Nama</th>
                           <th>Role</th>
-                          <th>Acc</th>
+                          <th>Waktu</th>
+                          <th>Status</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -58,22 +60,22 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
                           <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
-                          <td>{{$d->no_hp}}</td>
-                          <td>{{$d->alamat}}</td>
-                          <td>{{$d->nama_role}}</td>
-                          <td>@if ($d->acc == 'y')
-                            <i class="fa-solid fa-check"></i>
-                          @else
-                          <i class="fa-solid fa-times"></i>
-                          @endif</td>
+                          <td>{{ucwords($d->nama_role)}}</td>
+                          <td>{{ date('d F Y - h:i:s A', strtotime($d->waktu)) }}</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_data}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
-                            </td>
+                            @if ($d->status == 0)
+                            <span class="badge bg-primary">Datang</span>
+                            @elseif($d->status == 1)
+                            <span class="badge bg-success">Pulang</span>
+                            @elseif($d->status == 2)
+                            <span class="badge bg-secondary">Sakit</span>
+                            @elseif($d->status == 3)
+                            <span class="badge bg-danger">Izin</span>
+                            @endif
+                           </td>
+                          <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_absen}})"><i class="fa-solid fa-trash"></i></a>
+                               </td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -93,73 +95,11 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Nama Pendek</label>
-                    <input type="text" wire:model.live="nama_pendek" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_pendek')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jenkel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
-                        <option value="">Pilih Role</option>
-                        <option value="6">Guru</option>
-                        <option value="7">Tendik</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('id_role')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
+                <p>Apakah anda yakin menarik data?</p>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='tarik()'>Save changes</button>
             </div>
           </div>
         </div>
@@ -167,7 +107,7 @@
 
 
     {{-- Edit Modal --}}
-    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="izin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -176,55 +116,29 @@
             </div>
             <div class="modal-body">
                 <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
+                    <label for="">Nama</label>
+                    <select wire:model="id_user" class="form-control">
+                        <option value="">Pilih User</option>
+                        @foreach ($user as $u)
+                            <option value="{{ $u->id }}">{{ $u->nama_lengkap }}</option>
+                        @endforeach
+                    </select>
                     <div class="text-danger">
-                        @error('nama_lengkap')
+                        @error('id_user')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
 
                 <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
+                    <label for="">Keterangan</label>
+                    <select wire:model="status" class="form-control">
+                        <option value="">Pilih Keterangan</option>
+                        <option value="2">Sakit</option>
+                        <option value="3">Izin</option>
                     </select>
                     <div class="text-danger">
-                        @error('jenkel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
-                        <option value="">Pilih Role</option>
-                        <option value="6">Guru</option>
-                        <option value="7">Tendik</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('id_role')
+                        @error('status')
                             {{$message}}
                         @enderror
                     </div>
@@ -232,7 +146,7 @@
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='izin()'>Save changes</button>
             </div>
           </div>
         </div>
@@ -280,7 +194,7 @@
             $('#add').modal('hide');
         })
         window.addEventListener('closeModal', event => {
-            $('#edit').modal('hide');
+            $('#izin').modal('hide');
         })
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
