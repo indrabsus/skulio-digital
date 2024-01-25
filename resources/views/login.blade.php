@@ -107,6 +107,7 @@ License: For each use you must have a valid license purchased only from above li
                             <div>
                                 <button class="btn btn-primary me-2 mb-2 mb-md-0 text-white" type="submit">Login</button>
                             </div>
+                            <hr>
                             <div class="row justify-content-between">
                                 <div class="col-lg-3">
                                     <a href="{{ route('registerpage') }}" class="d-block mt-3 text-muted">Register!</a>
