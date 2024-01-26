@@ -33,7 +33,6 @@ class UserController extends Controller
         }  else {
             $insert = Absen::create([
                 'id_user' => $request->id_user,
-                'waktu' => date('d F Y h:i A'),
                 'status' => 0,
             ]);
         return redirect()->route('absen')->with('sukses', 'Berhasil Absen, Selisih: '.round($jarak).' m');
