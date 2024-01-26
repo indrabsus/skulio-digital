@@ -28,7 +28,7 @@ class UserController extends Controller
             return redirect()->route('absen')->with('gagal', 'Tidak bisa Absen dihari Libur');
         }
 
-        elseif($jarak >= 200){
+        elseif($jarak >= 300){
             return redirect()->route('absen')->with('gagal', 'Diluar radius yang ditentukan! Selisih : '.round($jarak).' m');
         }  else {
             $insert = Absen::create([
