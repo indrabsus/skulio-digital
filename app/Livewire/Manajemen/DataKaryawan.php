@@ -9,7 +9,7 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\DataUser as TabelDataUser;
 use Livewire\WithPagination;
-use Rats\Zkteco\Lib\ZKTeco;
+// use Rats\Zkteco\Lib\ZKTeco;
 
 class DataKaryawan extends Component
 {
@@ -29,8 +29,8 @@ class DataKaryawan extends Component
         return view('livewire.manajemen.data-karyawan', compact('data','role'));
     }
     public function insert(){
-        $zk = new ZKTeco('192.168.30.33');
-        $zk->connect();
+        // $zk = new ZKTeco('192.168.30.33');
+        // $zk->connect();
         $this->validate([
             'id_role' => 'required',
             'nama_lengkap'=> 'required',
@@ -54,7 +54,7 @@ class DataKaryawan extends Component
             'no_hp'=> $this->no_hp,
             'alamat'=> $this->alamat
         ]) ;
-        $zk->setUser($user->id, $user->id, $this->nama_pendek,'',0,0);
+        // $zk->setUser($user->id, $user->id, $this->nama_pendek,'',0,0);
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
@@ -100,9 +100,9 @@ class DataKaryawan extends Component
         $this->id_user = $id;
     }
     public function delete(){
-        $zk = new ZKTeco('192.168.30.33');
-        $zk->connect();
-        $zk->removeUser($this->id_user);
+        // $zk = new ZKTeco('192.168.30.33');
+        // $zk->connect();
+        // $zk->removeUser($this->id_user);
         User::where('id',$this->id_user)->delete();
 
         session()->flash('sukses','Data berhasil dihapus');

@@ -6,6 +6,7 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\FingerPrint;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PPDBController;
+use App\Http\Controllers\UserController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -56,6 +57,8 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
+    Route::get('absen',[UserController::class,'absen'])->name('absen');
+    Route::any('ayoabsen',[UserController::class,'ayoabsen'])->name('ayoabsen');
     Route::get('dashboard',Dashboard::class)->name('dashboard');
     $set = new Controller;
     // $cek = $set->routeMenu();

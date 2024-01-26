@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Absen;
+use App\Models\Setingan;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    public function absen(){
+        // $scan = Temp::first();
+        return view('absengeo.absen');
+    }
+    public function ayoAbsen(Request $request){
+        $set = Setingan::where('id_setingan', 1)->first();
+
+        $lat1 = $request->lat;
+        $long1 = $request->long;
+        $lat2 = $set->lat;
+        $long2 = $set->long;
+
+        $cek = $this->cekDuplikat('absen', 'id_user', $request->id_user);
+        $jarak = $this->jarak($lat1,$long1,$lat2,$long2);
+    if($cek['absen']>0){
+        return redirect()->route('absen')->with('gagal', 'Anda Sudah Absen Hari ini');
+        } elseif(date('l', strtotime(now())) == 'Sunday' || date('l', strtotime(now())) == 'Saturdayy'){
+            return redirect()->route('absen')->with('gagal', 'Tidak bisa Absen dihari Libur');
+        }
+
+        elseif($jarak >= 200){
+            return redirect()->route('absen')->with('gagal', 'Diluar radius yang ditentukan! Selisih : '.round($jarak).' m');
+        }  else {
+            $insert = Absen::create([
+                'id_user' => $request->id_user,
+                'waktu' => date('d F Y h:i A'),
+                'status' => 0,
+            ]);
+        return redirect()->route('absen')->with('sukses', 'Berhasil Absen, Selisih: '.round($jarak).' m');
+        }
+    }
+}
