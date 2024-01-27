@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_setingan');
             $table->string('nama_instansi');
             $table->string('default_password');
-            $table->float('long');
-            $table->float('lat');
+            $table->string('long');
+            $table->string('lat');
             $table->timestamps();
         });
     }

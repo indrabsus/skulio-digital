@@ -13,7 +13,7 @@ use Rats\Zkteco\Lib\ZKTeco;
 
 class Absen extends Component
 {
-    public $id_role, $id_absen, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $status;
+    public $id_role, $id_absen, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $status, $waktu;
     use WithPagination;
 
     public $cari = '';
@@ -56,10 +56,11 @@ class Absen extends Component
     }
     public function clearForm(){
         $this->id_role = '';
-        $this->nama_lengkap = '';
+        $this->id_user = '';
         $this->jenkel = '';
         $this->no_hp = '';
         $this->alamat = '';
+        $this->waktu = '';
     }
     public function izin(){
         $this->validate([
@@ -73,7 +74,7 @@ class Absen extends Component
                 ModelsAbsen::create([
                     'id_user' => $this->id_user,
                     'status' => $this->status,
-                    'waktu' => date('Y-m-d h:i:s')
+                    'waktu' => now()
                 ]);
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -83,8 +84,41 @@ class Absen extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
             }
+    }
+    public function hadir(){
+        $this->validate([
+            'id_user' => 'required',
+        ]);
 
+        $hitung = ModelsAbsen::where('id_user', $this->id_user)
+            ->where('waktu', 'like','%'.date('Y-m-d').'%')
+            ->count();
+            if($hitung < 1) {
+                if($this->waktu == NULL){
+                    ModelsAbsen::create([
+                        'id_user' => $this->id_user,
+                        'status' => 0,
+                        'waktu' => now()
+                    ]);
+            session()->flash('sukses','Data berhasil ditambahkan');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+                } else {
+                    ModelsAbsen::create([
+                        'id_user' => $this->id_user,
+                        'status' => 0,
+                        'waktu' => $this->waktu
+                    ]);
+            session()->flash('sukses','Data berhasil ditambahkan');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+                }
 
+            } else {
+                session()->flash('gagal','Data Gagal ditambahkan');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+            }
     }
     public function update(){
         $this->validate([

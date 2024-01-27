@@ -1,5 +1,4 @@
 <div>
-    {{ Route::currentRouteName() }}
     <div class="row justify-content-center">
         <div class="col-lg-4">
             <div class="card card-outline card-danger">
@@ -35,8 +34,11 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
+                        @php
+                            $detail = App\Models\User::leftJoin('data_user','data_user.id_user','users.id')->where('id', Auth::user()->id)->first();
+                        @endphp
                         <label for="">Nama Lengkap</label>
-                        <input type="text" name="name" value="{{ Auth::user()->username }}" class="form-control" readonly>
+                        <input type="text" name="name" value="{{ $detail->nama_lengkap }}" class="form-control" readonly>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
