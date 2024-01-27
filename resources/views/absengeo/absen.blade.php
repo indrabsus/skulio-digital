@@ -68,13 +68,6 @@ License: For each use you must have a valid license purchased only from above li
               <h3 class="card-title">Absensi Online</h3>
             </div>
             <div class="card-body">
-                @if (session('sukses'))
-                <div class="alert alert-success alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5><i class="icon fas fa-check"></i> Berhasil!</h5>
-                    {{ session('sukses') }}
-                </div>
-            @endif
             @if(session('sukses'))
                           <div class="alert alert-success alert-dismissible">
                               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

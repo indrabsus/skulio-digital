@@ -13,6 +13,7 @@ class UserController extends Controller
         return view('absengeo.absen');
     }
     public function ayoAbsen(Request $request){
+        $met = new Controller;
         $set = Setingan::where('id_setingan', 1)->first();
 
         $lat1 = $request->lat;
@@ -21,22 +22,22 @@ class UserController extends Controller
         $long2 = $set->long;
 
         $cek = $this->cekDuplikat('absen', 'id_user', $request->id_user);
-        $jarak = $this->jarak($lat1,$long1,$lat2,$long2);
+        dd($met->jarak($lat1,$long1,$lat2,$long2));
     if($cek['absen']>0){
-        return redirect()->route('absen')->with('gagal', 'Anda Sudah Absen Hari ini');
+        return redirect()->route('guru.absen')->with('gagal', 'Anda Sudah Absen Hari ini');
         } elseif(date('l', strtotime(now())) == 'Sunday' || date('l', strtotime(now())) == 'Saturdayy'){
-            return redirect()->route('absen')->with('gagal', 'Tidak bisa Absen dihari Libur');
+            return redirect()->route('guru.absen')->with('gagal', 'Tidak bisa Absen dihari Libur');
         }
 
         elseif($jarak >= 300){
-            return redirect()->route('absen')->with('gagal', 'Diluar radius yang ditentukan! Selisih : '.round($jarak).' m');
+            return redirect()->route('guru.absen')->with('gagal', 'Diluar radius yang ditentukan! Selisih : '.round($jarak).' m');
         }  else {
             $insert = Absen::create([
                 'id_user' => $request->id_user,
                 'waktu' => date('Y-m-d h:i:s'),
                 'status' => 0,
             ]);
-        return redirect()->route('absen')->with('sukses', 'Berhasil Absen, Selisih: '.round($jarak).' m');
+        return redirect()->route('guru.absen')->with('sukses', 'Berhasil Absen, Selisih: '.round($jarak).' m');
         }
     }
 }

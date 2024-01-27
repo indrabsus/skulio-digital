@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absen', function (Blueprint $table) {
-            $table->id('id_absen');
+        Schema::create('jwbn_refleksis', function (Blueprint $table) {
+            $table->id('id_jawaban');
+            $table->foreignId('id_refleksi')->references('id_refleksi')->on('refleksi')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('status');
-            $table->dateTime('waktu');
+            $table->text('jawaban');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absens');
+        Schema::dropIfExists('jwbn_refleksis');
     }
 };
