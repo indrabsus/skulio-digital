@@ -13,7 +13,6 @@ class UserController extends Controller
         return view('absengeo.absen');
     }
     public function ayoAbsen(Request $request){
-        $met = new Controller;
         $set = Setingan::where('id_setingan', 1)->first();
 
         $lat1 = $request->lat;
@@ -22,10 +21,10 @@ class UserController extends Controller
         $long2 = $set->long;
 
         $cek = $this->cekDuplikat('absen', 'id_user', $request->id_user);
-        dd($met->jarak($lat1,$long1,$lat2,$long2));
+        $jarak = $this->jarak($lat1,$long1,$lat2,$long2);
     if($cek['absen']>0){
         return redirect()->route('guru.absen')->with('gagal', 'Anda Sudah Absen Hari ini');
-        } elseif(date('l', strtotime(now())) == 'Sunday' || date('l', strtotime(now())) == 'Saturdayy'){
+        } elseif(date('l', strtotime(now())) == 'Sunday' || date('l', strtotime(now())) == 'Saturday'){
             return redirect()->route('guru.absen')->with('gagal', 'Tidak bisa Absen dihari Libur');
         }
 
