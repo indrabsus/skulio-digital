@@ -89,14 +89,7 @@
                </div>
                 {{$data->links()}}
         </div>
-        @php
-            $siswa = App\Models\LogPpdb::groupBy('id_siswa')
-            ->where('jenis','p')
-    ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-    ->having('total_pembayaran', '>=', 1000000)
-    ->count();
-        @endphp
-        {{$siswa}}
+
     </div>
 
 
