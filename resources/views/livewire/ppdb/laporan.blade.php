@@ -38,7 +38,7 @@
                     <td>Mengundurkan Diri</td><td>Rp. {{number_format($uangundur,0,',','.')}}</td>
                 </tr>
                 <tr>
-                    <td>Total semua uang masuk</td><td>Rp. {{number_format($uangdaftar + $uangdaftar + $uangundur,0,',','.')}}</td>
+                    <td>Total semua uang masuk</td><td>Rp. {{number_format($uangdaftar + $uangppdb + $uangundur,0,',','.')}}</td>
                 </tr>
 
             </table>
