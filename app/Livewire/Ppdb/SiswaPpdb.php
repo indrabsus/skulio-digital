@@ -259,7 +259,7 @@ class SiswaPpdb extends Component
         $this->id_siswa = $id;
     }
     public function mengundurkandiri(){
-        LogPpdb::where('id_siswa', $this->id_siswa)->update([
+        LogPpdb::where('id_siswa', $this->id_siswa)->where('jenis', 'p')->update([
             'jenis' => 'l'
         ]);
 

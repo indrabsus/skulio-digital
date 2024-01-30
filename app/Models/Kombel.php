@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Kombel extends Model
 {
     use HasFactory;
+    protected $table = "kombel";
+    protected $guarded = [];
 }

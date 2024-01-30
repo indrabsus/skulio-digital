@@ -43,39 +43,24 @@
                 <table class="table table-stripped">
                   <thead>
                       <tr>
-                          <th>No</th>
-                          <th>Username</th>
-                          <th>Nama Lengkap</th>
-                          <th>Jenis Kelamin</th>
-                          <th>No Hp</th>
-                          <th>Alamat</th>
-                          <th>Role</th>
-                          <th>Acc</th>
+                          <th>Pertemuan Ke</th>
+                          <th>Tema</th>
+                          <th>Narasumber</th>
+                          <th>Tanggal</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
-                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
-                          <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
-                          <td>{{$d->no_hp}}</td>
-                          <td>{{$d->alamat}}</td>
-                          <td>{{$d->nama_role}}</td>
-                          <td>@if ($d->acc == 'y')
-                            <i class="fa-solid fa-check"></i>
-                          @else
-                          <i class="fa-solid fa-times"></i>
-                          @endif</td>
+                          <td>{{$d->pertemuan}}</td>
+                          <td>{{$d->tema}}</td>
+                          <td>{{$d->narasumber}}</td>
+                          <td>{{$d->tanggal}}</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_data}})'><i class="fa-solid fa-edit"></i></i></a>
-                              @if (Auth::user()->id_role == 1)
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
-                           @endif
-                            </td>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_kombel}})'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_kombel}})"><i class="fa-solid fa-trash"></i></a>
+                          </td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -95,70 +80,43 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
+                <div class="form-group">
+                    <label for="">Pertemuan</label>
+                    <input type="number" wire:model.live="pertemuan" class="form-control">
                     <div class="text-danger">
-                        @error('nama_lengkap')
+                        @error('pertemuan')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Nama Pendek</label>
-                    <input type="text" wire:model.live="nama_pendek" class="form-control">
+                <div class="form-group">
+                    <label for="">Tema</label>
+                    <input type="text" wire:model.live="tema" class="form-control">
                     <div class="text-danger">
-                        @error('nama_pendek')
+                        @error('tema')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
+                <div class="form-group">
+                    <label for="">Narasumber</label>
+                    <input type="text" wire:model.live="narasumber" class="form-control">
                     <div class="text-danger">
-                        @error('no_hp')
+                        @error('narasumber')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
+                <div class="form-group">
+                    <label for="">Tanggal</label>
+                    <input type="date" wire:model.live="tanggal" class="form-control">
                     <div class="text-danger">
-                        @error('alamat')
+                        @error('tanggal')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jenkel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
-                        <option value="">Pilih Role</option>
-                        <option value="6">Guru</option>
-                        <option value="7">Tendik</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('id_role')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
@@ -177,61 +135,43 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
+                <div class="form-group">
+                    <label for="">Pertemuan</label>
+                    <input type="number" wire:model.live="pertemuan" class="form-control">
                     <div class="text-danger">
-                        @error('nama_lengkap')
+                        @error('pertemuan')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
+                <div class="form-group">
+                    <label for="">Tema</label>
+                    <input type="text" wire:model.live="tema" class="form-control">
                     <div class="text-danger">
-                        @error('no_hp')
+                        @error('tema')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
+                <div class="form-group">
+                    <label for="">Narasumber</label>
+                    <input type="text" wire:model.live="narasumber" class="form-control">
                     <div class="text-danger">
-                        @error('alamat')
+                        @error('narasumber')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
-                    </select>
+                <div class="form-group">
+                    <label for="">Tanggal</label>
+                    <input type="date" wire:model.live="tanggal" class="form-control">
                     <div class="text-danger">
-                        @error('jenkel')
+                        @error('tanggal')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
-                        <option value="">Pilih Role</option>
-                        <option value="6">Guru</option>
-                        <option value="7">Tendik</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('id_role')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
@@ -257,26 +197,6 @@
           </div>
         </div>
       </div>
-
-      <div class="modal fade" id="k_reset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Reset Passwort</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Apakah anda yakin mereset password user ini?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='p_reset()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -286,9 +206,6 @@
         })
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
-        })
-        window.addEventListener('closeModal', event => {
-            $('#k_reset').modal('hide');
         })
       </script>
 

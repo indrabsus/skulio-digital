@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class JwbnRefleksi extends Model
 {
     use HasFactory;
+    protected $table = "jwbn_refleksi";
+    protected $guarded = [];
 }
