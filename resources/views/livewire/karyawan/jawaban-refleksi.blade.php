@@ -1,4 +1,5 @@
 <div>
+
     <div class="row">
 
         <div class="container">
@@ -35,40 +36,40 @@
                           </div>
                     </div>
                 </div>
-               <div class="table-responsive">
+               {{-- <div class="table-responsive"> --}}
                 <table class="table table-stripped">
-                  <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>Pertanyaan</th>
-                          <th>Jawaban</th>
-                          <th>Aksi</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  @foreach ($data as $d)
-                      <tr>
-                          <td>{{$d->pertemuan}}</td>
-                          <td>{{$d->pertanyaan}}</td>
-                          <td>
-                            @php
-                                $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
-                            @endphp
-                            {{ $ok == NULL ? '-': $ok->jawaban }}
-                          </td>
-                          <td>
-                            @if ($ok == NULL)
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
-                            @else
-                            <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
-                           @endif
-
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pertanyaan</th>
+                            <th>Jawaban</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($data as $d)
+                        <tr>
+                            <td>{{$d->pertemuan}}</td>
+                            <td class="wrapped-text"><p>{{$d->pertanyaan}}</p></td>
+                            <td class="wrapped-text">
+                              @php
+                                  $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
+                              @endphp
+                              {{ $ok == NULL ? '-': $ok->jawaban }}
                             </td>
-                      </tr>
-                  @endforeach
-                  </tbody>
-              </table>
-               </div>
+                            <td>
+                              @if ($ok == NULL)
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
+                              @else
+                              <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
+                             @endif
+
+                              </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+               {{-- </div> --}}
                 {{$data->links()}}
         </div>
     </div>

@@ -43,6 +43,15 @@ License: For each use you must have a valid license purchased only from above li
   <!-- End layout styles -->
 
   <link rel="shortcut icon" href="{{asset('template')}}//assets/images/favicon.png" />
+  <style>
+    table{
+        width: 100%;
+    }
+    .wrapped-text {
+        max-width: 200px; /* Sesuaikan dengan lebar maksimum yang diinginkan */
+        word-break: break-word;
+    }
+  </style>
 </head>
 <body>
 	@php
