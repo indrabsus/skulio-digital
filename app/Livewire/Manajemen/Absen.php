@@ -20,7 +20,10 @@ class Absen extends Component
     public $result = 10;
     public function render()
     {
-        $user = User::where('id_role','>=', 6)->where('id_role', '<=',7)
+        $guru = User::where('id_role','=', 6)
+        ->leftJoin('data_user','data_user.id_user','=','users.id')
+        ->get();
+        $tendik = User::where('id_role','=', 7)
         ->leftJoin('data_user','data_user.id_user','=','users.id')
         ->get();
         $role = Role::where('id_role','<>', 1)->get();
@@ -30,7 +33,7 @@ class Absen extends Component
         ->leftJoin('data_user','data_user.id_user','=','absen.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
         ->paginate($this->result);
-        return view('livewire.manajemen.absen', compact('data','role','user'));
+        return view('livewire.manajemen.absen', compact('data','role','guru','tendik'));
     }
     public function tarik(){
         $zk = new ZKTeco('192.168.30.33');

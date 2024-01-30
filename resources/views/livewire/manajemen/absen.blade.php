@@ -21,12 +21,12 @@
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-3">
                         <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Hadir
+                            Absen Guru
                           </button>
                     </div>
                     <div class="col-lg-3">
                         <button type="button" class="btn btn-success btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#izin">
-                            Izin/Sakit
+                            Absen Tendik
                           </button>
                     </div>
                     <div class="col-lg-3">
@@ -99,7 +99,7 @@
                     <label for="">Nama</label>
                     <select wire:model="id_user" class="form-control">
                         <option value="">Pilih User</option>
-                        @foreach ($user as $u)
+                        @foreach ($guru as $u)
                             <option value="{{ $u->id }}">{{ $u->nama_lengkap }}</option>
                         @endforeach
                     </select>
@@ -120,6 +120,21 @@
                     </div>
                   </div>
                 @endif
+                <div class="form-group mb-3">
+                    <label for="">Keterangan</label>
+                    <select wire:model="status" class="form-control">
+                        <option value="">Pilih Keterangan</option>
+                        <option value="0">Hadir</option>
+                        <option value="1">Tidak ada jadwal</option>
+                        <option value="2">Sakit</option>
+                        <option value="3">Izin</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('status')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -143,7 +158,7 @@
                     <label for="">Nama</label>
                     <select wire:model="id_user" class="form-control">
                         <option value="">Pilih User</option>
-                        @foreach ($user as $u)
+                        @foreach ($tendik as $u)
                             <option value="{{ $u->id }}">{{ $u->nama_lengkap }}</option>
                         @endforeach
                     </select>
@@ -153,11 +168,22 @@
                         @enderror
                     </div>
                   </div>
-
+                @if (Auth::user()->id_role == 1)
+                <div class="form-group mb-3">
+                    <label for="">Tanggal</label>
+                    <input type="datetime-local" class="form-control" wire:model="waktu">
+                    <div class="text-danger">
+                        @error('waktu')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                @endif
                 <div class="form-group mb-3">
                     <label for="">Keterangan</label>
                     <select wire:model="status" class="form-control">
                         <option value="">Pilih Keterangan</option>
+                        <option value="0">Hadir</option>
                         <option value="1">Tidak ada jadwal</option>
                         <option value="2">Sakit</option>
                         <option value="3">Izin</option>
