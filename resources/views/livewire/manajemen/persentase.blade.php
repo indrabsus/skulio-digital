@@ -20,12 +20,22 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
-                          </button>
-                    </div>
-                    <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                            <select class="form-control" wire:model.live="bulan">
+                                <option value="">Pilih Bulan</option>
+                                <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-04">April {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-05">Mei {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-06">Juni {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-07">Juli {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-08">Agustus {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-09">September {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-10">Oktober {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
+                            </select>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -44,28 +54,55 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Username</th>
                           <th>Nama Lengkap</th>
-                          <th>Jenis Kelamin</th>
                           <th>Role</th>
-                          <th>Aksi</th>
+                          <th>Hadir</th>
+                          <th>No Jadwal</th>
+                          <th>Sakit</th>
+                          <th>Izin</th>
+                          <th>Persentase</th>
                       </tr>
                   </thead>
                   <tbody>
+                    <?php
+                    $maxHadir = 0; // Inisialisasi variabel untuk menyimpan nilai maksimal kehadiran dari semua user
+
+                    // Menghitung total hadir, nojadwal, dan mencari kehadiran maksimal dari semua user
+                    foreach ($data as $d) {
+                        $hadir = App\Models\Absen::where('id_user', $d->id)->where('status', 0)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                        $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status', 1)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+
+                        $thadir = $hadir + $nojadwal;
+
+                        // Memperbarui nilai kehadiran maksimal jika nilai saat ini lebih besar
+                        $maxHadir = max($maxHadir, $thadir);
+
+                        }
+                        ?>
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
                           <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
-                          <td>{{$d->nama_role}}</td>
-                          <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_data}})'><i class="fa-solid fa-edit"></i></i></a>
-                              @if (Auth::user()->id_role == 1)
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
-                           @endif
-                            </td>
+                          <td>{{ucwords($d->nama_role)}}</td>
+                          @php
+                              $hadir = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                              $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                              $thadir = $hadir + $nojadwal;
+                              $sakit = App\Models\Absen::where('id_user', $d->id)->where('status',2)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                              $izin = App\Models\Absen::where('id_user', $d->id)->where('status',3)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                            $max = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count() + App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                            if($max > 0){
+                                $persen = ($maxHadir > 0) ? ($thadir / $maxHadir) * 100 : 0;
+                            } else {
+                                $persen = 0;
+                            }
+
+                          @endphp
+                          <td>{{ $hadir }}</td>
+                          <td>{{ $nojadwal }}</td>
+                          <td>{{ $sakit }}</td>
+                          <td>{{ $izin }}</td>
+                          <td>{{ $persen }}%</td>
                       </tr>
                   @endforeach
                   </tbody>

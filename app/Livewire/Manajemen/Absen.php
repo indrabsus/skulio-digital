@@ -60,7 +60,7 @@ class Absen extends Component
     public function clearForm(){
         $this->id_role = '';
         $this->id_user = '';
-        $this->jenkel = '';
+        $this->status = '';
         $this->no_hp = '';
         $this->alamat = '';
         $this->waktu = '';
@@ -100,7 +100,7 @@ class Absen extends Component
                 if($this->waktu == NULL){
                     ModelsAbsen::create([
                         'id_user' => $this->id_user,
-                        'status' => 0,
+                        'status' => $this->status,
                         'waktu' => now()
                     ]);
             session()->flash('sukses','Data berhasil ditambahkan');
