@@ -15,13 +15,14 @@ class JawabanRefleksi extends Component
     public $id_refleksi, $jawaban, $pertanyaan;
     use WithPagination;
 
-    public $cari = '';
+    public $pertemuan = 1;
     public $result = 10;
     public function render()
     {
+        $pert = Kombel::all();
         $data  = ModelsRefleksi::leftJoin('kombel','kombel.id_kombel','refleksi.id_kombel')
-        ->orderBy('refleksi.id_refleksi','desc')->where('pertemuan', 'like','%'.$this->cari.'%')->paginate($this->result);
-        return view('livewire.karyawan.jawaban-refleksi', compact('data'));
+        ->orderBy('refleksi.id_refleksi','asc')->where('pertemuan', $this->pertemuan)->paginate($this->result);
+        return view('livewire.karyawan.jawaban-refleksi', compact('data','pert'));
     }
 
     public function clearForm(){

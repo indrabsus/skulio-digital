@@ -1,5 +1,4 @@
 <div>
-
     <div class="row">
 
         <div class="container">
@@ -23,54 +22,71 @@
 
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
-                          <div class="col-3">
-                            <select class="form-control" wire:model.live="result">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
+                            <span class="input-group-text" id="basic-addon1">Pertemuan ke</span>
+                            <select class="form-control" wire:model.live="pertemuan">
+                                @foreach ($pert as $p)
+                                <option value="{{ $p->pertemuan }}">{{ $p->pertemuan }}</option>
+
+                                @endforeach
                             </select>
-                        </div>
-                            <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
-                            <span class="input-group-text" id="basic-addon1">Cari</span>
+
                           </div>
                     </div>
                 </div>
-               {{-- <div class="table-responsive"> --}}
+               {{-- <div class="table-responsive">
                 <table class="table table-stripped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Pertanyaan</th>
-                            <th>Jawaban</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($data as $d)
-                        <tr>
-                            <td>{{$d->pertemuan}}</td>
-                            <td class="wrapped-text"><p>{{$d->pertanyaan}}</p></td>
-                            <td class="wrapped-text">
-                              @php
-                                  $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
-                              @endphp
-                              {{ $ok == NULL ? '-': $ok->jawaban }}
-                            </td>
-                            <td>
-                              @if ($ok == NULL)
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
-                              @else
-                              <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
-                             @endif
+                  <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Pertanyaan</th>
+                          <th>Jawaban</th>
+                          <th>Aksi</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  @foreach ($data as $d)
+                      <tr>
+                          <td>{{$d->pertemuan}}</td>
+                          <td>{{$d->pertanyaan}}</td>
+                          <td>
+                            @php
+                                $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
+                            @endphp
+                            {{ $ok == NULL ? '-': $ok->jawaban }}
+                          </td>
+                          <td>
+                            @if ($ok == NULL)
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
+                            @else
+                            <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
+                           @endif
 
-                              </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-               {{-- </div> --}}
-                {{$data->links()}}
+                            </td>
+                      </tr>
+                  @endforeach
+                  </tbody>
+              </table>
+               </div>
+                {{$data->links()}} --}}
+               <?php $no=1; ?>
+                @foreach ($data as $d)
+                    <div class="card">
+                      <div class="card-body">
+                        <h3>{{ $no++ }}. {{ $d->pertanyaan }}</h3>
+                    <hr>
+                    @php
+                                $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
+                            @endphp
+                            {{ $ok == NULL ? '-': $ok->jawaban }}
+                            <hr>
+                            @if ($ok == NULL)
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
+                            @else
+                            <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
+                           @endif
+                      </div>
+                    </div>
+                @endforeach
         </div>
     </div>
 
