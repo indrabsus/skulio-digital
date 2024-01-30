@@ -67,7 +67,7 @@
                             @if ($d->status == 0)
                             <span class="badge bg-primary">Datang</span>
                             @elseif($d->status == 1)
-                            <span class="badge bg-success">Pulang</span>
+                            <span class="badge bg-success">Tidak Ada Jadwal</span>
                             @elseif($d->status == 2)
                             <span class="badge bg-secondary">Sakit</span>
                             @elseif($d->status == 3)
@@ -158,6 +158,7 @@
                     <label for="">Keterangan</label>
                     <select wire:model="status" class="form-control">
                         <option value="">Pilih Keterangan</option>
+                        <option value="1">Tidak ada jadwal</option>
                         <option value="2">Sakit</option>
                         <option value="3">Izin</option>
                     </select>

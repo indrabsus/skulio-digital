@@ -8,8 +8,8 @@ use Rats\Zkteco\Lib\ZKTeco;
 class FingerPrint extends Controller
 {
     public function rawlogsc(){
-        $zk = new ZKTeco('192.168.30.33',4370);
-        $zk->connect();
+        $zk = new ZKTeco('33.33.33.33');
+        dd($zk->connect());
         $log = $zk->getAttendance();
 
         // Fungsi untuk mengurutkan array berdasarkan kolom waktu secara descending
