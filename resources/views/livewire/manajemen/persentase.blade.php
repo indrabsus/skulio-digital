@@ -21,6 +21,10 @@
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
+                        <select wire:model.live="role" class="form-control">
+                            <option value="6">Guru</option>
+                            <option value="7">Tendik</option>
+                        </select>
                             <select class="form-control" wire:model.live="bulan">
                                 <option value="">Pilih Bulan</option>
                                 <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>

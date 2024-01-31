@@ -16,16 +16,28 @@ class Persentase extends Component
     public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user;
     use WithPagination;
     public $bulan = '1999-00';
+    public $role = 6;
     public $cari = '';
     public $result = 10;
     public function render()
     {
+        if($this->role == '6'){
+            $data  = TabelDataUser::orderBy('id_data','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->leftJoin('users','users.id','=','data_user.id_user')
+            ->leftJoin('roles','roles.id_role','=','users.id_role')
+            ->where('users.id_role',6)
+            ->paginate($this->result);
+        } else {
+            $data  = TabelDataUser::orderBy('id_data','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->leftJoin('users','users.id','=','data_user.id_user')
+            ->leftJoin('roles','roles.id_role','=','users.id_role')
+            ->where('users.id_role',7)
+            ->paginate($this->result);
+        }
         $role = Role::where('id_role','<>', 1)->get();
-        $data  = TabelDataUser::orderBy('id_data','desc')->
-        where('nama_lengkap', 'like','%'.$this->cari.'%')
-        ->leftJoin('users','users.id','=','data_user.id_user')
-        ->leftJoin('roles','roles.id_role','=','users.id_role')
-        ->paginate($this->result);
+
         return view('livewire.manajemen.persentase', compact('data','role'));
     }
     public function insert(){
