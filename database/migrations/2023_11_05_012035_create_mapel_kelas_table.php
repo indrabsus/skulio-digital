@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_mapelkelas');
             $table->foreignId('id_mapel')->references('id_mapel')->on('mata_pelajaran')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
