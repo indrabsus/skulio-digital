@@ -22,14 +22,14 @@ class Persentase extends Component
     public function render()
     {
         if($this->role == '6'){
-            $data  = TabelDataUser::orderBy('id_data','desc')
+            $data  = TabelDataUser::orderBy('id','asc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->leftJoin('users','users.id','=','data_user.id_user')
             ->leftJoin('roles','roles.id_role','=','users.id_role')
             ->where('users.id_role',6)
             ->paginate($this->result);
         } else {
-            $data  = TabelDataUser::orderBy('id_data','desc')
+            $data  = TabelDataUser::orderBy('id','asc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->leftJoin('users','users.id','=','data_user.id_user')
             ->leftJoin('roles','roles.id_role','=','users.id_role')
