@@ -45,19 +45,13 @@
                     </div>
                 </div>
                <div class="table-responsive">
-                <table class="table table-stripped">
+                <table class="table table-bordered">
                   <thead>
                       <tr>
-                        @php
-                            $mat = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')->where('mapel_kelas.id_user', Auth::user()->id)->get();
-                        @endphp
+
                           <th>No</th>
                           <th>Nama Lengkap</th>
                           <th>Kelas</th>
-                          <th>Aksi</th>
-                          @foreach ($mat as $mt)
-                              <th>{{ $mt->materi }}</th>
-                          @endforeach
                       </tr>
                   </thead>
                   <tbody>
@@ -66,8 +60,23 @@
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-                          <td><a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#tugas" wire:click='tugas({{$d->id_mapelkelas}},{{ $d->id_user }})'>{{ $d->nama_pelajaran }}</a></td>
-                      </tr>
+                          @php
+                            $mat = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                            ->leftJoin('nilai','nilai.id_materi','materi.id_materi')
+                            ->where('mapel_kelas.id_user', Auth::user()->id)
+                            ->leftJoin('data_siswa','data_siswa.id_kelas','mapel_kelas.id_kelas')
+                            ->where('data_siswa.id_user', $d->id_user)
+                            ->select('materi.materi','materi.id_materi','nilai.nilai')
+                            ->get();
+                        @endphp
+                          @foreach ($mat as $mt)
+                                @if (isset($mt->nilai))
+                                    <td>{{ $mt->materi }}<br>{{ $mt->nilai }}</td>
+                                @else
+                                <td><a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas({{ $mt->id_materi }},{{ $d->id_user }})">{{ $mt->materi }}</a></td>
+                                @endif
+                          @endforeach
+                          </tr>
                   @endforeach
                   </tbody>
               </table>
@@ -86,23 +95,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                  <div class="form-group mb-3">
-                    @php
-                        $mapel = App\Models\Materi::where('id_mapelkelas', $id_mapelkelas)->get();
-                    @endphp
-                    <label for="">Materi</label>
-                    <select class="form-control" wire:model.live="id_materi">
-                        <option value="">Pilih Materi</option>
-                        @foreach ($mapel as $m)
-                            <option value="{{ $m->id_materi }}">{{ $m->materi }}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-danger">
-                        @error('id_materi')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
+
                   <div class="form-group mb-3">
                     <label for="">Nilai</label>
                     <input type="number" class="form-control" wire:model.live="nilai">
