@@ -24,7 +24,9 @@ class SiswaKelas extends Component
     public $result = 10;
     public function render()
     {
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')->get();
+        $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
+        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->where('mapel_kelas.id_user', Auth::user()->id)->get();
         if($this->cari_kelas == ''){
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
@@ -82,14 +84,5 @@ class SiswaKelas extends Component
     public function clearForm(){
         $this->nilai = '';
     }
-    public function khapus(string $uuid){
-        $this->id_nilai = $uuid;
-        dd($this->id_nilai);
-    }
-    public function delete(){
-        Nilai::where('id', $this->id_nilai)->delete();
-        session()->flash('sukses','Data berhasil dihapus');
-            $this->clearForm();
-            $this->dispatch('closeModal');
-    }
+
 }
