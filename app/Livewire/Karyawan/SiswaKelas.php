@@ -16,7 +16,7 @@ use Livewire\WithPagination;
 
 class SiswaKelas extends Component
 {
-    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas;
+    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai;
     use WithPagination;
     public $material = [];
     public $cari_kelas ='';
@@ -81,5 +81,15 @@ class SiswaKelas extends Component
     }
     public function clearForm(){
         $this->nilai = '';
+    }
+    public function khapus(string $uuid){
+        $this->id_nilai = $uuid;
+        dd($this->id_nilai);
+    }
+    public function delete(){
+        Nilai::where('id', $this->id_nilai)->delete();
+        session()->flash('sukses','Data berhasil dihapus');
+            $this->clearForm();
+            $this->dispatch('closeModal');
     }
 }

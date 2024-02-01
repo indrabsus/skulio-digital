@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\FingerPrint;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PPDBController;
 use App\Http\Controllers\UserController;
@@ -11,6 +12,7 @@ use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
+
 
 
 // Fingerprint
@@ -40,6 +42,8 @@ Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 Route::group(['middleware' => ['auth']], function(){
+
+    Route::get('deletenilai/{id}',[NilaiController::class,'hapusNilai'])->name('hapusnilai');
     Route::any('/updatepassword',[AuthController::class,'updatePassword'])->name('updatepassword');
     Route::get('/ubahpass', UbahPassword::class)->name('ubahpassword');
 

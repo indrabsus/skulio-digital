@@ -61,17 +61,21 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           @php
-                            $mat = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                            ->leftJoin('nilai','nilai.id_materi','materi.id_materi')
+                            $mat = App\Models\Materi::
+                            leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                             ->where('mapel_kelas.id_user', Auth::user()->id)
                             ->leftJoin('data_siswa','data_siswa.id_kelas','mapel_kelas.id_kelas')
                             ->where('data_siswa.id_user', $d->id_user)
-                            ->select('materi.materi','materi.id_materi','nilai.nilai')
+                            // ->select('materi.materi','materi.id_materi','data_siswa.id_user')
                             ->get();
                         @endphp
                           @foreach ($mat as $mt)
-                                @if (isset($mt->nilai))
-                                    <td>{{ $mt->materi }}<br>{{ $mt->nilai }}</td>
+                          @php
+                              $nil = App\Models\Nilai::where('id_materi', $mt->id_materi)->where('id_user', $d->id_user)->first();
+
+                          @endphp
+                                @if ($nil != NULL)
+                                    <td>{{ $mt->materi }}<br><a href="{{ route('hapusnilai',['id' => $nil->id]) }}" class="badge bg-primary" onclick="confirm('Apakah anda yakin hapus?')">{{ $nil->nilai }}</a></td>
                                 @else
                                 <td><a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas({{ $mt->id_materi }},{{ $d->id_user }})">{{ $mt->materi }}</a></td>
                                 @endif
@@ -114,79 +118,6 @@
         </div>
       </div>
 
-
-    {{-- Edit Modal --}}
-    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">NIS</label>
-                    <input type="text" wire:model.live="nis" class="form-control">
-                    <div class="text-danger">
-                        @error('nis')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jenkel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Kelas</label>
-                    <select class="form-control" wire:model.live="id_kelas">
-                        <option value="">Pilih Kelas</option>
-                        @foreach ($kelas as $k)
-                            <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-danger">
-                        @error('id_kelas')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
 

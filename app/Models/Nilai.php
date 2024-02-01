@@ -10,6 +10,9 @@ class Nilai extends Model
 {
     use HasFactory;
     use HasUuids;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $table = "nilai";
     protected $guarded = [];
 }
