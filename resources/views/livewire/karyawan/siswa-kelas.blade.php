@@ -75,7 +75,7 @@
 
                           @endphp
                                 @if ($nil != NULL)
-                                    <td>{{ $mt->materi }}<br><a href="{{ route('hapusnilai',['id' => $nil->id]) }}" class="badge bg-primary" onclick="confirm('Apakah anda yakin hapus?')">{{ $nil->nilai }}</a></td>
+                                    <td>{{ $mt->materi }}<br><a href="{{ route('hapusnilai',['id' => $nil->id]) }}" class="badge bg-primary" onclick="return confirm('Apakah anda yakin hapus?')">{{ $nil->nilai }}</a></td>
                                 @else
                                 <td><a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas({{ $mt->id_materi }},{{ $d->id_user }})">{{ $mt->materi }}</a></td>
                                 @endif
