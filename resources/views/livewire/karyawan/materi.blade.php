@@ -17,20 +17,15 @@
         </div>
         @endif
         </div>
-
         <div class="col">
                 <div class="row justify-content-between mt-2">
-
                     <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
+                            Tambah
+                          </button>
+                    </div>
+                    <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
-                            <div class="form-group">
-                                <select class="form-control" wire:model.live="cari_kelas">
-                                    <option value="">Pilih Kelas</option>
-                                    @foreach($kelas as $k)
-                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -39,7 +34,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                            <input type="text" class="form-control" placeholder="Cari Nama/Nis/No Hp" aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
+                            <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
                             <span class="input-group-text" id="basic-addon1">Cari</span>
                           </div>
                     </div>
@@ -48,25 +43,24 @@
                 <table class="table table-stripped">
                   <thead>
                       <tr>
-                        @php
-                            $mat = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')->where('mapel_kelas.id_user', Auth::user()->id)->get();
-                        @endphp
                           <th>No</th>
-                          <th>Nama Lengkap</th>
+                          <th>Materi</th>
                           <th>Kelas</th>
+                          <th>Mapel</th>
                           <th>Aksi</th>
-                          @foreach ($mat as $mt)
-                              <th>{{ $mt->materi }}</th>
-                          @endforeach
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td>{{$d->materi}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-                          <td><a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#tugas" wire:click='tugas({{$d->id_mapelkelas}},{{ $d->id_user }})'>{{ $d->nama_pelajaran }}</a></td>
+                          <td>{{$d->nama_pelajaran}}</td>
+                          <td>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_materi}})'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_materi}})"><i class="fa-solid fa-trash"></i></a>
+                          </td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -78,7 +72,7 @@
 
 
     {{-- Add Modal --}}
-    <div class="modal fade" id="tugas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -86,36 +80,33 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                  <div class="form-group mb-3">
-                    @php
-                        $mapel = App\Models\Materi::where('id_mapelkelas', $id_mapelkelas)->get();
-                    @endphp
+                <div class="form-group mb-3">
                     <label for="">Materi</label>
-                    <select class="form-control" wire:model.live="id_materi">
-                        <option value="">Pilih Materi</option>
-                        @foreach ($mapel as $m)
-                            <option value="{{ $m->id_materi }}">{{ $m->materi }}</option>
+                    <input type="text" wire:model.live="materi" class="form-control">
+                    <div class="text-danger">
+                        @error('materi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Mapel Kelas</label>
+                    <select wire:model.live="id_mapelkelas" class="form-control">
+                        <option value="">Pilih Opsi</option>
+                        @foreach ($mapelkelas as $m)
+                            <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas }}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_materi')
+                        @error('id_mapelkelas')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="">Nilai</label>
-                    <input type="number" class="form-control" wire:model.live="nilai">
-                    <div class="text-danger">
-                        @error('nilai')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='kirimnilai()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
             </div>
           </div>
         </div>
@@ -132,61 +123,29 @@
             </div>
             <div class="modal-body">
                 <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
+                    <label for="">Materi</label>
+                    <input type="text" wire:model.live="materi" class="form-control">
                     <div class="text-danger">
-                        @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
+                        @error('materi')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
                 <div class="form-group mb-3">
-                    <label for="">NIS</label>
-                    <input type="text" wire:model.live="nis" class="form-control">
-                    <div class="text-danger">
-                        @error('nis')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select class="form-control" wire:model.live="jenkel">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="l">Laki-laki</option>
-                        <option value="p">Perempuan</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jenkel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="">Kelas</label>
-                    <select class="form-control" wire:model.live="id_kelas">
-                        <option value="">Pilih Kelas</option>
-                        @foreach ($kelas as $k)
-                            <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                    <label for="">Mapel Kelas</label>
+                    <select wire:model.live="id_mapelkelas" class="form-control">
+                        <option value="">Pilih Opsi</option>
+                        @foreach ($mapelkelas as $m)
+                            <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas }}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_kelas')
+                        @error('id_mapelkelas')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                </div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
@@ -194,9 +153,6 @@
           </div>
         </div>
       </div>
-
-
-
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
@@ -215,38 +171,15 @@
           </div>
         </div>
       </div>
-
-      <div class="modal fade" id="k_reset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Reset Passwortd</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Apakah anda yakin mereset password user ini?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='p_reset()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
       <script>
         window.addEventListener('closeModal', event => {
-            $('#tugas').modal('hide');
+            $('#add').modal('hide');
         })
         window.addEventListener('closeModal', event => {
             $('#edit').modal('hide');
         })
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
-        })
-        window.addEventListener('closeModal', event => {
-            $('#k_reset').modal('hide');
         })
       </script>
 
