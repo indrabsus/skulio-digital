@@ -84,5 +84,14 @@ class SiswaKelas extends Component
     public function clearForm(){
         $this->nilai = '';
     }
+    public function chapus($id){
+        $this->id_nilai = $id;
+    }
+    public function delete(){
+        Nilai::where('id', $this->id_nilai)->delete();
+        session()->flash('sukses','Data berhasil dihapus');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+    }
 
 }
