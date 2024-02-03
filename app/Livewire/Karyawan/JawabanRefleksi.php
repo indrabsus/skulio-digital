@@ -6,23 +6,27 @@ use App\Models\JwbnRefleksi;
 use App\Models\Kombel;
 use Livewire\Component;
 use App\Models\Angkatan as TabelAngkatan;
+use App\Models\DataUser;
 use App\Models\Refleksi as ModelsRefleksi;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class JawabanRefleksi extends Component
 {
-    public $id_refleksi, $jawaban, $pertanyaan;
+    public $id_refleksi, $jawaban, $pertanyaan, $user;
     use WithPagination;
 
     public $pertemuan = 1;
     public $result = 10;
     public function render()
     {
+        $guru = DataUser::leftJoin('users','users.id','data_user.id_user')->where('id_role', 6)->get();
         $pert = Kombel::all();
         $data  = ModelsRefleksi::leftJoin('kombel','kombel.id_kombel','refleksi.id_kombel')
-        ->orderBy('refleksi.id_refleksi','asc')->where('pertemuan', $this->pertemuan)->paginate($this->result);
-        return view('livewire.karyawan.jawaban-refleksi', compact('data','pert'));
+        ->orderBy('refleksi.id_refleksi','asc')
+        ->where('pertemuan', $this->pertemuan)
+        ->paginate($this->result);
+        return view('livewire.karyawan.jawaban-refleksi', compact('data','pert','guru'));
     }
 
     public function clearForm(){

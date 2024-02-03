@@ -20,8 +20,16 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
+                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
+                            <select wire:model.live="user" class="form-control">
+                                <option value="">Pilih Guru</option>
+                                @foreach ($guru as $g)
+                                    <option value="{{ $g->id_user }}">{{ $g->nama_lengkap }}</option>
+                                @endforeach
+                            </select>
+                            @endif
                             <span class="input-group-text" id="basic-addon1">Pertemuan ke</span>
                             <select class="form-control" wire:model.live="pertemuan">
                                 @foreach ($pert as $p)
@@ -33,41 +41,7 @@
                           </div>
                     </div>
                 </div>
-               {{-- <div class="table-responsive">
-                <table class="table table-stripped">
-                  <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>Pertanyaan</th>
-                          <th>Jawaban</th>
-                          <th>Aksi</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  @foreach ($data as $d)
-                      <tr>
-                          <td>{{$d->pertemuan}}</td>
-                          <td>{{$d->pertanyaan}}</td>
-                          <td>
-                            @php
-                                $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
-                            @endphp
-                            {{ $ok == NULL ? '-': $ok->jawaban }}
-                          </td>
-                          <td>
-                            @if ($ok == NULL)
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
-                            @else
-                            <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
-                           @endif
 
-                            </td>
-                      </tr>
-                  @endforeach
-                  </tbody>
-              </table>
-               </div>
-                {{$data->links()}} --}}
                <?php $no=1; ?>
                 @foreach ($data as $d)
                     <div class="card">
@@ -75,15 +49,22 @@
                         <h3>{{ $no++ }}. {{ $d->pertanyaan }}</h3>
                     <hr>
                     @php
-                                $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
+                    if(Auth::user()->id_role == 1 || Auth::user()->id_role == 4){
+                        $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',$user)->first();
+                    } else {
+                        $ok = App\Models\JwbnRefleksi::where('id_refleksi',$d->id_refleksi)->where('id_user',Auth::user()->id)->first();
+                    }
+
                             @endphp
                             {{ $ok == NULL ? '-': $ok->jawaban }}
                             <hr>
+                            @if (Auth::user()->id_role == 6)
                             @if ($ok == NULL)
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab({{$d->id_refleksi}})'>Jawab</a>
                             @else
                             <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
                            @endif
+                            @endif
                       </div>
                     </div>
                 @endforeach
