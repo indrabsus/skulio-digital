@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('parent_menu', function (Blueprint $table) {
-            $table->uuid('id_parent');
+            $table->uuid('id_parent')->primary();
             $table->string('parent_menu');
             $table->string('icon');
             $table->timestamps();

@@ -60,10 +60,10 @@
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->nama_role}}</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_data}})'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_data}}")'><i class="fa-solid fa-edit"></i></i></a>
                               @if (Auth::user()->id_role == 1)
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset('{{$d->id}}')"><i class="fa-solid fa-rotate-right"></i></a>
                            @endif
                             </td>
                       </tr>

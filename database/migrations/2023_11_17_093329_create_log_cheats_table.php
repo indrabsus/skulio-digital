@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_cheats', function (Blueprint $table) {
-            $table->uuid('id_logc');
+            $table->uuid('id_logc')->primary();
             $table->foreignUuid('id_ujian')->references('id_ujian')->on('ujian')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('id_siswa')->references('id_siswa')->on('data_siswa')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

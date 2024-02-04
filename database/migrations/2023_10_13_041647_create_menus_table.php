@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menu', function (Blueprint $table) {
-            $table->uuid('id_menu');
+            $table->uuid('id_menu')->primary();
             $table->foreignUuid('parent_menu')->nullable()->references('id_parent')->on('parent_menu')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignUuid('akses_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama_menu');

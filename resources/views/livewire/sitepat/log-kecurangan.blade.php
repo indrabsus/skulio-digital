@@ -55,7 +55,7 @@
                                 <td>{{$d->nama_lengkap}}</td>
                                 <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                                 <td>{{$d->nama_ujian}}</td>
-                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_logc}})"><i class="fa-solid fa-trash"></i></a></td>
+                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_logc}}')"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -74,7 +74,7 @@
                             <span class="badge bg-danger">Izin</span>
                             @endif
                            </td>
-                          <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_absen}})"><i class="fa-solid fa-trash"></i></a>
+                          <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_absen}}')"><i class="fa-solid fa-trash"></i></a>
                                </td>
                       </tr>
                   @endforeach

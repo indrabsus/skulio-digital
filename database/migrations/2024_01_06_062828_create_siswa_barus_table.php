@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('siswa_baru', function (Blueprint $table) {
-            $table->uuid('id_siswa_baru');
+            $table->uuid('id_siswa_baru')->primary();
             $table->foreignUuid('id_siswa')->references('id_siswa')->on('siswa_ppdb')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('id_kelas')->references('id_kelas')->on('kelas_ppdb')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

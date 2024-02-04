@@ -63,9 +63,9 @@
                                 @endif
                               </td>
                               <td>@if ($d->created_at != $d->updated_at)
-                                <button disabled type="button" href="" class="btn btn-secondary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> sudah kembali</button>
+                                <button disabled type="button" href="" class="btn btn-secondary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_peminjam}}")'><i class="fa-solid fa-book"></i> Sudah Kembali</button>
                               @else
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> kembalikan</a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_peminjam}}")'><i class="fa-solid fa-book"></i> Kembalikan</a>
                               @endif</td>
                           </tr>
                       @endforeach

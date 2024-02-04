@@ -62,9 +62,9 @@
                           <i class="fa-solid fa-times"></i>
                           @endif</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id}}")'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset('{{$d->id}}')"><i class="fa-solid fa-rotate-right"></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -95,7 +95,7 @@
                     </div>
                   </div>
 
-               
+
                 <div class="form-group mb-3">
                     <label for="">Role</label>
                     <select class="form-control" wire:model.live="id_role">
@@ -109,7 +109,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -139,7 +139,7 @@
                     </div>
                   </div>
 
-               
+
                 <div class="form-group mb-3">
                     <label for="">Role</label>
                     <select class="form-control" wire:model.live="id_role">
@@ -153,7 +153,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -181,7 +181,7 @@
         </div>
       </div>
 
-      
+
     <div class="modal fade" id="k_reset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">

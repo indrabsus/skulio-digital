@@ -83,14 +83,14 @@
                           <td>{{$d->nis}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>@if ($d->acc == 'y')
-                            <button class="btn btn-outline-success btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-check"></i></button>
+                            <button class="btn btn-outline-success btn-sm" wire:click="ubahAcc('{{ $d->id }}')"><i class="fa-solid fa-check"></i></button>
                           @else
-                          <button class="btn btn-outline-danger btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-times"></i></button>
+                          <button class="btn btn-outline-danger btn-sm" wire:click="ubahAcc('{{ $d->id }}')"><i class="fa-solid fa-times"></i></button>
                           @endif</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_siswa}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_siswa}}")'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset('{{$d->id}}')"><i class="fa-solid fa-rotate-right"></i></a>
                             </td>
                       </tr>
                   @endforeach

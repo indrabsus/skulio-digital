@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kombel', function (Blueprint $table) {
-            $table->uuid('id_kombel');
+            $table->uuid('id_kombel')->primary();
             $table->bigInteger('pertemuan');
             $table->string('tema');
             $table->string('narasumber');

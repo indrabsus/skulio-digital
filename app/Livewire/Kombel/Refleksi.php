@@ -42,6 +42,7 @@ class Refleksi extends Component
         $data = ModelsRefleksi::where('id_refleksi', $id)->first();
         $this->id_kombel = $data->id_kombel;
         $this->pertanyaan = $data->pertanyaan;
+        $this->id_refleksi = $id;
     }
     public function update(){
         $this->validate([
@@ -60,7 +61,7 @@ class Refleksi extends Component
         $this->id_refleksi = $id;
     }
     public function delete(){
-        Kombel::where('id_refleksi',$this->id_refleksi)->delete();
+        ModelsRefleksi::where('id_refleksi',$this->id_refleksi)->delete();
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');

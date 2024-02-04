@@ -76,7 +76,7 @@
                             @if ($kelas == NULL)
                                  -
                             @else
-                                <button class="btn btn-outline-danger btn-sm" <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#c_hkelas" wire:click="c_hkelas({{ $d->id_siswa }})">{{ $kelas->nama_kelas }}</button>
+                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#c_hkelas" wire:click="c_hkelas('{{ $d->id_siswa }}')">{{ $kelas->nama_kelas }}</button>
                             @endif
                           </td>
                           <td>
@@ -90,20 +90,20 @@
                           <td>@if ($d->bayar_daftar == 'y')
                             <button class="btn btn-outline-success btn-sm" disabled><i class="fa-solid fa-check"></i></button>
                             @else
-                            <button class="btn btn-outline-danger btn-sm" wire:click="daftar({{ $d->id_siswa }})"><i class="fa-solid fa-times"></i></button>
+                            <button class="btn btn-outline-danger btn-sm" wire:click="daftar('{{ $d->id_siswa }}')"><i class="fa-solid fa-times"></i></button>
                             @endif
                             @if ($d->bayar_daftar == 'y')
-                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#bayarppdb" wire:click="ppdb({{ $d->id_siswa }})"><i class="fa-solid fa-wallet"></i></button>
+                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#bayarppdb" wire:click="ppdb('{{ $d->id_siswa }}')"><i class="fa-solid fa-wallet"></i></button>
                             @else
                             <button disabled class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-wallet"></i></button>
                         @endif
-                            <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#ckelas" wire:click='ckelas({{$d->id_siswa}})'><i class="fa-solid fa-share"></i></a>
+                            <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#ckelas" wire:click='ckelas("{{$d->id_siswa}}")'><i class="fa-solid fa-share"></i></a>
                         </td>
                         @if (Auth::user()->id_role == 1)
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_siswa}})'><i class="fa-solid fa-edit"></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_siswa}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#c_undur" wire:click='c_undur({{$d->id_siswa}})'><i class="fa-solid fa-share"></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_siswa}}")'><i class="fa-solid fa-edit"></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_siswa}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#c_undur" wire:click='c_undur("{{$d->id_siswa}}")'><i class="fa-solid fa-share"></i></a>
                             </td>
                         @endif
                       </tr>
