@@ -119,11 +119,41 @@
                               ->where('keterangan',5)
                               ->count();
                           @endphp
-                          <td>{{ $telat }}</td>
-                          <td>{{ $sakit }}</td>
-                          <td>{{ $izin }}</td>
-                          <td>{{ $alfa }}</td>
-                          <td>{{ $dispen }}</td>
+                          <td>
+                            @if ($telat > 0)
+                            <span class="badge bg-secondary">{{ $telat }}</span>
+                            @else
+                                {{ $telat }}
+                            @endif
+                            </td>
+                          <td>
+                            @if ($sakit > 0)
+                            <span class="badge bg-warning">{{ $sakit }}</span>
+                            @else
+                                {{ $sakit }}
+                            @endif
+                            </td>
+                          <td>
+                            @if ($izin > 0)
+                            <span class="badge bg-primary">{{ $izin }}</span>
+                            @else
+                                {{ $izin }}
+                            @endif
+                            </td>
+                          <td>
+                            @if ($alfa > 0)
+                            <span class="badge bg-danger">{{ $alfa }}</span>
+                            @else
+                                {{ $alfa }}
+                            @endif
+                            </td>
+                          <td>
+                            @if ($dispen > 0)
+                            <span class="badge bg-success">{{ $dispen }}</span>
+                            @else
+                                {{ $dispen }}
+                            @endif
+                            </td>
                     </tr>
                   @endforeach
                   </tbody>
