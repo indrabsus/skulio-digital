@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('absen_siswa', function (Blueprint $table) {
             $table->uuid('id_absen')->unique();
             $table->foreignId('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('id_materi')->references('id_materi')->on('materi')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('id_materi')->references('id_materi')->on('materi')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('keterangan');
             $table->dateTime('waktu');
             $table->timestamps();
