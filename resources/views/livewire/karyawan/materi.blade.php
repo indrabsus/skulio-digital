@@ -24,8 +24,19 @@
                             Tambah
                           </button>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
+                            <select wire:model.live="carisemester" class="form-control">
+                                <option value="">Semua</option>
+                                <option value="ganjil">Ganjil</option>
+                                <option value="genap">Genap</option>
+                            </select>
+                            <select wire:model.live="caritahun" class="form-control">
+                                <option value="">Pilih Tahun</option>
+                                <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                            </select>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -47,6 +58,8 @@
                           <th>Materi</th>
                           <th>Kelas</th>
                           <th>Mapel</th>
+                          <th>Tahun/Semester</th>
+                          <th>Tanggal</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -57,9 +70,11 @@
                           <td>{{$d->materi}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->nama_pelajaran}}</td>
+                          <td>{{ $d->tahun_pelajaran.'/'.$d->semester }}</td>
+                          <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_materi}})'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_materi}})"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -85,6 +100,33 @@
                     <input type="text" wire:model.live="materi" class="form-control">
                     <div class="text-danger">
                         @error('materi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Semester</label>
+                    <select wire:model.live="semester" class="form-control">
+                        <option value="">Pilih Semester</option>
+                        <option value="ganjil">Ganjil</option>
+                        <option value="genap">Genap</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('semester')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Tahun Pelajaran</label>
+                    <select wire:model.live="tahun_pelajaran" class="form-control">
+                        <option value="">Pilih Tahun</option>
+                        <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('tahun_pelajaran')
                             {{$message}}
                         @enderror
                     </div>
@@ -127,6 +169,33 @@
                     <input type="text" wire:model.live="materi" class="form-control">
                     <div class="text-danger">
                         @error('materi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Semester</label>
+                    <select wire:model.live="semester" class="form-control">
+                        <option value="">Pilih Semester</option>
+                        <option value="ganjil">Ganjil</option>
+                        <option value="genap">Genap</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('semester')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
+                    <label for="">Tahun Pelajaran</label>
+                    <select wire:model.live="tahun_pelajaran" class="form-control">
+                        <option value="">Pilih Tahun</option>
+                        <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('tahun_pelajaran')
                             {{$message}}
                         @enderror
                     </div>

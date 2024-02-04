@@ -23,6 +23,7 @@
 
                     <div class="col-lg-12">
                         <div class="input-group input-group-sm mb-3">
+
                                 <select class="form-control" wire:model.live="cari_kelas">
                                     <option value="">Pilih Kelas</option>
                                     @foreach($kelas as $k)
@@ -61,10 +62,12 @@
                           <th>No</th>
                           <th>Nama Lengkap</th>
                           <th>Kelas</th>
-                          <th>Tanggal</th>
-                          <th>Absen</th>
-                          <th>Materi</th>
-                          <th>Nilai</th>
+                          <th>Mata Pelajaran</th>
+                          <th>Terlambat</th>
+                          <th>Sakit</th>
+                          <th>Izin</th>
+                          <th>Tanpa Keterangan</th>
+                          <th>Dispen</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -73,46 +76,55 @@
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-                          <td>{{ date('d F Y', strtotime($d->waktu_agenda)) }}</td>
+                          <td>{{ $d->nama_pelajaran }}</td>
                           @php
-                              $abs = App\Models\AbsenSiswa::where('id_user', $d->id_user)
-                              ->where('waktu', 'like','%'.date('Y-m-d',strtotime($d->waktu_agenda)).'%')
-                              ->where('id_materi', $d->id_materi)
-                              ->first();
-                              $status = 'Hadir';
-                              if(isset($abs)){
-                                if($abs->keterangan == 1){
-                                $status = 'Terlambat';
-                              } elseif($abs->keterangan == 2){
-                                $status = 'Sakit';
-                              } elseif($abs->keterangan == 3){
-                                $status = 'Izin';
-                              } elseif($abs->keterangan == 4){
-                                $status = 'Tanpa Keterangan';
-                              } else {
-                                $status = 'Dispen';
-                              }
-                              }
+                              $telat = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
+                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
+                              ->where('absen_siswa.id_user',$d->id_user)
+                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('semester', 'like','%'.$carisemester.'%')
+                              ->where('keterangan',1)
+                              ->count();
+                              $sakit = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
+                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
+                              ->where('absen_siswa.id_user',$d->id_user)
+                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('semester', 'like','%'.$carisemester.'%')
+                              ->where('keterangan',2)
+                              ->count();
+                              $izin = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
+                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
+                              ->where('absen_siswa.id_user',$d->id_user)
+                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('semester', 'like','%'.$carisemester.'%')
+                              ->where('keterangan',3)
+                              ->count();
+                              $alfa = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
+                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
+                              ->where('absen_siswa.id_user',$d->id_user)
+                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('semester', 'like','%'.$carisemester.'%')
+                              ->where('keterangan',4)
+                              ->count();
+                              $dispen = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
+                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
+                              ->where('absen_siswa.id_user',$d->id_user)
+                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('semester', 'like','%'.$carisemester.'%')
+                              ->where('keterangan',5)
+                              ->count();
                           @endphp
-
-                          @if ($abs == null)
-                          <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#cabsen" wire:click="cabsen({{ $d->id_user }}, {{ $d->id_materi }}, '{{ $d->waktu_agenda }}' )">Hadir</a></td>
-
-                          @else
-                          <td><span class="badge bg-danger">{{ $status }}</span></td>
-
-                          @endif
-                          <td>{{ $d->materi }}</td>
-                           @php
-                              $nil = App\Models\Nilai::where('nilai.id_materi', $d->id_materi)
-                              ->where('nilai.id_user', $d->id_user)->first();
-                          @endphp
-                          @if ($nil != null)
-                          <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="chapus('{{ $nil->id }}')">{{ $nil->nilai }}</a></td>
-                         @else
-                          <td><a href="" class="badge bg-success" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas({{ $d->id_materi }},{{ $d->id_user }})">Beri Nilai</a></td>
-                          @endif
-                          </tr>
+                          <td>{{ $telat }}</td>
+                          <td>{{ $sakit }}</td>
+                          <td>{{ $izin }}</td>
+                          <td>{{ $alfa }}</td>
+                          <td>{{ $dispen }}</td>
+                    </tr>
                   @endforeach
                   </tbody>
               </table>

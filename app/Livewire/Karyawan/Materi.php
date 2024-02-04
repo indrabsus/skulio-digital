@@ -11,9 +11,10 @@ use Livewire\WithPagination;
 
 class Materi extends Component
 {
-    public $materi, $id_mapelkelas,$id_materi;
+    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran;
     use WithPagination;
-
+    public $carisemester = '';
+    public $caritahun = '';
     public $cari = '';
     public $result = 10;
     public function render()
@@ -29,17 +30,25 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
-        ->where('materi', 'like','%'.$this->cari.'%')->paginate($this->result);
+        ->select('tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran')
+        ->where('materi', 'like','%'.$this->cari.'%')
+        ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
+        ->where('semester', 'like','%'.$this->carisemester.'%')
+        ->paginate($this->result);
         return view('livewire.karyawan.materi', compact('data','mapelkelas'));
     }
     public function insert(){
         $this->validate([
             'materi' => 'required',
-            'id_mapelkelas' => 'required'
+            'id_mapelkelas' => 'required',
+            'semester' => 'required',
+            'tahun_pelajaran' => 'required',
         ]);
         $data = ModelsMateri::create([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
+            'semester' => $this->semester,
+            'tahun_pelajaran' => $this->tahun_pelajaran,
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -48,21 +57,30 @@ class Materi extends Component
     public function clearForm(){
         $this->materi = '';
         $this->id_mapelkelas = '';
+        $this->semester = '';
+        $this->tahun_pelajaran = '';
     }
     public function edit($id){
         $data = ModelsMateri::where('id_materi', $id)->first();
         $this->materi = $data->materi;
         $this->id_mapelkelas = $data->id_mapelkelas;
+        $this->semester = $data->semester;
+        $this->tahun_pelajaran = $data->tahun_pelajaran;
         $this->id_materi = $id;
     }
     public function update(){
         $this->validate([
             'materi' => 'required',
-            'id_mapelkelas' => 'required'
+            'id_mapelkelas' => 'required',
+            'semester' => 'required',
+            'tahun_pelajaran' => 'required',
+
         ]);
         $data = ModelsMateri::where('id_materi', $this->id_materi)->update([
             'materi' => $this->materi,
-            'id_mapelkelas' => $this->id_mapelkelas
+            'id_mapelkelas' => $this->id_mapelkelas,
+            'semester' => $this->semester,
+            'tahun_pelajaran' => $this->tahun_pelajaran,
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
