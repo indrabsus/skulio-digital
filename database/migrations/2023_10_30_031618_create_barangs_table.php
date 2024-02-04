@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('barang', function (Blueprint $table) {
-            $table->id('id_barang');
+            $table->uuid('id_barang');
             $table->string('nama_barang');
             $table->bigInteger('volume');
             $table->string('satuan');
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->enum('sumber', ['bos','yayasan']);
             $table->bigInteger('tahun_arkas');
             $table->enum('jenis', ['ab','b']);
-            $table->foreignId('id_ruangan')->references('id_ruangan')->on('ruangan')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_ruangan')->references('id_ruangan')->on('ruangan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });

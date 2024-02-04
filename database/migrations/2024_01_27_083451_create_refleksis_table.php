@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('refleksi', function (Blueprint $table) {
-            $table->id('id_refleksi');
-            $table->foreignId('id_kombel')->references('id_kombel')->on('kombel')->onUpdate('cascade')->onDelete('cascade');
+            $table->uuid('id_refleksi');
+            $table->foreignUuid('id_kombel')->references('id_kombel')->on('kombel')->onUpdate('cascade')->onDelete('cascade');
             $table->text('pertanyaan');
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('siswa_ppdb', function (Blueprint $table) {
-            $table->id('id_siswa');
+            $table->uuid('id_siswa');
             $table->string('nama_lengkap');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');

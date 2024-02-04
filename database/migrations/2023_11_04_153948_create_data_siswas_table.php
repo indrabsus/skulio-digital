@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_siswa', function (Blueprint $table) {
-            $table->id('id_siswa');
-            $table->foreignId('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->uuid('id_siswa');
+            $table->foreignUuid('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama_lengkap');
             $table->enum('jenkel',['l','p']);
             $table->string('no_hp');

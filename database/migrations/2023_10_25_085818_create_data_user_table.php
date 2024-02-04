@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_user', function (Blueprint $table) {
-            $table->id('id_data');
-            $table->foreignId('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->uuid('id_data');
+            $table->foreignUuid('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama_lengkap');
             $table->enum('jenkel',['l','p']);
             $table->string('no_hp');

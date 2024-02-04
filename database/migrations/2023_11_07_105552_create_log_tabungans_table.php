@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_tabungan', function (Blueprint $table) {
-            $table->id('id_log_tabungan');
+            $table->uuid('id_log_tabungan');
             $table->bigInteger('nominal');
-            $table->foreignId('id_siswa')->references('id_siswa')->on('data_siswa')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_petugas')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_siswa')->references('id_siswa')->on('data_siswa')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_petugas')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('no_invoice');
             $table->enum('jenis', ['db','kd']);
             $table->string('log');

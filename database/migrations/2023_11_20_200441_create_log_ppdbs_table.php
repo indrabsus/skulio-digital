@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_ppdb', function (Blueprint $table) {
-            $table->id('id_log');
-            $table->foreignId('id_siswa')->references('id_siswa')->on('siswa_ppdb')->onUpdate('cascade')->onDelete('cascade');
+            $table->uuid('id_log');
+            $table->foreignUuid('id_siswa')->references('id_siswa')->on('siswa_ppdb')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nominal');
             $table->string('no_invoice');
             $table->enum('jenis', ['d','p','l'] );
