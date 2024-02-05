@@ -71,7 +71,6 @@
         </tr>
     </table>
     <p class="text-right">Cimahi, {{ date('d M Y', strtotime($data->created_at))}}</p>
-    <br>
-    <p class="text-right">.....................</p>
+    <p class="text-right"><img src="{{ asset('template/assets/img/qr.png') }}" width="50px"> Panitia PPDB</p>
 </body>
 </html>
