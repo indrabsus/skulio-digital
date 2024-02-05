@@ -52,7 +52,6 @@
                           <th>#</th>
                           <th>Nama Siswa</th>
                           <th>Nominal</th>
-                          <th>No Invoice</th>
                           <th>Jenis</th>
                           <th>Waktu</th>
                           @if (Auth::user()->id_role == 1)
@@ -66,7 +65,6 @@
                           <td><a href="{{ route('ppdbLog', ['id_log' => $d->id_log]) }}" class="btn btn-primary btn-sm" target="_blank"><i class="fa-solid fa-print"></i></a></td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>Rp.{{number_format($d->nominal,0,',','.')}}</td>
-                          <td>{{ $d->no_invoice }}</td>
                           <td>
                             @if ($d->jenis == 'd')
                                 Daftar
