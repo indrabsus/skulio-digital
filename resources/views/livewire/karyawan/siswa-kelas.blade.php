@@ -96,7 +96,7 @@
                           @endphp
 
                           @if ($abs == null)
-                          <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#cabsen" wire:click="cabsen({{ $d->id_user }}, {{ $d->id_materi }}, '{{ $d->waktu_agenda }}' )">Hadir</a></td>
+                          <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#cabsen" wire:click="cabsen('{{ $d->id_user }}', '{{ $d->id_materi }}', '{{ $d->waktu_agenda }}' )">Hadir</a></td>
 
                           @else
                           <td><span class="badge bg-danger">{{ $status }}</span></td>
@@ -110,7 +110,7 @@
                           @if ($nil != null)
                           <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="chapus('{{ $nil->id }}')">{{ $nil->nilai }}</a></td>
                          @else
-                          <td><a href="" class="badge bg-success" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas({{ $d->id_materi }},{{ $d->id_user }})">Beri Nilai</a></td>
+                          <td><a href="" class="badge bg-success" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas('{{ $d->id_materi }}','{{ $d->id_user }}')">Beri Nilai</a></td>
                           @endif
                           </tr>
                   @endforeach
