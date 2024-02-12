@@ -28,7 +28,7 @@ class Laporan extends Component
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '<=', 1000000)
+        ->having('total_pembayaran', '<', 1000000)
         ->count();
         $lebihsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
