@@ -53,6 +53,7 @@
                           <th>Nama Siswa</th>
                           <th>Nominal</th>
                           <th>Jenis</th>
+                          <th>Ket</th>
                           <th>Waktu</th>
                           @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
@@ -73,6 +74,7 @@
                             @else
                             Mengundurkan Diri
                             @endif</td>
+                            <td>{{ substr($d->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
                           <td>{{ date('d-m-Y h:i A', strtotime($d->created_at)) }}</td>
                           @if (Auth::user()->id_role == 1)
                           <td>

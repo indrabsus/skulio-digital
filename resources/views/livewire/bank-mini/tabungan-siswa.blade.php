@@ -90,7 +90,7 @@
             </div>
             <div class="modal-body mb-3">
               <div class="form-group">
-                <label for="">nama_lengkap</label>
+                <label for="">Nama Lengkap</label>
                 <input type="text" wire:model.live="nama_lengkap" class="form-control" disabled>
                 <div class="text-danger">
                     @error('nama_lengkap')

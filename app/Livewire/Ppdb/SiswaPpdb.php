@@ -17,7 +17,7 @@ use Livewire\WithPagination;
 
 class SiswaPpdb extends Component
 {
-    public $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
+    public $jenis, $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
     use WithPagination;
     public $filter = 'all';
 
@@ -161,7 +161,6 @@ class SiswaPpdb extends Component
         $cek = LogPpdb::where('no_invoice', 'P'.date('dmYh').$this->id_siswa)
         ->count();
         $max = MasterPpdb::where('tahun', date('Y'))->first();
-        // $crn = LogPpdb::where('id_siswa', $this->id_siswa)->where('jenis', 'p')->sum('nominal');
         $inputnow = $this->nom + $this->nom2;
         if($inputnow > $max->ppdb){
             session()->flash('gagal','Melebihi jumlah nominal!');
@@ -172,7 +171,7 @@ class SiswaPpdb extends Component
                 $data = LogPpdb::create([
                     'id_siswa'=> $this->id_siswa,
                     'nominal'=> $this->nom2,
-                    'no_invoice' => 'P'.date('dmYh').$this->id_siswa,
+                    'no_invoice' => 'P-'.strtoupper($this->jenis).date('dmYh').'-'.substr($this->id_siswa, 0,3),
                     'jenis'=>'p'
 
                 ]);
@@ -188,8 +187,12 @@ class SiswaPpdb extends Component
         }
     }
 
-     public function daftar($id){
-        $siswa = TabelSiswaPpdb::where('id_siswa', $id)->first();
+    public function kdaftar($id){
+        $this->id_siswa = $id;
+    }
+
+     public function daftar(){
+        $siswa = TabelSiswaPpdb::where('id_siswa', $this->id_siswa)->first();
         $cek = LogPpdb::where('no_invoice', 'D'.date('dmYh').$siswa->id_siswa)->count();
         if($cek < 1){
             if ($siswa->bayar_daftar == 'n') {
@@ -198,17 +201,21 @@ class SiswaPpdb extends Component
                     $data = LogPpdb::create([
                         'id_siswa'=> $siswa->id_siswa,
                         'nominal'=> $data->daftar,
-                        'no_invoice' =>'D'.date('dmYh').$siswa->id_siswa,
+                        'no_invoice' =>'D-'.strtoupper($this->jenis).'-'.date('dmYh').'-'.substr($siswa->id_siswa, 0,3),
                         'jenis'=>'d'
                     ]);
-                    TabelSiswaPpdb::where('id_siswa', $id)->update([
+                    TabelSiswaPpdb::where('id_siswa', $this->id_siswa)->update([
                         'bayar_daftar' => 'y'
                     ]);
                     session()->flash('sukses','Berhasil daftar!');
+                    $this->clearForm();
+                     $this->dispatch('closeModal');
                 }
             }
         } else {
             session()->flash('gagal','Tunggu beberapa saat!');
+            $this->clearForm();
+            $this->dispatch('closeModal');
         }
     }
     public function ckelas($id){

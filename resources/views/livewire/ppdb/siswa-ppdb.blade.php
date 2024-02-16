@@ -90,8 +90,10 @@
                           <td>@if ($d->bayar_daftar == 'y')
                             <button class="btn btn-outline-success btn-sm" disabled><i class="fa-solid fa-check"></i></button>
                             @else
-                            <button class="btn btn-outline-danger btn-sm" wire:click="daftar('{{ $d->id_siswa }}')"><i class="fa-solid fa-times"></i></button>
+                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#kdaftar" wire:click="kdaftar('{{ $d->id_siswa }}')"><i class="fa-solid fa-times"></i></button>
                             @endif
+
+
                             @if ($d->bayar_daftar == 'y')
                             <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#bayarppdb" wire:click="ppdb('{{ $d->id_siswa }}')"><i class="fa-solid fa-wallet"></i></button>
                             @else
@@ -116,145 +118,6 @@
     </div>
 
 
-    {{-- Add Modal --}}
-    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-             <div class="row">
-                <div class="col-lg-6">
-                <div class="form-group mb-3">
-                    <label for="">Nama Lengkap</label>
-                    <input type="text" wire:model.live="nama_lengkap" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                    <label for="">NISN</label>
-                    <input type="text" wire:model.live="nisn" class="form-control">
-                    <div class="text-danger">
-                        @error('nisn')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                    <label for="">NIK</label>
-                    <input type="text" wire:model.live="nik_siswa" class="form-control">
-                    <div class="text-danger">
-                        @error('nik_siswa')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  </div>
-                  <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                    <label for="">Nama Ayah</label>
-                    <input type="text" wire:model.live="nama_ayah" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_ayah')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                    <label for="">Nama Ibu</label>
-                    <input type="text" wire:model.live="nama_ibu" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_ibu')
-                            {{$message}}
-                        @enderror
-                    </div>
-                </div>
-                </div>
-                <div class="col-lg">
-                    <div class="form-group mb-3">
-                        <label for="">Asal Sekolah</label>
-                        <input type="text" wire:model.live="asal_sekolah" class="form-control">
-                        <div class="text-danger">
-                            @error('asal_sekolah')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="">Jenis Kelamin</label>
-                        <select class="form-control" wire:model.live="jenkel">
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="l">Laki-laki</option>
-                            <option value="p">Perempuan</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jenkel')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
-                      <div class="col-lg-6 mb-3">
-                        <div class="form-group">
-                            <label for="">Minat Jurusan 1</label><br>
-
-                            @foreach ($jurusan as $j)
-                            <input type="radio" wire:model.live="minat_jurusan1" value="{{ $j->nama_jurusan }}">
-                            <label for="">{{ $j->nama_jurusan }}</label><br>
-                            @endforeach
-                            <div class="text-danger">
-                                @error('minat_jurusan1')
-                                    {{ $message }}
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <div class="form-group">
-                            <label for="">Minat Jurusan 2</label><br>
-
-                            @foreach ($jurusan as $j)
-                            <input type="radio" wire:model.live="minat_jurusan2" value="{{ $j->nama_jurusan }}">
-                            <label for="">{{ $j->nama_jurusan }}</label><br>
-                            @endforeach
-                            <div class="text-danger">
-                                @error('minat_jurusan2')
-                                    {{ $message }}
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
 
@@ -400,6 +263,37 @@
       </div>
 
 
+       {{-- Daftar Modal --}}
+    <div class="modal fade" id="kdaftar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Daftar</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="">Jenis Pembayaran</label>
+                    <select wire:model.live='jenis' class="form-control">
+                        <option value="">Pilih Jenis Pembayaran</option>
+                        <option value="csh">Tunai</option>
+                        <option value="trf">Transfer</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('jenis')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='daftar()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
@@ -479,6 +373,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="">Jenis Pembayaran</label>
+                    <select wire:model.live='jenis' class="form-control">
+                        <option value="">Pilih Jenis Pembayaran</option>
+                        <option value="csh">Tunai</option>
+                        <option value="trf">Transfer</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('jenis')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -552,6 +459,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#c_hkelas').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#kdaftar').modal('hide');
         })
       </script>
 
