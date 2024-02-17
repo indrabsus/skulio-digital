@@ -46,7 +46,6 @@
     <div class="test">
         <div class="test">{{ $set->nama_instansi }}</div>
         <span class="test">Struk Pembayaran PPDB</span>
-        <p class="test">{{ $data->no_invoice }}</p>
     </div>
     <table class="table table-sm mt-3">
         <tr>
@@ -67,7 +66,7 @@
         <tr>
             <td>Keterangan</td>
             <td>:</td>
-            <td>{{ $data->jenis == 'p' ? 'PPDB' : 'Pendaftaran' }}</td>
+            <td>{{ $data->jenis == 'p' ? 'PPDB' : 'Pendaftaran' }} - {{ substr($data->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
         </tr>
     </table>
     <p class="text-right">Cimahi, {{ date('d M Y', strtotime($data->created_at))}}</p>
