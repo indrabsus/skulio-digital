@@ -52,6 +52,7 @@ class ExamController extends Controller
             $us = DataSiswa::where('id_user', Auth::user()->id)->first();
             $cek = LogUjian::where('id_ujian', Session::get('id_ujian'))
             ->where('id_siswa', $us->id_siswa)
+            ->where('status','done')
             ->count();
 
         if( $cek < 1){
