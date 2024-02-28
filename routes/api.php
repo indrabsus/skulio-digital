@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [App\Http\Controllers\Api\User::class, 'login']);
 
 
+Route::get('/kegiatan', [App\Http\Controllers\Api\KegiatanController::class, 'viewKegiatan']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/userdata', [App\Http\Controllers\Api\User::class, 'userData']);
