@@ -57,7 +57,17 @@
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_pelajaran}}</td>
                           <td>{{$d->materi}}</td>
-                          <td>{{ $d->nilai }}</td>
+                          <td>
+                            @if ($d->nilai >= 90)
+                            <span class="badge bg-success">Sangat Kompeten</span>
+                            @elseif($d->nilai  >= 80)
+                            <span class="badge bg-primary">Kompeten</span>
+                            @elseif($d->nilai  >= 70)
+                            <span class="badge bg-warning">Cukup Kompeten</span>
+                            @else
+                            <span class="badge bg-danger">Belum Kompeten</span>
+                            @endif
+                          </td>
                       </tr>
                   @endforeach
                   </tbody>

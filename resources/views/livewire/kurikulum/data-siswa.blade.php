@@ -17,7 +17,7 @@
         </div>
         @endif
         </div>
-        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
+        @if (Auth::user()->id_role == 1)
       <div class="row justify-content-between">
         <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>

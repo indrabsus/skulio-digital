@@ -61,7 +61,12 @@
         <tr>
             <td>Nominal</td>
             <td>:</td>
-            <td>Rp.{{ number_format($data->nominal,0,',','.') }}</td>
+            <td>@if ($data->nominal == 2350000)
+                Tuntas
+
+            @else
+            Rp.{{ number_format($data->nominal,0,',','.') }}
+            @endif</td>
         </tr>
         <tr>
             <td>Keterangan</td>
