@@ -61,6 +61,9 @@
                           <th>Nama Lengkap</th>
                           <th>Role</th>
                           <th>Hadir</th>
+                          @if ($this->role == 7)
+                          <th>Pulang</th>
+                          @endif
                           <th>No Jadwal</th>
                           <th>Sakit</th>
                           <th>Izin</th>
@@ -74,9 +77,10 @@
                     // Menghitung total hadir, nojadwal, dan mencari kehadiran maksimal dari semua user
                     foreach ($data as $d) {
                         $hadir = App\Models\Absen::where('id_user', $d->id)->where('status', 0)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                        $pulang = App\Models\Absen::where('id_user', $d->id)->where('status', 4)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
                         $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status', 1)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
 
-                        $thadir = $hadir + $nojadwal;
+                        $thadir = $hadir + $nojadwal + $pulang;
 
                         // Memperbarui nilai kehadiran maksimal jika nilai saat ini lebih besar
                         $maxHadir = max($maxHadir, $thadir);
@@ -84,31 +88,55 @@
                         }
                         ?>
                   @foreach ($data as $d)
-                      <tr>
-                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_lengkap}}</td>
-                          <td>{{ucwords($d->nama_role)}}</td>
-                          @php
-                              $hadir = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                              $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                              $thadir = $hadir + $nojadwal;
-                              $sakit = App\Models\Absen::where('id_user', $d->id)->where('status',2)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                              $izin = App\Models\Absen::where('id_user', $d->id)->where('status',3)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                            $max = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count() + App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                            if($max > 0){
-                                $persen = ($maxHadir > 0) ? ($thadir / $maxHadir) * 100 : 0;
-                            } else {
-                                $persen = 0;
-                            }
+                  <tr>
+                      <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                      <td>{{$d->nama_lengkap}}</td>
+                      <td>{{ucwords($d->nama_role)}}</td>
+                      @php
+                          $hadir = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                          $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                          $pulang = App\Models\Absen::where('id_user', $d->id)->where('status',4)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                          $thadir = $hadir + $nojadwal + $pulang;
+                          $sakit = App\Models\Absen::where('id_user', $d->id)->where('status',2)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                          $izin = App\Models\Absen::where('id_user', $d->id)->where('status',3)->where('waktu', 'like','%'.$this->bulan.'%')->count();
 
-                          @endphp
-                          <td>{{ $hadir }}</td>
-                          <td>{{ $nojadwal }}</td>
-                          <td>{{ $sakit }}</td>
-                          <td>{{ $izin }}</td>
-                          <td>{{ $persen }}%</td>
-                      </tr>
-                  @endforeach
+                          // Calculate the maximum possible attendance based on the role
+                          if ($d->nama_role == 'guru') {
+                              // Guru absen sehari sekali
+                              $maxHadir = DB::table('absen')
+                                  ->where('id_user', $d->id)
+                                  ->where('waktu', 'like', '%'.$this->bulan.'%')
+                                  ->select(DB::raw('COUNT(DISTINCT DATE(waktu)) as total'))
+                                  ->pluck('total')
+                                  ->first();
+                          } else if ($d->nama_role == 'tendik') {
+                              // Tendik absen sehari dua kali (datang dan pulang)
+                              $maxHadir = DB::table('absen')
+                                  ->where('id_user', $d->id)
+                                  ->where('waktu', 'like', '%'.$this->bulan.'%')
+                                  ->select(DB::raw('COUNT(DISTINCT DATE(waktu)) as total'))
+                                  ->pluck('total')
+                                  ->first() * 2;
+                          } else {
+                              $maxHadir = 0;
+                          }
+
+                          // Calculate the attendance percentage
+                          $max = $maxHadir;
+                          $persen = ($max > 0) ? ($thadir / $max) * 100 : 0;
+                      @endphp
+                      <td>{{ $hadir }}</td>
+                      @if ($this->role == 7)
+                      <td>{{ $pulang }}</td>
+                          @endif
+
+                      <td>{{ $nojadwal }}</td>
+                      <td>{{ $sakit }}</td>
+                      <td>{{ $izin }}</td>
+                      <td>{{ round($persen, 2) }}%</td>
+                  </tr>
+              @endforeach
+
                   </tbody>
               </table>
                </div>

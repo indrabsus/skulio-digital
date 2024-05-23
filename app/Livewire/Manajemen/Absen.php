@@ -73,6 +73,10 @@ class Absen extends Component
         $hitung = ModelsAbsen::where('id_user', $this->id_user)
             ->where('waktu', 'like','%'.date('Y-m-d').'%')
             ->count();
+        $pulang = ModelsAbsen::where('id_user', $this->id_user)
+            ->where('waktu', 'like','%'.date('Y-m-d').'%')
+            ->where('status', 4)
+            ->count();
             if($hitung < 1) {
                 ModelsAbsen::create([
                     'id_user' => $this->id_user,
@@ -82,11 +86,30 @@ class Absen extends Component
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
-            } else {
-                session()->flash('gagal','Data Gagal ditambahkan');
-        $this->clearForm();
-        $this->dispatch('closeModal');
             }
+            else {
+                if($pulang < 1) {
+                    if($this->status == 4){
+                        ModelsAbsen::create([
+                            'id_user' => $this->id_user,
+                            'status' => $this->status,
+                            'waktu' => now()
+                        ]);
+                session()->flash('sukses','Data berhasil ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+                    } else {
+                        session()->flash('gagal','Data Gagal ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+                    }
+                } else {
+                    session()->flash('gagal','Data Gagal ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+                }
+            }
+
     }
     public function hadir(){
         $this->validate([

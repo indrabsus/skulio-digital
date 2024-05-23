@@ -62,16 +62,26 @@
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{ucwords($d->nama_role)}}</td>
-                          <td>{{ date('d F Y - h:i:s A', strtotime($d->waktu)) }}</td>
+                          <td>{{ date('d F Y - H:i:s A', strtotime($d->waktu)) }}</td>
                           <td>
                             @if ($d->status == 0)
-                            <span class="badge bg-primary">Datang</span>
+                               @if($d->nama_role == 'tendik' && date('H:i', strtotime($d->waktu)) >= '07:00')
+                               <span class="badge bg-danger">Terlambat</span>
+                               @else
+                                <span class="badge bg-primary">Datang</span>
+                               @endif
                             @elseif($d->status == 1)
                             <span class="badge bg-success">Tidak Ada Jadwal</span>
                             @elseif($d->status == 2)
                             <span class="badge bg-secondary">Sakit</span>
                             @elseif($d->status == 3)
                             <span class="badge bg-danger">Izin</span>
+                            @elseif($d->status == 4)
+                            @if($d->nama_role == 'tendik' && date('H:i', strtotime($d->waktu)) <= '15:30')
+                               <span class="badge bg-danger">Pulang Cepat</span>
+                               @else
+                                <span class="badge bg-warning">Pulang</span>
+                               @endif
                             @endif
                            </td>
                           <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_absen}}')"><i class="fa-solid fa-trash"></i></a>
@@ -184,6 +194,7 @@
                     <select wire:model="status" class="form-control">
                         <option value="">Pilih Keterangan</option>
                         <option value="0">Hadir</option>
+                        <option value="4">Pulang</option>
                         <option value="1">Tidak ada jadwal</option>
                         <option value="2">Sakit</option>
                         <option value="3">Izin</option>
