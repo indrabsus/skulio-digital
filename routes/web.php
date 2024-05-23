@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FingerPrint;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PdfController;
@@ -21,6 +22,10 @@ Route::get('clear',[FingerPrint::class,'clear'])->name('clear');
 Route::get('rawlogsc',[FingerPrint::class,'rawlogsc'])->name('rawlogsc');
 Route::get('rawlog',[FingerPrint::class,'rawlog'])->name('rawlog');
 Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp');
+
+
+//Excel Controller
+Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->name('absenxls');
 
 
 

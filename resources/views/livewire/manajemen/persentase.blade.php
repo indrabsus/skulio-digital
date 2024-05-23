@@ -55,90 +55,104 @@
                 </div>
                <div class="table-responsive">
                 <table class="table table-stripped">
-                  <thead>
-                      <tr>
-                          <th>No</th>
-                          <th>Nama Lengkap</th>
-                          <th>Role</th>
-                          <th>Hadir</th>
-                          @if ($this->role == 7)
-                          <th>Pulang</th>
-                          @endif
-                          <th>No Jadwal</th>
-                          <th>Sakit</th>
-                          <th>Izin</th>
-                          <th>Persentase</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $maxHadir = 0; // Inisialisasi variabel untuk menyimpan nilai maksimal kehadiran dari semua user
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Lengkap</th>
+                            <th>Role</th>
+                            <th>Hadir</th>
+                            @if ($this->role == 7)
+                            <th>Pulang</th>
+                            @endif
+                            <th>No Jadwal</th>
+                            <th>Sakit</th>
+                            <th>Izin</th>
+                            <th>Persentase</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $maxHadir = 0; // Inisialisasi variabel untuk menyimpan nilai maksimal kehadiran dari semua user
 
-                    // Menghitung total hadir, nojadwal, dan mencari kehadiran maksimal dari semua user
-                    foreach ($data as $d) {
-                        $hadir = App\Models\Absen::where('id_user', $d->id)->where('status', 0)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
-                        $pulang = App\Models\Absen::where('id_user', $d->id)->where('status', 4)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
-                        $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status', 1)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                        // Menghitung total hadir, nojadwal, dan mencari kehadiran maksimal dari semua user
+                        foreach ($data as $d) {
+                            $hadir = App\Models\Absen::where('id_user', $d->id)->where('status', 0)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                            $pulang = App\Models\Absen::where('id_user', $d->id)->where('status', 4)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                            $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status', 1)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
 
-                        $thadir = $hadir + $nojadwal + $pulang;
+                            // Menghitung total kehadiran berdasarkan role
+                            if ($d->nama_role == 'guru') {
+                                $thadir = $hadir;
+                            } else if ($d->nama_role == 'tendik') {
+                                $thadir = $hadir + $pulang;
+                            } else {
+                                $thadir = $hadir + $nojadwal + $pulang;
+                            }
 
-                        // Memperbarui nilai kehadiran maksimal jika nilai saat ini lebih besar
-                        $maxHadir = max($maxHadir, $thadir);
-
+                            // Memperbarui nilai kehadiran maksimal jika nilai saat ini lebih besar
+                            $maxHadir = max($maxHadir, $thadir);
                         }
                         ?>
-                  @foreach ($data as $d)
-                  <tr>
-                      <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                      <td>{{$d->nama_lengkap}}</td>
-                      <td>{{ucwords($d->nama_role)}}</td>
-                      @php
-                          $hadir = App\Models\Absen::where('id_user', $d->id)->where('status',0)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                          $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status',1)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                          $pulang = App\Models\Absen::where('id_user', $d->id)->where('status',4)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                          $thadir = $hadir + $nojadwal + $pulang;
-                          $sakit = App\Models\Absen::where('id_user', $d->id)->where('status',2)->where('waktu', 'like','%'.$this->bulan.'%')->count();
-                          $izin = App\Models\Absen::where('id_user', $d->id)->where('status',3)->where('waktu', 'like','%'.$this->bulan.'%')->count();
+                        @foreach ($data as $d)
+                        <tr>
+                            <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                            <td>{{ $d->nama_lengkap }}</td>
+                            <td>{{ ucwords($d->nama_role) }}</td>
+                            @php
+                                $hadir = App\Models\Absen::where('id_user', $d->id)->where('status', 0)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                                $nojadwal = App\Models\Absen::where('id_user', $d->id)->where('status', 1)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                                $pulang = App\Models\Absen::where('id_user', $d->id)->where('status', 4)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                                $sakit = App\Models\Absen::where('id_user', $d->id)->where('status', 2)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
+                                $izin = App\Models\Absen::where('id_user', $d->id)->where('status', 3)->where('waktu', 'like', '%' . $this->bulan . '%')->count();
 
-                          // Calculate the maximum possible attendance based on the role
-                          if ($d->nama_role == 'guru') {
-                              // Guru absen sehari sekali
-                              $maxHadir = DB::table('absen')
-                                  ->where('id_user', $d->id)
-                                  ->where('waktu', 'like', '%'.$this->bulan.'%')
-                                  ->select(DB::raw('COUNT(DISTINCT DATE(waktu)) as total'))
-                                  ->pluck('total')
-                                  ->first();
-                          } else if ($d->nama_role == 'tendik') {
-                              // Tendik absen sehari dua kali (datang dan pulang)
-                              $maxHadir = DB::table('absen')
-                                  ->where('id_user', $d->id)
-                                  ->where('waktu', 'like', '%'.$this->bulan.'%')
-                                  ->select(DB::raw('COUNT(DISTINCT DATE(waktu)) as total'))
-                                  ->pluck('total')
-                                  ->first() * 2;
-                          } else {
-                              $maxHadir = 0;
-                          }
+                                // Menghitung total kehadiran berdasarkan role
+                                if ($d->nama_role == 'guru') {
+                                    $thadir = $hadir;
+                                } else if ($d->nama_role == 'tendik') {
+                                    $thadir = $hadir + $pulang;
+                                } else {
+                                    $thadir = $hadir + $nojadwal + $pulang;
+                                }
 
-                          // Calculate the attendance percentage
-                          $max = $maxHadir;
-                          $persen = ($max > 0) ? ($thadir / $max) * 100 : 0;
-                      @endphp
-                      <td>{{ $hadir }}</td>
-                      @if ($this->role == 7)
-                      <td>{{ $pulang }}</td>
-                          @endif
-
-                      <td>{{ $nojadwal }}</td>
-                      <td>{{ $sakit }}</td>
-                      <td>{{ $izin }}</td>
-                      <td>{{ round($persen, 2) }}%</td>
-                  </tr>
-              @endforeach
-
-                  </tbody>
-              </table>
+                                // Hitung persentase kehadiran berdasarkan nilai maksimal dari semua user
+                                $persen = ($maxHadir > 0) ? ($thadir / $maxHadir) * 100 : 0;
+                            @endphp
+                            <td>{{ $hadir }}</td>
+                            @if ($this->role == 7)
+                            <td>{{ $pulang }}</td>
+                            @endif
+                            <td>{{ $nojadwal }}</td>
+                            <td>{{ $sakit }}</td>
+                            <td>{{ $izin }}</td>
+                            <td>{{ round($persen, 2) }}%</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <form action="{{ route('absenxls',['jbtn' => $this->role, 'bln' => $this->bulan]) }}" method="get">
+                <div class="input-group input-group-sm mb-3">
+                    <select wire:model.live="role" class="form-control">
+                        <option value="6">Guru</option>
+                        <option value="7">Tendik</option>
+                    </select>
+                        <select class="form-control" wire:model.live="bulan">
+                            <option value="">Pilih Bulan</option>
+                            <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-04">April {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-05">Mei {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-06">Juni {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-07">Juli {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-08">Agustus {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-09">September {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-10">Oktober {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
+                        </select>
+                        <button class="input-group-text" id="basic-addon1" type="submit">Print</button>
+                      </div>
+                    </form>
                </div>
                 {{$data->links()}}
         </div>
