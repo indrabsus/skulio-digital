@@ -9,11 +9,10 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\DataUser as TabelDataUser;
 use Livewire\WithPagination;
-// use Rats\Zkteco\Lib\ZKTeco;
 
 class DataKaryawan extends Component
 {
-    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $nama_pendek;
+    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user;
     use WithPagination;
 
     public $cari = '';
@@ -29,15 +28,10 @@ class DataKaryawan extends Component
         return view('livewire.manajemen.data-karyawan', compact('data','role'));
     }
     public function insert(){
-        // $zk = new ZKTeco('192.168.30.33');
-        // $zk->connect();
         $this->validate([
             'id_role' => 'required',
             'nama_lengkap'=> 'required',
             'jenkel' => 'required',
-            'no_hp'=> 'required',
-            'alamat'=> 'required',
-            'nama_pendek'=> 'required',
         ]);
         $set = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
@@ -50,9 +44,7 @@ class DataKaryawan extends Component
         $data = TabelDataUser::create([
             'id_user' => $user->id,
             'nama_lengkap'=> ucwords($this->nama_lengkap),
-            'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp,
-            'alamat'=> $this->alamat
+            'jenkel'=> $this->jenkel
         ]) ;
         // $zk->setUser($user->id, $user->id, $this->nama_pendek,'',0,0);
         session()->flash('sukses','Data berhasil ditambahkan');
@@ -63,8 +55,6 @@ class DataKaryawan extends Component
         $this->id_role = '';
         $this->nama_lengkap = '';
         $this->jenkel = '';
-        $this->no_hp = '';
-        $this->alamat = '';
     }
     public function edit($id){
         $data = TabelDataUser::leftJoin('users','users.id','=','data_user.id_user')
@@ -72,8 +62,6 @@ class DataKaryawan extends Component
         $this->id_user = $data->id_user;
         $this->nama_lengkap = $data->nama_lengkap;
         $this->jenkel = $data->jenkel;
-        $this->no_hp = $data->no_hp;
-        $this->alamat = $data->alamat;
         $this->id_data = $id;
         $this->id_role = $data->id_role;
     }
@@ -81,16 +69,12 @@ class DataKaryawan extends Component
         $this->validate([
             'id_user' => 'required',
             'nama_lengkap'=> 'required',
-            'jenkel' => 'required',
-            'no_hp'=> 'required',
-            'alamat'=> 'required',
+            'jenkel' => 'required'
         ]);
         $data = TabelDataUser::where('id_data', $this->id_data)->update([
             'id_user' => $this->id_user,
             'nama_lengkap'=> $this->nama_lengkap,
-            'jenkel'=> $this->jenkel,
-            'no_hp'=> $this->no_hp,
-            'alamat'=> $this->alamat
+            'jenkel'=> $this->jenkel
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
@@ -100,9 +84,6 @@ class DataKaryawan extends Component
         $this->id_user = $id;
     }
     public function delete(){
-        // $zk = new ZKTeco('192.168.30.33');
-        // $zk->connect();
-        // $zk->removeUser($this->id_user);
         User::where('id',$this->id_user)->delete();
 
         session()->flash('sukses','Data berhasil dihapus');

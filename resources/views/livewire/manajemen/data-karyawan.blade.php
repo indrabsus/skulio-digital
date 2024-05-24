@@ -94,34 +94,6 @@
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Nama Pendek</label>
-                    <input type="text" wire:model.live="nama_pendek" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_pendek')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
                   <div class="form-group mb-3">
                     <label for="">Jenis Kelamin</label>
                     <select class="form-control" wire:model.live="jenkel">
@@ -172,25 +144,6 @@
                     <input type="text" wire:model.live="nama_lengkap" class="form-control">
                     <div class="text-danger">
                         @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
                             {{$message}}
                         @enderror
                     </div>
