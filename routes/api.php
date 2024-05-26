@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/userdata', [App\Http\Controllers\Api\User::class, 'userData']);
     Route::get('/logout', [App\Http\Controllers\Api\User::class, 'logout']);
 });
+
+

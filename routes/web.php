@@ -8,11 +8,12 @@ use App\Http\Controllers\FingerPrint;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PPDBController;
+use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\UserController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 
 
@@ -26,6 +27,15 @@ Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp')
 
 //Excel Controller
 Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->name('absenxls');
+
+//RFID Controller
+Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->name('rfidglobal');
+Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan');
+Route::post('/insertuser', [RFIDController::class, 'insertuser'])->name('insertuser');
+Route::post('/sesimesin', function(Request $request) {
+        session(['kode_mesin' => $request->kode_mesin]);
+        return redirect()->route('admin.datakaryawan');
+})->name('sesimesin');
 
 
 

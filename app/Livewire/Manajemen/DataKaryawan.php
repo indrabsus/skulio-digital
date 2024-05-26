@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 
 class DataKaryawan extends Component
 {
-    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user;
+    public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $kode_mesin;
     use WithPagination;
 
     public $cari = '';
@@ -33,12 +33,13 @@ class DataKaryawan extends Component
             'nama_lengkap'=> 'required',
             'jenkel' => 'required',
         ]);
+
         $set = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
             'username'=> substr(rand(100, 999).strtolower(str_replace(' ','', $this->nama_lengkap)),0,10),
             'password' => bcrypt($set->default_password),
             'id_role' => $this->id_role,
-            'acc' => 'y'
+            'acc' => 'y',
         ]);
 
         $data = TabelDataUser::create([

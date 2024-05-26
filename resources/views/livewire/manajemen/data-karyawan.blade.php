@@ -1,4 +1,7 @@
 <div>
+    Kode Mesin : {{ Session::get('kode_mesin') }}
+    <hr>
+
     <div class="row">
 
         <div class="container">
@@ -39,6 +42,20 @@
                           </div>
                     </div>
                 </div>
+                @if (!Session::get('kode_mesin'))
+                <div>
+                    <form action="{{ route('sesimesin') }}" method="post">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" name='kode_mesin' placeholder="Masukan Kode Mesin">
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+                @endif
                <div class="table-responsive">
                 <table class="table table-stripped">
                   <thead>
@@ -54,9 +71,14 @@
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
-                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}
+                        </td>
+                          <td><button type="button" data-bs-toggle="modal" data-bs-target="#rfid{{ $d->id }}" class="btn btn-link">
+                            {{$d->username}}
+                          </button></td>
+                          <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
+                            <i class="fa-solid fa-check">
+                            @endif</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->nama_role}}</td>
                           <td>
@@ -139,6 +161,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <div class="form-group mb-3">
                     <label for="">Nama Lengkap</label>
                     <input type="text" wire:model.live="nama_lengkap" class="form-control">
@@ -218,6 +241,62 @@
           </div>
         </div>
       </div>
+
+      @foreach ($data as $x)
+    <div class="modal fade" id="rfid{{ $x->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <form action="{{ route('insertuser') }}" method="post">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="cekkartu{{ $x->id }}"></div>
+                        <input type="text" name="id_user" class="form-control" value="{{ $x->id }}" hidden>
+                        <div class="form-group mb-3">
+                            <label for="">Kode Mesin</label>
+                            <input type="text" name="kode_mesin" class="form-control" value="{{ Session::get('kode_mesin') }}" readonly>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Nama Lengkap</label>
+                            <input type="text" name="nama" class="form-control" value="{{ $x->nama_lengkap }}" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @foreach ($data as $x)
+            var modalId = '#rfid{{ $x->id }}';
+            $(modalId).on('shown.bs.modal', function () {
+                setInterval(function() {
+                    fetch("{{route('inputscan')}}")
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Respon jaringan tidak ok: ' + response.statusText);
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            document.getElementById("cekkartu{{ $x->id }}").innerHTML = html;
+                        })
+                        .catch(error => console.error('Error loading content:', error));
+                }, 1000);
+            });
+        @endforeach
+    });
+</script>
+
 
 
       <script>
