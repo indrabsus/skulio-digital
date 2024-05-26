@@ -30,6 +30,7 @@ class RFIDController extends Controller
         ]);
         $hitung = DataUser::where('no_rfid',$request->no_rfid)->count();
         if($hitung > 0){
+            Temp::where('id_mesin', $request->kode_mesin)->delete();
             return redirect()->route('admin.datakaryawan')->with('gagal', 'Kartu sudah ada');
         } else {
             $update = DataUser::where('id_user', $request->id_user)->update([
@@ -39,6 +40,7 @@ class RFIDController extends Controller
                 Temp::where('id_mesin', $request->kode_mesin)->delete();
                 return redirect()->route('admin.datakaryawan')->with('sukses', 'Berhasilkan menambahkan kartu');
             } else {
+                Temp::where('id_mesin', $request->kode_mesin)->delete();
                 return redirect()->route('admin.datakaryawan')->with('gagal', 'Gagal menambahkan kartu');
             }
         }
