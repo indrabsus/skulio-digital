@@ -12,6 +12,8 @@ use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\UserController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
+use App\Livewire\Kurikulum\TambahKartuSiswa;
+use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -64,7 +66,11 @@ Route::post('postppdb',[PPDBController::class,'postppdb'])->name('postppdb');
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
 Route::post('regproses',[AuthController::class,'register'])->name('register');
 
+
 Route::group(['middleware' => ['auth']], function(){
+
+    Route::get('/tambahkartu', TambahKartu::class)->name('admin.tambahkartu');
+    Route::get('/tambahkartusiswa', TambahKartuSiswa::class)->name('admin.tambahkartusiswa');
 
     Route::get('deletenilai/{id}',[NilaiController::class,'hapusNilai'])->name('hapusnilai');
     Route::any('/updatepassword',[AuthController::class,'updatePassword'])->name('updatepassword');

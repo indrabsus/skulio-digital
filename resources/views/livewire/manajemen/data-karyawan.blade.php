@@ -73,9 +73,12 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}
                         </td>
-                          <td>
-                            <a href="{{ route('admin.tambahkartu') }}?id_user={{$d->id}}">{{$d->username}}</a>
-                            </td>
+                        <td> @if (Auth::user()->id_role == 1)
+                          <a href="{{ route('admin.tambahkartu') }}?id_user={{$d->id}}">{{$d->username}}</a>
+                          @else
+                          {{$d->username}}
+                          @endif
+                      </td>
                           <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
                             <i class="fa-solid fa-check">
                             @endif</td>
@@ -242,7 +245,7 @@
         </div>
       </div>
 
-     
+
 
       <script>
         window.addEventListener('closeModal', event => {
