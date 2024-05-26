@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\JurusanPpdb;
+use App\Models\LogPpdb;
 use App\Models\MasterPpdb;
 use App\Models\SiswaPpdb;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class PPDBController extends Controller
@@ -60,5 +62,51 @@ class PPDBController extends Controller
         $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $request->nama_lengkap . ', dan asal sekolah dari ' . $request->asal_sekolah . ', no Whatsapp : https://wa.me/62'. substr($request->nohp, 1);
         $response = Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
         return redirect()->route('formppdb')->with('status', 'Anda Sudah Berhasil Daftar, untuk pembayaran silakan langsung datang ke Ruang PPDB SMK Sangkuriang 1 Cimahi. Terima Kasih');
+    }
+    public function laporan(){
+        $daftar = MasterPpdb::where('tahun',date('Y'))->first();
+        $pendaftar = SiswaPpdb::count();
+        $hanyadaftar = LogPpdb::groupBy('id_siswa')
+        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
+        ->having('total_pembayaran', '=', $daftar->daftar)
+        ->count();
+        $mengundurkan = LogPpdb::select('id_siswa')
+        ->distinct()
+        ->where('jenis', '=', 'l')
+        ->get()
+        ->count();
+
+        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $kurangsejuta = LogPpdb::groupBy('id_siswa')
+        ->where('jenis','p')
+        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
+        ->having('total_pembayaran', '<', 1000000)
+        ->count();
+        $lebihsejuta = LogPpdb::groupBy('id_siswa')
+        ->where('jenis','p')
+        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
+        ->having('total_pembayaran', '>=', 1000000)
+        ->having('total_pembayaran', '<', $daftar->ppdb)
+        ->count();
+        $lunas = LogPpdb::groupBy('id_siswa')
+        ->where('jenis','p')
+        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
+        ->having('total_pembayaran', '=', $daftar->ppdb)
+        ->count();
+        $uangdaftar = LogPpdb::where('jenis', 'd')->sum('nominal');
+        $uangppdb = LogPpdb::where('jenis', 'p')->sum('nominal');
+        $uangundur= LogPpdb::where('jenis', 'l')->sum('nominal');
+
+        $set = MasterPpdb::where('tahun', date('Y'))->first();
+        $teks = 'Laporan PPDB SMK Sangkuriang 1 Cimahi, Tanggal '.date('d M Y')."\n".
+'Pendaftar Total sebanyak '.$pendaftar.' orang,'."\n".
+'Pendaftar yang sudah melakukan pembayaran sebanyak '.$sudahdaftar.' orang,'."\n".
+'Pendaftar yang belum melakukan pembayaran sebanyak '.($pendaftar - $sudahdaftar).' orang,'."\n".
+'Pendaftar yang sudah Lunas sebanyak '.$lunas.' orang,'."\n".
+'Pendaftar yang sudah bayar lebih dari 1 Juta sebanyak '.$lebihsejuta.' orang,'."\n".
+'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' anggota';
+
+        Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
+        return redirect()->route('loginpage');
     }
 }

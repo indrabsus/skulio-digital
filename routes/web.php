@@ -24,6 +24,9 @@ Route::get('rawlogsc',[FingerPrint::class,'rawlogsc'])->name('rawlogsc');
 Route::get('rawlog',[FingerPrint::class,'rawlog'])->name('rawlog');
 Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp');
 
+//PPDB
+Route::get('laporanppdb',[PPDBController::class,'laporan'])->name('laporan');
+
 
 //Excel Controller
 Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->name('absenxls');
