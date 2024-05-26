@@ -253,8 +253,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div id="cekkartu{{ $x->id }}"></div>
-                        <input type="text" name="id_user" class="form-control" value="{{ $x->id }}" hidden>
+                        <div id="cekkartu{{ "$x->id" }}"></div>
+                        <input type="text" name="id_user" class="form-control" value="{{ "$x->id" }}" hidden>
                         <div class="form-group mb-3">
                             <label for="">Kode Mesin</label>
                             <input type="text" name="kode_mesin" class="form-control" value="{{ Session::get('kode_mesin') }}" readonly>
@@ -277,7 +277,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         @foreach ($data as $x)
-            var modalId = '#rfid{{ $x->id }}';
+            var modalId = '#rfid{{ "$x->id" }}';
             $(modalId).on('shown.bs.modal', function () {
                 setInterval(function() {
                     fetch("{{route('inputscan')}}")
