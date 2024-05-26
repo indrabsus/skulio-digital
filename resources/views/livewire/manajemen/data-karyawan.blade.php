@@ -243,7 +243,7 @@
       </div>
 
       @foreach ($data as $x)
-    <div class="modal fade" id="rfid{{ "$x->id" }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="rfid{{ $x->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
             <form action="{{ route('insertuser') }}" method="post">
                 @csrf
@@ -253,8 +253,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div id="cekkartu{{ "$x->id" }}"></div>
-                        <input type="text" name="id_user" class="form-control" value="{{ "$x->id" }}" hidden>
+                        <div id="cekkartu{{ $x->id }}"></div>
+                        <input type="text" name="id_user" class="form-control" value="{{ $x->id }}" hidden>
                         <div class="form-group mb-3">
                             <label for="">Kode Mesin</label>
                             <input type="text" name="kode_mesin" class="form-control" value="{{ Session::get('kode_mesin') }}" readonly>
@@ -277,10 +277,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         @foreach ($data as $x)
-            var modalId = '#rfid{{ "$x->id" }}';
+            var modalId = '#rfid' + '{{ $x->id }}';
             $(modalId).on('shown.bs.modal', function () {
                 setInterval(function() {
-                    fetch("{{route('inputscan')}}")
+                    fetch("{{ route('inputscan') }}")
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Respon jaringan tidak ok: ' + response.statusText);
@@ -288,7 +288,7 @@
                             return response.text();
                         })
                         .then(html => {
-                            document.getElementById("cekkartu{{ "$x->id" }}").innerHTML = html;
+                            document.getElementById("cekkartu{{ $x->id }}").innerHTML = html;
                         })
                         .catch(error => console.error('Error loading content:', error));
                 }, 1000);
@@ -296,6 +296,7 @@
         @endforeach
     });
 </script>
+
 
 
 
