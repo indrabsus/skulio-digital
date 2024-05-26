@@ -104,7 +104,8 @@ class PPDBController extends Controller
 'Pendaftar yang belum melakukan pembayaran sebanyak '.($pendaftar - $sudahdaftar).' orang,'."\n".
 'Pendaftar yang sudah Lunas sebanyak '.$lunas.' orang,'."\n".
 'Pendaftar yang sudah bayar lebih dari 1 Juta sebanyak '.$lebihsejuta.' orang,'."\n".
-'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' anggota';
+'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' orang, '."\n".
+'Tim IT SMK Sangkuriang 1 Cimahi';
 
         Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
         return redirect()->route('loginpage');
