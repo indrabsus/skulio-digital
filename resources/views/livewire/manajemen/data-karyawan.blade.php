@@ -288,7 +288,7 @@
                             return response.text();
                         })
                         .then(html => {
-                            document.getElementById("cekkartu{{ $x->id }}").innerHTML = html;
+                            document.getElementById("cekkartu{{ "$x->id" }}").innerHTML = html;
                         })
                         .catch(error => console.error('Error loading content:', error));
                 }, 1000);
