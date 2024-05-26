@@ -93,9 +93,6 @@ class PPDBController extends Controller
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
         ->having('total_pembayaran', '=', $daftar->ppdb)
         ->count();
-        $uangdaftar = LogPpdb::where('jenis', 'd')->sum('nominal');
-        $uangppdb = LogPpdb::where('jenis', 'p')->sum('nominal');
-        $uangundur= LogPpdb::where('jenis', 'l')->sum('nominal');
 
         $set = MasterPpdb::where('tahun', date('Y'))->first();
         $teks = 'Laporan PPDB SMK Sangkuriang 1 Cimahi, Tanggal '.date('d M Y')."\n".

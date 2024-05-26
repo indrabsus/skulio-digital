@@ -34,7 +34,12 @@ Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->nam
 //RFID Controller
 Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->name('rfidglobal');
 Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan');
+Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
+
+
+Route::post('/topupproses', [RFIDController::class, 'topupProses'])->name('topupproses');
 Route::post('/insertuser', [RFIDController::class, 'insertuser'])->name('insertuser');
+Route::post('/insertsiswa', [RFIDController::class, 'insertsiswa'])->name('insertsiswa');
 Route::post('/sesimesin', function(Request $request) {
         session(['kode_mesin' => $request->kode_mesin]);
         return redirect()->route('admin.datakaryawan');

@@ -76,8 +76,10 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td><a href="{{ route('admin.tambahkartusiswa') }}?id_user={{$d->id}}">{{$d->username}}</a></td>
+                          <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
+                            <i class="fa-solid fa-check">
+                            @endif</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>{{$d->nis}}</td>
