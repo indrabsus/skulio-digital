@@ -243,7 +243,7 @@
       </div>
 
       @foreach ($data as $x)
-    <div class="modal fade" id="rfid{{ $x->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="rfid{{ "$x->id" }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
             <form action="{{ route('insertuser') }}" method="post">
                 @csrf
