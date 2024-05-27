@@ -37,9 +37,11 @@ Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->nam
 Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->name('rfidglobal');
 Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan');
 Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
+Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
 
 
 Route::post('/topupproses', [RFIDController::class, 'topupProses'])->name('topupproses');
+Route::post('/paymentproses', [RFIDController::class, 'paymentProses'])->name('paymentproses');
 Route::post('/insertuser', [RFIDController::class, 'insertuser'])->name('insertuser');
 Route::post('/insertsiswa', [RFIDController::class, 'insertsiswa'])->name('insertsiswa');
 Route::post('/sesimesin', function(Request $request) {

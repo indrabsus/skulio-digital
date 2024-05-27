@@ -62,6 +62,41 @@ class RFIDController extends Controller
             'id_siswa' => $id_siswa
         ]);
     }
+    public function payment(){
+
+        $neww = Temp::where('id_mesin', Session::get("kode_mesin"))->orderBy('created_at', 'desc')->first();
+        // dd($neww);
+        $saldo = 0;
+        if($neww){
+            $data = DataSiswa::where('no_rfid', $neww->norfid)->first();
+
+
+            $print = $data->no_rfid;
+            $id_siswa = $data->id_siswa;
+            $nama = $data->nama_lengkap;
+            $masuk = LogTabungan::where('id_siswa', $data->id_siswa)->where('jenis','kd')->sum('nominal');
+            $keluar = LogTabungan::where('id_siswa', $data->id_siswa)->where('jenis','db')->sum('nominal');
+
+            $saldo = $masuk - $keluar;
+
+            $noref = 'PO'.date('dmyh').substr($data->id_user, 0, 5);
+
+        } else {
+            $print = '';
+            $id_siswa = '';
+            $nama = '';
+            $saldo = '';
+            $noref = '';
+        }
+
+        return view('load.paymentinput', [
+            'scan' => $print,
+            'nama' => $nama,
+            'saldo' => $saldo,
+            'noref' => $noref,
+            'id_siswa' => $id_siswa
+        ]);
+    }
 
     public function insertuser(Request $request){
         $request->validate([
@@ -133,7 +168,43 @@ class RFIDController extends Controller
         return redirect()->back()->with('sukses', 'Berhasil Update Saldo');
 
         }
+    }
+    public function paymentProses(Request $request){
 
+        // dd($request->all());
+        $duplikat = LogTabungan::where('no_invoice', $request->no_ref)->count();
+        $request->validate([
+            'saldo' => 'required',
+        ]);
+        $neww = Temp::where('id_mesin', Session::get("kode_mesin"))->orderBy('created_at', 'desc')->first();
+        $saldo = 0;
+        $data = DataSiswa::where('no_rfid', $neww->norfid)->first();
+        $masuk = LogTabungan::where('id_siswa', $data->id_siswa)->where('jenis','kd')->sum('nominal');
+        $keluar = LogTabungan::where('id_siswa', $data->id_siswa)->where('jenis','db')->sum('nominal');
+
+        $saldo = $masuk - $keluar;
+
+        if($duplikat > 0){
+            Temp::where('id_mesin', Session::get('kode_mesin'))->delete();
+            return redirect()->back()->with('gagal', 'Tunggu sebentar lagi!');
+        } else {
+            if($request->saldo > $saldo){
+                return redirect()->back()->with('gagal', 'Saldo tidak cukup!');
+            } else {
+                $user = DataSiswa::where('no_rfid', $request->no_rfid)->first();
+       LogTabungan::create([
+            'id_siswa' => $user->id_siswa,
+            'jenis' => 'db',
+            'no_invoice' => $request->no_ref,
+            'nominal' => $request->saldo,
+            'id_petugas' => Auth::user()->id,
+            'log' => 'Tarik/Bayar Saldo Via Kartu RFID sebesar Rp.'.number_format($request->nominal,0,",",".")
+        ]);
+        Temp::where('id_mesin', Session::get('kode_mesin'))->delete();
+        return redirect()->back()->with('sukses', 'Berhasil Update Saldo');
+            }
+
+        }
     }
 
     public function rfidglobal($norfid, $id_mesin){

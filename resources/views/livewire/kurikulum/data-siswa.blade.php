@@ -64,7 +64,7 @@
                           <th>No</th>
                           <th>Username</th>
                           <th>Nama Lengkap</th>
-                          <th>Jenis Kelamin</th>
+                          <th>No RFID</th>
                           <th>No Hp</th>
                           <th>NIS</th>
                           <th>Kelas</th>
@@ -85,7 +85,7 @@
                           <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
                             <i class="fa-solid fa-check">
                             @endif</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
+                          <td>{{$d->no_rfid}}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>{{$d->nis}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
