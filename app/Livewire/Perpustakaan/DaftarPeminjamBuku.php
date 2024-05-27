@@ -47,7 +47,15 @@ class DaftarPeminjamBuku extends Component
         $this->nama_buku = '';
         $this->nama_lengkap = '';
     }
-
+    public function c_delete($id){
+        $this->id_peminjam = $id;
+    }
+    public function delete(){
+        DataPeminjam::where('id_peminjam',$this->id_peminjam)->delete();
+        session()->flash('sukses','Data berhasil dihapus');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
 
 }
 

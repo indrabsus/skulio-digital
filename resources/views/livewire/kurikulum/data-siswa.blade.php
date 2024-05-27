@@ -17,7 +17,7 @@
         </div>
         @endif
         </div>
-        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
+        @if (Auth::user()->id_role == 1)
       <div class="row justify-content-between">
         <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>
@@ -34,8 +34,16 @@
                             Tambah
                           </button>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
+                            <div class="form-group">
+                                <select class="form-control" wire:model.live="cari_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                    @foreach($kelas as $k)
+                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -44,7 +52,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                            <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
+                            <input type="text" class="form-control" placeholder="Cari Nama/Nis/No Hp" aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
                             <span class="input-group-text" id="basic-addon1">Cari</span>
                           </div>
                     </div>
@@ -68,21 +76,28 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td> @if (Auth::user()->id_role == 1)
+                            <a href="{{ route('admin.tambahkartusiswa') }}?id_user={{$d->id}}">{{$d->username}}</a>
+                            @else
+                            {{$d->username}}
+                            @endif
+                        </td>
+                          <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
+                            <i class="fa-solid fa-check">
+                            @endif</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->no_hp}}</td>
                           <td>{{$d->nis}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>@if ($d->acc == 'y')
-                            <button class="btn btn-outline-success btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-check"></i></button>
+                            <button class="btn btn-outline-success btn-sm" wire:click="ubahAcc('{{ $d->id }}')"><i class="fa-solid fa-check"></i></button>
                           @else
-                          <button class="btn btn-outline-danger btn-sm" wire:click="ubahAcc({{ $d->id }})"><i class="fa-solid fa-times"></i></button>
+                          <button class="btn btn-outline-danger btn-sm" wire:click="ubahAcc('{{ $d->id }}')"><i class="fa-solid fa-times"></i></button>
                           @endif</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_siswa}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_siswa}}")'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset('{{$d->id}}')"><i class="fa-solid fa-rotate-right"></i></a>
                             </td>
                       </tr>
                   @endforeach

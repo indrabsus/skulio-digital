@@ -69,9 +69,9 @@
                                 <td>{{ $d->nama_ruangan }}</td>
                                 <td>{{ $d->nama_role}}</td>
                                 <td>
-                                    <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#distribusi" wire:click='edit({{$d->id_barang}})'><i class="fa-solid fa-forward"></i></i></a>
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_barang}})'><i class="fa-solid fa-edit"></i></i></a>
-                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_barang}})"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#distribusi" wire:click='Distribusi("{{$d->id_barang}}")'><i class="fa-solid fa-forward"></i></i></a>
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_barang}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_barang}}')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -249,9 +249,9 @@
                     <div class="col-lg-6 mb-3">
                         <div class="form-group">
                             <label for="">Volume</label>
-                            <input type="text" wire:model.live="volume" class="form-control">
+                            <input type="text" wire:model.live="volume2" class="form-control">
                             <div class="text-danger">
-                                @error('volume')
+                                @error('volume2')
                                     {{ $message }}
                                 @enderror
                             </div>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--
 Template Name: NobleUI - HTML Bootstrap 5 Admin Dashboard Template
@@ -44,13 +43,24 @@ License: For each use you must have a valid license purchased only from above li
   <!-- End layout styles -->
 
   <link rel="shortcut icon" href="{{asset('template')}}//assets/images/favicon.png" />
+  <style>
+    table{
+        width: 100%;
+    }
+    .wrapped-text {
+        max-width: 200px; /* Sesuaikan dengan lebar maksimum yang diinginkan */
+        word-break: break-word;
+    }
+  </style>
 </head>
 <body>
 	@php
     $menus = App\Models\Menu::leftJoin('parent_menu','parent_menu.id_parent','menu.parent_menu')
     ->leftJoin('roles','roles.id_role','menu.akses_role')
 	->where('id_role', Auth::user()->id_role)
-    ->orderBy('id_parent','asc')->get();
+    ->orderBy('id_parent', 'asc')
+    ->orderBy('menu.nama_menu', 'asc')->get();
+
 	@endphp
 	<div class="main-wrapper">
 

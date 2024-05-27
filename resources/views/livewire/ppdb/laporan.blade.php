@@ -26,5 +26,22 @@
                 </tr>
             </table>
         </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Total Pendaftaran</td><td>Rp. {{number_format($uangdaftar,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Total PPDB</td><td>Rp. {{number_format($uangppdb,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Mengundurkan Diri</td><td>Rp. {{number_format($uangundur,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Total semua uang masuk</td><td>Rp. {{number_format($uangdaftar + $uangppdb + $uangundur,0,',','.')}}</td>
+                </tr>
+
+            </table>
+        </div>
     </div>
 </div>

@@ -63,7 +63,7 @@
                                     <span class="badge bg-primary">Selesai</span>
                                     @endif
                                 </td>
-                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_log}})"><i class="fa-solid fa-trash"></i></a></td>
+                                <td><a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_log}}')"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                         @endforeach
                     </tbody>

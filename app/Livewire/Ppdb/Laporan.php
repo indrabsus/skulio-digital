@@ -19,16 +19,16 @@ class Laporan extends Component
         ->having('total_pembayaran', '=', $daftar->daftar)
         ->count();
         $mengundurkan = LogPpdb::select('id_siswa')
-    ->distinct()
-    ->where('jenis', '=', 'l')
-    ->get()
-    ->count();
+        ->distinct()
+        ->where('jenis', '=', 'l')
+        ->get()
+        ->count();
 
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '<=', 1000000)
+        ->having('total_pembayaran', '<', 1000000)
         ->count();
         $lebihsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
@@ -41,6 +41,9 @@ class Laporan extends Component
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
         ->having('total_pembayaran', '=', $daftar->ppdb)
         ->count();
-        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan'));
+        $uangdaftar = LogPpdb::where('jenis', 'd')->sum('nominal');
+        $uangppdb = LogPpdb::where('jenis', 'p')->sum('nominal');
+        $uangundur= LogPpdb::where('jenis', 'l')->sum('nominal');
+        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan','uangdaftar','uangppdb','uangundur'));
     }
 }

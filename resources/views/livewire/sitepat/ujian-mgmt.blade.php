@@ -15,7 +15,7 @@
       </div>
       @endif
       </div>
-      @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
+      @if (Auth::user()->id_role == 1)
       <div class="row justify-content-between">
         <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>
@@ -49,6 +49,12 @@
               </div>
         </div>
     </div>
+    @if(Session::get('id_ujian'))
+    @php
+    $ujian = App\Models\Ujian::where('id_ujian', Session::get('id_ujian'))->first()
+    @endphp
+    <h3>Sesi : {{$ujian->nama_ujian}} - <a href="{{route('test')}}" class="btn btn-outline-primary btn-sm">Lanjutkan</a></h3>
+    @endif
     <div class="table-responsive">
         <table class="table table-responsive">
             <tr>
@@ -72,7 +78,9 @@
                 $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
                 if($us){
                 $logi = App\Models\LogUjian::where('id_ujian',$d->id_ujian)->where('id_siswa', $us->id_siswa)->first();
-                $count = App\Models\LogUjian::where('status', 'proses')->where('id_siswa',$us->id_siswa)->count();
+                $count = App\Models\LogUjian::where('status', 'done')->where('id_siswa',$us->id_siswa)
+                ->where('id_ujian', $d->id_ujian)
+                ->count();
             }
 
             @endphp
@@ -95,28 +103,20 @@
                     <i class="fa fa-times" aria-hidden="true"></i>
                     @endif</td>
                     <td>
-                        <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_ujian}})'><i class="fa-solid fa-edit"></i></a>
-                        <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_ujian}})"><i class="fa-solid fa-trash"></i></a>
+                        <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_ujian}}")'><i class="fa-solid fa-edit"></i></a>
+                        <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_ujian}}')"><i class="fa-solid fa-trash"></i></a>
                       </td>
                       @endif
                       @if (Auth::user()->id_role == 8)
                       <td>
-                        @if ($logi)
-                        @if ($logi->status == 'done')
+
+                        @if(Session::get('id_ujian'))
+                        <button class="btn btn-outline-primary" disabled><i class="fa fa-times" aria-hidden="true"></i></button>
+                        @elseif($count < 1)
+                        <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Mulai</a>
+                        @else
                         <button class="btn btn-outline-primary" disabled>Berakhir</button>
-                    @else
-                    <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Lanjutkan</a>
-                    @endif
-
-                    @else
-                    @if ($count < 1)
-                    <a href="{{route('token',['id' => $d->id_ujian])}}" class="btn btn-outline-primary btn-sm">Mulai</a>
-                    @else
-                    <button class="btn btn-outline-danger btn-sm" disabled><i class="fa fa-times" aria-hidden="true"></i></button>
-                    @endif
-
                         @endif
-
                        </td>
                       @endif
                 </tr>

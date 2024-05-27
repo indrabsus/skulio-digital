@@ -46,7 +46,6 @@
     <div class="test">
         <div class="test">{{ $set->nama_instansi }}</div>
         <span class="test">Struk Pembayaran PPDB</span>
-        <p class="test">{{ $data->no_invoice }}</p>
     </div>
     <table class="table table-sm mt-3">
         <tr>
@@ -62,16 +61,20 @@
         <tr>
             <td>Nominal</td>
             <td>:</td>
-            <td>Rp.{{ number_format($data->nominal,0,',','.') }}</td>
+            <td>@if ($data->nominal == 2350000)
+                Tuntas
+
+            @else
+            Rp.{{ number_format($data->nominal,0,',','.') }}
+            @endif</td>
         </tr>
         <tr>
             <td>Keterangan</td>
             <td>:</td>
-            <td>{{ $data->jenis == 'p' ? 'PPDB' : 'Pendaftaran' }}</td>
+            <td>{{ $data->jenis == 'p' ? 'PPDB' : 'Pendaftaran' }} - {{ substr($data->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
         </tr>
     </table>
     <p class="text-right">Cimahi, {{ date('d M Y', strtotime($data->created_at))}}</p>
-    <br>
-    <p class="text-right">.....................</p>
+    <p class="text-right"><img src="{{ asset('template') }}/assets/img/qr.png" width="50px"> Panitia PPDB</p>
 </body>
 </html>

@@ -68,8 +68,8 @@
                           </td>
                           @if (Auth::user()->id_role == 1)
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_kelas}})'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_kelas}})"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kelas}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_kelas}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                           @endif
                       </tr>

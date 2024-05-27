@@ -1,4 +1,7 @@
 <div>
+    Kode Mesin : {{ Session::get('kode_mesin') }}
+    <hr>
+
     <div class="row">
 
         <div class="container">
@@ -39,6 +42,20 @@
                           </div>
                     </div>
                 </div>
+                @if (!Session::get('kode_mesin'))
+                <div>
+                    <form action="{{ route('sesimesin') }}" method="post">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" name='kode_mesin' placeholder="Masukan Kode Mesin">
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+                @endif
                <div class="table-responsive">
                 <table class="table table-stripped">
                   <thead>
@@ -47,32 +64,32 @@
                           <th>Username</th>
                           <th>Nama Lengkap</th>
                           <th>Jenis Kelamin</th>
-                          <th>No Hp</th>
-                          <th>Alamat</th>
                           <th>Role</th>
-                          <th>Acc</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
-                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->username}}</td>
-                          <td>{{$d->nama_lengkap}}</td>
-                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
-                          <td>{{$d->no_hp}}</td>
-                          <td>{{$d->alamat}}</td>
-                          <td>{{$d->nama_role}}</td>
-                          <td>@if ($d->acc == 'y')
-                            <i class="fa-solid fa-check"></i>
+                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}
+                        </td>
+                        <td> @if (Auth::user()->id_role == 1)
+                          <a href="{{ route('admin.tambahkartu') }}?id_user={{$d->id}}">{{$d->username}}</a>
                           @else
-                          <i class="fa-solid fa-times"></i>
-                          @endif</td>
+                          {{$d->username}}
+                          @endif
+                      </td>
+                          <td>{{$d->nama_lengkap}} @if ($d->no_rfid)
+                            <i class="fa-solid fa-check">
+                            @endif</td>
+                          <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
+                          <td>{{$d->nama_role}}</td>
                           <td>
-                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_data}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_data}})"><i class="fa-solid fa-trash"></i></a>
-                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset({{$d->id}})"><i class="fa-solid fa-rotate-right"></i></a>
+                              <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_data}}")'><i class="fa-solid fa-edit"></i></i></a>
+                              @if (Auth::user()->id_role == 1)
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id}}')"><i class="fa-solid fa-trash"></i></a>
+                              <a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#k_reset" wire:click="c_reset('{{$d->id}}')"><i class="fa-solid fa-rotate-right"></i></a>
+                           @endif
                             </td>
                       </tr>
                   @endforeach
@@ -102,25 +119,6 @@
                         @enderror
                     </div>
                   </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
                   <div class="form-group mb-3">
                     <label for="">Jenis Kelamin</label>
                     <select class="form-control" wire:model.live="jenkel">
@@ -146,7 +144,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -166,30 +164,12 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <div class="form-group mb-3">
                     <label for="">Nama Lengkap</label>
                     <input type="text" wire:model.live="nama_lengkap" class="form-control">
                     <div class="text-danger">
                         @error('nama_lengkap')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-
-                <div class="form-group mb-3">
-                    <label for="">No Hp</label>
-                    <input type="text" wire:model.live="no_hp" class="form-control">
-                    <div class="text-danger">
-                        @error('no_hp')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Alamat</label>
-                    <input type="text" wire:model.live="alamat" class="form-control">
-                    <div class="text-danger">
-                        @error('alamat')
                             {{$message}}
                         @enderror
                     </div>
@@ -219,7 +199,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div> 
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -264,6 +244,7 @@
           </div>
         </div>
       </div>
+
 
 
       <script>

@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 
 class barang extends Component
 {
-    public $id_barang, $nama_barang, $volume, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role, $tahun_arkas;
+    public $id_barang, $nama_barang, $volume, $volume2, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role, $tahun_arkas;
     use WithPagination;
 
     public $cari = '';
@@ -91,33 +91,27 @@ class barang extends Component
         $this->id_ruangan = $data->id_ruangan;
         $this->id_role = $data->id_role;
         $this->tahun_arkas = $data->tahun_arkas;
+
     }
 
     public function Prosesdistribusi(){
         $this->validate([
-            'volume'=> 'required|numeric|min:1',
+            'volume2'=> 'required|numeric|min:1',
         ]);
         $tabelbarang = TabelBarang::where('id_barang', $this->id_barang)->first();
 
-        if((int)$this->volume > (int)$tabelbarang->volume){
+        if((int)$this->volume2 > (int)$tabelbarang->volume){
             session()->flash('gagal','Volume tidak sesuai');
         $this->clearForm();
         $this->dispatch('closeModal');
         } else {
             $data = TabelBarang::where('id_barang', $this->id_barang)->update([
-                'nama_barang' => $this->nama_barang,
-                'volume'=> (int)$tabelbarang->volume - (int)$this->volume,
-                'satuan'=> $this->satuan,
-                'tahun_masuk'=> $this->tahun_masuk,
-                'sumber'=> $this->sumber,
-                'jenis'=> $this->jenis,
-                'id_ruangan' => $this->id_ruangan,
-                'id_role'=> $this->id_role,
+                'volume'=> (int)$tabelbarang->volume - (int)$this->volume2,
             ]);
 
             $data = TabelDistribusi ::create([
                 'id_barang'=> $this->id_barang,
-                'volume'=> $this->volume,
+                'volume'=> $this->volume2,
                 'satuan'=> $this->satuan,
                 'id_ruangan' => $this->id_ruangan,
                 'id_role'=> $this->id_role,

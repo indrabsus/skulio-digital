@@ -52,8 +52,8 @@
                           <th>#</th>
                           <th>Nama Siswa</th>
                           <th>Nominal</th>
-                          <th>No Invoice</th>
                           <th>Jenis</th>
+                          <th>Ket</th>
                           <th>Waktu</th>
                           @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
@@ -66,7 +66,6 @@
                           <td><a href="{{ route('ppdbLog', ['id_log' => $d->id_log]) }}" class="btn btn-primary btn-sm" target="_blank"><i class="fa-solid fa-print"></i></a></td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>Rp.{{number_format($d->nominal,0,',','.')}}</td>
-                          <td>{{ $d->no_invoice }}</td>
                           <td>
                             @if ($d->jenis == 'd')
                                 Daftar
@@ -75,11 +74,12 @@
                             @else
                             Mengundurkan Diri
                             @endif</td>
+                            <td>{{ substr($d->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
                           <td>{{ date('d-m-Y h:i A', strtotime($d->created_at)) }}</td>
                           @if (Auth::user()->id_role == 1)
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_log}})'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_log}})"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_log}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_log}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                           @endif
                       </tr>
@@ -89,14 +89,7 @@
                </div>
                 {{$data->links()}}
         </div>
-        @php
-            $siswa = App\Models\LogPpdb::groupBy('id_siswa')
-            ->where('jenis','p')
-    ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-    ->having('total_pembayaran', '>=', 1000000)
-    ->count();
-        @endphp
-        {{$siswa}}
+
     </div>
 
 

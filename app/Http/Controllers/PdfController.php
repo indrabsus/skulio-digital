@@ -38,7 +38,7 @@ class PdfController extends Controller
     public function siswaPpdb($id){
         $set = Setingan::where('id_setingan', 1)->first();
         $data = LogPpdb::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->where('id_log',$id)
-        ->select('nama_lengkap','asal_sekolah','nominal','jenis','log_ppdb.created_at')
+        ->select('nama_lengkap','asal_sekolah','nominal','jenis','log_ppdb.created_at','no_invoice')
         ->first();
         $pdf = Pdf::loadView('pdf.logsiswappdb', compact('data','set'));
          //return $pdf->download('test.pdf');
@@ -54,7 +54,7 @@ class PdfController extends Controller
             ->get();
             $daftar = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','d')->sum('nominal');
             $ppdb = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','p')->sum('nominal');
-            $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.rekapharianppdb', compact('data','date','daftar','ppdb'));
+            $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekapharianppdb', compact('data','date','daftar','ppdb'));
          //return $pdf->download('test.pdf');
          return $pdf->stream($request->date.'-ppdb-harian.pdf');
         }

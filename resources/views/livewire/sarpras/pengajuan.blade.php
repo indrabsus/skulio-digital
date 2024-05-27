@@ -70,8 +70,8 @@
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_pengajuan}})'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_pengajuan}})"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach

@@ -63,10 +63,12 @@
                                 @endif
                               </td>
                               <td>@if ($d->created_at != $d->updated_at)
-                                <button disabled type="button" href="" class="btn btn-secondary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> sudah kembali</button>
+                                <button disabled type="button" href="" class="btn btn-secondary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_peminjam}}")'><i class="fa-solid fa-book"></i> Sudah Kembali</button>
                               @else
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_peminjam}})'><i class="fa-solid fa-book"></i> kembalikan</a>
-                              @endif</td>
+                              <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_peminjam}}")'><i class="fa-solid fa-book"></i> Kembalikan</a>
+                              @endif
+                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_peminjam}}')"><i class="fa-solid fa-trash"></i></a>
+                            </td>
                           </tr>
                       @endforeach
                       </tbody>
@@ -113,6 +115,23 @@
             </div>
           </div>
         {{-- Delete Modal --}}
+    <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah anda yakin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='delete()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
           <script>
             window.addEventListener('closeModal', event => {
                 $('#kembali').modal('hide');
