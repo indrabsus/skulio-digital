@@ -215,4 +215,7 @@ class RFIDController extends Controller
             echo "Gagal";
         }
     }
+    public function reset(){
+        Temp::truncate();
+    }
 }

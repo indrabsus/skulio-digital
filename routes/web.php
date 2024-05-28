@@ -38,6 +38,7 @@ Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->na
 Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan');
 Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
 Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
+Route::get('/reset', [RFIDController::class, 'reset'])->name('reset');
 
 
 Route::post('/topupproses', [RFIDController::class, 'topupProses'])->name('topupproses');
