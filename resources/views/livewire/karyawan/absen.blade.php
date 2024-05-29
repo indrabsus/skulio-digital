@@ -29,10 +29,13 @@
                         <label for="">Lokasi saya</label>
 
                         <div class="row">
+                            {{-- <div class="col-6"><input type="text" name="lat" value="-6.865116" class="form-control" readonly></div>
+                            <div class="col-6"><input type="text" name="long" value="107.540232" class="form-control" readonly></div> --}}
                             <div class="col-6"><input type="text" name="lat" id="lat" class="form-control" readonly></div>
                             <div class="col-6"><input type="text" name="long" id="long" class="form-control" readonly></div>
                         </div>
                     </div>
+
                     <div class="form-group mb-3">
                         @php
                             $detail = App\Models\User::leftJoin('data_user','data_user.id_user','users.id')->where('id', Auth::user()->id)->first();
@@ -40,6 +43,18 @@
                         <label for="">Nama Lengkap</label>
                         <input type="text" name="name" value="{{ $detail->nama_lengkap }}" class="form-control" readonly>
                     </div>
+                    @if (Auth::user()->id_role == 7)
+                    <div class="form-group mb-3">
+                        <label for="">Keterangan</label>
+
+
+                            <select name="ket" id="" class="form-control">
+                                <option value="0">Datang</option>
+                                <option value="4">Pulang</option>
+                            </select>
+
+                    </div>
+                    @endif
                     <div class="row mb-3">
                         <div class="col">
                             <button class="btn btn-primary btn-block">Absen</button>

@@ -65,7 +65,7 @@
                           <td>{{ date('d F Y - H:i:s A', strtotime($d->waktu)) }}</td>
                           <td>
                             @if ($d->status == 0)
-                               @if($d->nama_role == 'tendik' && date('H:i', strtotime($d->waktu)) >= '07:00')
+                               @if($d->nama_role == 'tendik' && date('H:i', strtotime($d->waktu)) >= '07:10')
                                <span class="badge bg-danger">Terlambat</span>
                                @else
                                 <span class="badge bg-primary">Datang</span>
