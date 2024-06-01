@@ -141,6 +141,15 @@
                         @enderror
                     </div>
                   </div>
+                  <div class="form-group mb-3">
+                    <label for="">URL</label>
+                    <input type="text" class="form-control" wire:model.live="extra">
+                    <div class="text-danger">
+                        @error('extra')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
                 </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('id_materi')->references('id_materi')->on('materi')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('nilai');
+            $table->string('extra');
             $table->timestamps();
         });
     }
