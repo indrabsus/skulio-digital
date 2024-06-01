@@ -63,7 +63,7 @@
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#cjawab" wire:click='cjawab("{{$d->id_refleksi}}")'>Jawab</a>
                             @else
                             <button class="btn btn-success btn-sm" disabled>Sudah dijawab</button>
-                           @endif
+                           @endif 
                             @endif
                       </div>
                     </div>
