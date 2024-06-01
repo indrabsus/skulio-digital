@@ -170,12 +170,12 @@ class DataSiswa extends Component
     }
 
     public function allow(){
-        User::where('id_role',8)->update([
+        User::where('id_role',"8")->update([
             'acc' => 'y'
         ]);
     }
     public function disallow(){
-        User::where('id_role',8)->update([
+        User::where('id_role',"8")->update([
             'acc' => 'n'
         ]);
     }
