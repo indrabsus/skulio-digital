@@ -53,7 +53,7 @@ class UserController extends Controller
 
             $insert = Absen::create([
                 'id_user' => $request->id_user,
-                'waktu' => date('Y-m-d h:i:s'),
+                'waktu' => now(),
                 'status' => $status,
             ]);
 
