@@ -20,11 +20,11 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-3">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Absen Guru
+                        <button type="button" class="btn btn-success btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#izin">
+                            Absen Tendik
                           </button>
                     </div>
-                    
+
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-3">

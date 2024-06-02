@@ -11,7 +11,7 @@ use App\Models\User;
 use Livewire\WithPagination;
 use Rats\Zkteco\Lib\ZKTeco;
 
-class Absen extends Component
+class AbsenTendik extends Component
 {
     public $id_role, $id_absen, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $status, $waktu;
     use WithPagination;
@@ -29,12 +29,12 @@ class Absen extends Component
         $role = Role::where('id_role','<>', 1)->get();
         $data  = ModelsAbsen::orderBy('id_absen','desc')->
         where('nama_lengkap', 'like','%'.$this->cari.'%')
-        ->where('users.id_role', '6')
+        ->where('users.id_role', '7')
         ->leftJoin('users','users.id','=','absen.id_user')
         ->leftJoin('data_user','data_user.id_user','=','absen.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
         ->paginate($this->result);
-        return view('livewire.manajemen.absen', compact('data','role','guru','tendik'));
+        return view('livewire.manajemen.absen-tendik', compact('data','role','guru','tendik'));
     }
     public function tarik(){
         $zk = new ZKTeco('192.168.30.33');
