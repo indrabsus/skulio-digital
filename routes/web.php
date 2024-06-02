@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Cigalert;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
@@ -39,6 +40,12 @@ Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan'
 Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
 Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
 Route::get('/reset', [RFIDController::class, 'reset'])->name('reset');
+
+//Cigalert
+Route::get('/tabelcigalert', function(){
+    return view('load.tabelcigalert');
+})->name('tabelcigalert');
+Route::get('/cigalert/{nama_mesin}/{value}', [Cigalert::class, 'postSensor'])->name('postsensor');
 
 
 Route::post('/topupproses', [RFIDController::class, 'topupProses'])->name('topupproses');
