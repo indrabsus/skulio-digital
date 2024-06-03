@@ -65,7 +65,21 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_lengkap}} {{ $d->bayar_daftar == 'l' ? ' - Mengundurkan Diri' : '' }}</td>
-                          <td>{{$d->no_hp}}</td>
+                          @php
+    // Process the phone number
+    $phone = $d->no_hp;
+    $phone = str_replace([' ', '-'], '', $phone); // Remove spaces and dashes
+    if (substr($phone, 0, 1) == '0') {
+        $phone = '62' . substr($phone, 1); // Remove leading 0 and add 62
+    } elseif (substr($phone, 0, 2) == '62') {
+        $phone = '62' . substr($phone, 2); // Remove leading 62
+    }
+@endphp
+
+<td>
+    <a href="https://wa.me/{{ $phone }}" target="_blank">{{ $d->no_hp }}</a>
+</td>
+
                           <td>{{$d->asal_sekolah}}</td>
                           <td>{{$d->nisn}}</td>
                           <td>
