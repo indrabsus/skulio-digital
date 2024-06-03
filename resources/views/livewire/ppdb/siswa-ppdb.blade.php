@@ -68,7 +68,7 @@
                           @php
     // Process the phone number
     $phone = $d->no_hp;
-    $phone = str_replace([' ', '-'], '', $phone); // Remove spaces and dashes
+    $phone = str_replace([' ', '-', '+'], '', $phone); // Remove spaces and dashes
     if (substr($phone, 0, 1) == '0') {
         $phone = '62' . substr($phone, 1); // Remove leading 0 and add 62
     } elseif (substr($phone, 0, 2) == '62') {
