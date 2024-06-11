@@ -38,7 +38,7 @@ class PdfController extends Controller
     public function siswaPpdb($id){
         $set = Setingan::where('id_setingan', 1)->first();
         $data = LogPpdb::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->where('id_log',$id)
-        ->select('nama_lengkap','asal_sekolah','nominal','jenis','log_ppdb.created_at','no_invoice')
+        ->select('nama_lengkap','asal_sekolah','nominal','jenis','log_ppdb.created_at','no_invoice','siswa_ppdb.id_siswa')
         ->first();
         $pdf = Pdf::loadView('pdf.logsiswappdb', compact('data','set'));
          //return $pdf->download('test.pdf');
