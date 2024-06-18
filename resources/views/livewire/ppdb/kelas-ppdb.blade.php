@@ -67,7 +67,7 @@
                             {{ $cek }}
                           </td>
                           <td>
-                            <a href="{{ route('printkelasppdb', ['id_kelas' => $d->id_kelas]) }}" class="btn btn-primary btn-xs"><i class="fa-solid fa-print" target="_blank"></i></a>
+                            <a href="{{ route('printkelasppdb', ['id_kelas' => $d->id_kelas]) }}" class="btn btn-primary btn-xs"  target="_blank"><i class="fa-solid fa-print"></i></a>
                           @if (Auth::user()->id_role == 1)
 
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kelas}}")'><i class="fa-solid fa-edit"></i></i></a>
