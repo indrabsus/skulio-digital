@@ -26,11 +26,13 @@ class SiswaPpdb extends Component
     public function render()
     {
         if($this->filter == 'all'){
-            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            $data  = TabelSiswaPpdb::orderBy('siswa_ppdb.id_siswa','desc')
+            ->leftJoin('siswa_baru','siswa_baru.id_siswa','siswa_ppdb.id_siswa')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->paginate($this->result);
         } else{
-            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            $data  = TabelSiswaPpdb::orderBy('siswa_ppdb.id_siswa','desc')
+            ->leftJoin('siswa_baru','siswa_baru.id_siswa','siswa_ppdb.id_siswa')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('bayar_daftar', $this->filter)
             ->paginate($this->result);
