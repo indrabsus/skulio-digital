@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JurusanPpdb;
 use App\Models\LogPpdb;
 use App\Models\MasterPpdb;
+use App\Models\SiswaBaru;
 use App\Models\SiswaPpdb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -106,5 +107,25 @@ class PPDBController extends Controller
 
         Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
         return redirect()->route('loginpage');
+    }
+    public function detailppdb(){
+
+        return view('load.ppdb.detailppdb');
+    }
+    public function loadppdb(){
+        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $ak = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'AK'.'%')->count();
+        $pm = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'PM'.'%')->count();
+        $pplg = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'PPLG'.'%')->count();
+        $mplb = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'MPLB'.'%')->count();
+        return view('load.ppdb.loadppdb',compact('sudahdaftar','ak','pm','pplg','mplb'));
     }
 }
