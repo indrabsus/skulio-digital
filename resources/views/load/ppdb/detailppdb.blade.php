@@ -70,7 +70,38 @@ License: For each use you must have a valid license purchased only from above li
                         <div class="text-center"><img src="https://i.ibb.co.com/cxt589x/689cf9ca-777e-4f42-b7d9-4d15a60ceee9.png" width="100px"></div>
                         <h1 class="text-center">SMK Sangkuriang 1 Cimahi</h1>
                         <h2 class="text-center">Penerimaan Siswa Baru 2024</h2>
-                        <div id="kelas"></div>
+                        <table class="table table-bordered mt-3">
+                            <tr>
+                                <td>Jumlah Pendaftar Total</td><th>{{ $all }} Siswa</th>
+                            </tr>
+                            {{-- <tr>
+                                <td>Kuota Sekolah</td><th>432 Siswa</th>
+                            </tr>
+                            <tr>
+                                <td>Sisa</td><th>{{ 432 - $all }} Siswa</th>
+                            </tr> --}}
+                        </table>
+                        <table class="table table-bordered mt-3">
+                            <tr>
+                                <th>Jurusan</th>
+                                <th>Pendaftar</th>
+                            </tr>
+
+                            <tr>
+                                <td>AKUNTANSI</td><td>{{ $akuntansi }} Siswa</td>
+                            </tr>
+                            <tr>
+                                <td>PPLG</td><td>{{ $pplg }} Siswa</td>
+                            </tr>
+                            <tr>
+                                <td>Pemasaran</td><td>{{ $bisnis }} Siswa</td>
+                            </tr>
+                            <tr>
+                                <td>MPLB</td><td>{{ $mplb }} Siswa</td>
+                            </tr>
+
+                        </table>
+
                         <p class="mt-3">Note: Jumlah pendaftar tidak semua dimasukan kedalam kelas dikarenakan masih ada tunggakan administrasi</p>
                     </div>
                 </div>
@@ -91,18 +122,6 @@ License: For each use you must have a valid license purchased only from above li
 
 	<!-- Custom js for this page -->
 	<!-- End custom js for this page -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    setInterval(function() {
-        fetch("{{route('loadppdb')}}")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("kelas").innerHTML = data;
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }, 1000);
-});
 
-</script>
 </body>
 </html>

@@ -109,8 +109,13 @@ class PPDBController extends Controller
         return redirect()->route('loginpage');
     }
     public function detailppdb(){
-
-        return view('load.ppdb.detailppdb');
+        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $all = SiswaPpdb::count();
+        $akuntansi = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Akuntansi'.'%')->count();
+        $mplb = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'MPLB'.'%')->count();
+        $pplg = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'PPLG'.'%')->count();
+        $bisnis = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Bisnis'.'%')->count();
+        return view('load.ppdb.detailppdb',compact('akuntansi','mplb','pplg','bisnis','sudahdaftar','all'));
     }
     public function loadppdb(){
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
