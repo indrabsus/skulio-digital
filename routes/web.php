@@ -18,6 +18,7 @@ use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
+//awalan
 
 
 // Fingerprint
