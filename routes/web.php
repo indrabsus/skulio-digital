@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 //Detail PPDB
-Route::get('detailppdb',[PPDBController::class,'detailppdb'])->name('detailppdb');
-Route::get('loadppdb',[PPDBController::class,'loadppdb'])->name('loadppdb');
+// Route::get('detailppdb',[PPDBController::class,'detailppdb'])->name('detailppdb');
+// Route::get('loadppdb',[PPDBController::class,'loadppdb'])->name('loadppdb');
 
 // Fingerprint
 Route::get('user',[FingerPrint::class,'user'])->name('userfp');
