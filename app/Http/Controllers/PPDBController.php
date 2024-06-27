@@ -71,10 +71,7 @@ class PPDBController extends Controller
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
         ->having('total_pembayaran', '=', $daftar->daftar)
         ->count();
-        $mengundurkan = LogPpdb::select('id_siswa')
-        ->distinct()
-        ->where('jenis', '=', 'l')
-        ->get()
+        $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
 
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
@@ -98,11 +95,13 @@ class PPDBController extends Controller
         $set = MasterPpdb::where('tahun', date('Y'))->first();
         $teks = 'Laporan PPDB SMK Sangkuriang 1 Cimahi, Tanggal '.date('d M Y')."\n".
 'Pendaftar Total sebanyak '.$pendaftar.' orang,'."\n".
+'Pendaftar yang hanya melakukan pembayaran Pendaftaran sebanyak '.$hanyadaftar.' orang,'."\n".
 'Pendaftar yang sudah melakukan pembayaran sebanyak '.$sudahdaftar.' orang,'."\n".
 'Pendaftar yang belum melakukan pembayaran sebanyak '.($pendaftar - $sudahdaftar).' orang,'."\n".
 'Pendaftar yang sudah Lunas sebanyak '.$lunas.' orang,'."\n".
 'Pendaftar yang sudah bayar lebih dari 1 Juta sebanyak '.$lebihsejuta.' orang,'."\n".
 'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' orang, '."\n".
+'Pendaftar yang sudah Mengundurkan diri sebanyak '.$mengundurkan.' orang, '."\n".
 'Tim IT SMK Sangkuriang 1 Cimahi';
 
         Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);

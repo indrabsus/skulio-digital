@@ -18,10 +18,7 @@ class Laporan extends Component
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
         ->having('total_pembayaran', '=', $daftar->daftar)
         ->count();
-        $mengundurkan = LogPpdb::select('id_siswa')
-        ->distinct()
-        ->where('jenis', '=', 'l')
-        ->get()
+        $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
 
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
