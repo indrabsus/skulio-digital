@@ -110,10 +110,10 @@ class PPDBController extends Controller
     public function detailppdb(){
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
         $all = SiswaPpdb::count();
-        $akuntansi = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Akuntansi'.'%')->count();
-        $mplb = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'MPLB'.'%')->count();
-        $pplg = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'PPLG'.'%')->count();
-        $bisnis = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Bisnis'.'%')->count();
+        $akuntansi = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Akuntansi'.'%')->where('bayar_daftar','n')->count();
+        $mplb = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'MPLB'.'%')->where('bayar_daftar','n')->count();
+        $pplg = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'PPLG'.'%')->where('bayar_daftar','n')->count();
+        $bisnis = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Bisnis'.'%')->where('bayar_daftar','n')->count();
 
 
         //fix asli
