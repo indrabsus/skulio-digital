@@ -82,107 +82,115 @@ License: For each use you must have a valid license purchased only from above li
                             </tr> --}}
                         </table>
                         <table class="table table-bordered mt-3">
-                          <tr>
-                              <th>Jurusan</th>
-                              <th>Pendaftar</th>
-                              <th>Antrian</th>
-                              <th>Kelas Terisi</th>
-                              <th>Tersisa</th>
-                          </tr>
+                            <tr>
+                                <th>Jurusan</th>
+                                <th>Pendaftar</th>
+                                <th>Antrian</th>
+                                <th>Belum Bayar Pendaftaran</th>
+                                <th>Kelas Terisi</th>
+                                <th>Tersisa</th>
+                            </tr>
 
-                          <tr>
-                              <td>AKUNTANSI</td>
-                              <td>{{ $ak }} Siswa</td>
-                              <td>{{ $akuntansi - $ak }} Siswa</td>
-                              <td>
-                                  @if ($akuntansi <= 36)
-                                      1 Kelas
-                                  @elseif ($akuntansi > 36 && $akuntansi <= 72)
-                                      2 Kelas
-                                  @else
-                                      3 Kelas
-                                  @endif
-                              </td>
-                              <td>
-                                  @if ($akuntansi <= 36)
-                                      {{ 36 - $akuntansi }} Siswa
-                                  @elseif ($akuntansi > 36 && $akuntansi <= 72)
-                                      {{ 72 - $akuntansi }} Siswa
-                                  @else
-                                      {{ 108 - $akuntansi }} Siswa
-                                  @endif
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>PPLG</td>
-                              <td>{{ $rpl }} Siswa</td>
-                              <td>{{ $pplg - $rpl }} Siswa</td>
-                              <td>
-                                  @if ($pplg <= 36)
-                                      1 Kelas
-                                  @elseif ($pplg > 36 && $pplg <= 72)
-                                      2 Kelas
-                                  @else
-                                      3 Kelas
-                                  @endif
-                              </td>
-                              <td>
-                                  @if ($pplg <= 36)
-                                      {{ 36 - $pplg }} Siswa
-                                  @elseif ($pplg > 36 && $pplg <= 72)
-                                      {{ 72 - $pplg }} Siswa
-                                  @else
-                                      {{ 108 - $pplg }} Siswa
-                                  @endif
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>Pemasaran</td>
-                              <td>{{ $pm }} Siswa</td>
-                              <td>{{ $bisnis - $pm }} Siswa</td>
-                              <td>
-                                  @if ($bisnis <= 36)
-                                      1 Kelas
-                                  @elseif ($bisnis > 36 && $bisnis <= 72)
-                                      2 Kelas
-                                  @else
-                                      3 Kelas
-                                  @endif
-                              </td>
-                              <td>
-                                  @if ($bisnis <= 36)
-                                      {{ 36 - $bisnis }} Siswa
-                                  @elseif ($bisnis > 36 && $bisnis <= 72)
-                                      {{ 72 - $bisnis }} Siswa
-                                  @else
-                                      {{ 108 - $bisnis }} Siswa
-                                  @endif
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>MPLB</td>
-                              <td>{{ $mp }} Siswa</td>
-                              <td>{{ $mplb - $mp }} Siswa</td>
-                              <td>
-                                  @if ($mplb <= 36)
-                                      1 Kelas
-                                  @elseif ($mplb > 36 && $mplb <= 72)
-                                      2 Kelas
-                                  @else
-                                      3 Kelas
-                                  @endif
-                              </td>
-                              <td>
-                                  @if ($mplb <= 36)
-                                      {{ 36 - $mplb }} Siswa
-                                  @elseif ($mplb > 36 && $mplb <= 72)
-                                      {{ 72 - $mplb }} Siswa
-                                  @else
-                                      {{ 108 - $mplb }} Siswa
-                                  @endif
-                              </td>
-                          </tr>
-                      </table>
+                            <tr>
+                                <td>AKUNTANSI</td>
+                                <td>{{ $ak }} Siswa</td>
+                                <td>{{ $ak_a }} Siswa</td>
+                                <td>{{ $akuntansi - ($ak + $ak_a) }} Siswa</td>
+                                <td>
+                                    @if ($ak + $ak_a <= 36)
+                                        1 Kelas
+                                    @elseif ($ak + $ak_a > 36 && $ak + $ak_a <= 72)
+                                        2 Kelas
+                                    @else
+                                        3 Kelas
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ak + $ak_a <= 36)
+                                        {{ 36 - ($ak + $ak_a) }} Siswa
+                                    @elseif ($ak + $ak_a > 36 && $ak + $ak_a <= 72)
+                                        {{ 72 - ($ak + $ak_a) }} Siswa
+                                    @else
+                                        {{ 108 - ($ak + $ak_a) }} Siswa
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>PPLG</td>
+                                <td>{{ $rpl }} Siswa</td>
+                                <td>{{ $rpl_a }} Siswa</td>
+                                <td>{{ $pplg - ($rpl + $rpl_a) }} Siswa</td>
+                                <td>
+                                    @if ($rpl + $rpl_a <= 36)
+                                        1 Kelas
+                                    @elseif ($rpl + $rpl_a > 36 && $rpl + $rpl_a <= 72)
+                                        2 Kelas
+                                    @else
+                                        3 Kelas
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($rpl + $rpl_a <= 36)
+                                        {{ 36 - ($rpl + $rpl_a) }} Siswa
+                                    @elseif ($rpl + $rpl_a > 36 && $rpl + $rpl_a <= 72)
+                                        {{ 72 - ($rpl + $rpl_a) }} Siswa
+                                    @else
+                                        {{ 108 - ($rpl + $rpl_a) }} Siswa
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Pemasaran</td>
+                                <td>{{ $pm }} Siswa</td>
+                                <td>{{ $pm_a }} Siswa</td>
+                                <td>{{ $bisnis - ($pm + $pm_a) }} Siswa</td>
+                                <td>
+                                    @if ($pm + $pm_a <= 36)
+                                        1 Kelas
+                                    @elseif ($pm + $pm_a > 36 && $pm + $pm_a <= 72)
+                                        2 Kelas
+                                    @else
+                                        3 Kelas
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pm + $pm_a <= 36)
+                                        {{ 36 - ($pm + $pm_a) }} Siswa
+                                    @elseif ($pm + $pm_a > 36 && $pm + $pm_a <= 72)
+                                        {{ 72 - ($pm + $pm_a) }} Siswa
+                                    @else
+                                        {{ 108 - ($pm + $pm_a) }} Siswa
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MPLB</td>
+                                <td>{{ $mp }} Siswa</td>
+                                <td>{{ $mp_a }} Siswa</td>
+                                <td>{{ $mplb - ($mp + $mp_a) }} Siswa</td>
+                                <td>
+                                    @if ($mp + $mp_a <= 36)
+                                        1 Kelas
+                                    @elseif ($mp + $mp_a > 36 && $mp + $mp_a <= 72)
+                                        2 Kelas
+                                    @else
+                                        3 Kelas
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($mp + $mp_a <= 36)
+                                        {{ 36 - ($mp + $mp_a) }} Siswa
+                                    @elseif ($mp + $mp_a > 36 && $mp + $mp_a <= 72)
+                                        {{ 72 - ($mp + $mp_a) }} Siswa
+                                    @else
+                                        {{ 108 - ($mp+ $mp_a) }} Siswa
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
 
 
                         <p class="mt-3">Note: Jumlah pendaftar tidak semua dimasukan kedalam kelas dikarenakan masih ada tunggakan administrasi</p>

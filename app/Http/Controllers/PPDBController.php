@@ -129,7 +129,21 @@ class PPDBController extends Controller
         $mp = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
         ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
         ->where('nama_kelas','LIKE','%'.'MPLB'.'%')->count();
-        return view('load.ppdb.detailppdb',compact('akuntansi','mplb','pplg','bisnis','sudahdaftar','all','ak','pm','rpl','mp'));
+
+
+        $ak_a = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'Akuntansi Antrian'.'%')->count();
+        $pm_a = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'Pemasaran Antrian'.'%')->count();
+        $rpl_a = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'RPL Antrian'.'%')->count();
+        $mp_a = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+        ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+        ->where('nama_kelas','LIKE','%'.'Perkantoran Antrian'.'%')->count();
+        return view('load.ppdb.detailppdb',compact('akuntansi','mplb','pplg','bisnis','sudahdaftar','all','ak','pm','rpl','mp','ak_a','pm_a','rpl_a','mp_a'));
     }
     public function loadppdb(){
         $sudahdaftar = LogPpdb::where('jenis','d')->count();
