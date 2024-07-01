@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KelasPpdb;
 use App\Models\LogPpdb;
 use App\Models\LogTabungan;
 use App\Models\Setingan;
+use App\Models\SiswaBaru;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -57,6 +59,28 @@ class PdfController extends Controller
             $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekapharianppdb', compact('data','date','daftar','ppdb'));
          //return $pdf->download('test.pdf');
          return $pdf->stream($request->date.'-ppdb-harian.pdf');
+        }
+
+        public function kelasppdb(Request $request){
+            $data = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+            ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+
+            ->where('siswa_baru.id_kelas', $request->id_kelas)
+            ->get();
+            $kelas = KelasPpdb::
+            leftJoin('jurusan_ppdb','jurusan_ppdb.id_jurusan','kelas_ppdb.id_jurusan')
+            ->where('id_kelas', $request->id_kelas)->first();
+            $jumlahlaki = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+            ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+            ->where('siswa_baru.id_kelas', $request->id_kelas)
+            ->where('siswa_ppdb.jenkel', 'l')->count();
+            $jumlahperempuan = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
+            ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
+            ->where('siswa_baru.id_kelas', $request->id_kelas)
+            ->where('siswa_ppdb.jenkel', 'p')->count();
+            $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.siswakelasppdb', compact('data','kelas','jumlahlaki','jumlahperempuan'));
+         //return $pdf->download('test.pdf');
+         return $pdf->stream($kelas->nama_kelas.'.pdf');
         }
 }
 

@@ -31,6 +31,7 @@ Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp')
 
 //PPDB
 Route::get('laporanppdb',[PPDBController::class,'laporan'])->name('laporan');
+Route::get('/{id_kelas}/kelasppdbprint', [PdfController::class, 'kelasppdb'])->name('printkelasppdb');
 
 
 //Excel Controller
