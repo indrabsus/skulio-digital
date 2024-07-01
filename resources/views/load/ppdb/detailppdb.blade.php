@@ -101,8 +101,10 @@ License: For each use you must have a valid license purchased only from above li
                                         1 Kelas
                                     @elseif ($ak + $ak_a > 36 && $ak + $ak_a <= 72)
                                         2 Kelas
-                                    @else
+                                    @elseif ($ak + $ak_a > 72 && $ak + $ak_a <= 108)
                                         3 Kelas
+                                    @else
+                                        4 Kelas
                                     @endif
                                 </td>
                                 <td>
@@ -110,8 +112,10 @@ License: For each use you must have a valid license purchased only from above li
                                         {{ 36 - ($ak + $ak_a) }} Siswa
                                     @elseif ($ak + $ak_a > 36 && $ak + $ak_a <= 72)
                                         {{ 72 - ($ak + $ak_a) }} Siswa
-                                    @else
+                                    @elseif ($ak + $ak_a > 72 && $ak + $ak_a <= 108)
                                         {{ 108 - ($ak + $ak_a) }} Siswa
+                                    @else
+                                        {{ 144 - ($ak + $ak_a) }} Siswa
                                     @endif
                                 </td>
                             </tr>
@@ -126,8 +130,10 @@ License: For each use you must have a valid license purchased only from above li
                                         1 Kelas
                                     @elseif ($rpl + $rpl_a > 36 && $rpl + $rpl_a <= 72)
                                         2 Kelas
-                                    @else
+                                    @elseif ($rpl + $rpl_a > 72 && $rpl + $rpl_a <= 108)
                                         3 Kelas
+                                    @else
+                                        4 Kelas
                                     @endif
                                 </td>
                                 <td>
@@ -135,8 +141,10 @@ License: For each use you must have a valid license purchased only from above li
                                         {{ 36 - ($rpl + $rpl_a) }} Siswa
                                     @elseif ($rpl + $rpl_a > 36 && $rpl + $rpl_a <= 72)
                                         {{ 72 - ($rpl + $rpl_a) }} Siswa
-                                    @else
+                                    @elseif ($rpl + $rpl_a > 72 && $rpl + $rpl_a <= 108)
                                         {{ 108 - ($rpl + $rpl_a) }} Siswa
+                                    @else
+                                        {{ 144 - ($rpl + $rpl_a) }} Siswa
                                     @endif
                                 </td>
                             </tr>
@@ -151,8 +159,10 @@ License: For each use you must have a valid license purchased only from above li
                                         1 Kelas
                                     @elseif ($pm + $pm_a > 36 && $pm + $pm_a <= 72)
                                         2 Kelas
-                                    @else
+                                    @elseif ($pm + $pm_a > 72 && $pm + $pm_a <= 108)
                                         3 Kelas
+                                    @else
+                                        4 Kelas
                                     @endif
                                 </td>
                                 <td>
@@ -160,8 +170,10 @@ License: For each use you must have a valid license purchased only from above li
                                         {{ 36 - ($pm + $pm_a) }} Siswa
                                     @elseif ($pm + $pm_a > 36 && $pm + $pm_a <= 72)
                                         {{ 72 - ($pm + $pm_a) }} Siswa
-                                    @else
+                                    @elseif ($pm + $pm_a > 72 && $pm + $pm_a <= 108)
                                         {{ 108 - ($pm + $pm_a) }} Siswa
+                                    @else
+                                        {{ 144 - ($pm + $pm_a) }} Siswa
                                     @endif
                                 </td>
                             </tr>
@@ -176,8 +188,10 @@ License: For each use you must have a valid license purchased only from above li
                                         1 Kelas
                                     @elseif ($mp + $mp_a > 36 && $mp + $mp_a <= 72)
                                         2 Kelas
-                                    @else
+                                    @elseif ($mp + $mp_a > 72 && $mp + $mp_a <= 108)
                                         3 Kelas
+                                    @else
+                                        4 Kelas
                                     @endif
                                 </td>
                                 <td>
@@ -185,8 +199,10 @@ License: For each use you must have a valid license purchased only from above li
                                         {{ 36 - ($mp + $mp_a) }} Siswa
                                     @elseif ($mp + $mp_a > 36 && $mp + $mp_a <= 72)
                                         {{ 72 - ($mp + $mp_a) }} Siswa
+                                    @elseif ($mp + $mp_a > 72 && $mp + $mp_a <= 108)
+                                        {{ 108 - ($mp + $mp_a) }} Siswa
                                     @else
-                                        {{ 108 - ($mp+ $mp_a) }} Siswa
+                                        {{ 144 - ($mp+ $mp_a) }} Siswa
                                     @endif
                                 </td>
                             </tr>
