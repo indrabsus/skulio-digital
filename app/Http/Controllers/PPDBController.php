@@ -119,10 +119,10 @@ class PPDBController extends Controller
         //fix asli
         $ak = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
         ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
-        ->where('nama_kelas','LIKE','%'.'AK'.'%')->count();
+        ->where('nama_kelas','LIKE','%'.'AKL'.'%')->count();
         $pm = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
         ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
-        ->where('nama_kelas','LIKE','%'.'PM'.'%')->count();
+        ->where('nama_kelas','LIKE','%'.'BDP'.'%')->count();
         $rpl = SiswaBaru::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','siswa_baru.id_siswa')
         ->leftJoin('kelas_ppdb','kelas_ppdb.id_kelas','siswa_baru.id_kelas')
         ->where('nama_kelas','LIKE','%'.'PPLG'.'%')->count();
