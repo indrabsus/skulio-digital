@@ -20,7 +20,7 @@ class Laporan extends Component
         ->count();
         $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
-
+        $noaction = SiswaPpdb::where('bayar_daftar', '=', 'n');
         $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
@@ -41,6 +41,6 @@ class Laporan extends Component
         $uangdaftar = LogPpdb::where('jenis', 'd')->sum('nominal');
         $uangppdb = LogPpdb::where('jenis', 'p')->sum('nominal');
         $uangundur= LogPpdb::where('jenis', 'l')->sum('nominal');
-        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan','uangdaftar','uangppdb','uangundur'));
+        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan','uangdaftar','uangppdb','uangundur','noaction'));
     }
 }

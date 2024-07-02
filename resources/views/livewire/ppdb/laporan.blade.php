@@ -7,7 +7,10 @@
                     <td>Pendaftar Total</td><td>{{$pendaftar}}</td>
                 </tr>
                 <tr>
-                    <td>Hanya Daftar (Belum bayar PPDB)</td><td>{{$hanyadaftar}}</td>
+                    <td>Hanya Daftar (Belum bayar Apapun)</td><td>{{$hanyadaftar}}</td>
+                </tr>
+                <tr>
+                    <td>Bayar Pendaftaran (Rp.150.000)</td><td>{{$hanyadaftar}}</td>
                 </tr>
                 <tr>
                     <td>Total Siswa yang sudah Bayar Pendaftaran</td><td>{{$sudahdaftar}}</td>
