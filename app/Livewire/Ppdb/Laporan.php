@@ -21,7 +21,7 @@ class Laporan extends Component
         $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
 
-        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))

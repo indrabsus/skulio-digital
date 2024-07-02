@@ -73,8 +73,10 @@ class PPDBController extends Controller
         ->count();
         $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
+        $noaction = SiswaPpdb::where('bayar_daftar', '=', 'n')
+        ->count();
 
-        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
@@ -97,7 +99,7 @@ class PPDBController extends Controller
 'Pendaftar Total sebanyak '.$pendaftar.' orang,'."\n".
 'Pendaftar yang hanya melakukan pembayaran Pendaftaran sebanyak '.$hanyadaftar.' orang,'."\n".
 'Pendaftar yang sudah melakukan pembayaran sebanyak '.$sudahdaftar.' orang,'."\n".
-'Pendaftar yang belum melakukan pembayaran sebanyak '.($pendaftar - $sudahdaftar).' orang,'."\n".
+'Pendaftar yang belum melakukan pembayaran sebanyak '.$noaction.' orang,'."\n".
 'Pendaftar yang sudah Lunas sebanyak '.$lunas.' orang,'."\n".
 'Pendaftar yang sudah bayar lebih dari 1 Juta sebanyak '.$lebihsejuta.' orang,'."\n".
 'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' orang, '."\n".
@@ -108,7 +110,7 @@ class PPDBController extends Controller
         return redirect()->route('loginpage');
     }
     public function detailppdb(){
-        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $all = SiswaPpdb::count();
         $akuntansi = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'Akuntansi'.'%')->where('bayar_daftar','n')->count();
         $mplb = SiswaPpdb::where('minat_jurusan1','LIKE','%'.'MPLB'.'%')->where('bayar_daftar','n')->count();
