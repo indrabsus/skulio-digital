@@ -7,7 +7,7 @@
                     <td>Pendaftar Total</td><td>{{$pendaftar}}</td>
                 </tr>
                 <tr>
-                    <td>Hanya Daftar (Belum bayar Apapun)</td><td>{{$hanyadaftar}}</td>
+                    <td>Hanya Daftar (Belum bayar Apapun)</td><td>{{$noaction}}</td>
                 </tr>
                 <tr>
                     <td>Bayar Pendaftaran (Rp.150.000)</td><td>{{$hanyadaftar}}</td>
