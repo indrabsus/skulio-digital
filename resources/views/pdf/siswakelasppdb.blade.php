@@ -41,6 +41,7 @@
                     <th>Nama Siswa</th>
                     <th>Jenis Kelamin</th>
                     <th>Asal Sekolah</th>
+                    <th>Uang Masuk</th>
                 </tr>
                 <?php $no=1; ?>
                 @foreach ($data as $d)
@@ -49,6 +50,12 @@
                     <td>{{$d->nama_lengkap}}</td>
                     <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                     <td>{{$d->asal_sekolah}}</td>
+                    <td>@php
+                        $log = App\Models\LogPpdb::where('id_siswa', $d->id_siswa)
+                        ->where('jenis','p')
+                        ->sum('nominal');
+                    @endphp
+                    Rp.{{ number_format($log,0,',','.') }}</td>
                 </tr>
                 @endforeach
             </table>
