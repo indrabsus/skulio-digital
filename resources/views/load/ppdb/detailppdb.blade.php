@@ -86,7 +86,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <th>Jurusan</th>
                                 <th>Pendaftar</th>
                                 <th>Antrian</th>
-                                <th>Belum Bayar Pendaftaran</th>
+                                {{-- <th>Belum Bayar Pendaftaran</th> --}}
                                 <th>Kelas Terisi</th>
                                 <th>Tersisa</th>
                             </tr>
@@ -95,7 +95,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <td>AKUNTANSI</td>
                                 <td>{{ $ak }} Siswa</td>
                                 <td>{{ $ak_a }} Siswa</td>
-                                <td>{{ $akuntansi }} Siswa</td>
+                                {{-- <td>{{ $akuntansi }} Siswa</td> --}}
                                 <td>
                                     @if ($ak + $ak_a <= 36)
                                         1 Kelas
@@ -124,7 +124,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <td>PPLG</td>
                                 <td>{{ $rpl }} Siswa</td>
                                 <td>{{ $rpl_a }} Siswa</td>
-                                <td>{{ $pplg }} Siswa</td>
+                                {{-- <td>{{ $pplg }} Siswa</td> --}}
                                 <td>
                                     @if ($rpl + $rpl_a <= 36)
                                         1 Kelas
@@ -153,7 +153,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <td>Pemasaran</td>
                                 <td>{{ $pm }} Siswa</td>
                                 <td>{{ $pm_a }} Siswa</td>
-                                <td>{{ $bisnis }} Siswa</td>
+                                {{-- <td>{{ $bisnis }} Siswa</td> --}}
                                 <td>
                                     @if ($pm + $pm_a <= 36)
                                         1 Kelas
@@ -182,7 +182,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <td>MPLB</td>
                                 <td>{{ $mp }} Siswa</td>
                                 <td>{{ $mp_a }} Siswa</td>
-                                <td>{{ $mplb }} Siswa</td>
+                                {{-- <td>{{ $mplb }} Siswa</td> --}}
                                 <td>
                                     @if ($mp + $mp_a <= 36)
                                         1 Kelas
