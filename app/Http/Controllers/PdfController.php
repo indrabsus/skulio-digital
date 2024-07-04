@@ -52,7 +52,7 @@ class PdfController extends Controller
 
             $data = LogPpdb::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')
             ->where('log_ppdb.created_at', 'like','%'.$request->date.'%')
-            ->select('nama_lengkap','asal_sekolah','log_ppdb.created_at','jenis','nominal')
+            ->select('nama_lengkap','asal_sekolah','log_ppdb.created_at','jenis','nominal','no_invoice')
             ->get();
             $daftar = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','d')->sum('nominal');
             $ppdb = LogPpdb::where('log_ppdb.created_at', 'like','%'.$request->date.'%')->where('jenis','p')->sum('nominal');

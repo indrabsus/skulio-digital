@@ -53,7 +53,7 @@
                     <td>{{$d->asal_sekolah}}</td>
                     <td>{{ $d->jenis == 'd' ? 'Rp.'.number_format($d->nominal,0,',','.') : '-' }}</td>
                     <td>{{ $d->jenis == 'p' ? 'Rp.'.number_format($d->nominal,0,',','.') : '-' }}</td>
-                    <td>{{ substr($d->no_invoice, 2, 3) }}</td>
+                    <td>{{ substr($d->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
                 </tr>
                 @endforeach
             </table>
