@@ -14,10 +14,15 @@ class Laporan extends Component
     {
         $daftar = MasterPpdb::where('tahun',date('Y'))->first();
         $pendaftar = SiswaPpdb::count();
-        $hanyadaftar = LogPpdb::groupBy('id_siswa')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '=', $daftar->daftar)
-        ->count();
+        $count = LogPpdb::where('jenis', 'd')
+    ->whereNotIn('id_siswa', function($query) {
+        $query->select('id_siswa')
+              ->from('log_ppdb')
+              ->where('jenis', 'p');
+    })
+    ->distinct()
+    ->count('id_siswa');
+
         $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
         ->count();
         $noaction = SiswaPpdb::where('bayar_daftar', '=', 'n')->count();
