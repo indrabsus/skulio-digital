@@ -28,6 +28,7 @@
                                 <option value="all">Semua</option>
                                 <option value="y">Sudah Bayar</option>
                                 <option value="n">Belum Bayar</option>
+                                <option value="l">Mengundurkan Diri</option>
                             </select>
                         </div>
                           <div class="col-3">
