@@ -14,7 +14,7 @@ class Laporan extends Component
     {
         $daftar = MasterPpdb::where('tahun',date('Y'))->first();
         $pendaftar = SiswaPpdb::count();
-        $count = LogPpdb::where('jenis', 'd')
+        $hanyadaftar = LogPpdb::where('jenis', 'd')
     ->whereNotIn('id_siswa', function($query) {
         $query->select('id_siswa')
               ->from('log_ppdb')
