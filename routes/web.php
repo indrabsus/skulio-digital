@@ -73,7 +73,7 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
 Route::get('/{id_log}/ppdbLog', [PdfController::class, 'siswaPpdb'])->name('ppdbLog');
 
-Route::get('ppdb',[PPDBController::class,'formppdb'])->name('formppdb');
+Route::get('ppdb2',[PPDBController::class,'formppdb'])->name('formppdb');
 Route::post('postppdb',[PPDBController::class,'postppdb'])->name('postppdb');
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');
