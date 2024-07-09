@@ -163,4 +163,22 @@ class PPDBController extends Controller
         ->where('nama_kelas','LIKE','%'.'MPLB'.'%')->count();
         return view('load.ppdb.loadppdb');
     }
+    public function wameform(){
+        return view('wame');
+    }
+    public function wapost(Request $request)
+    {
+        $nowa = $request->input('nowa');
+
+        // Menghapus semua karakter yang bukan angka
+        $nowa = preg_replace('/[^0-9]/', '', $nowa);
+
+        // Menghapus awalan '0' jika ada
+        if (substr($nowa, 0, 1) == '0') {
+            $nowa = substr($nowa, 1);
+        }
+
+        $link = "https://wa.me/62" . $nowa;
+        return redirect()->away($link);
+    }
 }

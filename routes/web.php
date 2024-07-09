@@ -65,6 +65,10 @@ Route::post('/sesimesin', function(Request $request) {
 Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
 Route::get('rekapharianppdb',[PdfController::class,'rekapharianppdb'])->name('rekapharianppdb');
 
+// Wa Me
+Route::get('wame',[PPDBController::class,'wameform'])->name('wame');
+Route::post('wapost',[PPDBController::class,'wapost'])->name('wapost');
+
 //Login Page
 Route::get('/',[AuthController::class,'loginpage'])->name('loginpage');
 Route::get('/lupausername',[AuthController::class,'lupausername'])->name('lupausername');
