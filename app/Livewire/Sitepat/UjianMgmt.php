@@ -122,12 +122,12 @@ class UjianMgmt extends Component
         $this->dispatchBrowserEvent('closeModal');
     }
     public function allow(){
-        Ujian::where('id_ujian','>',0)->update([
+        Ujian::query()->update([
             'acc' => 'y'
         ]);
     }
     public function disallow(){
-        Ujian::where('id_ujian','>',0)->update([
+        Ujian::query()->update([
             'acc' => 'n'
         ]);
     }

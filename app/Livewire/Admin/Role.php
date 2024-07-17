@@ -39,8 +39,7 @@ class Role extends Component
     }
     public function update(){
         $this->validate([
-            'nama_role' => 'required',
-            'icon' => 'required'
+            'nama_role' => 'required'
         ]);
         $data = TabelRole::where('id_role', $this->id_role)->update([
             'nama_role' => strtolower($this->nama_role),

@@ -52,8 +52,9 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#pinjam" wire:click='pinjam({{$d->id_siswa}})'><i class="fa-solid fa-book"></i> pinjam</a>
-                          </td>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#pinjam" wire:click='pinjam("{{$d->id_siswa}}")'><i class="fa-solid fa-book"></i> Pinjam</a>
+
+                        </td>
                       </tr>
                   @endforeach
                   </tbody>

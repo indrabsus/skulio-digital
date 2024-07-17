@@ -14,21 +14,23 @@ class Laporan extends Component
     {
         $daftar = MasterPpdb::where('tahun',date('Y'))->first();
         $pendaftar = SiswaPpdb::count();
-        $hanyadaftar = LogPpdb::groupBy('id_siswa')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '=', $daftar->daftar)
-        ->count();
-        $mengundurkan = LogPpdb::select('id_siswa')
+        $hanyadaftar = LogPpdb::where('jenis', 'd')
+    ->whereNotIn('id_siswa', function($query) {
+        $query->select('id_siswa')
+              ->from('log_ppdb')
+              ->where('jenis', 'p');
+    })
     ->distinct()
-    ->where('jenis', '=', 'l')
-    ->get()
-    ->count();
+    ->count('id_siswa');
 
-        $sudahdaftar = LogPpdb::where('jenis','d')->count();
+        $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
+        ->count();
+        $noaction = SiswaPpdb::where('bayar_daftar', '=', 'n')->count();
+        $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $kurangsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '<=', 1000000)
+        ->having('total_pembayaran', '<', 1000000)
         ->count();
         $lebihsejuta = LogPpdb::groupBy('id_siswa')
         ->where('jenis','p')
@@ -41,6 +43,9 @@ class Laporan extends Component
         ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
         ->having('total_pembayaran', '=', $daftar->ppdb)
         ->count();
-        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan'));
+        $uangdaftar = LogPpdb::where('jenis', 'd')->sum('nominal');
+        $uangppdb = LogPpdb::where('jenis', 'p')->sum('nominal');
+        $uangundur= LogPpdb::where('jenis', 'l')->sum('nominal');
+        return view('livewire.ppdb.laporan',compact('pendaftar','sudahdaftar','kurangsejuta','lebihsejuta','lunas','hanyadaftar','mengundurkan','uangdaftar','uangppdb','uangundur','noaction'));
     }
 }

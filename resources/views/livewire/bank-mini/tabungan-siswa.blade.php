@@ -68,8 +68,8 @@
                           <td>{{$d->no_hp}}</td>
                           <td>Rp.{{number_format($kd - $db,0,',','.')}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#kd" wire:click='kd({{$d->id_siswa}})'><i class="fa-solid fa-wallet"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#db" wire:click="db({{$d->id_siswa}})"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#kd" wire:click='kd("{{$d->id_siswa}}")'><i class="fa-solid fa-wallet"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#db" wire:click="db('{{$d->id_siswa}}')"><i class="fa-solid fa-hand-holding-dollar"></i></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -90,7 +90,7 @@
             </div>
             <div class="modal-body mb-3">
               <div class="form-group">
-                <label for="">nama_lengkap</label>
+                <label for="">Nama Lengkap</label>
                 <input type="text" wire:model.live="nama_lengkap" class="form-control" disabled>
                 <div class="text-danger">
                     @error('nama_lengkap')

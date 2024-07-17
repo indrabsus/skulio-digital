@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('username')->unique();
             $table->string('password');
-            $table->foreignId('id_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('acc',['y','n']);
             $table->rememberToken();
             $table->timestamps();

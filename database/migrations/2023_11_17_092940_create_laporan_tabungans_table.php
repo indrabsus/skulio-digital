@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('laporan_tabungan', function (Blueprint $table) {
-            $table->id('id_laporan');
-            $table->foreignId('id_log_tabungan')->references('id_log_tabungan')->on('log_tabungan')->onDelete('cascade')->onUpdate('cascade');
+            $table->uuid('id_laporan')->primary();
+            $table->foreignUuid('id_log_tabungan')->references('id_log_tabungan')->on('log_tabungan')->onDelete('cascade')->onUpdate('cascade');
             $table->string('jumlah_nasabah');
             $table->string('Total_debit');
             $table->string('Total_kredit');

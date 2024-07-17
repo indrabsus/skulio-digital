@@ -15,11 +15,14 @@ class DataSiswa extends Component
     public $id_siswa, $id_user, $id_kelas, $jenkel, $no_hp, $nis, $nama_lengkap;
     use WithPagination;
 
+    public $cari_kelas ='';
     public $cari = '';
     public $result = 10;
     public function render()
     {
+
         $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')->get();
+        if($this->cari_kelas != ''){
         $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
@@ -28,9 +31,22 @@ class DataSiswa extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('no_hp', 'like', '%' . $this->cari . '%')
                 ->orWhere('nis', 'like', '%' . $this->cari . '%');
-            // Tambahkan orWhere untuk setiap kolom yang ingin Anda cari
+        })
+        ->where('kelas.id_kelas', $this->cari_kelas)
+        ->paginate($this->result);
+        } else {
+            $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
+        ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
+        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->orderBy('id_siswa','desc')
+        ->where(function ($query) {
+            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                ->orWhere('no_hp', 'like', '%' . $this->cari . '%')
+                ->orWhere('nis', 'like', '%' . $this->cari . '%');
         })
         ->paginate($this->result);
+        }
+
         return view('livewire.kurikulum.data-siswa', compact('data','kelas'));
     }
     public function insert(){
@@ -154,12 +170,12 @@ class DataSiswa extends Component
     }
 
     public function allow(){
-        User::where('id_role',8)->update([
+        User::where('id_role',"8")->update([
             'acc' => 'y'
         ]);
     }
     public function disallow(){
-        User::where('id_role',8)->update([
+        User::where('id_role',"8")->update([
             'acc' => 'n'
         ]);
     }

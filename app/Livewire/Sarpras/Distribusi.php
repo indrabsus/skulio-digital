@@ -24,6 +24,8 @@ class Distribusi extends Component
         $data  = TabelDistribusi::leftJoin('ruangan','ruangan.id_ruangan','distribusi.id_ruangan')
         ->leftJoin('roles','roles.id_role','distribusi.id_role')
         ->leftJoin('barang','barang.id_barang','distribusi.id_barang')
+        ->select('distribusi.id_barang','nama_barang','distribusi.volume','sumber',
+        'tahun_masuk','nama_ruangan','nama_role','id_distribusi')
         ->orderBy('id_distribusi','desc')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.sarpras.distribusi', compact('data','ruangan','role'));
     }

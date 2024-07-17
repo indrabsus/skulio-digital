@@ -45,6 +45,7 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Mapel</th>
+                          <th>Nama Guru</th>
                           <th>Kelas</th>
                           <th>Aksi</th>
                       </tr>
@@ -54,10 +55,11 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_pelajaran}}</td>
+                          <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit({{$d->id_mapelkelas}})'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete({{$d->id_mapelkelas}})"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_mapelkelas}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_mapelkelas}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -102,6 +104,20 @@
                     </select>
                     <div class="text-danger">
                         @error('id_mapel')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="">Guru</label>
+                    <select class="form-control" wire:model.live="id_user">
+                        <option value="">Pilih Guru</option>
+                        @foreach ($guru as $k)
+                            <option value="{{$k->id_user}}">{{$k->nama_lengkap}}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('id_user')
                             {{$message}}
                         @enderror
                     </div>
@@ -153,6 +169,20 @@
                     @enderror
                 </div>
               </div>
+              <div class="form-group">
+                <label for="">Guru</label>
+                <select class="form-control" wire:model.live="id_user">
+                    <option value="">Pilih Guru</option>
+                    @foreach ($guru as $k)
+                        <option value="{{$k->id_user}}">{{$k->nama_lengkap}}</option>
+                    @endforeach
+                </select>
+                <div class="text-danger">
+                    @error('id_user')
+                        {{$message}}
+                    @enderror
+                </div>
+              </div>
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -162,7 +192,7 @@
       </div>
     </div>
 
-    
+
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">

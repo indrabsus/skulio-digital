@@ -7,7 +7,10 @@
                     <td>Pendaftar Total</td><td>{{$pendaftar}}</td>
                 </tr>
                 <tr>
-                    <td>Hanya Daftar (Belum bayar PPDB)</td><td>{{$hanyadaftar}}</td>
+                    <td>Hanya Daftar (Belum bayar Apapun)</td><td>{{$noaction}}</td>
+                </tr>
+                <tr>
+                    <td>Bayar Pendaftaran (Rp.150.000)</td><td>{{$hanyadaftar}}</td>
                 </tr>
                 <tr>
                     <td>Total Siswa yang sudah Bayar Pendaftaran</td><td>{{$sudahdaftar}}</td>
@@ -24,6 +27,23 @@
                 <tr>
                     <td>Lunas</td><td>{{$lunas}}</td>
                 </tr>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Total Pendaftaran</td><td>Rp. {{number_format($uangdaftar,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Total PPDB</td><td>Rp. {{number_format($uangppdb,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Mengundurkan Diri</td><td>Rp. {{number_format($uangundur,0,',','.')}}</td>
+                </tr>
+                <tr>
+                    <td>Total semua uang masuk</td><td>Rp. {{number_format($uangdaftar + $uangppdb + $uangundur,0,',','.')}}</td>
+                </tr>
+
             </table>
         </div>
     </div>

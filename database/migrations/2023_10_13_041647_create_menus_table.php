@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menu', function (Blueprint $table) {
-            $table->id('id_menu');
-            $table->foreignId('parent_menu')->nullable()->references('id_parent')->on('parent_menu')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('akses_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->uuid('id_menu')->primary();
+            $table->foreignUuid('parent_menu')->nullable()->references('id_parent')->on('parent_menu')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('akses_role')->nullable()->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama_menu');
             $table->string('class');
             $table->timestamps();

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('master_ppdb', function (Blueprint $table) {
-            $table->id('id_ppdb');
+            $table->uuid('id_ppdb')->primary();
             $table->integer('daftar');
             $table->integer('ppdb');
             $table->string('token_telegram');
