@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Datatamu extends Model
+class DataTamu extends Model
 {
     use HasFactory;
     use HasUuids;
@@ -14,6 +14,6 @@ class Datatamu extends Model
     protected $primaryKey = 'id_tamu';
     protected $keyType = 'string';
     public $incrementing = false;
-    protected $table = 'datatamu';
+    protected $table = 'data_tamu';
     protected $guarded = [];
 }

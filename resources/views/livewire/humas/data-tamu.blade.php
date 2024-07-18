@@ -48,7 +48,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Jenis</th>
-                            <th>Jabatan</th>
+                            <th>Role</th>
                             <th>Keperluan</th>
                             <th>Aksi</th>
                         </tr>
@@ -58,8 +58,8 @@
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                                 <td>{{ $d->nama }}</td>
-                                <td>{{ $d->jenis }}</td>
-                                <td>{{ $d->jabatan }}</td>
+                                <td>{{ $d->jenis == 'i' ? 'Instansi' : 'Umum' }}</td>
+                                <td>{{ $d->role }}</td>
                                 <td>{{ $d->keperluan }}</td>
                                 <td>
                                     <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal"
@@ -89,7 +89,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Nama</label>
                         <input type="text" wire:model.live="nama" class="form-control">
                         <div class="text-danger">
@@ -99,12 +99,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="">Jenis</label>
                         <select class="form-control" wire:model.live="jenis">
                             <option value="">Pilih Jenis</option>
-                            <option value="instansi">Instansi</option>
-                            <option value="umum">Umum</option>
+                            <option value="i">Instansi</option>
+                            <option value="u">Umum</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -113,35 +113,35 @@
                         </div>
                     </div>
 
-                    @if ($jenis === 'instansi')
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="">Jabatan</label>
-                            <input type="text" wire:model.live="jabatan" class="form-control">
+                    @if ($jenis === 'i')
+                        <div class="form-group mb-3" style="margin-top: 10px;">
+                            <label for="">Role</label>
+                            <input type="text" wire:model.live="role" class="form-control">
                             <div class="text-danger">
-                                @error('jabatan')
+                                @error('role')
                                     {{ $message }}
                                 @enderror
                             </div>
                         </div>
                     @endif
 
-                    @if ($jenis === 'umum')
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="">Sebagai</label>
-                            <select class="form-control" wire:model.live="jabatan">
-                                <option value="">Pilih ops</option>
+                    @if ($jenis === 'u')
+                        <div class="form-group mb-3" style="margin-top: 10px;">
+                            <label for="">Role</label>
+                            <select class="form-control" wire:model.live="role">
+                                <option value="">Pilih Role</option>
                                 <option value="Orang Tua">Orang Tua</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                             <div class="text-danger">
-                                @error('jabatan')
+                                @error('role')
                                     {{ $message }}
                                 @enderror
                             </div>
                         </div>
                     @endif
 
-                    <div class="form-group" style="margin-top: 10px;">
+                    <div class="form-group mb-3" style="margin-top: 10px;">
                         <label for="">Keperluan</label>
                         <input type="text" wire:model.live="keperluan" class="form-control">
                         <div class="text-danger">
@@ -185,8 +185,8 @@
                         <label for="">Jenis</label>
                         <select class="form-control" wire:model.live="jenis">
                             <option value="">Pilih Jenis</option>
-                            <option value="instansi">Instansi</option>
-                            <option value="umum">Umum</option>
+                            <option value="i">Instansi</option>
+                            <option value="u">Umum</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -195,28 +195,28 @@
                         </div>
                     </div>
 
-                    @if ($jenis === 'instansi')
+                    @if ($jenis === 'i')
                         <div class="form-group" style="margin-top: 10px;">
-                            <label for="">Jabatan</label>
-                            <input type="text" wire:model.live="jabatan" class="form-control">
+                            <label for="">Role</label>
+                            <input type="text" wire:model.live="role" class="form-control">
                             <div class="text-danger">
-                                @error('jabatan')
+                                @error('role')
                                     {{ $message }}
                                 @enderror
                             </div>
                         </div>
                     @endif
 
-                    @if ($jenis === 'umum')
+                    @if ($jenis === 'u')
                         <div class="form-group" style="margin-top: 10px;">
-                            <label for="">Sebagai</label>
-                            <select class="form-control" wire:model.live="jabatan">
-                                <option value="">Pilih ops</option>
+                            <label for="">Role</label>
+                            <select class="form-control" wire:model.live="role">
+                                <option value="">Pilih Role</option>
                                 <option value="Orang Tua">Orang Tua</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                             <div class="text-danger">
-                                @error('jabatan')
+                                @error('role')
                                     {{ $message }}
                                 @enderror
                             </div>

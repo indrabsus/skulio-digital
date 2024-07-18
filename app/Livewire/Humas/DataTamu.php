@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class DataTamu extends Component
 {
-    public $id_tamu, $nama, $jenis, $jabatan, $keperluan;
+    public $id_tamu, $nama, $jenis, $role, $keperluan;
     public $cari = '';
     public $result = 10;
 
@@ -25,14 +25,14 @@ class DataTamu extends Component
         $this->validate([
             'nama' => 'required',
             'jenis' => 'required',
-            'jabatan' => 'required',
+            'role' => 'required',
             'keperluan' => 'required',
         ]);
 
         $data = IdentitasTamu::create([
             'nama' => $this->nama,
             'jenis' => $this->jenis,
-            'jabatan' => $this->jabatan,
+            'role' => $this->role,
             'keperluan' => $this->keperluan,
         ]);
         session()->flash('sukses', 'Data berhasil ditambahkan');
@@ -43,7 +43,7 @@ class DataTamu extends Component
     {
         $this->nama = '';
         $this->jenis = '';
-        $this->jabatan = '';
+        $this->role = '';
         $this->keperluan = '';
     }
 
@@ -53,7 +53,7 @@ class DataTamu extends Component
         $this->id_tamu = $id;
         $this->nama = $data->nama;
         $this->jenis = $data->jenis;
-        $this->jabatan = $data->jabatan;
+        $this->role = $data->role;
         $this->keperluan = $data->keperluan;
     }
     public function update()
@@ -61,13 +61,13 @@ class DataTamu extends Component
         $this->validate([
             'nama' => 'required',
             'jenis' => 'required',
-            'jabatan' => 'required',
+            'role' => 'required',
             'keperluan' => 'required',
         ]);
         $data = IdentitasTamu::where('id_tamu', $this->id_tamu)->update([
             'nama' => $this->nama,
             'jenis' => $this->jenis,
-            'jabatan' => $this->jabatan,
+            'role' => $this->role,
             'keperluan' => $this->keperluan,
         ]);
         session()->flash('sukses', 'Data berhasil diedit');
