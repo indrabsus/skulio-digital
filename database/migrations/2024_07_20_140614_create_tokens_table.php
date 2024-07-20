@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('token', function (Blueprint $table) {
-            $table->uuid('id_token');
+            $table->uuid('id_token')->primary();
             $table->string('nama_token');
             $table->string('token');
             $table->string('chat_id');
