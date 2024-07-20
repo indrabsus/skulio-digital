@@ -50,6 +50,7 @@
                             <th>Jenis</th>
                             <th>Role</th>
                             <th>Keperluan</th>
+                            <th>Tanggal</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -61,6 +62,7 @@
                                 <td>{{ $d->jenis == 'i' ? 'Instansi' : 'Umum' }}</td>
                                 <td>{{ $d->role }}</td>
                                 <td>{{ $d->keperluan }}</td>
+                                <td>{{ date('d M Y h:i a', strtotime($d->created_at)) }}</td>
                                 <td>
                                     <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal"
                                         data-bs-target="#edit" wire:click='edit("{{ $d->id_tamu }}")'><i
@@ -115,7 +117,16 @@
 
                     @if ($jenis === 'i')
                         <div class="form-group mb-3" style="margin-top: 10px;">
-                            <label for="">Role</label>
+                            <label for="">Nama Instansi</label>
+                            <input type="text" wire:model.live="nama_instansi" class="form-control">
+                            <div class="text-danger">
+                                @error('nama_instansi')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group mb-3" style="margin-top: 10px;">
+                            <label for="">Jabatan</label>
                             <input type="text" wire:model.live="role" class="form-control">
                             <div class="text-danger">
                                 @error('role')

@@ -3,18 +3,20 @@
 namespace App\Livewire\Humas;
 
 use App\Models\Datatamu as IdentitasTamu;
+use App\Models\Token;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class DataTamu extends Component
 {
-    public $id_tamu, $nama, $jenis, $role, $keperluan;
+    public $id_tamu, $nama, $jenis, $role, $keperluan, $nama_instansi;
     public $cari = '';
     public $result = 10;
 
     public function render()
     {
-        $data = IdentitasTamu::orderBy('id_tamu')
-            ->where('nama', 'like', '%' . $this->cari . '%')
+        $data = IdentitasTamu::where('nama', 'like', '%' . $this->cari . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate($this->result);
 
         return view('livewire.humas.data-tamu', compact('data'));
@@ -28,13 +30,30 @@ class DataTamu extends Component
             'role' => 'required',
             'keperluan' => 'required',
         ]);
+        if($this->jenis == 'i'){
+            $data = IdentitasTamu::create([
+                'nama' => $this->nama,
+                'jenis' => $this->jenis,
+                'role' => $this->role.' - '.$this->nama_instansi,
+                'keperluan' => $this->keperluan,
+            ]);
+        } else {
+            $data = IdentitasTamu::create([
+                'nama' => $this->nama,
+                'jenis' => $this->jenis,
+                'role' => $this->role,
+                'keperluan' => $this->keperluan,
+            ]);
+        }
 
-        $data = IdentitasTamu::create([
-            'nama' => $this->nama,
-            'jenis' => $this->jenis,
-            'role' => $this->role,
-            'keperluan' => $this->keperluan,
-        ]);
+
+        $set = Token::where('id_token', 1)->first();
+        if($this->jenis == 'i'){
+            $text = "Ada tamu baru atas nama ".$this->nama." (". $this->role." - ".$this->nama_instansi.") dengan keperluan ".$this->keperluan;
+        } else {
+            $text = "Ada tamu baru atas nama ".$this->nama." (". $this->role.") dengan keperluan ".$this->keperluan;
+        }
+        Http::get('https://api.telegram.org/bot'.$set->token.'/sendMessage?chat_id='.$set->chat_id.',&text='.$text);
         session()->flash('sukses', 'Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
