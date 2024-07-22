@@ -60,6 +60,7 @@
                           <th>Mapel</th>
                           <th>Tahun/Semester</th>
                           <th>Tanggal</th>
+                          <th>Penilaian</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -70,8 +71,13 @@
                           <td>{{$d->materi}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->nama_pelajaran}}</td>
-                          <td>{{ $d->tahun_pelajaran.'/'.$d->semester }}</td>
+                          <td>{{ strtoupper($d->tingkatan).' '.$d->tahun_pelajaran.'/'.$d->semester }}</td>
                           <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
+                          <td>@if ($d->penilaian == 'y')
+                            <i class="fa-solid fa-check"></i>
+                          @else
+                          <i class="fa-solid fa-times"></i>
+                          @endif</td>
                           <td>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
@@ -100,6 +106,20 @@
                     <input type="text" wire:model.live="materi" class="form-control">
                     <div class="text-danger">
                         @error('materi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Tingkat</label>
+                    <select class="form-control" wire:model.live="tingkatan">
+                        <option value="">Pilih Tingkat</option>
+                        <option value="x">X</option>
+                        <option value="xi">XI</option>
+                        <option value="xii">XII</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('tingkatan')
                             {{$message}}
                         @enderror
                     </div>
@@ -145,6 +165,19 @@
                         @enderror
                     </div>
                   </div>
+                  <div class="form-group mb-3">
+                    <label for="">Penilaian</label>
+                    <select class="form-control" wire:model.live="penilaian">
+                        <option value="">Pilih Opsi</option>
+                        <option value="y">Ya</option>
+                        <option value="n">Tidak</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('penilaian')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -169,6 +202,20 @@
                     <input type="text" wire:model.live="materi" class="form-control">
                     <div class="text-danger">
                         @error('materi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Tingkat</label>
+                    <select class="form-control" wire:model.live="tingkatan">
+                        <option value="">Pilih Tingkat</option>
+                        <option value="x">X</option>
+                        <option value="xi">XI</option>
+                        <option value="xii">XII</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('tingkatan')
                             {{$message}}
                         @enderror
                     </div>
@@ -210,6 +257,19 @@
                     </select>
                     <div class="text-danger">
                         @error('id_mapelkelas')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Penilaian</label>
+                    <select class="form-control" wire:model.live="penilaian">
+                        <option value="">Pilih Opsi</option>
+                        <option value="y">Ya</option>
+                        <option value="n">Tidak</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('penilaian')
                             {{$message}}
                         @enderror
                     </div>

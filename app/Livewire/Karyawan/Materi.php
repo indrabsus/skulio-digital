@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 
 class Materi extends Component
 {
-    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran;
+    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran, $tingkatan, $penilaian;
     use WithPagination;
     public $carisemester = '';
     public $caritahun = '';
@@ -30,7 +30,7 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
-        ->select('tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran')
+        ->select('tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
         ->where('materi', 'like','%'.$this->cari.'%')
         ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
@@ -43,12 +43,16 @@ class Materi extends Component
             'id_mapelkelas' => 'required',
             'semester' => 'required',
             'tahun_pelajaran' => 'required',
+            'tingkatan' => 'required',
+            'penilaian' => 'required',
         ]);
         $data = ModelsMateri::create([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
             'semester' => $this->semester,
             'tahun_pelajaran' => $this->tahun_pelajaran,
+            'tingkatan' => $this->tingkatan,
+            'penilaian' => $this->penilaian
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
@@ -59,6 +63,8 @@ class Materi extends Component
         $this->id_mapelkelas = '';
         $this->semester = '';
         $this->tahun_pelajaran = '';
+        $this->tingkatan = '';
+        $this->penilaian = '';
     }
     public function edit($id){
         $data = ModelsMateri::where('id_materi', $id)->first();
@@ -66,6 +72,8 @@ class Materi extends Component
         $this->id_mapelkelas = $data->id_mapelkelas;
         $this->semester = $data->semester;
         $this->tahun_pelajaran = $data->tahun_pelajaran;
+        $this->tingkatan = $data->tingkatan;
+        $this->penilaian = $data->penilaian;
         $this->id_materi = $id;
     }
     public function update(){
@@ -74,13 +82,17 @@ class Materi extends Component
             'id_mapelkelas' => 'required',
             'semester' => 'required',
             'tahun_pelajaran' => 'required',
-
+            'tingkatan' => 'required',
+            'penilaian' => 'required',
         ]);
         $data = ModelsMateri::where('id_materi', $this->id_materi)->update([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
             'semester' => $this->semester,
             'tahun_pelajaran' => $this->tahun_pelajaran,
+            'tingkatan' => $this->tingkatan,
+            'penilaian' => $this->penilaian
+
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();

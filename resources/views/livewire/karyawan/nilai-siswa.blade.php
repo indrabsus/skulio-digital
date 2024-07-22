@@ -36,10 +36,10 @@
                                     <option value="genap">Genap</option>
                                 </select>
                                 <select wire:model.live="caritahun" class="form-control">
-                                    <option value="">Pilih Tahun</option>
-                                    <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
-                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                            <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                                    <option value="">Pilih Tingkat</option>
+                                    <option value="x">X</option>
+                            <option value="xi">XI</option>
+                            <option value="xii">XII</option>
                                 </select>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
@@ -63,11 +63,10 @@
                           <th>Nama Lengkap</th>
                           <th>Kelas</th>
                           <th>Mata Pelajaran</th>
-                          <th>Terlambat</th>
-                          <th>Sakit</th>
-                          <th>Izin</th>
-                          <th>Tanpa Keterangan</th>
-                          <th>Dispen</th>
+                          <th>Tingkat/Semester</th>
+                          <th>Jml Materi</th>
+                          <th>Materi Selesai</th>
+                          <th>Nilai Rata-rata</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -77,83 +76,43 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{ $d->nama_pelajaran }}</td>
-                          @php
-                              $telat = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
-                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
-                              ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
-                              ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',1)
-                              ->count();
-                              $sakit = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
-                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
-                              ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
-                              ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',2)
-                              ->count();
-                              $izin = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
-                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
-                              ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
-                              ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',3)
-                              ->count();
-                              $alfa = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
-                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
-                              ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
-                              ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',4)
-                              ->count();
-                              $dispen = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
-                              ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-                              ->where('mapel_kelas.id_mapel',$d->id_mapel)
-                              ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
-                              ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',5)
-                              ->count();
-                          @endphp
+                          <td>{{ strtoupper($caritahun).'/'.ucwords($carisemester) }}</td>
                           <td>
-                            @if ($telat > 0)
-                            <span class="badge bg-secondary">{{ $telat }}</span>
-                            @else
-                                {{ $telat }}
-                            @endif
-                            </td>
+                            @php
+                                $count = App\Models\Materi::leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
+                            ->where('mapel_kelas.id_kelas', $cari_kelas)
+                            ->where('mapel_kelas.id_mapel', $d->id_mapel)
+                            ->where('materi.semester', $carisemester)
+                            ->where('materi.tingkatan', $caritahun)
+                            ->where('materi.penilaian', 'y')
+                            ->count();
+                            $selesai = App\Models\Materi::leftJoin('nilai', 'nilai.id_materi', 'materi.id_materi')
+                            ->where('id_user', $d->id_user)
+                            ->where('semester', $carisemester)
+                            ->where('tingkatan', $caritahun)
+                            ->where('materi.penilaian', 'y')
+                            ->count();
+                            @endphp
+                            {{ $count }}
+                          </td>
+                          <td>{{ $selesai }}</td>
                           <td>
-                            @if ($sakit > 0)
-                            <span class="badge bg-warning">{{ $sakit }}</span>
-                            @else
-                                {{ $sakit }}
-                            @endif
-                            </td>
-                          <td>
-                            @if ($izin > 0)
-                            <span class="badge bg-primary">{{ $izin }}</span>
-                            @else
-                                {{ $izin }}
-                            @endif
-                            </td>
-                          <td>
-                            @if ($alfa > 0)
-                            <span class="badge bg-danger">{{ $alfa }}</span>
-                            @else
-                                {{ $alfa }}
-                            @endif
-                            </td>
-                          <td>
-                            @if ($dispen > 0)
-                            <span class="badge bg-success">{{ $dispen }}</span>
-                            @else
-                                {{ $dispen }}
-                            @endif
-                            </td>
+                            @php
+
+    $nilai = App\Models\Materi::leftJoin('nilai', 'nilai.id_materi', 'materi.id_materi')
+        ->where('semester', $carisemester)
+        ->where('tingkatan', $caritahun)
+        ->where('id_user', $d->id_user)
+        ->where('materi.penilaian', 'y')
+        ->sum('nilai');
+         // Menghindari division by zero
+    $hasil = $count == 0 ? 0 : ($nilai / $count);
+
+// Menggunakan rumus yang diberikan
+$result = $hasil == 0 ? '-' : ($count / $hasil) * 100;
+@endphp
+{{ round($hasil) }}
+                          </td>
                     </tr>
                   @endforeach
                   </tbody>
