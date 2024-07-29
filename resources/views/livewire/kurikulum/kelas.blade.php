@@ -57,7 +57,7 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                             <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-                            <td>{{ DB::table('data_siswa')->where('id_kelas', $d->id_kelas)->count() }}</td>
+                            <td>{{ DB::table('data_siswa')->leftJoin('users','users.id','data_siswa.id_user')->where('id_kelas', $d->id_kelas)->where('acc','y')->count() }}</td>
                             <td>{{$d->nama_jurusan}}</td>
                             <td>{{$d->tahun_masuk}}</td>
                             <td>{{$d->username}}</td>

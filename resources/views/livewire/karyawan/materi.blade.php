@@ -71,7 +71,7 @@
                           <td>{{$d->materi}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->nama_pelajaran}}</td>
-                          <td>{{ strtoupper($d->tingkatan).' '.$d->tahun_pelajaran.'/'.$d->semester }}</td>
+                          <td>{{ strtoupper($d->tingkatan).' '.$d->tahun.'/'.$d->semester }}</td>
                           <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
                           <td>@if ($d->penilaian == 'y')
                             <i class="fa-solid fa-check"></i>
@@ -137,26 +137,13 @@
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Tahun Pelajaran</label>
-                    <select wire:model.live="tahun_pelajaran" class="form-control">
-                        <option value="">Pilih Tahun</option>
-                        <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('tahun_pelajaran')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
+
                 <div class="form-group mb-3">
                     <label for="">Mapel Kelas</label>
                     <select wire:model.live="id_mapelkelas" class="form-control">
                         <option value="">Pilih Opsi</option>
                         @foreach ($mapelkelas as $m)
-                            <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas }}</option>
+                            <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas.' - '.$m->tahun }}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
@@ -235,7 +222,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Tahun Pelajaran</label>
-                    <select wire:model.live="tahun_pelajaran" class="form-control">
+                    <select wire:model.live="tahun_pelajaran" class="form-control" disabled>
                         <option value="">Pilih Tahun</option>
                         <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
                         <option value="{{ date('Y') }}">{{ date('Y') }}</option>
@@ -249,7 +236,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Mapel Kelas</label>
-                    <select wire:model.live="id_mapelkelas" class="form-control">
+                    <select wire:model.live="id_mapelkelas" class="form-control" disabled>
                         <option value="">Pilih Opsi</option>
                         @foreach ($mapelkelas as $m)
                             <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas }}</option>

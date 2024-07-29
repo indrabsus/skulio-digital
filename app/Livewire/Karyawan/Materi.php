@@ -23,6 +23,7 @@ class Materi extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->where('mapel_kelas.id_user',Auth::user()->id)
+        ->where('aktif', 'y')
         ->get();
         $data  = ModelsMateri::orderBy('id_materi','desc')
         ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
@@ -30,7 +31,7 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
-        ->select('tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
+        ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
         ->where('materi', 'like','%'.$this->cari.'%')
         ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
@@ -42,15 +43,15 @@ class Materi extends Component
             'materi' => 'required',
             'id_mapelkelas' => 'required',
             'semester' => 'required',
-            'tahun_pelajaran' => 'required',
             'tingkatan' => 'required',
             'penilaian' => 'required',
         ]);
+        $tahun = MapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->first();
         $data = ModelsMateri::create([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
             'semester' => $this->semester,
-            'tahun_pelajaran' => $this->tahun_pelajaran,
+            'tahun_pelajaran' => $tahun->tahun,
             'tingkatan' => $this->tingkatan,
             'penilaian' => $this->penilaian
         ]) ;
@@ -62,7 +63,6 @@ class Materi extends Component
         $this->materi = '';
         $this->id_mapelkelas = '';
         $this->semester = '';
-        $this->tahun_pelajaran = '';
         $this->tingkatan = '';
         $this->penilaian = '';
     }

@@ -47,6 +47,8 @@
                           <th>Nama Mapel</th>
                           <th>Nama Guru</th>
                           <th>Kelas</th>
+                          <th>Tahun</th>
+                          <th>Aktif?</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -57,8 +59,14 @@
                           <td>{{$d->nama_pelajaran}}</td>
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
+                          <td>{{ $d->tahun }}</td>
+                          <td>@if ($d->aktif == 'y')
+                            <i class="fa-solid fa-check"></i>
+                          @else
+                          <i class="fa-solid fa-times"></i>
+                          @endif</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_mapelkelas}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            {{-- <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_mapelkelas}}")'><i class="fa-solid fa-edit"></i></i></a> --}}
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_mapelkelas}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                       </tr>
@@ -103,12 +111,27 @@
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_mapel')
+                        @error('id_kelas')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group">
+                  <div class="form-group">
+                    <label for="">Tahun</label>
+                    <select class="form-control" wire:model.live="tahun">
+                        <option value="">Pilih Tahun</option>
+                        <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('tahun')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  @if (Auth::user()->id_role != 6)
+                  <div class="form-group">
                     <label for="">Guru</label>
                     <select class="form-control" wire:model.live="id_user">
                         <option value="">Pilih Guru</option>
@@ -118,6 +141,21 @@
                     </select>
                     <div class="text-danger">
                         @error('id_user')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  @endif
+
+                  <div class="form-group mb-3">
+                    <label for="">Aktif?</label>
+                    <select class="form-control" wire:model.live="aktif">
+                        <option value="">Pilih Opsi</option>
+                        <option value="y">Ya</option>
+                        <option value="n">Tidak</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('aktif')
                             {{$message}}
                         @enderror
                     </div>
@@ -164,7 +202,21 @@
                     @endforeach
                 </select>
                 <div class="text-danger">
-                    @error('id_mapel')
+                    @error('id_kelas')
+                        {{$message}}
+                    @enderror
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="">Tahun</label>
+                <select class="form-control" wire:model.live="tahun">
+                    <option value="">Pilih Tahun</option>
+                    <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                    <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                    <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
+                </select>
+                <div class="text-danger">
+                    @error('tahun')
                         {{$message}}
                     @enderror
                 </div>
