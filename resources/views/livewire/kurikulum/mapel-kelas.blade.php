@@ -66,7 +66,7 @@
                           <i class="fa-solid fa-times"></i>
                           @endif</td>
                           <td>
-                            {{-- <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_mapelkelas}}")'><i class="fa-solid fa-edit"></i></i></a> --}}
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_mapelkelas}}")'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_mapelkelas}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                       </tr>
@@ -181,7 +181,7 @@
           <div class="modal-body">
             <div class="form-group">
                 <label for="">Mata Pelajaran</label>
-                <select class="form-control" wire:model.live="id_mapel">
+                <select class="form-control" wire:model.live="id_mapel" disabled>
                     <option value="">Pilih Mapel</option>
                     @foreach ($mapel as $m)
                         <option value="{{$m->id_mapel}}">{{$m->nama_pelajaran}}</option>
@@ -195,7 +195,7 @@
               </div>
             <div class="form-group">
                 <label for="">Kelas</label>
-                <select class="form-control" wire:model.live="id_kelas">
+                <select class="form-control" wire:model.live="id_kelas" disabled>
                     <option value="">Pilih Kelas</option>
                     @foreach ($kelas as $k)
                         <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
@@ -209,7 +209,7 @@
               </div>
               <div class="form-group">
                 <label for="">Tahun</label>
-                <select class="form-control" wire:model.live="tahun">
+                <select class="form-control" wire:model.live="tahun" disabled>
                     <option value="">Pilih Tahun</option>
                     <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
                     <option value="{{ date('Y') }}">{{ date('Y') }}</option>
@@ -223,7 +223,7 @@
               </div>
               <div class="form-group">
                 <label for="">Guru</label>
-                <select class="form-control" wire:model.live="id_user">
+                <select class="form-control" wire:model.live="id_user" disabled>
                     <option value="">Pilih Guru</option>
                     @foreach ($guru as $k)
                         <option value="{{$k->id_user}}">{{$k->nama_lengkap}}</option>
@@ -231,6 +231,19 @@
                 </select>
                 <div class="text-danger">
                     @error('id_user')
+                        {{$message}}
+                    @enderror
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="">Aktif?</label>
+                <select class="form-control" wire:model.live="aktif">
+                    <option value="">Pilih Opsi</option>
+                    <option value="y">Ya</option>
+                    <option value="n">Tidak</option>
+                </select>
+                <div class="text-danger">
+                    @error('aktif')
                         {{$message}}
                     @enderror
                 </div>
