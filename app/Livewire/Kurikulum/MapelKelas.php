@@ -21,7 +21,7 @@ class MapelKelas extends Component
     public function render()
     {
         $guru = User::leftJoin('data_user','data_user.id_user','users.id')->where('id_role',6)->get();
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->get();
+        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->where('tingkat','<','13')->get();
         $mapel = MataPelajaran::all();
         $role = Role::leftJoin('users','users.id_role','roles.id_role')->where('id', Auth::user()->id)->first();
         if($role->nama_role == 'guru'){
