@@ -25,7 +25,20 @@ class Materi extends Component
         ->where('mapel_kelas.id_user',Auth::user()->id)
         ->where('aktif', 'y')
         ->get();
-        $data  = ModelsMateri::orderBy('id_materi','desc')
+        if(Auth::user()->id_role != 6){
+            $data  = ModelsMateri::orderBy('id_materi','desc')
+            ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+            ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
+            ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
+            ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+            ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap')
+            ->where('materi', 'like','%'.$this->cari.'%')
+            ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
+            ->where('semester', 'like','%'.$this->carisemester.'%')
+            ->paginate($this->result);
+        } else {
+            $data  = ModelsMateri::orderBy('id_materi','desc')
         ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
@@ -36,6 +49,7 @@ class Materi extends Component
         ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
         ->paginate($this->result);
+        }
         return view('livewire.karyawan.materi', compact('data','mapelkelas'));
     }
     public function insert(){
