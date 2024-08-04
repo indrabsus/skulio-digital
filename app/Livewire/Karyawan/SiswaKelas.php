@@ -60,7 +60,7 @@ class SiswaKelas extends Component
                 ->orWhere('materi', 'like', '%' . $this->cari . '%');
         })
         ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('users.acc', 'y')
+        // ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
         ->paginate($this->result);
