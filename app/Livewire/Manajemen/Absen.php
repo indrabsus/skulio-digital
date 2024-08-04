@@ -33,6 +33,7 @@ class Absen extends Component
         ->leftJoin('users','users.id','=','absen.id_user')
         ->leftJoin('data_user','data_user.id_user','=','absen.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
+        ->orderBy('waktu','desc')
         ->paginate($this->result);
         return view('livewire.manajemen.absen', compact('data','role','guru','tendik'));
     }
