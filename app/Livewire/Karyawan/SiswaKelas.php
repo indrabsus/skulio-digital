@@ -44,6 +44,7 @@ class SiswaKelas extends Component
         ->where('semester', 'like', '%' . $this->carisemester . '%')
         ->where('tahun_pelajaran', 'like', '%' . $this->caritahun . '%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
+        ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
         ->paginate($this->result);
@@ -52,6 +53,7 @@ class SiswaKelas extends Component
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
+        ->leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
         ->where('data_siswa.id_kelas', $this->cari_kelas)
@@ -60,7 +62,7 @@ class SiswaKelas extends Component
                 ->orWhere('materi', 'like', '%' . $this->cari . '%');
         })
         ->where('mapel_kelas.id_user', Auth::user()->id)
-        // ->where('users.acc', 'y')
+        ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
         ->paginate($this->result);
