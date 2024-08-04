@@ -68,13 +68,16 @@ License: For each use you must have a valid license purchased only from above li
                 <div class="card">
                     <div class="card-body">
                         <div class="container">
-                            @if(session('sukses'))
-                          <div class="alert alert-success alert-dismissible">
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          <h5>Sukses!</h5>
-                          {{session('sukses')}}
-                          </div>
-                          @endif
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                            <script>
+                                @if(session('sukses'))
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'SS LAYAR INI',
+                                        text: "{{ session('sukses') }}",
+                                    });
+                                @endif
+                            </script>
                           @if(session('gagal'))
                           <div class="alert alert-danger alert-dismissible">
                               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

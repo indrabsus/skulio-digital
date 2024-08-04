@@ -95,7 +95,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <input type="text" class="form-control" name="nama_lengkap" value="{{ $nama }}" hidden>
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" value="{{ substr($username,0,10) }}" readonly>
+                                <input type="text" class="form-control" name="username" value="{{ substr($username,0,10) }}" readonly placeholder="Terisi Otomatis">
                                 <div class="text-danger">
                                     @error('username')
                                         {{$message}}
@@ -104,7 +104,7 @@ License: For each use you must have a valid license purchased only from above li
                             </div>
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">No Handphone</label>
-                                <input type="text" class="form-control" name="no_hp" autocomplete="current-password" placeholder="Masukan No Hp">
+                                <input type="text" class="form-control" name="no_hp" autocomplete="current-password" placeholder="Contoh : 08123456789">
                                 <div class="text-danger">
                                     @error('no_hp')
                                         {{$message}}

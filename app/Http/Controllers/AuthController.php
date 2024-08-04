@@ -19,7 +19,12 @@ class AuthController extends Controller
         return view('lupausername');
     }
     public function registerpage(){
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->get();
+        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+        ->where('tingkat','<','13')
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
+        ->get();
         return view('register', compact('kelas'));
     }
     public function register(Request $request){
@@ -45,7 +50,8 @@ class AuthController extends Controller
             'nis' => $request->nis,
             'id_kelas' => $request->id_kelas,
         ]);
-        return redirect()->route('loginpage')->with('sukses','Pendaftaran berhasil, silakan tunggu ACC Admin untuk login!');
+        return redirect()->route('loginpage')->with('sukses', 'Username : '.$user->username.', Password : '.$request->nis.' Silahkan tunggu ACC Admin untuk login!');
+
     }
     public function login(Request $request){
         $auth = $request->validate([
