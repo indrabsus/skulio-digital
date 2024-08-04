@@ -55,7 +55,7 @@ class NilaiSiswa extends Component
         ->leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         // ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
-        ->where('data_siswa.id_kelas', $this->cari_kelas)
+        ->where('mapel_kelas.id_mapelkelas', $this->cari_kelas)
         ->where(function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%');
         })
