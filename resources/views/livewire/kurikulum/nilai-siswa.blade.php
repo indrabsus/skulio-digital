@@ -85,8 +85,7 @@
                           <td>
                             @php
                                 $count = App\Models\Materi::leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
-                            ->where('mapel_kelas.id_kelas', $cari_kelas)
-                            ->where('mapel_kelas.id_mapel', $d->id_mapel)
+                            ->where('mapel_kelas.id_mapelkelas', $cari_kelas)
                             ->where('materi.semester', $carisemester)
                             ->where('materi.tingkatan', $caritahun)
                             ->where('materi.penilaian', 'y')
