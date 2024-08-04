@@ -27,8 +27,7 @@ class Absen extends Component
         ->leftJoin('data_user','data_user.id_user','=','users.id')
         ->get();
         $role = Role::where('id_role','<>', 1)->get();
-        $data  = ModelsAbsen::orderBy('id_absen','desc')->
-        where('nama_lengkap', 'like','%'.$this->cari.'%')
+        $data  = ModelsAbsen::where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->where('users.id_role', '6')
         ->leftJoin('users','users.id','=','absen.id_user')
         ->leftJoin('data_user','data_user.id_user','=','absen.id_user')
