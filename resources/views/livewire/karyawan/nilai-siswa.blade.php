@@ -87,7 +87,9 @@
                             ->where('materi.penilaian', 'y')
                             ->count();
                             $selesai = App\Models\Materi::leftJoin('nilai', 'nilai.id_materi', 'materi.id_materi')
-                            ->where('id_user', $d->id_user)
+                            ->leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
+                            ->where('mapel_kelas.id_mapelkelas', $d->id_mapelkelas)
+                            ->where('nilai.id_user', $d->id_user)
                             ->where('semester', $carisemester)
                             ->where('tingkatan', $caritahun)
                             ->where('materi.penilaian', 'y')
@@ -100,9 +102,11 @@
                             @php
 
     $nilai = App\Models\Materi::leftJoin('nilai', 'nilai.id_materi', 'materi.id_materi')
+    ->leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
+        ->where('mapel_kelas.id_mapelkelas', $d->id_mapelkelas)
         ->where('semester', $carisemester)
         ->where('tingkatan', $caritahun)
-        ->where('id_user', $d->id_user)
+        ->where('nilai.id_user', $d->id_user)
         ->where('materi.penilaian', 'y')
         ->sum('nilai');
          // Menghindari division by zero
