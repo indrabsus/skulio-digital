@@ -46,6 +46,7 @@ class NilaiSiswa extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%');
         })
         ->where('users.acc', 'y')
+        ->orderBy('nama_lengkap','asc')
          ->paginate($this->result);
         // dd($data);
         } else {
@@ -60,6 +61,7 @@ class NilaiSiswa extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%');
         })
         ->where('users.acc', 'y')
+        ->orderBy('nama_lengkap','asc')
          ->paginate($this->result);
 
         }

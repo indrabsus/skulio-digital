@@ -26,7 +26,7 @@ class DataSiswa extends Component
         $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->orderBy('id_siswa','desc')
+        ->orderBy('nama_lengkap','asc')
         ->where(function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('no_hp', 'like', '%' . $this->cari . '%')
@@ -38,7 +38,7 @@ class DataSiswa extends Component
             $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->orderBy('id_siswa','desc')
+        ->orderBy('nama_lengkap','asc')
         ->where(function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('no_hp', 'like', '%' . $this->cari . '%')

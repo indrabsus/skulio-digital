@@ -41,6 +41,7 @@ class NilaiSiswa extends Component
         })
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
+        ->orderBy('nama_lengkap','asc')
          ->paginate($this->result);
         // dd($data);
         } else {
@@ -56,6 +57,7 @@ class NilaiSiswa extends Component
         })
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
+        ->orderBy('nama_lengkap','asc')
          ->paginate($this->result);
 
         }

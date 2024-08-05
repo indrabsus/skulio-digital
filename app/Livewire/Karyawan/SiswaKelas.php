@@ -46,6 +46,7 @@ class SiswaKelas extends Component
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
+        ->orderBy('nama_lengkap','asc')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
         ->paginate($this->result);
         // dd($data);
@@ -64,6 +65,7 @@ class SiswaKelas extends Component
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
+        ->orderBy('nama_lengkap','asc')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
         ->paginate($this->result);
 
