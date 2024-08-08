@@ -99,7 +99,9 @@
                           <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#cabsen" wire:click="cabsen('{{ $d->id_user }}', '{{ $d->id_materi }}', '{{ $d->waktu_agenda }}' )">Hadir</a></td>
 
                           @else
-                          <td><span class="badge bg-danger">{{ $status }}</span></td>
+                          <td>
+                            {{ $d->id_absen }}
+                            <a href="" class="badge bg-danger" data-bs-toggle="modal" data-bs-target="#a_cancel" wire:click="a_cancel('{{ $d->id_user }}', '{{ $d->id_materi }}')">{{ $status }}</a></td>
 
                           @endif
                           <td>{{ $d->materi }}</td>
@@ -180,6 +182,25 @@
           </div>
         </div>
       </div>
+    {{-- Delete Modal --}}
+    <div class="modal fade" id="a_cancel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah anda yakin menghapus data ini?
+                {{ $id_user }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='a_delete()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="modal fade" id="cabsen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
@@ -227,6 +248,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#k_reset').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#a_cancel').modal('hide');
         })
       </script>
 

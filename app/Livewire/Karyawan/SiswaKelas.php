@@ -17,7 +17,7 @@ use Livewire\WithPagination;
 
 class SiswaKelas extends Component
 {
-    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda, $extra;
+    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda, $extra, $id_absen;
     use WithPagination;
     public $material = [];
     public $cari_kelas ='';
@@ -102,6 +102,16 @@ class SiswaKelas extends Component
     public function clearForm(){
         $this->nilai = '';
         $this->extra = '';
+    }
+    public function a_cancel($id, $id_materi){
+        $this->id_user = $id;
+        $this->id_materi = $id_materi;
+    }
+    public function a_delete(){
+        AbsenSiswa::where('id_user', $this->id_user)->where('id_materi', $this->id_materi)->delete();
+        session()->flash('sukses','Data berhasil dihapus');
+            $this->clearForm();
+            $this->dispatch('closeModal');
     }
     public function chapus($id){
         $this->id_nilai = $id;
