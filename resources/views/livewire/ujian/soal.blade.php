@@ -1,32 +1,30 @@
 <div>
     <div class="row">
         <div class="col-lg-3">
-            <form action="" method="get">
                 <div class="input-group input-group-sm mb-3">
                     <div class="col-6">
-                        <select name="id_kategori" class="form-control">
+                        <select name="id_kategori" class="form-control" wire:model.live="id_kategori">
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($kategori as $k)
                                 <option value="{{$k->id_kategori}}">{{$k->nama_kategori}}</option>
                             @endforeach
                         </select>
+                        {{-- {{ $id_kategori }} --}}
                   </div>
 
-                      <button class="input-group-text" id="basic-addon1">Pilih</button>
+                      <span class="input-group-text" id="basic-addon1">Pilih</span>
                     </div>
 
 
-            </form>
-
         </div>
         <div class="col-lg-3">
-            @php
+            {{-- @php
 
         $id_kategori = isset($_GET['id_kategori']) ? $_GET['id_kategori'] : null;
-@endphp
+@endphp --}}
 
-        @if ($id_kategori)
+        {{-- @if ($id_kategori)
         @php
             $kat = App\Models\KategoriSoal::where('id_kategori', $id_kategori)->first();
         @endphp
@@ -34,7 +32,7 @@
         @else
             <span class="badge bg-danger">Anda Belum Memilih Kategori</span>
 
-        @endif
+        @endif --}}
 
 
         </div>
@@ -126,6 +124,13 @@
                     </div>
                 </div>
                 <div class="form-group mb-3">
+                    <label for="kategori">Kategori</label>
+                    <input type="text" class="form-control" wire:model="id_kategori" readonly>
+                    <div class="text-danger">
+                        @error('id_kategori') {{$message}} @enderror
+                    </div>
+                </div>
+                <div class="form-group mb-3">
                     <label for="pilihan_a">Pilihan A</label>
                     <input type="text" class="form-control" wire:model="pilihan_a">
                     <div class="text-danger">
@@ -196,7 +201,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <img src="{{asset('storage/'.$gambar)}}" alt="" style="width: 100px">
+                    <img src="{{asset('storage/'.$gambar2)}}" alt="" style="width: 100px">
                 </div>
                 <div class="form-group mb-3">
                     <label for="gambar">Gambar</label>

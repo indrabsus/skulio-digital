@@ -13,7 +13,7 @@ use Intervention\Image\Facades\Image;
 
 class Soal extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_soal;
+    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2;
     public $id_kategori;
     public $gambar;
     public $soal;
@@ -28,10 +28,10 @@ class Soal extends Component
     public $cari = '';
     public $result = 10;
     use WithFileUploads;
-    public function mount()
-    {
-        $this->id_kategori = request()->query('id_kategori');
-    }
+    // public function mount()
+    // {
+    //     $this->id_kategori = request()->query('id_kategori');
+    // }
     public function render()
     {
         $kategori = ModelsKategoriSoal::where('id_user', Auth::user()->id)->get();
@@ -47,6 +47,7 @@ class Soal extends Component
         $this->validate([
         'gambar' => 'nullable|image|max:5024',
         'soal' => 'required|string',
+        'id_kategori' => 'required',
         'pilihan_a' => 'required|string',
         'pilihan_b' => 'required|string',
         'pilihan_c' => 'required|string',
@@ -110,25 +111,38 @@ class Soal extends Component
         $this->pilihan_e = $data->pilihan_e;
         $this->jawaban = $data->jawaban;
         $this->id_soal = $id;
-        $this->gambar = $data->gambar;
+        $this->gambar2 = $data->gambar;
     }
     public function update() {
-        $this->validate([
-            'gambar' => 'nullable|image|max:5024',
-            'soal' => 'required|string',
-            'pilihan_a' => 'required|string',
-            'pilihan_b' => 'required|string',
-            'pilihan_c' => 'required|string',
-            'pilihan_d' => 'required|string',
-            'pilihan_e' => 'required|string',
-            'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
-        ]);
+        if($this->gambar == null){
+            $this->validate([
+                'soal' => 'required|string',
+                'pilihan_a' => 'required|string',
+                'pilihan_b' => 'required|string',
+                'pilihan_c' => 'required|string',
+                'pilihan_d' => 'required|string',
+                'pilihan_e' => 'required|string',
+                'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
+            ]);
+        } else {
+            $this->validate([
+                'gambar' => 'nullable|image|max:5024',
+                'soal' => 'required|string',
+                'pilihan_a' => 'required|string',
+                'pilihan_b' => 'required|string',
+                'pilihan_c' => 'required|string',
+                'pilihan_d' => 'required|string',
+                'pilihan_e' => 'required|string',
+                'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
+            ]);
+        }
+
 
         $data = ModelsSoal::find($this->id_soal);
-        $imageName = $data->gambar; // default ke gambar lama
+        $imageName = $data->gambar; // Default to the existing image
 
         if ($this->gambar) {
-            // Hapus gambar lama jika ada
+            // Delete the old image if it exists
             if ($data->gambar && \Storage::disk('public')->exists($data->gambar)) {
                 \Storage::disk('public')->delete($data->gambar);
             }
@@ -143,7 +157,7 @@ class Soal extends Component
             \Storage::disk('public')->put($imageName, (string) $image);
         }
 
-        // Update data soal
+        // Update the quiz question data
         $data->update([
             'id_kategori' => $this->id_kategori,
             'soal' => $this->soal,
@@ -160,6 +174,7 @@ class Soal extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+
 
     public function c_delete($id){
         $this->id_soal = $id;
