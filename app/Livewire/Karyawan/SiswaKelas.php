@@ -17,7 +17,7 @@ use Livewire\WithPagination;
 
 class SiswaKelas extends Component
 {
-    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda, $extra, $id_absen;
+    public $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda, $extra, $id_absen;
     use WithPagination;
     public $material = [];
     public $cari_kelas ='';
@@ -25,11 +25,16 @@ class SiswaKelas extends Component
     public $caritahun ='';
     public $cari = '';
     public $result = 10;
+    public $id_materi = '';
     public function render()
     {
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user', Auth::user()->id)->get();
+        $materi = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+        ->where('mapel_kelas.id_kelas', $this->cari_kelas)
+        ->where('mapel_kelas.id_user', Auth::user()->id)
+        ->where('tahun', $this->caritahun)->get();
         if($this->cari_kelas == ''){
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
@@ -41,8 +46,7 @@ class SiswaKelas extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('materi', 'like', '%' . $this->cari . '%');
         })
-        ->where('semester', 'like', '%' . $this->carisemester . '%')
-        ->where('tahun_pelajaran', 'like', '%' . $this->caritahun . '%')
+
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
@@ -62,6 +66,8 @@ class SiswaKelas extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('materi', 'like', '%' . $this->cari . '%');
         })
+        ->where('tahun_pelajaran', 'like', '%' . $this->caritahun . '%')
+        ->where('materi.id_materi', 'like', '%' . $this->id_materi . '%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
@@ -71,7 +77,7 @@ class SiswaKelas extends Component
 
         }
 
-        return view('livewire.karyawan.siswa-kelas', compact('data','kelas'));
+        return view('livewire.karyawan.siswa-kelas', compact('data','kelas','materi'));
     }
     public function tugas($id, $id_user){
         $this->id_materi = $id;

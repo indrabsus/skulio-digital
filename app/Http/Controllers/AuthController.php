@@ -50,7 +50,7 @@ class AuthController extends Controller
             'nis' => $request->nis,
             'id_kelas' => $request->id_kelas,
         ]);
-        return redirect()->route('loginpage')->with('sukses', 'Username : '.$user->username.', Password : '.$request->nis.' Silahkan tunggu ACC Admin untuk login!');
+        return redirect()->route('loginpage')->with('ss', 'Username : '.$user->username.', Password : '.$request->nis.' Silahkan tunggu ACC Admin untuk login!');
 
     }
     public function login(Request $request){

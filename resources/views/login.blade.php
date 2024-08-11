@@ -70,10 +70,29 @@ License: For each use you must have a valid license purchased only from above li
                         <div class="container">
                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script>
-                                @if(session('sukses'))
+                                @if(session('ss'))
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'SS LAYAR INI',
+                                        text: "{{ session('ss') }}",
+                                    });
+                                @endif
+                            </script>
+                          @if(session('gagal'))
+                          <div class="alert alert-danger alert-dismissible">
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          <h5>Gagal!</h5>
+                          {{session('gagal')}}
+                          </div>
+                          @endif
+                          </div>
+                        <div class="container">
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                            <script>
+                                @if(session('sukses'))
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Sukses',
                                         text: "{{ session('sukses') }}",
                                     });
                                 @endif

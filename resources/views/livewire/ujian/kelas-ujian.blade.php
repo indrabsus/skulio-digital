@@ -45,28 +45,62 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Kategori</th>
-                          <th>Kelas</th>
-                          <th>Mapel</th>
                           <th>Jml Soal</th>
-                          <th>Token</th>
                           <th>Waktu</th>
+                          @if (Auth::user()->id_role == 8)
+                          <th>Nilai</th>
+                          <th>Ujian</th>
+                          @endif
+                          @if (Auth::user()->id_role != 8)
+                          <th>Token</th>
                           <th>Aktif</th>
                           <th>Aksi</th>
+                          @endif
+
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_kategori}}</td>
-                          <td>{{ $d->kelas }}/{{ ucwords($d->semester) }} {{ $d->tahun }}</td>
-                          <td>{{$d->nama_pelajaran}}</td>
+                          <td>{{$d->nama_kategori}} - {{ $d->nama_pelajaran }} - {{ $d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas }}</td>
                           @php
-                          $jml = DB::table('soal')->where('id_kategori', $d->id_kategori)->count();
+                          $jmlsoal = DB::table('soal')->where('id_kategori', $d->id_kategori)->count();
+                          if (Auth::user()->id_role == 8) {
+                            // Ambil skor dari database berdasarkan id_user_siswa dan id_kelassumatif
+                            $skor = App\Models\NilaiUjian::where('id_user_siswa', Auth::user()->id)
+                                        ->where('id_kelassumatif', $d->id_kelassumatif)
+                                        ->first();
+
+                            // Akses nilai_ujian atau setel ke 0 jika $skor adalah null
+                            $nilaiUjian = $skor->nilai_ujian ?? 'Belum Test';
+                        }
+
                           @endphp
-                          <td>{{ $jml }}</td>
+                          <td>{{ $jmlsoal }} Soal</td>
+                          @php
+                          if (Auth::user()->id_role == 8) {
+                            $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
+                              $jml = App\Models\LogUjian2::where('id_kelassumatif', $d->id_kelassumatif)
+                              ->where('id_user', $us->id_user)
+                              ->where('status', 'done')
+                              ->count();
+                          }
+                          @endphp
+
+                          <td>{{$d->waktu}} Menit</td>
+                          @if (Auth::user()->id_role == 8)
+                          <td>{{ $nilaiUjian }}</td>
+                          <td>
+                            @if ($jml > 0)
+                            <button disabled class="btn btn-primary btn-xs"><i class="fa-solid fa-share"></i></button>
+                            @else
+                            <a href="{{ route('token2',['id' => $d->id_kelassumatif]) }}" class="btn btn-primary btn-xs"><i class="fa-solid fa-share"></i></a>
+                            @endif
+                            </td>
+                          @endif
+                          @if (Auth::user()->id_role != 8)
                           <td>{{$d->token}}</td>
-                          <td>{{$d->waktu}}</td>
                           <td>
                           @if ($d->aktif == 'y')
                       <i class="fa fa-check" aria-hidden="true"></i>
@@ -74,10 +108,11 @@
                     <i class="fa fa-times" aria-hidden="true"></i>
                     @endif</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kategori}}")'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_kategori}}')"><i class="fa-solid fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#k_kelas" wire:click="c_kelas('{{$d->id_kategori}}')"><i class="fa-solid fa-share"></i></a>
+
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_kelassumatif}}')"><i class="fa-solid fa-trash"></i></a>
+
                           </td>
+                          @endif
                       </tr>
                   @endforeach
                   </tbody>
@@ -244,7 +279,7 @@
                   </div>
                 <div class="form-group">
                     <label for="">Kelas</label>
-                    <select wire:model.live="kelas" class="form-control" disabled>
+                    <select wire:model.live="kelas" class="form-control">
                         <option value="">Pilih Kelas</option>
                         <option value="10">10</option>
                         <option value="11">11</option>
@@ -316,8 +351,6 @@
             <div class="modal-body">
                 @php
                     $kls = App\Models\Kelas::leftJoin('jurusan', 'jurusan.id_jurusan', '=', 'kelas.id_jurusan')
-                    ->leftJoin('mapel_kelas', 'mapel_kelas.id_kelas', '=', 'kelas.id_kelas')
-                    ->where('mapel_kelas.id_user', Auth::user()->id)
                     ->where('tingkat',$kelas)->get();
                 @endphp
 

@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\KategoriSoal as ModelsKategoriSoal;
 use App\Models\MataPelajaran;
 use App\Models\Soal as ModelsSoal;
+use App\Models\SoalSumatif;
+use App\Models\Sumatif;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -13,8 +15,8 @@ use Intervention\Image\Facades\Image;
 
 class Soal extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2;
-    public $id_kategori;
+    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2, $id_sumatif;
+    public $id_kategori ='';
     public $gambar;
     public $soal;
     public $pilihan_a;
@@ -28,19 +30,19 @@ class Soal extends Component
     public $cari = '';
     public $result = 10;
     use WithFileUploads;
-    // public function mount()
-    // {
-    //     $this->id_kategori = request()->query('id_kategori');
-    // }
     public function render()
     {
         $kategori = ModelsKategoriSoal::where('id_user', Auth::user()->id)->get();
         $mapel = MataPelajaran::all();
-        $data  = ModelsSoal::leftJoin('kategori_soal','kategori_soal.id_kategori','kategori_soal.id_kategori')
+        $data  = ModelsSoal::
+        leftJoin('kategori_soal','kategori_soal.id_kategori','soal.id_kategori')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
+        ->where('id_user', Auth::user()->id)
         ->where('soal', 'like','%'.$this->cari.'%')
+        ->where('soal.id_kategori', 'like','%'.$this->id_kategori.'%')
         ->orderBy('id_soal','desc')
         ->paginate($this->result);
+        // dd($data);
         return view('livewire.ujian.soal', compact('data','mapel','kategori'));
     }
     public function insert(){
@@ -90,7 +92,6 @@ class Soal extends Component
             $this->dispatch('closeModal');
         }
 
-
     }
     public function clearForm(){
         $this->soal = '';
@@ -113,6 +114,7 @@ class Soal extends Component
         $this->id_soal = $id;
         $this->gambar2 = $data->gambar;
     }
+
     public function update() {
         if($this->gambar == null){
             $this->validate([

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Cigalert;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exam2Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FingerPrint;
@@ -85,6 +86,12 @@ Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 
 Route::group(['middleware' => ['auth']], function(){
+    // Ujian 2
+    Route::get('{id}/token2/',[Exam2Controller::class,'token'])->name('token2');
+    Route::any('cektoken2', [Exam2Controller::class,'masukUjian'])->name('cektoken2');
+    Route::get('siswa/test2', [Exam2Controller::class,'test'])->name('test2');
+    Route::get('done2',[Exam2Controller::class,'done'])->name('done2');
+    Route::any('submitTest',[Exam2Controller::class,'submitTest'])->name('submitTest');
 
     Route::get('/tambahkartu', TambahKartu::class)->name('admin.tambahkartu');
     Route::get('/tambahkartusiswa', TambahKartuSiswa::class)->name('admin.tambahkartusiswa');
@@ -101,7 +108,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('cit',[ExamController::class,'logc'])->name('cit');
 
     Route::group(['middleware' => ['test']], function(){
-        Route::get('siswa/test', [ExamController::class,'test'])->name('test');
+    Route::get('siswa/test', [ExamController::class,'test'])->name('test');
 
 
     });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Karyawan;
+namespace App\Livewire\Ujian;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
@@ -9,35 +9,36 @@ use App\Models\Setingan;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\DataSiswa as TabelSiswa;
+use App\Models\KategoriSoal;
 use App\Models\MapelKelas;
 use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class NilaiSiswa extends Component
+class NilaiSumatif extends Component
 {
-    public $id_materi, $nilai, $jenkel, $id_user, $id_nilai, $keterangan, $waktu_agenda;
+    public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda;
     use WithPagination;
     public $material = [];
-    public $id_mapelkelas ='';
+    public $cari_kelas ='';
     public $carisemester ='';
-    public $materikelas ='';
+    public $caritahun ='';
     public $cari = '';
     public $result = 10;
+    public $id_kategori = '';
     public function render()
     {
+        $kat = KategoriSoal::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
+        ->where('id_user', Auth::user()->id)->get();
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('kelas.tingkat', $this->materikelas)->get();
-        if($this->id_mapelkelas == ''){
+        ->where('mapel_kelas.id_user', Auth::user()->id)->get();
+        if($this->cari_kelas == ''){
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
         ->leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        // ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
         ->where(function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%');
         })
@@ -53,7 +54,7 @@ class NilaiSiswa extends Component
         ->leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         // ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
-        ->where('mapel_kelas.id_mapelkelas', $this->id_mapelkelas)
+        ->where('data_siswa.id_kelas', $this->cari_kelas)
         ->where(function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%');
         })
@@ -64,7 +65,7 @@ class NilaiSiswa extends Component
 
         }
 
-        return view('livewire.karyawan.nilai-siswa', compact('data','kelas'));
+        return view('livewire.ujian.nilai-sumatif', compact('data','kelas','kat'));
     }
     public function tugas($id, $id_user){
         $this->id_materi = $id;

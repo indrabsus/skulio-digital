@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Ujian;
 
+use App\Models\DataSiswa;
 use Livewire\Component;
 use App\Models\KategoriSoal as ModelsKategoriSoal;
 use App\Models\KelasSumatif;
-use App\Models\MapelKelas;
 use App\Models\MataPelajaran;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class KategoriSoal extends Component
+class KelasUjian extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_kategori, $token, $tahun, $semester, $waktu, $aktif;
+    public $id_kelassumatif, $kelas, $nama_kategori, $id_kategori, $token, $tahun, $semester, $waktu, $aktif;
     use WithPagination;
 
     public $cari = '';
@@ -20,16 +20,27 @@ class KategoriSoal extends Component
     public $result = 10;
     public function render()
     {
-        $mapel = MapelKelas::leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', '=', 'mapel_kelas.id_mapel')
-    ->where('id_user', Auth::user()->id)
-    ->distinct()
-    ->get(['mapel_kelas.id_mapel', 'mata_pelajaran.nama_pelajaran']);  // Kolom yang dibutuhkan
+        $kls = DataSiswa::where('id_user', Auth::user()->id)->first();
+        $mapel = MataPelajaran::all();
+        if(Auth::user()->id_role == 8){
+            $data  = KelasSumatif::leftJoin('kategori_soal','kategori_soal.id_kategori','kelas_sumatif.id_kategori')
+            ->leftJoin('kelas','kelas.id_kelas','kelas_sumatif.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
+            ->where('kelas.id_kelas', $kls->id_kelas)
+            ->where('nama_kategori', 'like','%'.$this->cari.'%')
+            ->paginate($this->result);
+            return view('livewire.ujian.kelas-ujian', compact('data','mapel'));
+        } else {
+            $data  = KelasSumatif::leftJoin('kategori_soal','kategori_soal.id_kategori','kelas_sumatif.id_kategori')
+            ->leftJoin('kelas','kelas.id_kelas','kelas_sumatif.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
+            ->where('nama_kategori', 'like','%'.$this->cari.'%')
+            ->paginate($this->result);
+            return view('livewire.ujian.kelas-ujian', compact('data','mapel'));
+        }
 
-        $data  = ModelsKategoriSoal::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
-        ->leftJoin('data_user','data_user.id_user','kategori_soal.id_user')
-        ->where('nama_kategori', 'like','%'.$this->cari.'%')
-        ->paginate($this->result);
-        return view('livewire.ujian.kategori-soal', compact('data','mapel'));
     }
     public function insert(){
         $this->validate([
@@ -139,10 +150,10 @@ class KategoriSoal extends Component
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
-        $this->id_kategori = $id;
+        $this->id_kelassumatif = $id;
     }
     public function delete(){
-        ModelsKategoriSoal::where('id_kategori',$this->id_kategori)->delete();
+        KelasSumatif::where('id_kelassumatif',$this->id_kelassumatif)->delete();
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');

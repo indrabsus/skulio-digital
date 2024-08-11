@@ -23,11 +23,16 @@
 
                     <div class="col-lg-12">
                         <div class="input-group input-group-sm mb-3">
-
-                                <select class="form-control" wire:model.live="cari_kelas">
-                                    <option value="">Pilih Kelas</option>
+                            <select wire:model.live="materikelas" class="form-control">
+                                <option value="">Materi Kelas</option>
+                                <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                            </select>
+                                <select class="form-control" wire:model.live="id_mapelkelas">
+                                    <option value="">Pilih Mapel</option>
                                     @foreach($kelas as $k)
-                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                    <option value="{{$k->id_mapelkelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}} - {{ $k->nama_pelajaran }}</option>
                                     @endforeach
                                 </select>
                                 <select wire:model.live="carisemester" class="form-control">
@@ -35,12 +40,7 @@
                                     <option value="ganjil">Ganjil</option>
                                     <option value="genap">Genap</option>
                                 </select>
-                                <select wire:model.live="caritahun" class="form-control">
-                                    <option value="">Pilih Tingkat</option>
-                                    <option value="x">X</option>
-                            <option value="xi">XI</option>
-                            <option value="xii">XII</option>
-                                </select>
+
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -76,14 +76,14 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{ $d->nama_pelajaran }}</td>
-                          <td>{{ strtoupper($caritahun).'/'.ucwords($carisemester) }}</td>
+                          <td>{{ strtoupper($materikelas).'/'.ucwords($carisemester) }}</td>
                           <td>
                             @php
                                 $count = App\Models\Materi::leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
-                            ->where('mapel_kelas.id_kelas', $cari_kelas)
+                            ->where('mapel_kelas.id_mapelkelas', $id_mapelkelas)
                             ->where('mapel_kelas.id_mapel', $d->id_mapel)
                             ->where('materi.semester', $carisemester)
-                            ->where('materi.tingkatan', $caritahun)
+                            ->where('materi.tingkatan', $materikelas)
                             ->where('materi.penilaian', 'y')
                             ->count();
                             $selesai = App\Models\Materi::leftJoin('nilai', 'nilai.id_materi', 'materi.id_materi')
@@ -91,7 +91,7 @@
                             ->where('mapel_kelas.id_mapelkelas', $d->id_mapelkelas)
                             ->where('nilai.id_user', $d->id_user)
                             ->where('semester', $carisemester)
-                            ->where('tingkatan', $caritahun)
+                            ->where('tingkatan', $materikelas)
                             ->where('materi.penilaian', 'y')
                             ->count();
                             @endphp
@@ -105,7 +105,7 @@
     ->leftJoin('mapel_kelas', 'materi.id_mapelkelas', 'mapel_kelas.id_mapelkelas')
         ->where('mapel_kelas.id_mapelkelas', $d->id_mapelkelas)
         ->where('semester', $carisemester)
-        ->where('tingkatan', $caritahun)
+        ->where('tingkatan', $materikelas)
         ->where('nilai.id_user', $d->id_user)
         ->where('materi.penilaian', 'y')
         ->sum('nilai');

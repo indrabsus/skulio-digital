@@ -19,22 +19,6 @@
 
         </div>
         <div class="col-lg-3">
-            {{-- @php
-
-        $id_kategori = isset($_GET['id_kategori']) ? $_GET['id_kategori'] : null;
-@endphp --}}
-
-        {{-- @if ($id_kategori)
-        @php
-            $kat = App\Models\KategoriSoal::where('id_kategori', $id_kategori)->first();
-        @endphp
-            <span class="badge bg-primary">{{$kat->nama_kategori}}</span>
-        @else
-            <span class="badge bg-danger">Anda Belum Memilih Kategori</span>
-
-        @endif --}}
-
-
         </div>
     </div>
     <div class="row">
@@ -57,11 +41,20 @@
         </div>
         <div class="col">
                 <div class="row justify-content-between mt-2">
+                    @if ($id_kategori)
                     <div class="col-lg-6">
                         <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                             Tambah
                           </button>
                     </div>
+                    @else
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add" disabled>
+                            Tambah
+                          </button>
+                    </div>
+                    @endif
+
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-3">
@@ -81,9 +74,9 @@
                @foreach ($data as $d)
                <div class="mb-3 mt-3"><strong>{{ $d->nama_kategori }} - {{ $d->nama_pelajaran }}</strong></div>
                @if ($d->gambar)
-               <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="500px" class="mb-3 mt-3">
+               <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="300px" class="mb-3 mt-3">
                @endif
-               <p>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {{$d->soal}}</p>
+               <p>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {!!$d->soal!!}</p>
                 <ol type="a">
                     <li>{{ $d->pilihan_a }} {{ $d->pilihan_a == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
                     <li>{{ $d->pilihan_b }} {{ $d->pilihan_b == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
@@ -92,7 +85,7 @@
                     <li>{{ $d->pilihan_e }} {{ $d->pilihan_e == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
                 </ol>
                 <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_soal}}")'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_soal}}')"><i class="fa-solid fa-trash"></i></a>
+                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_soal}}')"><i class="fa-solid fa-trash"></i></a>
                 <hr>
                             @endforeach
                 {{$data->links()}}
@@ -123,13 +116,7 @@
                         @error('soal') {{$message}} @enderror
                     </div>
                 </div>
-                <div class="form-group mb-3">
-                    <label for="kategori">Kategori</label>
-                    <input type="text" class="form-control" wire:model="id_kategori" readonly>
-                    <div class="text-danger">
-                        @error('id_kategori') {{$message}} @enderror
-                    </div>
-                </div>
+
                 <div class="form-group mb-3">
                     <label for="pilihan_a">Pilihan A</label>
                     <input type="text" class="form-control" wire:model="pilihan_a">
@@ -293,6 +280,10 @@
           </div>
         </div>
       </div>
+
+
+
+
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -303,7 +294,28 @@
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
         })
+        window.addEventListener('closeModal', event => {
+            $('#c_sumatif').modal('hide');
+        })
       </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const textarea = document.getElementById('soal');
+
+    textarea.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const cursorPos = textarea.selectionStart;
+            const textBefore = textarea.value.substring(0, cursorPos);
+            const textAfter = textarea.value.substring(cursorPos);
+            textarea.value = textBefore + '<br>\n' + textAfter;
+            textarea.selectionEnd = cursorPos + 5; // Position the cursor after the newline
+        }
+    });
+});
+
+        </script>
+
 
 </div>
 

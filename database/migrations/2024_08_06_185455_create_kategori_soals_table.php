@@ -17,6 +17,11 @@ return new class extends Migration
             $table->foreignUuid('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('kelas',[10,11,12]);
             $table->string('nama_kategori');
+            $table->string('token');
+            $table->enum('aktif',['y','n']);
+            $table->enum('semester',['ganjil','genap']);
+            $table->bigInteger('tahun');
+            $table->bigInteger('waktu');
             $table->timestamps();
         });
     }
