@@ -115,10 +115,10 @@
                   <div class="form-group mb-3">
                     <label for="">Tingkat</label>
                     <select class="form-control" wire:model.live="tingkatan">
-                        <option value="">Pilih Tingkat</option>
-                        <option value="x">X</option>
-                        <option value="xi">XI</option>
-                        <option value="xii">XII</option>
+                        <option value="">Materi Kelas</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
                     </select>
                     <div class="text-danger">
                         @error('tingkatan')
@@ -198,10 +198,10 @@
                   <div class="form-group mb-3">
                     <label for="">Tingkat</label>
                     <select class="form-control" wire:model.live="tingkatan">
-                        <option value="">Pilih Tingkat</option>
-                        <option value="x">X</option>
-                        <option value="xi">XI</option>
-                        <option value="xii">XII</option>
+                        <option value="">Materi Kelas</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
                     </select>
                     <div class="text-danger">
                         @error('tingkatan')
