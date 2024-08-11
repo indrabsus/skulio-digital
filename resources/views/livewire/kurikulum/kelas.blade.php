@@ -62,6 +62,7 @@
                             <td>{{$d->tahun_masuk}}</td>
                             <td>{{$d->username}}</td>
                             <td>
+                                <a href="{{ route('printkelas', ['id_kelas' => $d->id_kelas]) }}" class="btn btn-primary btn-xs"  target="_blank"><i class="fa-solid fa-print"></i></a>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kelas}}")'><i class="fa-solid fa-edit"></i></i></a>
                               <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_kelas}}')"><i class="fa-solid fa-trash"></i></a>
                             </td>

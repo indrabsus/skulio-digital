@@ -30,6 +30,10 @@ Route::get('rawlogsc',[FingerPrint::class,'rawlogsc'])->name('rawlogsc');
 Route::get('rawlog',[FingerPrint::class,'rawlog'])->name('rawlog');
 Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp');
 
+//PDF
+Route::get('/{id_kelas}/kelasprint', [PdfController::class, 'kelasprint'])->name('printkelas');
+
+
 //PPDB
 Route::get('laporanppdb',[PPDBController::class,'laporan'])->name('laporan');
 Route::get('/{id_kelas}/kelasppdbprint', [PdfController::class, 'kelasppdb'])->name('printkelasppdb');

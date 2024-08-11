@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataSiswa;
+use App\Models\Kelas;
 use App\Models\KelasPpdb;
 use App\Models\LogPpdb;
 use App\Models\LogTabungan;
@@ -81,6 +83,21 @@ class PdfController extends Controller
             $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.siswakelasppdb', compact('data','kelas','jumlahlaki','jumlahperempuan'));
          //return $pdf->download('test.pdf');
          return $pdf->stream($kelas->nama_kelas.'.pdf');
+        }
+        public function kelasprint(Request $request){
+            $data = DataSiswa::leftJoin('users','users.id','data_siswa.id_user')
+            ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->where('data_siswa.id_kelas', $request->id_kelas)
+            ->orderBy('nama_lengkap','asc')
+            ->get();
+            $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->where('id_kelas', $request->id_kelas)->first();
+            $full = $kelas->tingkat.' '.$kelas->nama_jurusan.' '.$kelas->nama_kelas;
+
+            $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.kelas', compact('data','full'));
+
+         return $pdf->stream($full.'.pdf');
         }
 }
 
