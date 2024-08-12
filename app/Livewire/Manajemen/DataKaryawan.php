@@ -106,29 +106,15 @@ class DataKaryawan extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
     }
-    public function insertUser($id_fp, $uid_fp, $nama, $password, $id_role, $card_no)
+    public function insertUser($id)
 {
-    try {
-        // Inisialisasi ZKTeco
-
+        $data = TabelDataUser::where('id_data', $id)->first();
         $zk = new ZKTeco('88.88.88.88');
-        // Coba koneksi ke perangkat
-        if ($zk->connect()) {
-            // Set user ke perangkat
-            $zk->setUser($id_fp, $uid_fp, $nama, $password, $id_role, $card_no);
-
-            // Tutup koneksi
-            $zk->disconnect();
-
-            // Redirect dengan pesan sukses
-            session()->flash('sukses','Data berhasil ditambahkan');
-        } else {
-            // Jika koneksi gagal
-            session()->flash('gagal','Data gagal ditambahkan');
-        }
-    } catch (\Exception $e) {
-        // Tangani kesalahan apapun dan kembalikan ke halaman sebelumnya
-        return session()->flash('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
-    }
+        $zk->connect();
+        $zk->setUser($data->uid_fp, $data->uid_fp, $data->nama_singkat,'',0,0);
+        $zk->disconnect();
+        session()->flash('sukses','User berhasil ditambahkan');
+        $this->clearForm();
+        $this->dispatch('closeModal');
 }
 }
