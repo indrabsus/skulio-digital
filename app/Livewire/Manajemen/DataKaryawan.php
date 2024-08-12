@@ -9,6 +9,8 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\DataUser as TabelDataUser;
 use Livewire\WithPagination;
+use App\Http\Controllers\FingerPrint;
+use Rats\Zkteco\Lib\ZKTeco;
 
 class DataKaryawan extends Component
 {
@@ -19,6 +21,7 @@ class DataKaryawan extends Component
     public $result = 10;
     public function render()
     {
+
         $role = Role::where('id_role','<>', 1)->get();
         $data  = TabelDataUser::orderBy('id_data','desc')->
         where('nama_lengkap', 'like','%'.$this->cari.'%')
@@ -102,4 +105,29 @@ class DataKaryawan extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+    public function insertUser($id_fp, $uid_fp, $nama, $password, $id_role, $card_no)
+{
+    try {
+        // Inisialisasi ZKTeco
+
+        $zk = new ZKTeco('88.88.88.88');
+        // Coba koneksi ke perangkat
+        if ($zk->connect()) {
+            // Set user ke perangkat
+            $zk->setUser($id_fp, $uid_fp, $nama, $password, $id_role, $card_no);
+
+            // Tutup koneksi
+            $zk->disconnect();
+
+            // Redirect dengan pesan sukses
+            session()->flash('sukses','Data berhasil ditambahkan');
+        } else {
+            // Jika koneksi gagal
+            session()->flash('gagal','Data gagal ditambahkan');
+        }
+    } catch (\Exception $e) {
+        // Tangani kesalahan apapun dan kembalikan ke halaman sebelumnya
+        return session()->flash('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+}
 }

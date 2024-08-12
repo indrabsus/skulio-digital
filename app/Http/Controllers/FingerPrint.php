@@ -24,5 +24,7 @@ class FingerPrint extends Controller
     public function rawlog(){
         return view('fingerprint.rawlog');
     }
+    
+
 
 }

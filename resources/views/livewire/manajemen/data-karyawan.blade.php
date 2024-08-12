@@ -65,6 +65,9 @@
                           <th>Nama Lengkap</th>
                           <th>Jenis Kelamin</th>
                           <th>Role</th>
+                          @if (Auth::user()->id_role == 1)
+                          <th>Fingerprint</th>
+                          @endif
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -84,6 +87,9 @@
                             @endif</td>
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->nama_role}}</td>
+                          @if (Auth::user()->id_role == 1)
+                          <td><button class="btn btn-primary btn-xs" wire:click='insertUser({{ $d->uid_fp }},{{ $d->uid_fp }},{{ $d->nama_singkat }},"",{{ $d->id_role }},{{ $d->uid_fp }})'><i class="fa-solid fa-share"></i></i></a></td>
+                          @endif
                           <td>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_data}}")'><i class="fa-solid fa-edit"></i></i></a>
                               @if (Auth::user()->id_role == 1)

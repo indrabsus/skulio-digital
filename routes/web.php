@@ -28,7 +28,7 @@ Route::get('user',[FingerPrint::class,'user'])->name('userfp');
 Route::get('clear',[FingerPrint::class,'clear'])->name('clear');
 Route::get('rawlogsc',[FingerPrint::class,'rawlogsc'])->name('rawlogsc');
 Route::get('rawlog',[FingerPrint::class,'rawlog'])->name('rawlog');
-Route::any('insertuser',[FingerPrint::class,'insertUser'])->name('insertuserfp');
+Route::get('insertuser/{id_fp}/{uid_fp}/{nama}/{password}/{id_role}/{card_no}',[FingerPrint::class,'insertUser'])->name('insertuserfp');
 
 //PDF
 Route::get('/{id_kelas}/kelasprint', [PdfController::class, 'kelasprint'])->name('printkelas');
