@@ -21,14 +21,15 @@ class DataKaryawan extends Component
     public $result = 10;
     public function render()
     {
-
+        $zk = new ZKTeco('88.88.88.88');
+        $konek = $zk->connect();
         $role = Role::where('id_role','<>', 1)->get();
         $data  = TabelDataUser::orderBy('id_data','desc')->
         where('nama_lengkap', 'like','%'.$this->cari.'%')
         ->leftJoin('users','users.id','=','data_user.id_user')
         ->leftJoin('roles','roles.id_role','=','users.id_role')
         ->paginate($this->result);
-        return view('livewire.manajemen.data-karyawan', compact('data','role'));
+        return view('livewire.manajemen.data-karyawan', compact('data','role','konek'));
     }
     public function insert(){
         $this->validate([

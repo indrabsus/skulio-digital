@@ -56,6 +56,7 @@
                     </form>
                 </div>
                 @endif
+                {{ $konek }}
                <div class="table-responsive">
                 <table class="table table-stripped">
                   <thead>
