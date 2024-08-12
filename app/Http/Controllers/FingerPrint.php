@@ -10,7 +10,7 @@ class FingerPrint extends Controller
     public function rawlogsc(){
         $zk = new ZKTeco('88.88.88.88');
         $zk->connect();
-        $zk->setTime(date('Y-m-d H:i:s'));
+        dd($zk->getTime());
         // $log = $zk->getAttendance();
 
         // // Fungsi untuk mengurutkan array berdasarkan kolom waktu secara descending
