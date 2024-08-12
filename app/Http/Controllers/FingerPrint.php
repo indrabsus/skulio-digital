@@ -10,15 +10,15 @@ class FingerPrint extends Controller
     public function rawlogsc(){
         $zk = new ZKTeco('88.88.88.88');
         $zk->connect();
-        dd($zk->getTime());
-        $log = $zk->getAttendance();
+        $zk->setTime(date('Y-m-d H:i:s'));
+        // $log = $zk->getAttendance();
 
-        // Fungsi untuk mengurutkan array berdasarkan kolom waktu secara descending
-        usort($log, function ($a, $b) {
-            return strtotime($b['timestamp']) - strtotime($a['timestamp']);
-        });
+        // // Fungsi untuk mengurutkan array berdasarkan kolom waktu secara descending
+        // usort($log, function ($a, $b) {
+        //     return strtotime($b['timestamp']) - strtotime($a['timestamp']);
+        // });
 
-        return view('fingerprint.rawlogsc', compact('log'));
+        // return view('fingerprint.rawlogsc', compact('log'));
     }
 
     public function rawlog(){
