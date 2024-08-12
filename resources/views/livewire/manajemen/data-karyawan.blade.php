@@ -89,7 +89,7 @@
                           <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                           <td>{{$d->nama_role}}</td>
                           @if (Auth::user()->id_role == 1)
-                          <td><a href="" class="btn btn-primary btn-xs" wire:click='insertUser("{{$d->id_data}}")'><i class="fa-solid fa-share"></i></i></a></td>
+                          <td><button class="btn btn-primary btn-xs" wire:click='insertUser("{{$d->id_data}}")'><i class="fa-solid fa-share"></i></i></a></td>
                           @endif
                           <td>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_data}}")'><i class="fa-solid fa-edit"></i></i></a>
