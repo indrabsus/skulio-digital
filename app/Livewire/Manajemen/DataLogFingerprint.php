@@ -24,7 +24,7 @@ class DataLogFingerprint extends Component
         $konek = $zk->connect();
         $data = $zk->getAttendance();
 
-        return view('livewire.manajemen.absen', compact('data'));
+        return view('livewire.manajemen.data-log-fingerprint', compact('data'));
     }
     public function tarik(){
         $zk = new ZKTeco('192.168.30.33');
