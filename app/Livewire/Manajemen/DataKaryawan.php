@@ -117,4 +117,5 @@ class DataKaryawan extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
 }
+
 }

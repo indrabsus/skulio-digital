@@ -22,7 +22,9 @@ class FingerPrint extends Controller
     }
 
     public function rawlog(){
-        return view('fingerprint.rawlog');
+        $zk = new ZKTeco('88.88.88.88');
+        $zk->connect();
+        dd($zk->getAttendance());
     }
     public function insertUser($id_fp, $uid_fp, $nama, $password, $id_role, $card_no)
 {
