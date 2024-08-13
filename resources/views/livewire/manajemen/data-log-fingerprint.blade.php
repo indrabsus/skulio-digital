@@ -54,7 +54,7 @@
                       <tr>
                           <td>{{$z['uid']}}</td>
                           <td>{{$z['state']}}</td>
-                          <td>{{$z['waktu']}}</td>
+                          <td>{{$z['timestamp']}}</td>
 
                       </tr>
                   @endforeach
