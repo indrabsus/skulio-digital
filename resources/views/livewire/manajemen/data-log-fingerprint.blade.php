@@ -45,15 +45,22 @@
                   <thead>
                       <tr>
                           <th>UID</th>
-                          <th>State</th>
+                          <th>Nama</th>
+                          <th>Role</th>
                           <th>Waktu</th>
                       </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $d => $z)
+                  @php
+                      $x = App\Models\DataUser::leftJoin('users','users.id','data_user.id_user')
+                      ->leftJoin('roles','roles.id_role','users.id_role')
+                      ->where('uid_fp', $z['uid'])->first();
+                  @endphp
                       <tr>
                           <td>{{$z['uid']}}</td>
-                          <td>{{$z['state']}}</td>
+                          <td>{{$x->nama_lengkap ?? ''}}</td>
+                          <td>{{$x->nama_role ?? ''}}</td>
                           <td>{{$z['timestamp']}}</td>
 
                       </tr>
@@ -65,6 +72,6 @@
     </div>
 
 
-   
+
 </div>
 
