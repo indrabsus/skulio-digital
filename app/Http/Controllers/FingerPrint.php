@@ -8,7 +8,7 @@ use Rats\Zkteco\Lib\ZKTeco;
 class FingerPrint extends Controller
 {
     public function rawlogsc(){
-        $zk = new ZKTeco('88.88.88.88');
+        $zk = new ZKTeco('192.168.107.99');
         $zk->connect();
         dd($zk->getUser());
         // $log = $zk->getAttendance();
@@ -22,7 +22,7 @@ class FingerPrint extends Controller
     }
 
     public function rawlog(){
-        $zk = new ZKTeco('88.88.88.88');
+        $zk = new ZKTeco('192.168.107.99');
         $zk->connect();
         dd($zk->getAttendance());
     }
@@ -30,7 +30,7 @@ class FingerPrint extends Controller
 {
     try {
         // Inisialisasi ZKTeco
-        $zk = new ZKTeco('88.88.88.88');
+        $zk = new ZKTeco('192.168.107.99');
 
         // Coba koneksi ke perangkat
         if ($zk->connect()) {

@@ -20,7 +20,7 @@ class DataLogFingerprint extends Component
     public $result = 10;
     public function render()
     {
-        $zk = new ZKTeco('88.88.88.88');
+        $zk = new ZKTeco('192.168.107.99');
         $konek = $zk->connect();
         $data = $zk->getAttendance();
 
