@@ -47,6 +47,7 @@
                           <th>Observer</th>
                           <th>Waktu PKL</th>
                           <th>Tahun Ajaran</th>
+                          <th>Tempat</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -61,6 +62,7 @@
                           <td>{{$d->nama_observer}}</td>
                           <td>{{ date('d F Y', strtotime($d->waktu_mulai)) }} - {{ date('d F Y', strtotime($d->waktu_selesai)) }}</td>
                           <td>{{$d->tahun}}</td>
+                          <td>{{$d->tempat_pkl}}</td>
                           <td> <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pkl}}')"><i class="fa-solid fa-trash"></i></a></td>
                       </tr>
                   @endforeach

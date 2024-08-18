@@ -6,7 +6,6 @@ use App\Models\Kelas;
 use App\Models\Angkatan;
 use App\Models\Jurusan;
 use Livewire\Component;
-use App\Models\DataPeminjam as TabelDataPeminjam;
 use App\Models\DataPkl;
 use App\Models\DataSiswa;
 use App\Models\DataUser;
@@ -21,7 +20,8 @@ class ProsesPkl extends Component
     public $result = 10;
     public function render()
     {
-        $guru = DataUser::leftJoin('users','users.id','data_user.id_user')->where('id_role', 6)->get();
+        $guru = DataUser::leftJoin('users','users.id','data_user.id_user')
+        ->where('id_role', 6)->get();
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
         $angkatan = Angkatan::all();
@@ -30,19 +30,21 @@ class ProsesPkl extends Component
     ->leftJoin('jurusan', 'jurusan.id_jurusan', 'kelas.id_jurusan')
     ->leftJoin('data_user as pembimbing', 'pembimbing.id_data', 'data_pkl.id_pembimbing')
     ->leftJoin('data_user as observer', 'observer.id_data', 'data_pkl.id_observer')
+    ->leftJoin('tempat_pkl', 'tempat_pkl.id_tempat', 'data_pkl.id_tempat')
     ->select(
         'data_siswa.nama_lengkap as nama_siswa',
         'observer.nama_lengkap as nama_observer',
         'pembimbing.nama_lengkap as nama_pembimbing',
         'data_pkl.tahun', 'data_pkl.waktu_mulai', 'data_pkl.waktu_selesai',
-        'kelas.tingkat', 'jurusan.singkatan', 'kelas.nama_kelas', 'data_siswa.no_hp','id_pkl'
+        'kelas.tingkat', 'jurusan.singkatan', 'kelas.nama_kelas', 'data_siswa.no_hp','id_pkl', 'tempat_pkl'
     )
     ->where(function ($query) {
         $query->where('data_siswa.nama_lengkap', 'like', '%' . $this->cari . '%')
               ->orWhere('observer.nama_lengkap', 'like', '%' . $this->cari . '%')
-              ->orWhere('pembimbing.nama_lengkap', 'like', '%' . $this->cari . '%');
+              ->orWhere('pembimbing.nama_lengkap', 'like', '%' . $this->cari . '%')
+              ->orWhere('tempat_pkl', 'like', '%' . $this->cari . '%');
     })
-    ->orderBy('data_siswa.id_siswa', 'desc')
+    ->orderBy('data_pkl.created_at', 'desc')
     ->paginate($this->result);
 
 

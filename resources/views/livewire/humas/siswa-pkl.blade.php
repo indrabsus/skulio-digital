@@ -130,6 +130,20 @@
                         @enderror
                     </div>
                   </div>
+                  <div class="form-group mt-3">
+                    <label for="">Tempat PKL</label>
+                    <select wire:model.live='id_tempat' class="form-control">
+                        <option value="">Pilih Perusahaan</option>
+                        @foreach ($tempat as $t)
+                            <option value="{{ $t->id_tempat }}">{{ $t->tempat_pkl }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('id_tempat')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-lg">
                         <div class="form-group mt-3">
@@ -154,6 +168,7 @@
                           </div>
                     </div>
                   </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

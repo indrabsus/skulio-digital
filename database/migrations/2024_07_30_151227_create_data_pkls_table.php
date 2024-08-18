@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('id_siswa')->references('id_siswa')->on('data_siswa')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('id_pembimbing')->references('id_data')->on('data_user')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('id_observer')->references('id_data')->on('data_user')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('id_tempat')->references('id_tempat')->on('tempat_pkl')->onUpdate('cascade')->onDelete('cascade');
             $table->date('waktu_mulai');
             $table->date('waktu_selesai');
             $table->bigInteger('tahun');
