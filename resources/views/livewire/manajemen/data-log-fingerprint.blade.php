@@ -89,6 +89,19 @@
       </div>
     </div>
   </div>
-
+  <script>
+    window.addEventListener('closeModal', event => {
+        $('#tarik').modal('hide');
+    })
+    window.addEventListener('closeModal', event => {
+        $('#izin').modal('hide');
+    })
+    window.addEventListener('closeModal', event => {
+        $('#k_hapus').modal('hide');
+    })
+    window.addEventListener('closeModal', event => {
+        $('#k_reset').modal('hide');
+    })
+  </script>
 </div>
 
