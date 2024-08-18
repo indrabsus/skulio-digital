@@ -18,7 +18,7 @@ use Str;
 
 class DataSiswaSpp extends Component
 {
-    public $id_siswa, $nominal, $tahun, $nama_lengkap, $kelas, $keterangan, $bulan, $tingkat, $status;
+    public $id_siswa, $nominal, $tahun, $nama_lengkap, $kelas, $keterangan, $bulan, $tingkat, $status, $bayar;
     public $bebas = false;
     use WithPagination;
     public $cari = '';
@@ -96,8 +96,10 @@ class DataSiswaSpp extends Component
         $this->bulan = '';
         $this->kelas = '';
         $this->keterangan = '';
+        $this->bayar = '';
     }
-    public function bayar($id){
+    public function c_bayar($id){
+        // dd($id);
         $data = DataSiswa::leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
         ->where('id_siswa', $id)->first();
         $spp = MasterSpp::where('kelas', $data->tingkat)->first();
@@ -106,12 +108,14 @@ class DataSiswaSpp extends Component
         $this->nama_lengkap = $data->nama_lengkap;
         $this->kelas = $spp->kelas;
         $this->nominal = $spp->nominal;
+        $this->bayar = $spp->bayar;
     }
     public function bayarspp(){
         $this->validate([
             'kelas' => 'required',
             'nominal' => 'required',
             'bulan' => 'required',
+            'bayar' => 'required',
         ]);
         $count = LogSpp::where('id_siswa', $this->id_siswa)
         ->where('bulan', $this->bulan)
@@ -137,7 +141,8 @@ class DataSiswaSpp extends Component
                     'kelas' => $this->kelas,
                     'bulan' => $this->bulan,
                     'keterangan' => $this->kelas.'/'.$bln->bulan,
-                    'status' => 'lunas'
+                    'status' => 'lunas',
+                    'bayar' => $this->bayar
                 ]);
                 session()->flash('sukses','Data berhasil ditambahkan');
                 $this->clearForm();
@@ -150,7 +155,8 @@ class DataSiswaSpp extends Component
                         'kelas' => $this->kelas,
                         'bulan' => $this->bulan,
                         'keterangan' => $this->kelas.'/'.$bln->bulan,
-                        'status' => 'lunas'
+                        'status' => 'lunas',
+                        'bayar' => $this->bayar
                     ]);
                     session()->flash('sukses','Data berhasil ditambahkan');
                     $this->clearForm();
@@ -162,7 +168,8 @@ class DataSiswaSpp extends Component
                         'kelas' => $this->kelas,
                         'bulan' => $this->bulan,
                         'keterangan' => $this->kelas.'/'.$bln->bulan,
-                        'status' => 'cicil'
+                        'status' => 'cicil',
+                        'bayar' => $this->bayar
                     ]);
                     session()->flash('sukses','Data berhasil ditambahkan');
                     $this->clearForm();

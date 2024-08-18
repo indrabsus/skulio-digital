@@ -64,7 +64,7 @@
             <td>{{$no++}}</td>
             <td>{{$d->nama_lengkap}}</td>
             <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
-            <td>Rp. {{number_format($d->nominal,0,',','.')}}</td>
+            <td>Rp. {{number_format($d->nominal,0,',','.')}} ({{strtoupper($d->bayar)}})</td>
             <td>{{date('d F Y', strtotime($d->updated_at))}}</td>
             <td>{{$d->keterangan}}</td>
         </tr>

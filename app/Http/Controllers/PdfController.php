@@ -133,7 +133,7 @@ class PdfController extends Controller
                 ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
                 ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
                 ->where('log_spp.updated_at', 'like','%'.$request->thn.'-'.$request->bln.'%')
-                ->select('nama_lengkap','tingkat','singkatan','nama_kelas','nominal','log_spp.updated_at','keterangan')
+                ->select('nama_lengkap','tingkat','singkatan','nama_kelas','nominal','log_spp.*')
                 ->get();
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.logsppbulanan', compact('data','bln','thn'));
              //return $pdf->download('test.pdf');

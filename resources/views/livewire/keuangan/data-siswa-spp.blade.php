@@ -73,7 +73,7 @@
                       @endphp
                       <td>{{ $lunas }} Bulan</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#bayar" wire:click='bayar("{{$d->id_siswa}}")'>Bayar</a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#bayar" wire:click='c_bayar("{{$d->id_siswa}}")'>Bayar</a>
                         </td>
                       </tr>
                   @endforeach
@@ -135,6 +135,16 @@
                     <input type="number" wire:model.live="nominal" class="form-control">
                     <div class="text-danger">
                         @error('nominal')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Bayar Via : </label>
+                    <input type="radio" name="bayar" wire:model="bayar" value="trf"> Transfer
+                    <input type="radio" name="bayar" wire:model="bayar" value="csh"> Cash
+                    <div class="text-danger">
+                        @error('bayar')
                             {{$message}}
                         @enderror
                     </div>

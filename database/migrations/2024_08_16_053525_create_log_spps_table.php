@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('kelas');
             $table->string('keterangan');
             $table->enum('status',['lunas','cicil']);
+            $table->enum('bayar',['trf','csh']);
             $table->timestamps();
         });
     }
