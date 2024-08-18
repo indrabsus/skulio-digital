@@ -41,6 +41,7 @@ Route::get('/{id_kelas}/kelasppdbprint', [PdfController::class, 'kelasppdb'])->n
 
 //Excel Controller
 Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->name('absenxls');
+Route::post('importsiswa', [ExcelController::class, 'importSiswa'])->name('importsiswa');
 
 //RFID Controller
 Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->name('rfidglobal');
@@ -69,6 +70,11 @@ Route::post('/sesimesin', function(Request $request) {
 
 Route::get('printTabunganBulanan',[PdfController::class,'printTabunganBulanan'])->name('printTabunganBulanan');
 Route::get('rekapharianppdb',[PdfController::class,'rekapharianppdb'])->name('rekapharianppdb');
+
+//PDF SPP
+Route::get('/{id_logspp}/sppsiswa', [PdfController::class, 'printSppSiswa'])->name('printsppsiswa');
+Route::get('rekapharianspp',[PdfController::class,'rekapharianspp'])->name('rekapharianspp');
+Route::get('printsppbulanan',[PdfController::class,'printSppBulanan'])->name('printsppbulanan');
 
 // Wa Me
 Route::get('wame',[PPDBController::class,'wameform'])->name('wame');

@@ -6,6 +6,7 @@ use App\Models\DataSiswa;
 use App\Models\Kelas;
 use App\Models\KelasPpdb;
 use App\Models\LogPpdb;
+use App\Models\LogSpp;
 use App\Models\LogTabungan;
 use App\Models\Setingan;
 use App\Models\SiswaBaru;
@@ -99,5 +100,44 @@ class PdfController extends Controller
 
          return $pdf->stream($full.'.pdf');
         }
+        public function printSppSiswa($id){
+            $data = LogSpp::leftJoin('data_siswa','data_siswa.id_siswa','log_spp.id_siswa')
+            ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->select('log_spp.*','data_siswa.nama_lengkap','jurusan.singkatan','kelas.tingkat','kelas.nama_kelas')
+            ->where('id_logspp', $id)->first();
+            $pdf = Pdf::loadView('pdf.sppsiswa', compact('data'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream('bulan-'.$data->bulan.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
+            }
+
+            public function rekapharianspp(Request $request){
+                $date = $request->date;
+
+                $data = LogSpp::leftJoin('data_siswa','data_siswa.id_siswa','log_spp.id_siswa')
+                ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+                ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+                ->where('log_spp.created_at', 'like','%'.$request->date.'%')
+                ->select('log_spp.*','data_siswa.nama_lengkap','jurusan.singkatan','kelas.tingkat','kelas.nama_kelas')
+                ->get();
+
+                $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekapharianspp', compact('data','date'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->date.'-spp.pdf');
+            }
+            public function printSppBulanan(Request $request){
+                $bln = $request->bln;
+                $thn = $request->thn;
+
+                $data = LogSpp::leftJoin('data_siswa','data_siswa.id_siswa','log_spp.id_siswa')
+                ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+                ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+                ->where('log_spp.updated_at', 'like','%'.$request->thn.'-'.$request->bln.'%')
+                ->select('nama_lengkap','tingkat','singkatan','nama_kelas','nominal','log_spp.updated_at','keterangan')
+                ->get();
+                $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.logsppbulanan', compact('data','bln','thn'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->bln.'-'.$request->thn.'-spp.pdf');
+            }
 }
 

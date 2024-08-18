@@ -6,7 +6,6 @@ use App\Models\Kelas;
 use App\Models\Angkatan;
 use App\Models\Jurusan;
 use Livewire\Component;
-use App\Models\DataPeminjam as TabelDataPeminjam;
 use App\Models\DataPkl;
 use App\Models\DataSiswa;
 use App\Models\DataUser;

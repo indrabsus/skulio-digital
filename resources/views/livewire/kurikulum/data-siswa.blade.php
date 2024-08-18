@@ -18,6 +18,25 @@
         @endif
         </div>
         @if (Auth::user()->id_role == 1)
+        <div class="row">
+            <div class="col-lg-6">
+                <form action="{{ route('importsiswa') }}" method="post" enctype="multipart/form-data">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="form-group">
+                            <select class="form-control" name="id_kelas">
+                                <option value="">Pilih Kelas</option>
+                                @foreach($kelas as $k)
+                                <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <input type="file" class="form-control" name="file">
+                        <button class="input-group-text" id="basic-addon1" type="submit">Import Siswa</button>
+                      </div>
+                </form>
+            </div>
+        </div>
       <div class="row justify-content-between">
         <div class="col-lg-2 mb-3">
             <button class="btn btn-outline-success btn-sm" wire:click="allow()"><i class="fa-solid fa-check"></i> Allow All</button>
