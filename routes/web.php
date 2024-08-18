@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::get('deletenilai/{id}',[NilaiController::class,'hapusNilai'])->name('hapusnilai');
     Route::any('/updatepassword',[AuthController::class,'updatePassword'])->name('updatepassword');
+    Route::any('/updateprofil',[AuthController::class,'updateProfil'])->name('updateprofil');
     Route::get('/ubahpass', UbahPassword::class)->name('ubahpassword');
 
 

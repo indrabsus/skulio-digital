@@ -40,7 +40,6 @@
                     <th>Nama Siswa</th>
                     <th>Jenis Kelamin</th>
                     <th>Username</th>
-                    <th>Password</th>
                 </tr>
                 <?php $no=1; ?>
                 @foreach ($data as $d)
@@ -49,7 +48,6 @@
                     <td>{{$d->nama_lengkap}}</td>
                     <td>{{$d->jenkel == 'l' ? 'Laki-laki' : 'Perempuan'}}</td>
                     <td>{{$d->username}}</td>
-                    <td>{!! $d->nis !!}</td>
                 </tr>
                 @endforeach
             </table>

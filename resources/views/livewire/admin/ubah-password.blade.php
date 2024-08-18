@@ -1,6 +1,3 @@
-
-
-
 <div class="row">
     @if(session('sukses'))
         <div class="alert alert-success alert-dismissible">
@@ -16,7 +13,7 @@
         {{session('gagal')}}
         </div>
         @endif
-    <div class="col-lg-6">
+    <div class="col-lg-3">
    <form action="{{route('updatepassword')}}" method="post">
    <div class="form-group mb-3">
     <label for="">Password Saat Ini</label>

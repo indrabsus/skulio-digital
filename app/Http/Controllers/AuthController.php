@@ -101,4 +101,21 @@ public function updatePassword(Request $request){
 
     return redirect()->route('ubahpassword')->with('sukses', 'Pastikan akan mencatat password baru anda!');
 }
+public function updateProfil(Request $request){
+    $request->validate([
+        'nama_lengkap' => 'required',
+        'no_hp' => 'required|min:4',
+        'nis' => 'required',
+        'jenkel' => 'required',
+    ]);
+    DataSiswa::where('id_user', Auth::user()->id)->update([
+        'nama_lengkap' => ucwords($request->nama_lengkap),
+        'jenkel' => $request->jenkel,
+        'no_hp' => $request->no_hp,
+        'nis' => $request->nis,
+    ]);
+
+    return redirect()->back()->with('sukses', 'Berhasil update profil!');
+
+}
 }
