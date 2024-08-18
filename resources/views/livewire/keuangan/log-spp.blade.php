@@ -105,7 +105,9 @@
                                 <td>{{ strtoupper($d->status) }}</td>
                                 <td>{{ date('d F Y H:i', strtotime($d->created_at)) }}</td>
                                 @if (Auth::user()->id_role != 14)
-                                <td><a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete('{{$d->id_logspp}}')"><i class="fa-solid fa-trash"></i></a></td>
+                                <td>
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_logspp}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="k_delete('{{$d->id_logspp}}')"><i class="fa-solid fa-trash"></i></a></td>
                                 @endif
                             </tr>
                         @endforeach
@@ -132,12 +134,40 @@
           </div>
         </div>
       </div>
+
+      {{-- Edit Modal --}}
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="waktu-bayar">Waktu Bayar</label>
+                    <input type="datetime-local" id="waktu-bayar" wire:model="created_at" class="form-control">
+                    <div class="text-danger">
+                        @error('created_at')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script>
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
         })
         window.addEventListener('closeModal', event => {
-            $('#debit').modal('hide');
+            $('#edit').modal('hide');
         })
         window.addEventListener('closeModal', event => {
             $('kredit').modal('hide');
