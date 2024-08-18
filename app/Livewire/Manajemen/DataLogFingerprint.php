@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Absen as ModelsAbsen;
 use App\Models\Role;
 use Livewire\Component;
-use App\Models\DataUser as TabelDataUser;
+use App\Models\DataUser;
 use App\Models\User;
 use Livewire\WithPagination;
 use Rats\Zkteco\Lib\ZKTeco;
@@ -27,27 +27,80 @@ class DataLogFingerprint extends Component
         return view('livewire.manajemen.data-log-fingerprint', compact('data'));
     }
     public function tarik(){
-        $zk = new ZKTeco('192.168.30.33');
+        $zk = new ZKTeco('192.168.107.99');
         $zk->connect();
+
         foreach($zk->getAttendance() as $g => $d){
-            $hitung = ModelsAbsen::where('id_user', $d['uid'])
-            ->where('status', $d['type'])
-            ->where('waktu', 'like','%'.date('Y-m-d', strtotime($d['timestamp'])).'%')
-            ->count();
-            if( $hitung< 1){
-                ModelsAbsen::create([
-                    'id_user' => $d['uid'],
-                    'status' => $d['type'],
-                    'waktu' => $d['timestamp']
-                ]);
+            // Mendapatkan hari dalam format numerik, 6 untuk Sabtu dan 7 untuk Minggu
+            $dayOfWeek = date('N', strtotime($d['timestamp']));
+
+            // Jika hari adalah Sabtu atau Minggu, lewati iterasi ini
+            if ($dayOfWeek == 6 || $dayOfWeek == 7) {
+                continue;
             }
 
+            // Mendapatkan data user berdasarkan UID fingerprint
+            $data = DataUser::leftJoin('users', 'users.id', 'data_user.id_user')
+                ->where('data_user.uid_fp', $d['uid'])->first();
+
+            if ($data) {
+                // Memisahkan tanggal dari timestamp
+                $date = date('Y-m-d', strtotime($d['timestamp']));
+
+                // Cek apakah data absen sudah ada di database untuk tanggal tersebut
+                $hitung = ModelsAbsen::where('id_user', $data->id_user)
+                    ->where('status', $d['type'])
+                    ->whereDate('waktu', $date)
+                    ->count();
+
+                // Jika data belum ada, buat entri baru
+                if ($hitung < 1) {
+                    if ($data->id_role == 6) {
+                        // Jika id_role == 6, cek ulang apakah sudah ada data untuk hari yang sama
+                        $existingData = ModelsAbsen::where('id_user', $data->id_user)
+                            ->whereDate('waktu', $date)
+                            ->first();
+
+                        if (!$existingData) {
+                            ModelsAbsen::create([
+                                'id_user' => $data->id_user,
+                                'status' => 0,
+                                'waktu' => $d['timestamp']
+                            ]);
+                        }
+                    } else {
+                        ModelsAbsen::create([
+                            'id_user' => $data->id_user,
+                            'status' => $d['type'] == 0 ? 0 : 4,
+                            'waktu' => $d['timestamp']
+                        ]);
+                    }
+                } else {
+                    // Jika sudah ada data untuk tanggal tersebut, tambahkan data baru
+                    // hanya jika tanggalnya berubah.
+                    $existingData = ModelsAbsen::where('id_user', $data->id_user)
+                        ->where('status', $d['type'])
+                        ->whereDate('waktu', '<>', $date)
+                        ->first();
+
+                    if (!$existingData) {
+                        ModelsAbsen::create([
+                            'id_user' => $data->id_user,
+                            'status' => $d['type'] == 0 ? 0 : 4,
+                            'waktu' => $d['timestamp']
+                        ]);
+                    }
+                }
+            }
         }
-        $zk->clearAttendance();
-        session()->flash('sukses','Data berhasil ditarik');
+
+        // Hanya menghapus data kehadiran dari mesin setelah iterasi selesai
+        // $zk->clearAttendance();
+        session()->flash('sukses', 'Data berhasil ditarik');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+
     public function clearForm(){
         $this->id_role = '';
         $this->id_user = '';
