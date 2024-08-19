@@ -20,7 +20,7 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-3">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#tarik">
+                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#tarik" wire:click='tarik()'>
                             Tarik Data
                           </button>
                     </div>
