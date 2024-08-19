@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataSiswa;
 use App\Models\Kelas;
 use App\Models\Role;
+use App\Models\Setingan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,9 +37,10 @@ class AuthController extends Controller
             'id_kelas' => 'required',
             'nis' => 'required|unique:data_siswa',
         ]);
+        $pss = Setingan::where('id_setingan', 1)->first();
         $user = User::create([
             'username' => $request->username,
-            'password' => bcrypt($request->nis),
+            'password' => bcrypt($pss->default_password),
             'id_role' => 8,
             'acc' => 'n',
         ]);
@@ -50,7 +52,7 @@ class AuthController extends Controller
             'nis' => $request->nis,
             'id_kelas' => $request->id_kelas,
         ]);
-        return redirect()->route('loginpage')->with('ss', 'Username : '.$user->username.', Password : '.$request->nis.' Silahkan tunggu ACC Admin untuk login!');
+        return redirect()->route('loginpage')->with('ss', 'Username : '.$user->username.', Password : '.$pss->default_password.' Silahkan tunggu ACC Admin untuk login!');
 
     }
     public function login(Request $request){

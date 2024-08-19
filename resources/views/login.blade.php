@@ -97,13 +97,6 @@ License: For each use you must have a valid license purchased only from above li
                                     });
                                 @endif
                             </script>
-                          @if(session('gagal'))
-                          <div class="alert alert-danger alert-dismissible">
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          <h5>Gagal!</h5>
-                          {{session('gagal')}}
-                          </div>
-                          @endif
                           </div>
                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">Skulio<span>.Pro</span></a>
                             <h5 class="text-muted fw-normal mb-4">Log in to your account.</h5>
