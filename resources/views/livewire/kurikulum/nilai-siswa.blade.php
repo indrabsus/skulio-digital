@@ -42,9 +42,9 @@
                                 </select>
                                 <select wire:model.live="caritahun" class="form-control">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="x">X</option>
-                            <option value="xi">XI</option>
-                            <option value="xii">XII</option>
+                                    <option value="10">X</option>
+                            <option value="11">XI</option>
+                            <option value="12">XII</option>
                                 </select>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
