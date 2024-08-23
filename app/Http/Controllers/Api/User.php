@@ -71,11 +71,7 @@ class User extends Controller
             'nik_siswa' => 'required',
             'ibu' => 'required',
             'tempat_lahir' => 'required',
-            'jalan' => 'required',
-            'rtrw' => 'required',
-            'kelurahan' => 'required',
-            'kecamatan' => 'required',
-            'kota' => 'required',
+            'alamat' => 'required',
             'minat_jurusan1' => 'required',
             'minat_jurusan2' => 'required',
 
