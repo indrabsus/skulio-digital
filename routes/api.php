@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/login', [App\Http\Controllers\Api\User::class, 'login']);
+Route::post('/daftarppdb', [App\Http\Controllers\Api\User::class, 'daftarPpdb']);
 
 
 Route::get('/kegiatan', [App\Http\Controllers\Api\KegiatanController::class, 'viewKegiatan']);

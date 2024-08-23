@@ -20,7 +20,7 @@ use Str;
 
 class DataSiswaSpp extends Component
 {
-    public $id_siswa, $nominal, $tahun, $nama_lengkap, $kelas, $keterangan, $bulan, $tingkat, $status, $bayar;
+    public $id_siswa, $nominal, $tahun, $nama_lengkap, $kelas, $keterangan, $bulan, $tingkat, $status, $bayar, $kls;
     public $bebas = false;
     use WithPagination;
     public $cari = '';

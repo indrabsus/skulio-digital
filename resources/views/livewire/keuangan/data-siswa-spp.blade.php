@@ -85,7 +85,7 @@
     </div>
 
 
-    {{-- Edit Modal --}}
+    {{-- Bayar Modal --}}
     <div class="modal fade" id="bayar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
@@ -123,7 +123,16 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="">Kelas</label>
-                    <input type="number" wire:model.live="kelas" class="form-control">
+                    @php
+                        $kls = App\Models\MasterSpp::all();
+                        // dd($kls);
+                    @endphp
+                    <select wire:model="kelas" class="form-control">
+                        <option value="">Pilih Kelas</option>
+                        @foreach ($kls as $k)
+                            <option value="{{ $k->kelas }}">{{ $k->kelas }}</option>
+                        @endforeach
+                    </select>
                     <div class="text-danger">
                         @error('kelas')
                             {{$message}}
