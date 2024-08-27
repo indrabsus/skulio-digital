@@ -24,6 +24,7 @@ class Materi extends Component
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->where('mapel_kelas.id_user',Auth::user()->id)
         ->where('aktif', 'y')
+        ->where('kelas.tingkat', $this->tingkatan)
         ->get();
         if(Auth::user()->id_role != 6){
             $data  = ModelsMateri::orderBy('id_materi','desc')

@@ -1,5 +1,35 @@
 <div>
     <div class="row">
+        <div class="col-lg-4">
+            <form action="{{ route('agendaguru') }}" method="post">
+                <div class="input-group input-group-sm mb-3">
+                    {{-- <select wire:model.live="printTahun" class="form-control">
+                        <option value="">Pilih Tahun</option>
+                        <option value="{{ date('Y') -1}}">{{ date('Y') -1 }}</option>
+                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                    </select> --}}
+                        <select class="form-control" name="bulantahun">
+                            <option value="">Pilih Bulan</option>
+                            <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-04">April {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-05">Mei {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-06">Juni {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-07">Juli {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-08">Agustus {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-09">September {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-10">Oktober {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
+                            <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
+                        </select>
+                        <button class="input-group-text" id="basic-addon1" type="submit">Print</button>
+                      </div>
+                    </form>
+        </div>
+    </div>
+    <div class="row">
 
         <div class="container">
           @if(session('sukses'))

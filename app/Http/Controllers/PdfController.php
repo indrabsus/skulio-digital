@@ -8,6 +8,7 @@ use App\Models\KelasPpdb;
 use App\Models\LogPpdb;
 use App\Models\LogSpp;
 use App\Models\LogTabungan;
+use App\Models\Materi;
 use App\Models\Setingan;
 use App\Models\SiswaBaru;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -138,6 +139,22 @@ class PdfController extends Controller
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.logsppbulanan', compact('data','bln','thn'));
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->bln.'-'.$request->thn.'-spp.pdf');
+            }
+
+            public function agendaGuru(Request $request){
+                $date = $request->bulantahun;
+                $data = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
+                ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
+                ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
+                ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+                ->orderBy('materi.created_at','desc')
+                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap')
+                ->where('materi.created_at', 'like','%'.$request->bulantahun.'%')
+                ->get();
+                $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.agendaguru', compact('data','date'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->bulantahun.'-spp.pdf');
             }
 }
 
