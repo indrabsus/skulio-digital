@@ -95,7 +95,7 @@ class DataLogFingerprint extends Component
         }
 
         // Hanya menghapus data kehadiran dari mesin setelah iterasi selesai
-        // $zk->clearAttendance();
+        $zk->clearAttendance();
         session()->flash('sukses', 'Data berhasil ditarik');
         $this->clearForm();
         $this->dispatch('closeModal');
