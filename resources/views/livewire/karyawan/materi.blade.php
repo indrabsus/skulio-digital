@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-lg-4">
-            <form action="{{ route('agendaguru') }}" method="post">
+            <form action="{{ route('agendaguru') }}" method="post" target="_blank">
                 <div class="input-group input-group-sm mb-3">
                     {{-- <select wire:model.live="printTahun" class="form-control">
                         <option value="">Pilih Tahun</option>
@@ -49,11 +49,20 @@
         </div>
         <div class="col">
                 <div class="row justify-content-between mt-2">
+
+                    @if (Auth::user()->id_role == 5)
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#addagenda">
+                            Tambah Agenda
+                          </button>
+                    </div>
+                    @else
                     <div class="col-lg-6">
                         <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
                             Tambah
                           </button>
                     </div>
+                    @endif
                     <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
                             <select wire:model.live="carisemester" class="form-control">
@@ -92,6 +101,7 @@
                           <th>Tahun/Semester</th>
                           <th>Tanggal</th>
                           <th>Penilaian</th>
+                          <th>Keterangan</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -111,8 +121,25 @@
                           <i class="fa-solid fa-times"></i>
                           @endif</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
+                            @if ($d->keterangan == 1)
+                            Hadir
+                            @elseif($d->keterangan == 2)
+                            Tidak Hadir (Penugasan)
+                            @elseif($d->keterangan == 3)
+                            Tidak Hadir (Tanpa Keterangan)
+                            @else
+                            Belum dikonfirmasi
+                            @endif
+                          </td>
+                          <td>
+
+                                @if(Auth::user()->id_role != 5)
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
+                                 @else
+                                    <button href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_materi}}")' {{ $d->keterangan ? 'disabled' : '' }}>Konfirmasi</button>
+
+@endif
                           </td>
                       </tr>
                   @endforeach
@@ -124,7 +151,57 @@
     </div>
 
 
-    {{-- Add Modal --}}
+    @if (Auth::user()->id_role == 5)
+{{-- Add Modal --}}
+<div class="modal fade" id="addagenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="form-group mb-3">
+                <label for="">Semester</label>
+                <select wire:model.live="semester" class="form-control">
+                    <option value="">Pilih Semester</option>
+                    <option value="ganjil">Ganjil</option>
+                    <option value="genap">Genap</option>
+                </select>
+                <div class="text-danger">
+                    @error('semester')
+                        {{$message}}
+                    @enderror
+                </div>
+              </div>
+
+            <div class="form-group mb-3">
+                <label for="">Mapel Kelas</label>
+                <select wire:model.live="id_mapelkelas" class="form-control">
+                    <option value="">Pilih Opsi</option>
+                    @foreach ($mapelv as $mv)
+                        <option value="{{ $mv->id_mapelkelas }}">{{ $mv->nama_lengkap }} : {{ $mv->nama_pelajaran }} - {{ $mv->tingkat.' '.$mv->singkatan.' '.$mv->nama_kelas.' - '.$mv->tahun }}</option>
+                    @endforeach
+                </select>
+                <div class="text-danger">
+                    @error('id_mapelkelas')
+                        {{$message}}
+                    @enderror
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" wire:click='insertagenda()'>Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    @endif
+
+
+      {{-- Add Modal --}}
     <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
           <div class="modal-content">
@@ -205,7 +282,6 @@
           </div>
         </div>
       </div>
-
 
     {{-- Edit Modal --}}
     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
@@ -319,6 +395,38 @@
           </div>
         </div>
       </div>
+
+
+    <div class="modal fade" id="konf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="">Keterangan Pembelajaran</label>
+                    <select class="form-control" wire:model.live="konfirmasi">
+                        <option value="">Pilih Opsi</option>
+                        <option value="1">Hadir</option>
+                        <option value="2">Tidak hadir (Penugasan)</option>
+                        <option value="3">Tidak hadir Tanpa Keterangan</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('konfirmasi')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='verify()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -328,6 +436,12 @@
         })
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#konf').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#addagenda').modal('hide');
         })
       </script>
 

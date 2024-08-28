@@ -149,7 +149,7 @@ class PdfController extends Controller
                 ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
                 ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
                 ->orderBy('materi.created_at','desc')
-                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap')
+                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
                 ->where('materi.created_at', 'like','%'.$request->bulantahun.'%')
                 ->get();
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.agendaguru', compact('data','date'));

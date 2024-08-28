@@ -67,9 +67,11 @@
                     <th>No</th>
                     <th>Materi</th>
                     <th>Guru</th>
+                    <th>Mapel</th>
                     <th>Kelas</th>
                     <th>Tahun/Semester</th>
                     <th>Tanggal</th>
+                    <th>Keterangan</th>
                 </tr>
                 <?php $no=1; ?>
                 @foreach ($data as $d)
@@ -77,19 +79,25 @@
                     <td>{{$no++}}</td>
                     <td>{{$d->materi}}</td>
                     <td>{{ $d->nama_lengkap }}</td>
+                    <td>{{$d->nama_pelajaran}}</td>
                     <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                     <td>{{ $d->tingkatan }} {{ $d->tahun_pelajaran }}/{{ $d->semester }}</td>
                     <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
+
+                      <td>
+                        @if ($d->keterangan == 1)
+                        Hadir
+                        @elseif($d->keterangan == 2)
+                        Tidak Hadir (Penugasan)
+                        @elseif($d->keterangan == 3)
+                        Tidak Hadir (Tanpa Keterangan)
+                        @else
+                        Belum dikonfirmasi
+                        @endif
+                      </td>
                 </tr>
                 @endforeach
             </table>
-            {{-- <div class="test">
-                <hr>
-                <h5>Total Uang Pendaftaran : Rp. {{ number_format($daftar,0,',','.') }}</h5>
-                <h5>Total Uang PPDB : Rp. {{ number_format($ppdb,0,',','.') }}</h5>
-                <hr>
-                <h5>Total Semua : Rp. {{ number_format($ppdb+$daftar,0,',','.') }}</h5>
-            </div> --}}
 
         </div>
 
