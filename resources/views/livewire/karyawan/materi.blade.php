@@ -1,5 +1,6 @@
 <div>
     <div class="row">
+        @if (Auth::user()->id_role == 1)
         <div class="col-lg-4">
             <form action="{{ route('agendaguru') }}" method="post" target="_blank">
                 <div class="input-group input-group-sm mb-3">
@@ -28,6 +29,7 @@
                       </div>
                     </form>
         </div>
+        @endif
     </div>
     <div class="row">
 
