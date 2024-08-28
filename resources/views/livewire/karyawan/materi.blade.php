@@ -101,7 +101,9 @@
                           <th>Tahun/Semester</th>
                           <th>Tanggal</th>
                           <th>Penilaian</th>
+                          @if (Auth::user()->id_role == 1)
                           <th>Keterangan</th>
+                          @endif
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -120,6 +122,7 @@
                           @else
                           <i class="fa-solid fa-times"></i>
                           @endif</td>
+                          @if (Auth::user()->id_role == 1)
                           <td>
                             @if ($d->keterangan == 1)
                             Hadir
@@ -131,6 +134,7 @@
                             Belum dikonfirmasi
                             @endif
                           </td>
+                          @endif
                           <td>
 
                                 @if(Auth::user()->id_role != 5)
