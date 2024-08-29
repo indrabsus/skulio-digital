@@ -73,7 +73,7 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
-        ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
+        ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap')
         ->where('materi', 'like','%'.$this->cari.'%')
         ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
