@@ -164,12 +164,11 @@ class PdfController extends Controller
                 ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
                 ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
                 ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
-                ->orderBy('materi.created_at','desc')
-                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
-                ->where('materi.created_at', 'like','%'.$request->date.'%')
                 ->orderBy('kelas.tingkat','asc')
                 ->orderBy('kelas.id_jurusan','asc')
                 ->orderBy('kelas.nama_kelas','asc')
+                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
+                ->where('materi.created_at', 'like','%'.$request->date.'%')
                 ->get();
 
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.rekapharianagenda', compact('data','date'));
