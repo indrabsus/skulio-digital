@@ -172,7 +172,7 @@ class PdfController extends Controller
                 ->orderBy('kelas.nama_kelas','asc')
                 ->get();
 
-                $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekapharianagenda', compact('data','date'));
+                $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.rekapharianagenda', compact('data','date'));
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->date.'-agenda-harian.pdf');
             }
