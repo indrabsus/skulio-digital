@@ -156,5 +156,25 @@ class PdfController extends Controller
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->bulantahun.'-spp.pdf');
             }
+
+            public function rekapharianagenda(Request $request){
+                $date = $request->date;
+                $data = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
+                ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
+                ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
+                ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+                ->orderBy('materi.created_at','desc')
+                ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
+                ->where('materi.created_at', 'like','%'.$request->date.'%')
+                ->orderBy('kelas.tingkat','asc')
+                ->orderBy('kelas.id_jurusan','asc')
+                ->orderBy('kelas.nama_kelas','asc')
+                ->get();
+
+                $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekapharianagenda', compact('data','date'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->date.'-agenda-harian.pdf');
+            }
 }
 

@@ -1,15 +1,12 @@
 <div>
     <div class="row">
         @if (Auth::user()->id_role == 1)
+
         <div class="col-lg-4">
             <form action="{{ route('agendaguru') }}" method="post" target="_blank">
                 <div class="input-group input-group-sm mb-3">
-                    {{-- <select wire:model.live="printTahun" class="form-control">
-                        <option value="">Pilih Tahun</option>
-                        <option value="{{ date('Y') -1}}">{{ date('Y') -1 }}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
-                    </select> --}}
+                    <div class="col-8">
+                    </div>
                         <select class="form-control" name="bulantahun">
                             <option value="">Pilih Bulan</option>
                             <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
@@ -28,6 +25,16 @@
                         <button class="input-group-text" id="basic-addon1" type="submit">Print</button>
                       </div>
                     </form>
+        </div>
+        <div class="col">
+            <form action="{{ route('rekapharianagenda') }}" method="post" target="_blank">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="col-3">
+                        <input type="date" class="form-control" name="date">
+                  </div>
+                     <button class="input-group-text" id="basic-addon1">Print</button>
+                    </div>
+            </form>
         </div>
         @endif
     </div>

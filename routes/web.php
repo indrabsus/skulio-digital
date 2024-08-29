@@ -74,6 +74,7 @@ Route::get('rekapharianppdb',[PdfController::class,'rekapharianppdb'])->name('re
 //PDF SPP
 Route::get('/{id_logspp}/sppsiswa', [PdfController::class, 'printSppSiswa'])->name('printsppsiswa');
 Route::get('rekapharianspp',[PdfController::class,'rekapharianspp'])->name('rekapharianspp');
+Route::any('rekapharianagenda',[PdfController::class,'rekapharianagenda'])->name('rekapharianagenda');
 Route::get('printsppbulanan',[PdfController::class,'printSppBulanan'])->name('printsppbulanan');
 Route::any('agendaguru',[PdfController::class,'agendaguru'])->name('agendaguru');
 
