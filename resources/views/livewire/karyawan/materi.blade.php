@@ -97,7 +97,9 @@
                       <tr>
                           <th>No</th>
                           <th>Materi</th>
+                          @if (Auth::user()->id_role != 6)
                           <th>Nama Guru</th>
+                          @endif
                           <th>Kelas</th>
                           <th>Mapel</th>
                           <th>Tahun/Semester</th>
@@ -114,7 +116,9 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->materi}}</td>
+                          @if (Auth::user()->id_role != 6)
                           <td>{{ $d->nama_lengkap }}</td>
+                          @endif
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{$d->nama_pelajaran}}</td>
                           <td>{{ strtoupper($d->tingkatan).' '.$d->tahun.'/'.$d->semester }}</td>

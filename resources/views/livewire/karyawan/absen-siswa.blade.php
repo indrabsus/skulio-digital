@@ -84,7 +84,7 @@
                               ->where('absen_siswa.id_user',$d->id_user)
                               ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',1)
+                              ->where('absen_siswa.keterangan',1)
                               ->count();
                               $sakit = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
@@ -92,7 +92,7 @@
                               ->where('absen_siswa.id_user',$d->id_user)
                               ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',2)
+                              ->where('absen_siswa.keterangan',2)
                               ->count();
                               $izin = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
@@ -100,7 +100,7 @@
                               ->where('absen_siswa.id_user',$d->id_user)
                               ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',3)
+                              ->where('absen_siswa.keterangan',3)
                               ->count();
                               $alfa = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
@@ -108,7 +108,7 @@
                               ->where('absen_siswa.id_user',$d->id_user)
                               ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',4)
+                              ->where('absen_siswa.keterangan',4)
                               ->count();
                               $dispen = App\Models\AbsenSiswa::leftJoin('materi','materi.id_materi','absen_siswa.id_materi')
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
@@ -116,7 +116,7 @@
                               ->where('absen_siswa.id_user',$d->id_user)
                               ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
-                              ->where('keterangan',5)
+                              ->where('absen_siswa.keterangan',5)
                               ->count();
                           @endphp
                           <td>
