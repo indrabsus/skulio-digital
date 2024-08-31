@@ -55,7 +55,7 @@ class SiswaKelas extends Component
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
         ->orderBy('nama_lengkap','asc')
-        ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
+        ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user','penilaian')
         ->paginate($this->result);
         // dd($data);
         } else {
@@ -76,7 +76,7 @@ class SiswaKelas extends Component
         ->where('users.acc', 'y')
         ->whereNotNull('materi.id_materi')
         ->orderBy('nama_lengkap','asc')
-        ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user')
+        ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user','penilaian')
         ->paginate($this->result);
 
         }
