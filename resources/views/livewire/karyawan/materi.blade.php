@@ -111,7 +111,9 @@
                           <th>Mapel</th>
                           <th>Tahun/Semester</th>
                           <th>Tanggal</th>
+                          @if (Auth::user()->id_role != 5)
                           <th>Penilaian</th>
+                          @endif
                           @if (Auth::user()->id_role == 1)
                           <th>Keterangan</th>
                           @endif
@@ -130,11 +132,13 @@
                           <td>{{$d->nama_pelajaran}}</td>
                           <td>{{ strtoupper($d->tingkatan).' '.$d->tahun.'/'.$d->semester }}</td>
                           <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
+                          @if (Auth::user()->id_role != 5)
                           <td>@if ($d->penilaian == 'y')
                             <i class="fa-solid fa-check"></i>
                           @else
                           <i class="fa-solid fa-times"></i>
                           @endif</td>
+                          @endif
                           @if (Auth::user()->id_role == 1)
                           <td>
                             @if ($d->keterangan == 1)
