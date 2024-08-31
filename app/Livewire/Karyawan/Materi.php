@@ -102,19 +102,30 @@ class Materi extends Component
         }
 
         $tahun = MapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->first();
+        $hitung = ModelsMateri::where('id_mapelkelas', $this->id_mapelkelas)
+        ->whereDate('created_at', now()->format('Y-m-d'))
+        ->count();
+        if($hitung > 0){
+            session()->flash('gagal','Data Ganda');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+        } else {
+            $data = ModelsMateri::create([
+                'materi' => $this->materi,
+                'id_mapelkelas' => $this->id_mapelkelas,
+                'semester' => $this->semester,
+                'tahun_pelajaran' => $tahun->tahun,
+                'tingkatan' => $this->tingkatan,
+                'penilaian' => $this->penilaian
+            ]);
 
-        $data = ModelsMateri::create([
-            'materi' => $this->materi,
-            'id_mapelkelas' => $this->id_mapelkelas,
-            'semester' => $this->semester,
-            'tahun_pelajaran' => $tahun->tahun,
-            'tingkatan' => $this->tingkatan,
-            'penilaian' => $this->penilaian
-        ]);
-
-        session()->flash('sukses', 'Data berhasil ditambahkan');
+            session()->flash('sukses', 'Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
+        }
+
+
+
     }
 
     public function clearForm(){
@@ -143,6 +154,7 @@ class Materi extends Component
             'tingkatan' => 'required',
             'penilaian' => 'required',
         ]);
+
         $data = ModelsMateri::where('id_materi', $this->id_materi)->update([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
