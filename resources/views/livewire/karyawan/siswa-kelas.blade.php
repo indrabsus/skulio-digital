@@ -114,7 +114,7 @@
                           @if ($nil != null)
                           <td><a href="" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="chapus('{{ $nil->id }}')">{{ $nil->nilai }}</a></td>
                          @else
-                         @if ($d->penilaian == "n")
+                         @if ($d->penilaian == "y")
                          <td><a href="" class="badge bg-success" data-bs-toggle="modal" data-bs-target="#tugas" wire:click="tugas('{{ $d->id_materi }}','{{ $d->id_user }}')">Beri Nilai</a></td>
                          @else
                          <td><span class="badge bg-dark" data-bs-toggle="modal">Nilai Disabled</span></td>
