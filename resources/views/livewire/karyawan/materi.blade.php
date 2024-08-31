@@ -251,7 +251,7 @@
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
+                {{-- <div class="form-group mb-3">
                     <label for="">Semester</label>
                     <select wire:model.live="semester" class="form-control">
                         <option value="">Pilih Semester</option>
@@ -263,7 +263,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div>
+                  </div> --}}
 
                 <div class="form-group mb-3">
                     <label for="">Mapel Kelas</label>
@@ -333,7 +333,7 @@
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
+                  {{-- <div class="form-group mb-3">
                     <label for="">Semester</label>
                     <select wire:model.live="semester" class="form-control">
                         <option value="">Pilih Semester</option>
@@ -345,7 +345,7 @@
                             {{$message}}
                         @enderror
                     </div>
-                  </div>
+                  </div> --}}
                 <div class="form-group mb-3">
                     <label for="">Tahun Pelajaran</label>
                     <select wire:model.live="tahun_pelajaran" class="form-control" disabled>

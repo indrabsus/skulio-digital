@@ -28,7 +28,11 @@ class AbsenSiswa extends Component
     {
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->where('mapel_kelas.id_user', Auth::user()->id)->get();
+        ->where('mapel_kelas.id_user', Auth::user()->id)
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
+        ->get();
         if($this->cari_kelas == ''){
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')

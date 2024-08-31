@@ -30,7 +30,11 @@ class SiswaKelas extends Component
     {
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->where('mapel_kelas.id_user', Auth::user()->id)->get();
+        ->where('mapel_kelas.id_user', Auth::user()->id)
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
+        ->get();
         $materi = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
         ->where('mapel_kelas.id_kelas', $this->cari_kelas)
         ->where('mapel_kelas.id_user', Auth::user()->id)

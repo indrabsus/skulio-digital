@@ -25,8 +25,7 @@ class Kelas extends Component
         ->leftJoin('angkatan','angkatan.id_angkatan','kelas.id_angkatan')
         ->leftJoin('users','users.id','kelas.id_user')
         ->orderBy('id_kelas','desc')
-        
-        ->where('nama_kelas', 'like','%'.$this->cari.'%')->paginate($this->result);
+        ->where('singkatan', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.kurikulum.kelas', compact('data','jurusan','angkatan'));
     }
     public function insert(){

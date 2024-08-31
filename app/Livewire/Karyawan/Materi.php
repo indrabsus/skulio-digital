@@ -85,15 +85,24 @@ class Materi extends Component
             return view('livewire.karyawan.materi', compact('data','mapelkelas'));
         }
     }
-    public function insert(){
+    public function insert() {
         $this->validate([
             'materi' => 'required',
             'id_mapelkelas' => 'required',
-            'semester' => 'required',
             'tingkatan' => 'required',
             'penilaian' => 'required',
         ]);
+
+        $currentMonth = now()->month;
+
+        if (in_array($currentMonth, [7, 8, 9, 10, 11, 12])) {
+            $this->semester = 'ganjil';
+        } else {
+            $this->semester = 'genap';
+        }
+
         $tahun = MapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->first();
+
         $data = ModelsMateri::create([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
@@ -101,11 +110,13 @@ class Materi extends Component
             'tahun_pelajaran' => $tahun->tahun,
             'tingkatan' => $this->tingkatan,
             'penilaian' => $this->penilaian
-        ]) ;
-        session()->flash('sukses','Data berhasil ditambahkan');
+        ]);
+
+        session()->flash('sukses', 'Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+
     public function clearForm(){
         $this->materi = '';
         $this->id_mapelkelas = '';

@@ -21,7 +21,12 @@ class MapelKelas extends Component
     public function render()
     {
         $guru = User::leftJoin('data_user','data_user.id_user','users.id')->where('id_role',6)->get();
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')->where('tingkat','<','13')->get();
+        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+        ->where('tingkat','<','13')
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
+        ->get();
         $mapel = MataPelajaran::all();
         $role = Role::leftJoin('users','users.id_role','roles.id_role')->where('id', Auth::user()->id)->first();
         if($role->nama_role == 'guru'){
@@ -29,7 +34,9 @@ class MapelKelas extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-        ->orderBy('id_mapelkelas','desc')
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
         ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->paginate($this->result);
@@ -38,7 +45,9 @@ class MapelKelas extends Component
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-            ->orderBy('id_mapelkelas','desc')
+            ->orderBy('kelas.tingkat','asc')
+            ->orderBy('kelas.id_jurusan','asc')
+            ->orderBy('kelas.nama_kelas','asc')
             ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
         }
 
