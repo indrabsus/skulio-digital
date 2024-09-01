@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AbsenHarianSiswa;
 use App\Models\DataSiswa;
 use App\Models\DataUser;
 use App\Models\LogTabungan;
@@ -218,4 +219,28 @@ class RFIDController extends Controller
     public function reset(){
         Temp::truncate();
     }
+
+    public function absenSiswa($id){
+        $ada = DataSiswa::where('no_rfid', $id)->count();
+        if($ada > 0){
+            $aku = DataSiswa::where('no_rfid', $id)->first();
+        $hitung = AbsenHarianSiswa::where('id_siswa', $aku->id_siswa)
+        ->whereDate('created_at', now()->format('Y-m-d'))
+        ->where('status', 0)
+        ->count();
+
+        if($hitung > 0){
+            return "ganda";
+        } else {
+            AbsenHarianSiswa::create([
+                'id_siswa' => $aku->id_siswa,
+                'status' => 0,
+            ]);
+            return "sukses";
+        }
+
+    } else {
+        return 404;
+    }
+}
 }
