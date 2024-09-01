@@ -220,10 +220,10 @@ class RFIDController extends Controller
         Temp::truncate();
     }
 
-    public function absenSiswa($id){
-        $ada = DataSiswa::where('no_rfid', $id)->count();
+    public function absenSiswa($norfid){
+        $ada = DataSiswa::where('no_rfid', $norfid)->count();
         if($ada > 0){
-            $aku = DataSiswa::where('no_rfid', $id)->first();
+            $aku = DataSiswa::where('no_rfid', $norfid)->first();
         $hitung = AbsenHarianSiswa::where('id_siswa', $aku->id_siswa)
         ->whereDate('created_at', now()->format('Y-m-d'))
         ->where('status', 0)

@@ -50,6 +50,7 @@ Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
 Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
 Route::get('/reset', [RFIDController::class, 'reset'])->name('reset');
 
+Route::get('/absen/{norfid}/{id_mesin}',[RFIDController::class,'absenSiswa'])->name('harian');
 //Cigalert
 Route::get('/tabelcigalert', function(){
     return view('load.tabelcigalert');
