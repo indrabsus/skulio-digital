@@ -220,27 +220,28 @@ class RFIDController extends Controller
         Temp::truncate();
     }
 
-    public function absenSiswa($norfid){
-        $ada = DataSiswa::where('no_rfid', $norfid)->count();
-        if($ada > 0){
-            $aku = DataSiswa::where('no_rfid', $norfid)->first();
-        $hitung = AbsenHarianSiswa::where('id_siswa', $aku->id_siswa)
-        ->whereDate('created_at', now()->format('Y-m-d'))
-        ->where('status', 0)
-        ->count();
+    public function absenSiswa($norfid)
+{
+    $aku = DataSiswa::where('no_rfid', $norfid)->first();
 
-        if($hitung > 0){
-            return "ganda";
-        } else {
-            AbsenHarianSiswa::create([
-                'id_siswa' => $aku->id_siswa,
-                'status' => 0,
-            ]);
-            return "sukses";
-        }
-
-    } else {
+    if (!$aku) {
         return 404;
     }
+
+    $hitung = AbsenHarianSiswa::where('id_siswa', $aku->id_siswa)
+        ->whereDate('created_at', now()->format('Y-m-d'))
+        ->where('status', '0')
+        ->exists();  // Menggunakan exists() untuk cek keberadaan
+
+    if ($hitung) {
+        return "ganda";
+    } else {
+        AbsenHarianSiswa::create([
+            'id_siswa' => $aku->id_siswa,
+            'status' => '0', // Anda bisa mendefinisikan konstanta untuk status ini di model
+        ]);
+        return "sukses";
+    }
 }
+
 }
