@@ -193,12 +193,18 @@ class Materi extends Component
     }
     public function insertagenda(){
         $this->validate([
-            'semester' => 'required',
             'id_mapelkelas' => 'required',
         ]);
         $hitung = ModelsMateri::where('id_mapelkelas', $this->id_mapelkelas)
         ->whereDate('created_at', now()->format('Y-m-d'))
         ->count();
+        $currentMonth = now()->month;
+
+        if (in_array($currentMonth, [7, 8, 9, 10, 11, 12])) {
+            $this->semester = 'ganjil';
+        } else {
+            $this->semester = 'genap';
+        }
 
         $aku = Kelas::where('id_user', Auth::user()->id)->first();
         $tahun = MapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->first();

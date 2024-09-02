@@ -184,7 +184,7 @@
         </div>
         <div class="modal-body">
 
-            <div class="form-group mb-3">
+            {{-- <div class="form-group mb-3">
                 <label for="">Semester</label>
                 <select wire:model.live="semester" class="form-control">
                     <option value="">Pilih Semester</option>
@@ -196,7 +196,7 @@
                         {{$message}}
                     @enderror
                 </div>
-              </div>
+              </div> --}}
 
             <div class="form-group mb-3">
                 <label for="">Mapel Kelas</label>
