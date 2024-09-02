@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 
 class Materi extends Component
 {
-    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran, $tingkatan, $penilaian, $konfirmasi;
+    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran, $tingkatan, $penilaian = "n", $konfirmasi;
     use WithPagination;
     public $carisemester = '';
     public $caritahun = '';
