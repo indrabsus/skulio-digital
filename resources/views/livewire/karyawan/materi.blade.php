@@ -1,12 +1,35 @@
 <div>
-    <div class="row">
+    <div class="row justify-content-between">
+        <div class="col-lg-8">
+            <div class="input-group input-group-sm mb-3">
+                <select wire:model.live="carisemester" class="form-control">
+                    <option value="">Semua</option>
+                    <option value="ganjil">Ganjil</option>
+                    <option value="genap">Genap</option>
+                </select>
+                <select wire:model.live="caritahun" class="form-control">
+                    <option value="">Pilih Tahun</option>
+                    <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+            <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
+                </select>
+              <div class="col-4">
+                <select class="form-control" wire:model.live="result">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+                <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
+                <span class="input-group-text" id="basic-addon1">Cari</span>
+              </div>
+        </div>
         @if (Auth::user()->id_role == 1)
 
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <form action="{{ route('agendaguru') }}" method="post" target="_blank">
                 <div class="input-group input-group-sm mb-3">
-                    <div class="col-8">
-                    </div>
                         <select class="form-control" name="bulantahun">
                             <option value="">Pilih Bulan</option>
                             <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
@@ -26,12 +49,12 @@
                       </div>
                     </form>
         </div>
-        <div class="col">
+        <div class="col-lg-2">
             <form action="{{ route('rekapharianagenda') }}" method="post" target="_blank">
                 <div class="input-group input-group-sm mb-3">
-                    <div class="col-3">
+
                         <input type="date" class="form-control" name="date">
-                  </div>
+
                      <button class="input-group-text" id="basic-addon1">Print</button>
                     </div>
             </form>
@@ -57,47 +80,6 @@
         @endif
         </div>
         <div class="col">
-                <div class="row justify-content-between mt-2">
-
-                    {{-- @if (Auth::user()->id_role == 5)
-                    <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#addagenda">
-                            Tambah Agenda
-                          </button>
-                    </div>
-                    @else
-                    <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
-                          </button>
-                    </div>
-                    @endif --}}
-                    <div class="col-lg-6">
-                        <div class="input-group input-group-sm mb-3">
-                            <select wire:model.live="carisemester" class="form-control">
-                                <option value="">Semua</option>
-                                <option value="ganjil">Ganjil</option>
-                                <option value="genap">Genap</option>
-                            </select>
-                            <select wire:model.live="caritahun" class="form-control">
-                                <option value="">Pilih Tahun</option>
-                                <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
-                            </select>
-                          <div class="col-3">
-                            <select class="form-control" wire:model.live="result">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
-                            <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
-                            <span class="input-group-text" id="basic-addon1">Cari</span>
-                          </div>
-                    </div>
-                </div>
                <div class="table-responsive">
                 <table class="table table-stripped">
                   <thead>

@@ -24,7 +24,7 @@
                             Tambah
                           </button>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
                             <div class="form-group">
                                 <select class="form-control" wire:model.live="cari_kelas">
