@@ -22,45 +22,49 @@ class JadwalPelajaran extends Component
     public $cari = '';
     public $result = 10;
     public function render()
-    {
-        $guru = User::leftJoin('data_user','data_user.id_user','users.id')->where('id_role',6)->get();
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+{
+    $guru = User::leftJoin('data_user','data_user.id_user','users.id')->where('id_role',6)->get();
+    $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('tingkat','<','13')
         ->orderBy('kelas.tingkat','asc')
         ->orderBy('kelas.id_jurusan','asc')
         ->orderBy('kelas.nama_kelas','asc')
         ->get();
-        $mapel = MataPelajaran::all();
-        $role = Role::leftJoin('users','users.id_role','roles.id_role')->where('id', Auth::user()->id)->first();
-        if($role->nama_role == 'guru'){
-        $data  = MapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
-        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-        ->orderBy('kelas.tingkat','asc')
-        ->orderBy('kelas.id_jurusan','asc')
-        ->orderBy('kelas.nama_kelas','asc')
-        ->where('hari', date('N'))
-        ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
-        } elseif($role->nama_role == 'verifikator'){
-            $ver = Kelas::where('id_user', Auth::user()->id)->first();
-            $data  = MapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
-        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-        ->orderBy('kelas.tingkat','asc')
-        ->orderBy('kelas.id_jurusan','asc')
-        ->orderBy('kelas.nama_kelas','asc')
-        ->where('hari', date('N'))
-        ->where('mapel_kelas.id_kelas', $ver->id_kelas)
-        // ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
-        }
+    $mapel = MataPelajaran::all();
+    $role = Role::leftJoin('users','users.id_role','roles.id_role')->where('id', Auth::user()->id)->first();
 
+    $currentDay = date('N'); // '6' for Saturday
 
-        return view('livewire.kurikulum.jadwal-pelajaran', compact('data','mapel','kelas','guru'));
+    if ($role->nama_role == 'guru') {
+        $data  = MapelKelas::leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', '=', 'mapel_kelas.id_mapel')
+            ->leftJoin('kelas', 'kelas.id_kelas', '=', 'mapel_kelas.id_kelas')
+            ->leftJoin('jurusan', 'jurusan.id_jurusan', '=', 'kelas.id_jurusan')
+            ->leftJoin('data_user', 'data_user.id_user', '=', 'mapel_kelas.id_user')
+            ->orderBy('kelas.tingkat', 'asc')
+            ->orderBy('kelas.id_jurusan', 'asc')
+            ->orderBy('kelas.nama_kelas', 'asc')
+            ->whereRaw("FIND_IN_SET(?, hari) > 0", [$currentDay])
+            ->where('mapel_kelas.id_user', Auth::user()->id)
+            ->where('nama_pelajaran', 'like', '%' . $this->cari . '%')
+            ->paginate($this->result);
+    } elseif ($role->nama_role == 'verifikator') {
+        $ver = Kelas::where('id_user', Auth::user()->id)->first();
+        $data  = MapelKelas::leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', '=', 'mapel_kelas.id_mapel')
+            ->leftJoin('kelas', 'kelas.id_kelas', '=', 'mapel_kelas.id_kelas')
+            ->leftJoin('jurusan', 'jurusan.id_jurusan', '=', 'kelas.id_jurusan')
+            ->leftJoin('data_user', 'data_user.id_user', '=', 'mapel_kelas.id_user')
+            ->orderBy('kelas.tingkat', 'asc')
+            ->orderBy('kelas.id_jurusan', 'asc')
+            ->orderBy('kelas.nama_kelas', 'asc')
+            ->whereRaw("FIND_IN_SET(?, hari) > 0", [$currentDay])
+            ->where('mapel_kelas.id_kelas', $ver->id_kelas)
+            ->where('nama_pelajaran', 'like', '%' . $this->cari . '%')
+            ->paginate($this->result);
     }
+
+    return view('livewire.kurikulum.jadwal-pelajaran', compact('data', 'mapel', 'kelas', 'guru'));
+}
+
     public function insert(){
         if(Auth::user()->id_role == 6){
             $this->validate([

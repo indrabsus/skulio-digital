@@ -56,21 +56,48 @@ class Controller extends BaseController
             return $hitung;
         }
 
-        public function hari($hari){
-            if($hari == 1){
-                return 'Senin';
-            } elseif($hari == 2){
-                return 'Selasa';
-            } elseif($hari == 3){
-                return 'Rabu';
-            } elseif($hari == 4){
-                return 'Kamis';
-            } elseif($hari == 5){
-                return 'Jumat';
-            } elseif($hari == 6){
-                return 'Sabtu';
-            } elseif($hari == 7){
-                return 'Minggu';
-            }
-        }
+        public function hari($hari)
+{
+    // Daftar hari
+    $days = [
+        1 => 'Senin',
+        2 => 'Selasa',
+        3 => 'Rabu',
+        4 => 'Kamis',
+        5 => 'Jumat',
+        6 => 'Sabtu',
+        7 => 'Minggu',
+    ];
+
+    // Jika $hari adalah null, '', atau array kosong, kembalikan 'Unknown'
+    if (is_null($hari) || $hari === '' || (is_array($hari) && empty($hari))) {
+        return 'Unknown';
+    }
+
+    // Pastikan $hari adalah array
+    if (is_string($hari)) {
+        // Jika string, konversi menjadi array dengan memisahkan berdasarkan koma
+        $hari = array_map('trim', explode(',', $hari));
+    } elseif (!is_array($hari)) {
+        // Jika $hari bukan array dan bukan string, kembalikan 'Unknown'
+        return 'Unknown';
+    }
+
+    // Pastikan $hari adalah array dan tidak kosong
+    if (is_array($hari)) {
+        // Filter dan map hari-hari yang sesuai
+        $validDays = array_filter($hari, function($h) use ($days) {
+            return isset($days[(int)$h]); // Hanya masukkan hari yang ada di array $days
+        });
+
+        // Mengembalikan daftar hari yang valid, dipisahkan oleh koma
+        return implode(', ', array_map(function($h) use ($days) {
+            return $days[(int)$h];
+        }, $validDays));
+    }
+
+    // Jika bukan array atau string yang valid, kembalikan 'Unknown'
+    return 'Unknown';
+}
+
 }

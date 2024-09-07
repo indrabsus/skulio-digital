@@ -49,7 +49,6 @@
                           <th>Kelas</th>
                           <th>Tahun</th>
                           <th>Hari</th>
-                          <th>Jam ke</th>
                           <th>Aktif?</th>
                           <th>Aksi</th>
                       </tr>
@@ -62,8 +61,11 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           <td>{{ $d->tahun }}</td>
-                          <td>{{ $fungsi->hari($d->hari) }}</td>
-                          <td>{{ $d->jam_mulai }} - {{ $d->jam_selesai }}</td>
+                          @php
+    // Debug nilai hari yang diterima
+    $hariValues = is_string($d->hari) ? explode(',', $d->hari) : (array)$d->hari;
+@endphp
+                          <td>{{ $fungsi->hari($hariValues) }}</td>
                           <td>@if ($d->aktif == 'y')
                             <i class="fa-solid fa-check"></i>
                           @else
@@ -156,68 +158,29 @@
                   @endif
                   <div class="form-group mb-3">
                     <label for="">Hari</label>
-                    <select class="form-control" wire:model.live="hari">
-                        <option value="">Pilih Opsi</option>
-                        <option value="1">Senin</option>
-                        <option value="2">Selasa</option>
-                        <option value="3">Rabu</option>
-                        <option value="4">Kamis</option>
-                        <option value="5">Jumat</option>
-                    </select>
+                    <div>
+                        <label><input type="checkbox" wire:model.live="hari.1" value="1"> Senin</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" wire:model.live="hari.2" value="2"> Selasa</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" wire:model.live="hari.3" value="3"> Rabu</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" wire:model.live="hari.4" value="4"> Kamis</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" wire:model.live="hari.5" value="5"> Jumat</label>
+                    </div>
+
                     <div class="text-danger">
                         @error('hari')
                             {{$message}}
                         @enderror
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label for="">Jam Mulai</label>
-                            <select class="form-control" wire:model.live="jam_mulai">
-                                <option value="">Jam ke</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
-                            <div class="text-danger">
-                                @error('jam_mulai')
-                                    {{$message}}
-                                @enderror
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label for="">Jam Selesai</label>
-                            <select class="form-control" wire:model.live="jam_selesai">
-                                <option value="">Jam ke</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
-                            <div class="text-danger">
-                                @error('jam_selesai')
-                                    {{$message}}
-                                @enderror
-                            </div>
-                          </div>
-                    </div>
-                  </div>
+                </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -251,6 +214,7 @@
                     @enderror
                 </div>
               </div>
+            @if (Auth::user()->id_role != 5)
             <div class="form-group">
                 <label for="">Kelas</label>
                 <select class="form-control" wire:model.live="id_kelas" disabled>
@@ -265,9 +229,10 @@
                     @enderror
                 </div>
               </div>
+            @endif
               <div class="form-group">
                 <label for="">Tahun</label>
-                <select class="form-control" wire:model.live="tahun">
+                <select class="form-control" wire:model.live="tahun" disabled>
                     <option value="">Pilih Tahun</option>
                     <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
                     <option value="{{ date('Y') }}">{{ date('Y') }}</option>
@@ -282,7 +247,7 @@
               @if (Auth::user()->id_role != 6)
               <div class="form-group">
                 <label for="">Guru</label>
-                <select class="form-control" wire:model.live="id_user">
+                <select class="form-control" wire:model.live="id_user" disabled>
                     <option value="">Pilih Guru</option>
                     @foreach ($guru as $k)
                         <option value="{{$k->id_user}}">{{$k->nama_lengkap}}</option>
@@ -297,68 +262,29 @@
               @endif
               <div class="form-group mb-3">
                 <label for="">Hari</label>
-                <select class="form-control" wire:model.live="hari">
-                    <option value="">Pilih Opsi</option>
-                    <option value="1">Senin</option>
-                    <option value="2">Selasa</option>
-                    <option value="3">Rabu</option>
-                    <option value="4">Kamis</option>
-                    <option value="5">Jumat</option>
-                </select>
+                <div>
+                    <label><input type="checkbox" wire:model.live="hari.1" value="1"> Senin</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" wire:model.live="hari.2" value="2"> Selasa</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" wire:model.live="hari.3" value="3"> Rabu</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" wire:model.live="hari.4" value="4"> Kamis</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" wire:model.live="hari.5" value="5"> Jumat</label>
+                </div>
+
                 <div class="text-danger">
                     @error('hari')
                         {{$message}}
                     @enderror
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-3">
-                        <label for="">Jam Mulai</label>
-                        <select class="form-control" wire:model.live="jam_mulai">
-                            <option value="">Jam ke</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jam_mulai')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group mb-3">
-                        <label for="">Jam Selesai</label>
-                        <select class="form-control" wire:model.live="jam_selesai">
-                            <option value="">Jam ke</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jam_selesai')
-                                {{$message}}
-                            @enderror
-                        </div>
-                      </div>
-                </div>
-              </div>
+            </div>
+
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
