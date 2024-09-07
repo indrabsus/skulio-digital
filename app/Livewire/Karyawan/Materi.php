@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 
 class Materi extends Component
 {
-    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun, $tingkatan, $penilaian = "n", $konfirmasi;
+    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun, $tingkatan, $penilaian = "n", $konfirmasi, $keterangan;
     use WithPagination;
     public $carisemester = '';
     public $caritahun = '';
@@ -47,10 +47,13 @@ class Materi extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('kelas.id_kelas', $aku->id_kelas)
         ->select('tahun', 'semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
-        ->where('materi', 'like','%'.$this->cari.'%')
+
         ->where('tahun', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
-        // ->whereDate('materi.created_at', now()->format('Y-m-d'))
+        ->where(function ($query) {
+            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                ->orWhere('materi', 'like','%'.$this->cari.'%');
+        })
         ->paginate($this->result);
 
         }
@@ -62,7 +65,10 @@ class Materi extends Component
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->select('tahun', 'semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
-            ->where('materi', 'like','%'.$this->cari.'%')
+            ->where(function ($query) {
+                $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                    ->orWhere('materi', 'like','%'.$this->cari.'%');
+            })
             ->where('tahun', 'like','%'.$this->caritahun.'%')
             ->where('semester', 'like','%'.$this->carisemester.'%')
             ->paginate($this->result);
@@ -75,7 +81,10 @@ class Materi extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
         ->select('tahun','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
-        ->where('materi', 'like','%'.$this->cari.'%')
+        ->where(function ($query) {
+            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                ->orWhere('materi', 'like','%'.$this->cari.'%');
+        })
         ->where('tahun', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
         ->paginate($this->result);
@@ -144,21 +153,17 @@ class Materi extends Component
         $this->tingkatan = $data->tingkatan;
         $this->penilaian = $data->penilaian;
         $this->id_materi = $id;
+        $this->keterangan = $data->keterangan;
     }
     public function update(){
         $this->validate([
             'materi' => 'required',
-            'id_mapelkelas' => 'required',
-            'tingkatan' => 'required',
-            'penilaian' => 'required',
+            'keterangan' => 'required',
         ]);
 
         $data = ModelsMateri::where('id_materi', $this->id_materi)->update([
             'materi' => $this->materi,
-            'id_mapelkelas' => $this->id_mapelkelas,
-            'tingkatan' => $this->tingkatan,
-            'penilaian' => $this->penilaian
-
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();

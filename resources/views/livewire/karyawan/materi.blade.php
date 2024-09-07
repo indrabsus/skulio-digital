@@ -116,6 +116,7 @@
                           @endif
                           @if (Auth::user()->id_role == 1)
                           <th>Keterangan</th>
+                          <th>Aksi</th>
                           @endif
                           {{-- <th>Aksi</th> --}}
                       </tr>
@@ -152,17 +153,12 @@
                             @endif
                           </td>
                           @endif
-                          {{-- <td>
+                          <td>
                                 @if(Auth::user()->id_role == 1)
+                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
                                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
-                                @elseif(Auth::user()->id_role != 5)
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_materi}}")'><i class="fa-solid fa-edit"></i></i></a>
-
-                                 @else
-                                    <button href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_materi}}")' {{ $d->keterangan ? 'disabled' : '' }}>Konfirmasi</button>
-
-@endif
-                          </td> --}}
+                                @endif
+                          </td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -325,14 +321,15 @@
                   </div>
 
                   <div class="form-group mb-3">
-                    <label for="">Penilaian</label>
-                    <select class="form-control" wire:model.live="penilaian">
+                    <label for="">Keterangan</label>
+                    <select class="form-control" wire:model.live="keterangan">
                         <option value="">Pilih Opsi</option>
-                        <option value="y">Ya</option>
-                        <option value="n">Tidak</option>
+                        <option value="1">Hadir</option>
+                        <option value="2">Penugasan</option>
+                        <option value="3">Tanpa Keterangan</option>
                     </select>
                     <div class="text-danger">
-                        @error('penilaian')
+                        @error('keterangan')
                             {{$message}}
                         @enderror
                     </div>

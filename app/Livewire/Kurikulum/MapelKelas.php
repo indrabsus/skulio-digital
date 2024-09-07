@@ -16,7 +16,7 @@ class MapelKelas extends Component
 {
     public $id_mapelkelas ,$id_mapel, $id_kelas, $id_user, $tahun, $aktif, $hari=[], $hari2 = [] ;
     use WithPagination;
-
+    public $cari_kelas ='';
     public $cari = '';
     public $result = 10;
     public function render()
@@ -40,6 +40,7 @@ class MapelKelas extends Component
         ->orderBy('hari','asc')
         ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
+        ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
         ->paginate($this->result);
         } elseif($role->nama_role == 'verifikator'){
             $data  = TabelMapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
@@ -49,15 +50,15 @@ class MapelKelas extends Component
             ->orderBy('hari','asc')
             ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
             ->where('mapel_kelas.id_kelas', $ver->id_kelas)
+            ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
-        }
-
-        else {
+        } else {
             $data  = TabelMapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
             ->orderBy('hari','asc')
+            ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
         }
 

@@ -26,6 +26,14 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                            <div class="form-group">
+                                <select class="form-control" wire:model.live="cari_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                    @foreach($kelas as $k)
+                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
