@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 
 class Materi extends Component
 {
-    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun_pelajaran, $tingkatan, $penilaian = "n", $konfirmasi;
+    public $materi, $id_mapelkelas,$id_materi, $semester, $tahun, $tingkatan, $penilaian = "n", $konfirmasi;
     use WithPagination;
     public $carisemester = '';
     public $caritahun = '';
@@ -46,10 +46,11 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('kelas.id_kelas', $aku->id_kelas)
-        ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
+        ->select('tahun', 'semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
         ->where('materi', 'like','%'.$this->cari.'%')
-        ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
+        ->where('tahun', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
+        // ->whereDate('materi.created_at', now()->format('Y-m-d'))
         ->paginate($this->result);
 
         }
@@ -60,9 +61,9 @@ class Materi extends Component
             ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-            ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
+            ->select('tahun', 'semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
             ->where('materi', 'like','%'.$this->cari.'%')
-            ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
+            ->where('tahun', 'like','%'.$this->caritahun.'%')
             ->where('semester', 'like','%'.$this->carisemester.'%')
             ->paginate($this->result);
         }
@@ -73,9 +74,9 @@ class Materi extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('mapel_kelas.id_user',Auth::user()->id)
-        ->select('tahun','tahun_pelajaran','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
+        ->select('tahun','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian')
         ->where('materi', 'like','%'.$this->cari.'%')
-        ->where('tahun_pelajaran', 'like','%'.$this->caritahun.'%')
+        ->where('tahun', 'like','%'.$this->caritahun.'%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
         ->paginate($this->result);
         }
@@ -114,7 +115,7 @@ class Materi extends Component
                 'materi' => $this->materi,
                 'id_mapelkelas' => $this->id_mapelkelas,
                 'semester' => $this->semester,
-                'tahun_pelajaran' => $tahun->tahun,
+                'tahun' => $tahun->tahun,
                 'tingkatan' => $this->tingkatan,
                 'penilaian' => $this->penilaian
             ]);
@@ -131,7 +132,6 @@ class Materi extends Component
     public function clearForm(){
         $this->materi = '';
         $this->id_mapelkelas = '';
-        $this->semester = '';
         $this->tingkatan = '';
         $this->penilaian = '';
     }
@@ -140,7 +140,7 @@ class Materi extends Component
         $this->materi = $data->materi;
         $this->id_mapelkelas = $data->id_mapelkelas;
         $this->semester = $data->semester;
-        $this->tahun_pelajaran = $data->tahun_pelajaran;
+        $this->tahun = $data->tahun;
         $this->tingkatan = $data->tingkatan;
         $this->penilaian = $data->penilaian;
         $this->id_materi = $id;
@@ -149,8 +149,6 @@ class Materi extends Component
         $this->validate([
             'materi' => 'required',
             'id_mapelkelas' => 'required',
-            'semester' => 'required',
-            'tahun_pelajaran' => 'required',
             'tingkatan' => 'required',
             'penilaian' => 'required',
         ]);
@@ -158,8 +156,6 @@ class Materi extends Component
         $data = ModelsMateri::where('id_materi', $this->id_materi)->update([
             'materi' => $this->materi,
             'id_mapelkelas' => $this->id_mapelkelas,
-            'semester' => $this->semester,
-            'tahun_pelajaran' => $this->tahun_pelajaran,
             'tingkatan' => $this->tingkatan,
             'penilaian' => $this->penilaian
 
@@ -217,7 +213,7 @@ class Materi extends Component
                 'id_mapelkelas' => $this->id_mapelkelas,
                 'semester' => $this->semester,
                 'materi' => 'Diisi oleh SISTEM',
-                'tahun_pelajaran' => $tahun->tahun,
+                'tahun' => $tahun->tahun,
                 'penilaian' => 'n',
                 'tingkatan' => $aku->tingkat,
                 'keterangan' => 3
@@ -227,5 +223,18 @@ class Materi extends Component
             $this->dispatch('closeModal');
         }
 
+    }
+    public function nilaisiswa($id){
+        $this->id_materi = $id;
+        $data = ModelsMateri::where('id_materi', $id)->first();
+        if($data->penilaian == 'n'){
+            ModelsMateri::where('id_materi', $id)->update([
+               'penilaian' => 'y'
+            ]);
+        } else {
+            ModelsMateri::where('id_materi', $id)->update([
+               'penilaian' => 'n'
+            ]);
+        }
     }
 }

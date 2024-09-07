@@ -59,7 +59,7 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
 
-                    @if (Auth::user()->id_role == 5)
+                    {{-- @if (Auth::user()->id_role == 5)
                     <div class="col-lg-6">
                         <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#addagenda">
                             Tambah Agenda
@@ -71,7 +71,7 @@
                             Tambah
                           </button>
                     </div>
-                    @endif
+                    @endif --}}
                     <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
                             <select wire:model.live="carisemester" class="form-control">
@@ -117,7 +117,7 @@
                           @if (Auth::user()->id_role == 1)
                           <th>Keterangan</th>
                           @endif
-                          <th>Aksi</th>
+                          {{-- <th>Aksi</th> --}}
                       </tr>
                   </thead>
                   <tbody>
@@ -134,9 +134,9 @@
                           <td>{{ date('d F Y', strtotime($d->created_at)) }}</td>
                           @if (Auth::user()->id_role != 5)
                           <td>@if ($d->penilaian == 'y')
-                            <i class="fa-solid fa-check"></i>
+                            <button class="btn btn-success btn-sm" wire:click="nilaisiswa('{{ $d->id_materi }}')"><i class="fa-solid fa-check"></i></button>
                           @else
-                          <i class="fa-solid fa-times"></i>
+                          <button class="btn btn-primary btn-sm" wire:click="nilaisiswa('{{ $d->id_materi }}')"><i class="fa-solid fa-times"></i></button>
                           @endif</td>
                           @endif
                           @if (Auth::user()->id_role == 1)
@@ -152,7 +152,7 @@
                             @endif
                           </td>
                           @endif
-                          <td>
+                          {{-- <td>
                                 @if(Auth::user()->id_role == 1)
                                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_materi}}')"><i class="fa-solid fa-trash"></i></a>
                                 @elseif(Auth::user()->id_role != 5)
@@ -162,7 +162,7 @@
                                     <button href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_materi}}")' {{ $d->keterangan ? 'disabled' : '' }}>Konfirmasi</button>
 
 @endif
-                          </td>
+                          </td> --}}
                       </tr>
                   @endforeach
                   </tbody>
@@ -323,61 +323,7 @@
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="">Tingkat</label>
-                    <select class="form-control" wire:model.live="tingkatan">
-                        <option value="">Materi Kelas</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('tingkatan')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  {{-- <div class="form-group mb-3">
-                    <label for="">Semester</label>
-                    <select wire:model.live="semester" class="form-control">
-                        <option value="">Pilih Semester</option>
-                        <option value="ganjil">Ganjil</option>
-                        <option value="genap">Genap</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('semester')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div> --}}
-                <div class="form-group mb-3">
-                    <label for="">Tahun Pelajaran</label>
-                    <select wire:model.live="tahun_pelajaran" class="form-control" disabled>
-                        <option value="">Pilih Tahun</option>
-                        <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') +1}}">{{ date('Y') +1}}</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('tahun_pelajaran')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Mapel Kelas</label>
-                    <select wire:model.live="id_mapelkelas" class="form-control" disabled>
-                        <option value="">Pilih Opsi</option>
-                        @foreach ($mapelkelas as $m)
-                            <option value="{{ $m->id_mapelkelas }}">{{ $m->nama_pelajaran }} - {{ $m->tingkat.' '.$m->singkatan.' '.$m->nama_kelas }}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-danger">
-                        @error('id_mapelkelas')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
+
                   <div class="form-group mb-3">
                     <label for="">Penilaian</label>
                     <select class="form-control" wire:model.live="penilaian">

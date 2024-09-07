@@ -70,7 +70,7 @@ class SiswaKelas extends Component
             $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
                 ->orWhere('materi', 'like', '%' . $this->cari . '%');
         })
-        ->where('tahun_pelajaran', 'like', '%' . $this->caritahun . '%')
+        ->where('tahun', 'like', '%' . $this->caritahun . '%')
         ->where('materi.id_materi', 'like', '%' . $this->id_materi . '%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Kurikulum;
 
+use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use Livewire\Component;
@@ -13,13 +14,15 @@ use Livewire\WithPagination;
 
 class MapelKelas extends Component
 {
-    public $id_mapelkelas ,$id_mapel, $id_kelas, $id_user, $tahun, $aktif ;
+    public $id_mapelkelas ,$id_mapel, $id_kelas, $id_user, $tahun, $aktif,$hari, $jam_mulai, $jam_selesai ;
     use WithPagination;
 
     public $cari = '';
     public $result = 10;
     public function render()
     {
+        $ver = Kelas::where('id_user', Auth::user()->id)->first();
+        $fungsi = new Controller;
         $guru = User::leftJoin('data_user','data_user.id_user','users.id')->where('id_role',6)->get();
         $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('tingkat','<','13')
@@ -34,93 +37,176 @@ class MapelKelas extends Component
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-        ->orderBy('kelas.tingkat','asc')
-        ->orderBy('kelas.id_jurusan','asc')
-        ->orderBy('kelas.nama_kelas','asc')
+        ->orderBy('hari','asc')
+        ->orderBy('jam_mulai','asc')
         ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->paginate($this->result);
-        } else {
+        } elseif($role->nama_role == 'verifikator'){
             $data  = TabelMapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
-            ->orderBy('kelas.tingkat','asc')
-            ->orderBy('kelas.id_jurusan','asc')
-            ->orderBy('kelas.nama_kelas','asc')
+            ->orderBy('hari','asc')
+            ->orderBy('jam_mulai','asc')
+            ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
+            ->where('mapel_kelas.id_kelas', $ver->id_kelas)
+            ->paginate($this->result);
+        }
+
+        else {
+            $data  = TabelMapelKelas::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
+            ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+            ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
+            ->orderBy('hari','asc')
+            ->orderBy('jam_mulai','asc')
             ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
         }
 
-        return view('livewire.kurikulum.mapel-kelas', compact('data','mapel','kelas','guru'));
+        return view('livewire.kurikulum.mapel-kelas', compact('data','mapel','kelas','guru','fungsi'));
     }
     public function insert(){
+        $ver = Kelas::where('id_user', Auth::user()->id)->first();
         if(Auth::user()->id_role == 6){
             $this->validate([
                 'id_mapel' => 'required',
                 'id_kelas' => 'required',
                 'tahun' => 'required',
-                'aktif' => 'required'
+                'hari' => 'required',
+                'jam_mulai' => 'required|integer|min:1|max:10',
+                'jam_selesai' => 'required|integer|min:1|max:10',
             ]);
+
+            // Cek apakah jam_mulai lebih besar atau sama dengan jam_selesai
+            if($this->jam_mulai >= $this->jam_selesai){
+                session()->flash('gagal', 'Jam mulai tidak boleh lebih besar atau sama dengan jam selesai');
+                $this->dispatch('closeModal');
+                return;
+            }
+
             $count = TabelMapelKelas::where('id_mapel', $this->id_mapel)
-        ->where('id_kelas', $this->id_kelas)
-        ->where('tahun', $this->tahun)
-        ->count();
-        if($count > 0){
-            session()->flash('gagal','Data Ganda');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-        } else {
-            $data = TabelMapelKelas::create([
-                'id_mapel' => $this->id_mapel,
-                'id_kelas' => $this->id_kelas,
-                'id_user' => Auth::user()->id,
-                'tahun' => $this->tahun,
-                'aktif' => $this->aktif
-            ]) ;
-            session()->flash('sukses','Data berhasil ditambahkan');
-            $this->clearForm();
-            $this->dispatch('closeModal');
+                ->where('id_kelas', $this->id_kelas)
+                ->where('tahun', $this->tahun)
+                ->count();
+
+            if($count > 0){
+                session()->flash('gagal', 'Data Ganda');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            } else {
+                $data = TabelMapelKelas::create([
+                    'id_mapel' => $this->id_mapel,
+                    'id_kelas' => $this->id_kelas,
+                    'id_user' => Auth::user()->id,
+                    'tahun' => $this->tahun,
+                    'aktif' => 'y',
+                    'hari' => $this->hari,
+                    'jam_mulai' => $this->jam_mulai,
+                    'jam_selesai' => $this->jam_selesai
+                ]);
+                session()->flash('sukses', 'Data berhasil ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            }
+        } elseif(Auth::user()->id_role == 5){
+            $this->validate([
+                'id_mapel' => 'required',
+                'id_user' => 'required',
+                'tahun' => 'required',
+                'hari' => 'required',
+                'jam_mulai' => 'required|integer|min:1|max:10',
+                'jam_selesai' => 'required|integer|min:1|max:10',
+            ]);
+
+            // Cek apakah jam_mulai lebih besar atau sama dengan jam_selesai
+            if($this->jam_mulai >= $this->jam_selesai){
+                session()->flash('gagal', 'Jam mulai tidak boleh lebih besar atau sama dengan jam selesai');
+                $this->dispatch('closeModal');
+                return;
+            }
+
+            $count = TabelMapelKelas::where('id_mapel', $this->id_mapel)
+                ->where('id_kelas', $ver->id_kelas)
+                ->where('tahun', $this->tahun)
+                ->count();
+
+            if($count > 0){
+                session()->flash('gagal', 'Data Ganda');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            } else {
+
+                $data = TabelMapelKelas::create([
+                    'id_mapel' => $this->id_mapel,
+                    'id_kelas' => $ver->id_kelas,
+                    'id_user' => $this->id_user,
+                    'tahun' => $this->tahun,
+                    'aktif' => 'y',
+                    'hari' => $this->hari,
+                    'jam_mulai' => $this->jam_mulai,
+                    'jam_selesai' => $this->jam_selesai
+                ]);
+                session()->flash('sukses', 'Data berhasil ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            }
         }
-        } else {
+        else {
             $this->validate([
                 'id_mapel' => 'required',
                 'id_kelas' => 'required',
                 'id_user' => 'required',
                 'tahun' => 'required',
-                'aktif' => 'required'
+                'hari' => 'required',
+                'jam_mulai' => 'required|integer|min:1|max:10',
+                'jam_selesai' => 'required|integer|min:1|max:10',
             ]);
+
+            // Cek apakah jam_mulai lebih besar atau sama dengan jam_selesai
+            if($this->jam_mulai >= $this->jam_selesai){
+                session()->flash('gagal', 'Jam mulai tidak boleh lebih besar atau sama dengan jam selesai');
+                $this->dispatch('closeModal');
+                return;
+            }
+
             $count = TabelMapelKelas::where('id_mapel', $this->id_mapel)
-        ->where('id_kelas', $this->id_kelas)
-        ->where('id_user', $this->id_user)
-        ->where('tahun', $this->tahun)
-        ->count();
-        if($count > 0){
-            session()->flash('gagal','Data Ganda');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-        } else {
-            $data = TabelMapelKelas::create([
-                'id_mapel' => $this->id_mapel,
-                'id_kelas' => $this->id_kelas,
-                'id_user' => $this->id_user,
-                'tahun' => $this->tahun,
-                'aktif' => $this->aktif
-            ]) ;
-            session()->flash('sukses','Data berhasil ditambahkan');
-            $this->clearForm();
-            $this->dispatch('closeModal');
+                ->where('id_kelas', $this->id_kelas)
+                ->where('id_user', $this->id_user)
+                ->where('tahun', $this->tahun)
+                ->count();
+
+            if($count > 0){
+                session()->flash('gagal', 'Data Ganda');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            } else {
+                $data = TabelMapelKelas::create([
+                    'id_mapel' => $this->id_mapel,
+                    'id_kelas' => $this->id_kelas,
+                    'id_user' => $this->id_user,
+                    'tahun' => $this->tahun,
+                    'aktif' => 'y',
+                    'hari' => $this->hari,
+                    'jam_mulai' => $this->jam_mulai,
+                    'jam_selesai' => $this->jam_selesai
+                ]);
+                session()->flash('sukses', 'Data berhasil ditambahkan');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+            }
         }
-        }
-
-
-
     }
+
     public function clearForm(){
         $this->id_kelas = '';
         $this->id_mapel = '';
         $this->id_user = '';
         $this->tahun = '';
         $this->aktif = '';
+        $this->hari = '';
+        $this->jam_mulai = '';
+        $this->jam_selesai = '';
     }
     public function edit($id){
         $data = TabelMapelKelas::where('id_mapelkelas', $id)->first();
@@ -130,6 +216,9 @@ class MapelKelas extends Component
         $this->id_mapelkelas = $id;
         $this->tahun =  $data -> tahun;
         $this->aktif =  $data -> aktif;
+        $this->hari =  $data -> hari;
+        $this->jam_mulai =  $data -> jam_mulai;
+        $this->jam_selesai =  $data -> jam_selesai;
     }
     public function update(){
         $this->validate([
@@ -137,19 +226,55 @@ class MapelKelas extends Component
             'id_kelas' => 'required',
             'id_user' => 'required',
             'tahun' => 'required',
-            'aktif' => 'required'
+            'hari' => 'required',
+            'jam_mulai' => 'required|integer|min:1|max:10',
+            'jam_selesai' => 'required|integer|min:1|max:10',
         ]);
+
+        // Cek apakah jam_mulai lebih besar atau sama dengan jam_selesai
+        if($this->jam_mulai >= $this->jam_selesai){
+            session()->flash('gagal', 'Jam mulai tidak boleh lebih besar atau sama dengan jam selesai');
+            $this->dispatch('closeModal');
+            return;
+        }
+
+        // Ambil data lama berdasarkan id_mapelkelas
+        $oldData = TabelMapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->first();
+
+        // Cek apakah id_user berubah
+        if ($oldData && $oldData->id_user != $this->id_user) {
+            // Lakukan pengecekan data ganda jika id_user berubah
+            $count = TabelMapelKelas::where('id_mapel', $this->id_mapel)
+                ->where('id_kelas', $this->id_kelas)
+                ->where('id_user', $this->id_user)
+                ->where('tahun', $this->tahun)
+                ->count();
+
+            if($count > 0){
+                session()->flash('gagal', 'Data Ganda');
+                $this->clearForm();
+                $this->dispatch('closeModal');
+                return;
+            }
+        }
+
+        // Lanjutkan update jika tidak ada data ganda
         $data = TabelMapelKelas::where('id_mapelkelas', $this->id_mapelkelas)->update([
             'id_mapel' => $this->id_mapel,
             'id_kelas' => $this->id_kelas,
             'id_user' => $this->id_user,
             'tahun' => $this->tahun,
-            'aktif' => $this->aktif
+            'aktif' => 'y',
+            'hari' => $this->hari,
+            'jam_mulai' => $this->jam_mulai,
+            'jam_selesai' => $this->jam_selesai
         ]);
-        session()->flash('sukses','Data berhasil diedit');
+
+        session()->flash('sukses', 'Data berhasil diupdate');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+
     public function c_delete($id){
         $this->id_mapelkelas = $id;
     }

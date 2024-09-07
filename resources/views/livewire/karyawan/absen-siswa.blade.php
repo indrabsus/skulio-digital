@@ -82,7 +82,7 @@
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                               ->where('mapel_kelas.id_mapel',$d->id_mapel)
                               ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('tahun', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
                               ->where('absen_siswa.keterangan',1)
                               ->count();
@@ -90,7 +90,7 @@
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                               ->where('mapel_kelas.id_mapel',$d->id_mapel)
                               ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('tahun', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
                               ->where('absen_siswa.keterangan',2)
                               ->count();
@@ -98,7 +98,7 @@
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                               ->where('mapel_kelas.id_mapel',$d->id_mapel)
                               ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('tahun', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
                               ->where('absen_siswa.keterangan',3)
                               ->count();
@@ -106,7 +106,7 @@
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                               ->where('mapel_kelas.id_mapel',$d->id_mapel)
                               ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('tahun', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
                               ->where('absen_siswa.keterangan',4)
                               ->count();
@@ -114,7 +114,7 @@
                               ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                               ->where('mapel_kelas.id_mapel',$d->id_mapel)
                               ->where('absen_siswa.id_user',$d->id_user)
-                              ->where('tahun_pelajaran', 'like','%'.$caritahun.'%')
+                              ->where('tahun', 'like','%'.$caritahun.'%')
                               ->where('semester', 'like','%'.$carisemester.'%')
                               ->where('absen_siswa.keterangan',5)
                               ->count();

@@ -16,7 +16,7 @@ use Livewire\WithPagination;
 
 class NilaiSiswa extends Component
 {
-    public $id_materi, $nilai, $jenkel, $id_user, $id_nilai, $keterangan, $waktu_agenda;
+    public $id_materi, $nilai, $jenkel, $id_user, $id_nilai, $keterangan, $waktu_agenda, $caritahun;
     use WithPagination;
     public $material = [];
     public $id_mapelkelas ='';
@@ -24,6 +24,9 @@ class NilaiSiswa extends Component
     public $materikelas ='';
     public $cari = '';
     public $result = 10;
+    public function mount(){
+        $this->caritahun = date('Y');
+    }
     public function render()
     {
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')

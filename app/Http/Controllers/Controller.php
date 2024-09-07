@@ -55,4 +55,22 @@ class Controller extends BaseController
             $hitung['absen'] = DB::table($table)->where($key, $value)->where('waktu', 'like','%'.date('Y-m-d').'%')->count();
             return $hitung;
         }
+
+        public function hari($hari){
+            if($hari == 1){
+                return 'Senin';
+            } elseif($hari == 2){
+                return 'Selasa';
+            } elseif($hari == 3){
+                return 'Rabu';
+            } elseif($hari == 4){
+                return 'Kamis';
+            } elseif($hari == 5){
+                return 'Jumat';
+            } elseif($hari == 6){
+                return 'Sabtu';
+            } elseif($hari == 7){
+                return 'Minggu';
+            }
+        }
 }
