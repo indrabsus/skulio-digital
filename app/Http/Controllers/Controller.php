@@ -71,7 +71,7 @@ class Controller extends BaseController
 
     // Jika $hari adalah null, '', atau array kosong, kembalikan 'Unknown'
     if (is_null($hari) || $hari === '' || (is_array($hari) && empty($hari))) {
-        return 'Unknown';
+        return '';
     }
 
     // Pastikan $hari adalah array
@@ -80,7 +80,7 @@ class Controller extends BaseController
         $hari = array_map('trim', explode(',', $hari));
     } elseif (!is_array($hari)) {
         // Jika $hari bukan array dan bukan string, kembalikan 'Unknown'
-        return 'Unknown';
+        return '';
     }
 
     // Pastikan $hari adalah array dan tidak kosong
@@ -97,7 +97,7 @@ class Controller extends BaseController
     }
 
     // Jika bukan array atau string yang valid, kembalikan 'Unknown'
-    return 'Unknown';
+    return '';
 }
 
 }

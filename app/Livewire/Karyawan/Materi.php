@@ -76,6 +76,7 @@ class Materi extends Component
         else {
             $data  = ModelsMateri::orderBy('id_materi','desc')
         ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+        ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
         ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')

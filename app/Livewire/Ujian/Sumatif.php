@@ -7,12 +7,13 @@ use App\Models\KategoriSoal as ModelsKategoriSoal;
 use App\Models\KelasSumatif;
 use App\Models\MapelKelas;
 use App\Models\MataPelajaran;
+use App\Models\Sumatif as ModelsSumatif;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class KategoriSoal extends Component
+class Sumatif extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_kategori, $token, $tahun, $semester, $waktu, $aktif;
+    public $nama_sumatif, $id_sumatif, $token, $tahun, $waktu, $kelas;
     use WithPagination;
 
     public $cari = '';
@@ -25,23 +26,56 @@ class KategoriSoal extends Component
     ->distinct()
     ->get(['mapel_kelas.id_mapel', 'mata_pelajaran.nama_pelajaran']);  // Kolom yang dibutuhkan
 
-        $data  = ModelsKategoriSoal::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
-        ->leftJoin('data_user','data_user.id_user','kategori_soal.id_user')
-        ->where('nama_kategori', 'like','%'.$this->cari.'%')
+        $data  = ModelsSumatif::where('nama_sumatif', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
-        return view('livewire.ujian.kategori-soal', compact('data','mapel'));
+        return view('livewire.ujian.sumatif', compact('data','mapel'));
     }
     public function insert(){
         $this->validate([
-            'nama_kategori' => 'required',
-            'id_mapel' => 'required'
+            'nama_sumatif' => 'required',
+            'token' => 'required',
+            'waktu' => 'required',
+            'tahun' => 'required',
+            'kelasku' => 'required',
         ]);
-        $data = ModelsKategoriSoal::create([
-            'nama_kategori' => $this->nama_kategori,
-            'id_mapel' => $this->id_mapel,
-            'id_user' => Auth::user()->id
-        ]) ;
-        session()->flash('sukses','Data berhasil ditambahkan');
+        // $data = ModelsSumatif::create([
+        //     'nama_sumatif' => $this->nama_sumatif,
+        //     'token' => $this->token,
+        //     'waktu' => $this->waktu,
+        //     'tahun' => $this->tahun,
+        // ]) ;
+        // session()->flash('sukses','Data berhasil ditambahkan');
+        // $this->clearForm();
+        // $this->dispatch('closeModal');
+
+
+        $isDuplicate = false;
+
+        foreach ($this->kelasku as $id_kelas) {
+            $exists = ModelsSumatif::where('id_kelas', $id_kelas)
+                                  ->where('id_sumatif', $this->id_sumatif)
+                                  ->exists();
+
+            if (!$exists) {
+                $data = ModelsSumatif::create([
+                    'nama_sumatif' => $this->nama_sumatif,
+                    'id_kelas' => $id_kelas,
+                    'token' => $this->token,
+                    'waktu' => $this->waktu,
+                    'tahun' => $this->tahun,
+                ]) ;
+            } else {
+                $isDuplicate = true;
+                break; // Menghentikan loop jika ada data ganda
+            }
+        }
+
+        if ($isDuplicate) {
+            session()->flash('gagal', 'Data dengan kelas dan kategori ini sudah ada.');
+        } else {
+            session()->flash('sukses', 'Data berhasil ditambahkan');
+        }
+
         $this->clearForm();
         $this->dispatch('closeModal');
     }
@@ -90,47 +124,35 @@ class KategoriSoal extends Component
         $this->kelasku = [];
     }
     public function edit($id){
-        $data = ModelsKategoriSoal::where('id_kategori', $id)->first();
-        $this->nama_kategori = $data->nama_kategori;
-        $this->id_mapel = $data->id_mapel;
-        $this->kelas = $data->kelas;
-        $this->id_kategori = $id;
+        $data = ModelsSumatif::where('id_sumatif', $id)->first();
+        $this->nama_sumatif = $data->nama_sumatif;
+        $this->id_sumatif = $id;
         $this->waktu = $data->waktu;
         $this->token = $data->token;
-        $this->semester = $data->semester;
         $this->tahun = $data->tahun;
-        $this->aktif = $data->aktif;
     }
     public function update(){
         $this->validate([
-            'nama_kategori' => 'required',
-            'id_mapel' => 'required',
-            'kelas' => 'required',
-            'waktu' => 'required',
+            'nama_sumatif' => 'required',
             'token' => 'required',
-            'semester' => 'required',
+            'waktu' => 'required',
             'tahun' => 'required',
-            'aktif' => 'required'
         ]);
-        $data = ModelsKategoriSoal::where('id_kategori', $this->id_kategori)->update([
-            'nama_kategori' => $this->nama_kategori,
-            'id_mapel' => $this->id_mapel,
-            'kelas' => $this->kelas,
-            'waktu' => $this->waktu,
+        $data = ModelsSumatif::where('id_sumatif', $this->id_sumatif)->update([
+            'nama_sumatif' => $this->nama_sumatif,
             'token' => $this->token,
-            'semester' => $this->semester,
+            'waktu' => $this->waktu,
             'tahun' => $this->tahun,
-            'aktif' => $this->aktif
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
-        $this->id_kategori = $id;
+        $this->id_sumatif = $id;
     }
     public function delete(){
-        ModelsKategoriSoal::where('id_kategori',$this->id_kategori)->delete();
+        ModelsSumatif::where('id_sumatif',$this->id_sumatif)->delete();
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');
