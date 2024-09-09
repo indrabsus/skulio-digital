@@ -102,7 +102,6 @@ class Pengajuan extends Component
             'id_pengajuan'=> $this->id_pengajuan,
             'volume_realisasi'=> $this->volume_realisasi,
             'bulan_pengajuan_realisasi'=> $this->bulan_pengajuan_realisasi,
-            'id_role'=> $this->id_role,
             'perkiraan_harga_realisasi'=> $this->perkiraan_harga_realisasi,
             'status' => 1
         ]) ;
@@ -121,7 +120,6 @@ class Pengajuan extends Component
             'bulan_pengajuan'=> 'required',
             'jenis'=> 'required',
             'tahun_arkas'=> 'required',
-            'id_role'=> 'required',
             'perkiraan_harga'=> 'required',
         ]);
         $data = TabelPengajuan::where('id_pengajuan', $this->id_pengajuan)->update([
@@ -132,7 +130,6 @@ class Pengajuan extends Component
             'bulan_pengajuan'=> $this->bulan_pengajuan,
             'jenis'=> $this->jenis,
             'tahun_arkas'=> $this->tahun_arkas,
-            'id_role'=> $this->id_role,
             'perkiraan_harga'=> $this->perkiraan_harga,
         ]);
         session()->flash('sukses','Data berhasil diedit');

@@ -100,4 +100,13 @@ class Controller extends BaseController
     return '';
 }
 
+public function statusBos($id){
+    if($id == 1){
+        return 'Disetujui';
+    }elseif($id == 2){
+        return 'Realisasi';
+    }elseif($id == 3){
+        return 'Distribusi';
+    }
+}
 }

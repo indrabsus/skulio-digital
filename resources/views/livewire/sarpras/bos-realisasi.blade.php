@@ -20,9 +20,8 @@
         <div class="col">
             <div class="row justify-content-between mt-2">
                 <div class="col-lg-6">
-                    <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal"
-                        data-bs-target="#add">
-                        Tambah
+                    <button type="button" class="btn btn-primary btn-xs mb-3" wire:click="showKolom()">
+                        Tampilkan pengajuan
                     </button>
                 </div>
                 <div class="col-lg-3">
@@ -48,16 +47,21 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Kegiatan</th>
-                            <th>Jumlah Pengajuan</th>
-                            <th>Jumlah Disetujui</th>
-                            <th>Bulan Pengajuan</th>
-                            <th>Bulan Disetujui</th>
+                            @if ($show)
+                            <th class="bg-warning">Jumlah Pengajuan</th>
+                            <th class="bg-warning">Bulan Pengajuan</th>
+                            <th class="bg-warning">Harga Pengajuan</th>
+                            @endif
+                            <th>Jumlah Realisasi</th>
+                            <th>Bulan Realisasi</th>
+                            <th>Harga Realisasi</th>
+                            <th>Total</th>
                             <th>Jenis</th>
                             <th>Tahun Arkas</th>
-                            <th>Harga Pengajuan</th>
-                            <th>Harga Disetujui</th>
-                            <th>Total</th>
                             <th>Unit</th>
+                            <th>Status</th>
+                            <th>Distribusi</th>
+                            <th>Sisa</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -67,27 +71,32 @@
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                                 <td>{{ $d->nama_barang }}</td>
                                 <td>{{ $d->nama_kegiatan }}</td>
-                                <td>{{ $d->volume }} {{ $d->satuan }}</td>
+                                @if ($show)
+                                <td class="bg-primary">{{ $d->volume }} {{ $d->satuan }}</td>
+                                <td class="bg-primary">{{ $d->bulan_pengajuan }}</td>
+                                <td class="bg-primary">Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
+                                @endif
                                 <td>{{ $d->volume_realisasi }} {{ $d->satuan }}</td>
-                                <td>{{ $d->bulan_pengajuan }}</td>
                                 <td>{{ $d->bulan_pengajuan_realisasi }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
-                                <td>{{ $d->tahun_arkas }}</td>
-                                <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi,0,',','.') }}</td>
+                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
+                                <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->nama_role }}</td>
+                                <td><span class="badge bg-primary">{{ $bos->statusBos($d->status) }}</span></td>
+                                @php
+                                    $vol_d = App\Models\Distribusi::where('id_realisasi', $d->id_realisasi)->sum('volume_distribusi');
+                                @endphp
+                                <td>{{ $vol_d ?? 0}} {{ $d->satuan }}</td>
+                                <td>{{ $d->volume_realisasi - $vol_d }} {{ $d->satuan }}</td>
                                 <td>
-                                    @php
-                                        $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
-                                    @endphp
-                                    @if ($hitung > 0)
-                                    <button class="btn btn-primary btn-xs" disabled>Disetujui</button>
+                                    @if ($d->status == '1')
+                                        <button class="btn btn-warning btn-xs" disabled><i class="fa-solid fa-forward"></i></button>
                                     @else
-                                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Konfirmasi</a>
+                                    <button class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#c_distribusi" wire:click='cx_distribusi("{{$d->id_realisasi}}")'><i class="fa-solid fa-forward"></i></button>
                                     @endif
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
+                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_realisasi}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_realisasi}}')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -245,59 +254,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="">Nama Barang</label>
-                        <input type="text" wire:model.live="nama_barang" class="form-control">
+                        <label for="">Volume Realisasi</label>
+                        <input type="text" wire:model.live="volume_realisasi" class="form-control">
                         <div class="text-danger">
-                            @error('nama_barang')
+                            @error('volume_realisasi')
                                 {{ $message }}
                             @enderror
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Nama Kegiatan</label>
-                        <input type="text" wire:model.live="nama_kegiatan" class="form-control">
+                        <label for="">Perkiraan Harga Realisasi</label>
+                        <input type="number" wire:model.live="perkiraan_harga_realisasi" class="form-control">
                         <div class="text-danger">
-                            @error('nama_kegiatan')
+                            @error('perkiraan_harga_realisasi')
                                 {{ $message }}
                             @enderror
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Volume</label>
-                        <input type="text" wire:model.live="volume" class="form-control">
-                        <div class="text-danger">
-                            @error('volume')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Satuan</label>
-                        <select class="form-control" wire:model.live="satuan">
-                            <option value="">Pilih Satuan</option>
-                            <option value="unit">Unit</option>
-                            <option value="set">Set</option>
-                            <option value="pack">Pack</option>
-                            <option value="dus">Dus</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('satuan')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Perkiraan Harga Satuan</label>
-                        <input type="number" wire:model.live="perkiraan_harga" class="form-control">
-                        <div class="text-danger">
-                            @error('perkiraan_harga')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Bulan Pengajuan</label>
-                        <select class="form-control" wire:model.live="bulan_pengajuan">
+                        <label for="">Bulan Pengajuan Realisasi</label>
+                        <select class="form-control" wire:model.live="bulan_pengajuan_realisasi">
                             <option value="">Pilih Bulan</option>
                             <option value="Januari">Januari</option>
                             <option value="Februari">Februari</option>
@@ -313,54 +289,27 @@
                             <option value="Desember">Desember</option>
                         </select>
                         <div class="text-danger">
-                            @error('bulan_pengajuan')
+                            @error('bulan_pengajuan_realisasi')
                                 {{ $message }}
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="">Jenis Barang</label>
-                        <select class="form-control" wire:model.live ="jenis">
-                            <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Barang Habis Pakai</option>
-                            <option value="b">Barang Modal</option>
+                    <div class="form-group">
+                        <label for="">Status</label>
+                        <select class="form-control" wire:model="status">
+                            <option value="">Pilih Status</option>
+                            <option value="1">Disetujui</option>
+                            <option value="2">Realisasi</option>
                         </select>
                         <div class="text-danger">
-                            @error('jenis')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Tahun Arkas</label>
-                        <select class="form-control" wire:model.live ="tahun_arkas">
-                            <option value="">Pilih Tahun Arkas</option>
-                            <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
-                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                            <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jenis')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Unit</label>
-                        <select class="form-control" wire:model="id_role">
-                            <option value="">Pilih Unit</option>
-                            @foreach ($role as $r)
-                                <option value="{{ $r->id_role }}">{{ $r->nama_role }}</option>
-                            @endforeach
-                        </select>
-                        <div class="text-danger">
-                            @error('id_role')
+                            @error('status')
                                 {{ $message }}
                             @enderror
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
                 </div>
@@ -563,6 +512,47 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="c_distribusi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Distribusi Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="">Jumlah Distribusi</label>
+                        <input type="number" class="form-control" wire:model="volume_distribusi">
+                    </div>
+                    <div class="text-danger">
+                        @error('volume_distribusi')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Unit</label>
+                        <select class="form-control" wire:model.live="id_role">
+                            <option value="">Pilih Unit</option>
+                            @foreach ($role as $x)
+                                <option value="{{ $x->id_role }}">{{ $x->nama_role }}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">
+                            @error('id_role')
+                                {{ $message }}
+                            @enderror
+                        </div>
+            </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" wire:click='distribusi()'>Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -575,6 +565,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#konf').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_distribusi').modal('hide');
         })
     </script>
 

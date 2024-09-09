@@ -15,10 +15,9 @@ return new class extends Migration
             $table->uuid('id_realisasi')->primary();
             $table->foreignUuid('id_pengajuan')->references('id_pengajuan')->on('pengajuan')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('volume_realisasi');
-            $table->string('bulan_pengajuan');
+            $table->string('bulan_pengajuan_realisasi');
             $table->bigInteger('perkiraan_harga_realisasi');
             $table->enum('status', [1,2,3,4]);
-            $table->foreignUuid('id_role')->references('id_role')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

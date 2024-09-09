@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Sarpras;
 
+use App\Http\Controllers\Controller;
 use App\Models\BosRealisasi as ModelRealisasi;
+use App\Models\Distribusi;
 use Livewire\Component;
 use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
@@ -10,49 +12,28 @@ use Livewire\WithPagination;
 
 class BosRealisasi extends Component
 {
-    public $id_pengajuan, $nama_barang, $volume,$volume_realisasi, $satuan, $bulan_pengajuan, $bulan_pengajuan_realisasi, $tahun_arkas ,$id_role, $jenis, $perkiraan_harga, $perkiraan_harga_realisasi, $nama_kegiatan;
+    public $id_realisasi, $nama_barang,
+    $volume,$volume_realisasi, $satuan, $bulan_pengajuan,
+    $bulan_pengajuan_realisasi, $tahun_arkas ,$id_role, $jenis,
+    $perkiraan_harga, $perkiraan_harga_realisasi, $nama_kegiatan,
+    $status, $volume_distribusi;
     use WithPagination;
-
+    public $show = false;
     public $cari = '';
     public $result = 10;
     public function render()
     {
+        $bos = new Controller;
 
         $role = Role::all();
         $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
-        ->leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('bos_realisasi.id_pengajuan','desc')->
+        ->leftJoin('roles','roles.id_role','pengajuan.id_role')
+        ->orderBy('bos_realisasi.id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
-        return view('livewire.sarpras.bos-realisasi', compact('data','role'));
+        return view('livewire.sarpras.bos-realisasi', compact('data','role','bos'));
     }
-    public function insert(){
-        $this->validate([
-            'nama_barang' => 'required',
-            'nama_kegiatan'=> 'required',
-            'volume'=> 'required',
-            'satuan'=> 'required',
-            'bulan_pengajuan'=> 'required',
-            'jenis'=> 'required',
-            'tahun_arkas'=> 'required',
-            'id_role'=> 'required',
-            'perkiraan_harga'=> 'required',
-        ]);
 
-        $data = TabelPengajuan::create([
-            'nama_barang' => $this->nama_barang,
-            'nama_kegiatan'=> $this->nama_kegiatan,
-            'volume'=> $this->volume,
-            'satuan'=> $this->satuan,
-            'bulan_pengajuan'=> $this->bulan_pengajuan,
-            'jenis'=> $this->jenis,
-            'tahun_arkas'=> $this->tahun_arkas,
-            'id_role'=> $this->id_role,
-            'perkiraan_harga'=> $this->perkiraan_harga,
-        ]) ;
-        session()->flash('sukses','Data berhasil ditambahkan');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-    }
     public function clearForm(){
         $this->nama_barang = '';
         $this->nama_kegiatan = '';
@@ -61,92 +42,74 @@ class BosRealisasi extends Component
         $this->bulan_pengajuan = '';
         $this->jenis = '';
         $this->tahun_arkas = '';
-        $this->id_role = '';
         $this->perkiraan_harga = '';
     }
     public function edit($id){
-        $data = TabelPengajuan::where('id_pengajuan', $id)->first();
-        $this->id_pengajuan = $data->id_pengajuan;
-        $this->nama_barang = $data->nama_barang;
-        $this->nama_kegiatan = $data->nama_kegiatan;
-        $this->volume =  $data->volume;
-        $this->satuan = $data->satuan;
-        $this->bulan_pengajuan = $data->bulan_pengajuan;
-        $this->jenis = $data->jenis;
-        $this->tahun_arkas = $data->tahun_arkas;
-        $this->id_role = $data->id_role;
-        $this->perkiraan_harga = $data->perkiraan_harga;
+        $data = ModelRealisasi::where('id_realisasi', $id)->first();
+        $this->id_realisasi = $data->id_realisasi;
+        $this->volume_realisasi =  $data->volume_realisasi;
+        $this->bulan_pengajuan_realisasi = $data->bulan_pengajuan_realisasi;
+        $this->perkiraan_harga_realisasi = $data->perkiraan_harga_realisasi;
+        $this->status = $data->status;
     }
-    public function konf($id){
-        $data = TabelPengajuan::where('id_pengajuan', $id)->first();
-        $this->id_pengajuan = $id;
-        $this->nama_barang = $data->nama_barang;
-        $this->nama_kegiatan = $data->nama_kegiatan;
-        $this->volume =  $data->volume;
-        $this->satuan = $data->satuan;
-        $this->bulan_pengajuan = $data->bulan_pengajuan;
-        $this->jenis = $data->jenis;
-        $this->tahun_arkas = $data->tahun_arkas;
-        $this->id_role = $data->id_role;
-        $this->perkiraan_harga = $data->perkiraan_harga;
-        $this->volume_realisasi =  $data->volume;
-        $this->bulan_pengajuan_realisasi = $data->bulan_pengajuan;
-        $this->perkiraan_harga_realisasi = $data->perkiraan_harga;
-    }
-    public function realisasi(){
-        $this->validate([
-            'volume_realisasi'=> 'required',
-            'bulan_pengajuan_realisasi'=> 'required',
-            'perkiraan_harga_realisasi'=> 'required'
-        ]);
-        $data = BosRealisasi::create([
-            'id_pengajuan'=> $this->id_pengajuan,
-            'volume_realisasi'=> $this->volume_realisasi,
-            'bulan_pengajuan_realisasi'=> $this->bulan_pengajuan_realisasi,
-            'id_role'=> $this->id_role,
-            'perkiraan_harga_realisasi'=> $this->perkiraan_harga_realisasi,
-            'status' => 1
-        ]) ;
-        session()->flash('sukses','Data berhasil ditambahkan');
-        $this->clearForm();
-        $this->dispatch('closeModal');
-    }
-
 
     public function update(){
-        $this->validate([
-            'nama_barang' => 'required',
-            'nama_kegiatan'=> 'required',
-            'volume'=> 'required',
-            'satuan'=> 'required',
-            'bulan_pengajuan'=> 'required',
-            'jenis'=> 'required',
-            'tahun_arkas'=> 'required',
-            'id_role'=> 'required',
-            'perkiraan_harga'=> 'required',
+        $semua = $this->validate([
+            'volume_realisasi'=> 'required',
+            'bulan_pengajuan_realisasi'=> 'required',
+            'perkiraan_harga_realisasi'=> 'required',
+            'status'=> 'required',
         ]);
-        $data = TabelPengajuan::where('id_pengajuan', $this->id_pengajuan)->update([
-            'nama_barang' => $this->nama_barang,
-            'nama_kegiatan'=> $this->nama_kegiatan,
-            'volume'=> $this->volume,
-            'satuan'=> $this->satuan,
-            'bulan_pengajuan'=> $this->bulan_pengajuan,
-            'jenis'=> $this->jenis,
-            'tahun_arkas'=> $this->tahun_arkas,
-            'id_role'=> $this->id_role,
-            'perkiraan_harga'=> $this->perkiraan_harga,
+        $data = ModelRealisasi::where('id_realisasi', $this->id_realisasi)->update([
+            'volume_realisasi'=> $this->volume_realisasi,
+            'bulan_pengajuan_realisasi'=> $this->bulan_pengajuan_realisasi,
+            'perkiraan_harga_realisasi'=> $this->perkiraan_harga_realisasi,
+            'status'=> $this->status
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
-        $data = TabelPengajuan::where('id_pengajuan', $id)->first();
-        $this->id_pengajuan = $id;
+        $this->id_realisasi = $id;
     }
     public function delete(){
-        TabelPengajuan::where('id_pengajuan',$this->id_pengajuan)->delete();
+        ModelRealisasi::where('id_realisasi',$this->id_realisasi)->delete();
         session()->flash('sukses','Data berhasil dihapus');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
+    public function showKolom(){
+        $this->show = !$this->show;
+    }
+
+    public function cx_distribusi($id){
+        $data = ModelRealisasi::where('bos_realisasi.id_realisasi', $id)
+        ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
+        ->first();
+        $this->id_realisasi = $id;
+        $this->id_role = $data->id_role;
+    }
+    public function distribusi(){
+        $this->validate([
+            'id_role'=> 'required',
+            'volume_distribusi' => 'required',
+        ]);
+        $hitung = ModelRealisasi::leftJoin('distribusi', 'distribusi.id_realisasi', '=', 'bos_realisasi.id_realisasi')
+        ->where('bos_realisasi.id_realisasi', $this->id_realisasi)->first();
+        $total = $hitung ->volume_realisasi - $hitung->volume_distribusi;
+        if($total < $this->volume_distribusi){
+            session()->flash('gagal','Volume distribusi melebihi volume realisasi');
+            $this->clearForm();
+        $this->dispatch('closeModal');
+            return;
+        }
+        Distribusi::create([
+            'id_realisasi'=> $this->id_realisasi,
+            'id_role'=> $this->id_role,
+            'volume_distribusi'=> $this->volume_distribusi
+        ]);
+        session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
     }

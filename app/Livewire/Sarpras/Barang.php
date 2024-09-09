@@ -9,7 +9,7 @@ use App\Models\Role;
 use App\Models\Ruangan;
 use Livewire\WithPagination;
 
-class barang extends Component
+class Barang extends Component
 {
     public $id_barang, $nama_barang, $volume, $volume2, $satuan, $tahun_masuk, $sumber, $jenis ,$id_ruangan, $id_role, $tahun_arkas;
     use WithPagination;

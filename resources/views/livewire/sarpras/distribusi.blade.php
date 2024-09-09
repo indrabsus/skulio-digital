@@ -43,11 +43,10 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
-                            <th>Jumlah</th>
-                            <th>Sumber</th>
-                            <th>Tahun Masuk</th>
+                            <th>Distribusi</th>
+                            <th>Tahun Arkas</th>
                             <th>Jenis Barang</th>
-                            <th>Ruangan</th>
+                            <th>Tanggal Distribusi</th>
                             <th>Unit</th>
                             <th>aksi</th>
                         </tr>
@@ -57,11 +56,10 @@
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                                 <td>{{ $d->nama_barang }}</td>
-                                <td>{{ $d->volume }} {{ $d->satuan }}</td>
-                                <td>{{ $d->sumber }}</td>
-                                <td>{{ $d->tahun_masuk }}</td>
+                                <td>{{ $d->volume_distribusi }} {{ $d->satuan }}</td>
+                               <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
-                                <td>{{ $d->nama_ruangan }}</td>
+                                <td>{{ date('d F Y H:i A', strtotime($d->created_at)) }}</td>
                                 <td>{{ $d->nama_role}}</td>
                                 <td>
                                     <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_distribusi}}')"><i class="fa-solid fa-trash"></i></a>
