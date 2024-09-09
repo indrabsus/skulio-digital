@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Sarpras;
 
-use App\Models\BosRealisasi;
+use App\Models\BosRealisasi as ModelRealisasi;
 use Livewire\Component;
 use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
 use Livewire\WithPagination;
 
-class Pengajuan extends Component
+class BosRealisasi extends Component
 {
     public $id_pengajuan, $nama_barang, $volume,$volume_realisasi, $satuan, $bulan_pengajuan, $bulan_pengajuan_realisasi, $tahun_arkas ,$id_role, $jenis, $perkiraan_harga, $perkiraan_harga_realisasi, $nama_kegiatan;
     use WithPagination;
@@ -19,10 +19,11 @@ class Pengajuan extends Component
     {
 
         $role = Role::all();
-        $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')->
+        $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
+        ->leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('bos_realisasi.id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
-        return view('livewire.sarpras.pengajuan', compact('data','role'));
+        return view('livewire.sarpras.bos-realisasi', compact('data','role'));
     }
     public function insert(){
         $this->validate([

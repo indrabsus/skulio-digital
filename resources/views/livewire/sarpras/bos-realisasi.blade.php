@@ -48,11 +48,14 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Kegiatan</th>
-                            <th>Jumlah</th>
+                            <th>Jumlah Pengajuan</th>
+                            <th>Jumlah Disetujui</th>
                             <th>Bulan Pengajuan</th>
+                            <th>Bulan Disetujui</th>
                             <th>Jenis</th>
                             <th>Tahun Arkas</th>
-                            <th>Harga Satuan</th>
+                            <th>Harga Pengajuan</th>
+                            <th>Harga Disetujui</th>
                             <th>Total</th>
                             <th>Unit</th>
                             <th>Aksi</th>
@@ -65,11 +68,14 @@
                                 <td>{{ $d->nama_barang }}</td>
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 <td>{{ $d->volume }} {{ $d->satuan }}</td>
+                                <td>{{ $d->volume_realisasi }} {{ $d->satuan }}</td>
                                 <td>{{ $d->bulan_pengajuan }}</td>
+                                <td>{{ $d->bulan_pengajuan_realisasi }}</td>
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
-                                <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
+                                <td>Rp.{{ number_format($d->perkiraan_harga_realisasi,0,',','.') }}</td>
+                                <td>Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi,0,',','.') }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>
                                     @php
