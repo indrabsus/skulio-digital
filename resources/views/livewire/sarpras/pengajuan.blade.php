@@ -55,7 +55,9 @@
                             <th>Harga Satuan</th>
                             <th>Total</th>
                             <th>Unit</th>
-                            <th>Aksi</th>
+                            <th>
+                            Aksi
+                        </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,13 +77,27 @@
                                     @php
                                         $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
                                     @endphp
+                                    @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                                     @if ($hitung > 0)
                                     <button class="btn btn-primary btn-xs" disabled>Disetujui</button>
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
                                     @else
                                     <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Konfirmasi</a>
+
                                     @endif
+                                    @endif
+                                    @if (Auth::user()->id_role != 1 || Auth::user()->id_role != 16)
+                                    @if ($hitung > 0)
+                                    <button class="btn btn-success btn-xs" disabled> <i class="fa-solid fa-edit"></i></a>
+                                    <button class="btn btn-danger btn-xs" disabled> <i class="fa-solid fa-trash"></i></button>
+
+                                    @else
                                     <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
-                              <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
+                                    @endif
+                                    @endif
+
                                 </td>
                             </tr>
                         @endforeach

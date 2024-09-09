@@ -62,7 +62,9 @@
                             <th>Status</th>
                             <th>Distribusi</th>
                             <th>Sisa</th>
+                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                             <th>Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +91,7 @@
                                 @endphp
                                 <td>{{ $vol_d ?? 0}} {{ $d->satuan }}</td>
                                 <td>{{ $d->volume_realisasi - $vol_d }} {{ $d->satuan }}</td>
+                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                                 <td>
                                     @if ($d->status == '1')
                                         <button class="btn btn-warning btn-xs" disabled><i class="fa-solid fa-forward"></i></button>
@@ -98,6 +101,7 @@
                                 <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_realisasi}}")'><i class="fa-solid fa-edit"></i></i></a>
                                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_realisasi}}')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
