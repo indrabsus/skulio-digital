@@ -55,9 +55,9 @@
                             <th>Harga Satuan</th>
                             <th>Total</th>
                             <th>Unit</th>
-                            <th>
-                            Aksi
-                        </th>
+                            @if (Auth::user()->id_role != 17)
+                            <th>Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -73,32 +73,35 @@
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
                                 <td>{{ $d->nama_role }}</td>
-                                <td>
-                                    @php
-                                        $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
-                                    @endphp
+                               @if (Auth::user()->id_role != 17)
+                               <td>
+                                @php
+                                    $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
+                                @endphp
+                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                                @if ($hitung > 0)
+                                <button class="btn btn-primary btn-xs" disabled>Disetujui</button>
+
+                                @else
+                                <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Konfirmasi</a>
+
+                                @endif
+                                @endif
+                                @if ($hitung > 0)
                                     @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
-                                    @if ($hitung > 0)
-                                    <button class="btn btn-primary btn-xs" disabled>Disetujui</button>
                                     <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
                                     <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
                                     @else
-                                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Konfirmasi</a>
-
-                                    @endif
-                                    @endif
-                                    @if (Auth::user()->id_role != 1 || Auth::user()->id_role != 16)
-                                    @if ($hitung > 0)
-                                    <button class="btn btn-success btn-xs" disabled> <i class="fa-solid fa-edit"></i></a>
+                                    <button class="btn btn-success btn-xs" disabled> <i class="fa-solid fa-edit"></i></a></button>
                                     <button class="btn btn-danger btn-xs" disabled> <i class="fa-solid fa-trash"></i></button>
-
-                                    @else
-                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    @endif
+                                @else
+                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
                                     <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
-                                    @endif
-                                    @endif
+                                @endif
 
-                                </td>
+                            </td>
+                               @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -220,6 +223,7 @@
                             @enderror
                         </div>
                     </div>
+                    @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                     <div class="form-group mb-3">
                         <label for="">Unit</label>
                         <select class="form-control" wire:model="id_role">
@@ -234,6 +238,8 @@
                             @enderror
                         </div>
                     </div>
+                    @endif
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -355,6 +361,7 @@
                             @enderror
                         </div>
                     </div>
+                    @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                     <div class="form-group mb-3">
                         <label for="">Unit</label>
                         <select class="form-control" wire:model="id_role">
@@ -369,6 +376,7 @@
                             @enderror
                         </div>
                     </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

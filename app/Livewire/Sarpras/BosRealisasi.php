@@ -8,6 +8,7 @@ use App\Models\Distribusi;
 use Livewire\Component;
 use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class BosRealisasi extends Component
@@ -26,11 +27,20 @@ class BosRealisasi extends Component
         $bos = new Controller;
 
         $role = Role::all();
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
         $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
         ->orderBy('bos_realisasi.id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
+        } else {
+            $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
+        ->leftJoin('roles','roles.id_role','pengajuan.id_role')
+        ->orderBy('bos_realisasi.id_pengajuan','desc')->
+        where('nama_barang', 'like','%'.$this->cari.'%')
+        ->where('pengajuan.id_role', Auth::user()->id_role)
+        ->paginate($this->result);
+        }
         return view('livewire.sarpras.bos-realisasi', compact('data','role','bos'));
     }
 

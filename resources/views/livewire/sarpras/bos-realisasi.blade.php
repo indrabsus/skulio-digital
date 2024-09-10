@@ -62,7 +62,7 @@
                             <th>Status</th>
                             <th>Distribusi</th>
                             <th>Sisa</th>
-                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || auth()->user()->id_role == 3)
                             <th>Aksi</th>
                             @endif
                         </tr>
@@ -91,7 +91,7 @@
                                 @endphp
                                 <td>{{ $vol_d ?? 0}} {{ $d->satuan }}</td>
                                 <td>{{ $d->volume_realisasi - $vol_d }} {{ $d->satuan }}</td>
-                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || auth()->user()->id_role == 3)
                                 <td>
                                     @if ($d->status == '1')
                                         <button class="btn btn-warning btn-xs" disabled><i class="fa-solid fa-forward"></i></button>

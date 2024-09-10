@@ -48,7 +48,9 @@
                             <th>Jenis Barang</th>
                             <th>Tanggal Distribusi</th>
                             <th>Unit</th>
-                            <th>aksi</th>
+                            @if (auth()->user()->id_role == 1 || auth()->user()->id_role == 3)
+                            <th>Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -61,9 +63,11 @@
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ date('d F Y H:i A', strtotime($d->created_at)) }}</td>
                                 <td>{{ $d->nama_role}}</td>
+                                @if (auth()->user()->id_role == 1 || auth()->user()->id_role == 3)
                                 <td>
                                     <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_distribusi}}')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

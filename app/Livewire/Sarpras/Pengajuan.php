@@ -6,6 +6,7 @@ use App\Models\BosRealisasi;
 use Livewire\Component;
 use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class Pengajuan extends Component
@@ -19,35 +20,66 @@ class Pengajuan extends Component
     {
 
         $role = Role::all();
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
         $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
+        } else {
+            $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
+            ->where('pengajuan.id_role', Auth::user()->id_role)
+            ->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+        }
         return view('livewire.sarpras.pengajuan', compact('data','role'));
     }
     public function insert(){
-        $this->validate([
-            'nama_barang' => 'required',
-            'nama_kegiatan'=> 'required',
-            'volume'=> 'required',
-            'satuan'=> 'required',
-            'bulan_pengajuan'=> 'required',
-            'jenis'=> 'required',
-            'tahun_arkas'=> 'required',
-            'id_role'=> 'required',
-            'perkiraan_harga'=> 'required',
-        ]);
 
-        $data = TabelPengajuan::create([
-            'nama_barang' => $this->nama_barang,
-            'nama_kegiatan'=> $this->nama_kegiatan,
-            'volume'=> $this->volume,
-            'satuan'=> $this->satuan,
-            'bulan_pengajuan'=> $this->bulan_pengajuan,
-            'jenis'=> $this->jenis,
-            'tahun_arkas'=> $this->tahun_arkas,
-            'id_role'=> $this->id_role,
-            'perkiraan_harga'=> $this->perkiraan_harga,
-        ]) ;
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16){
+            $this->validate([
+                'nama_barang' => 'required',
+                'nama_kegiatan'=> 'required',
+                'volume'=> 'required',
+                'satuan'=> 'required',
+                'bulan_pengajuan'=> 'required',
+                'jenis'=> 'required',
+                'tahun_arkas'=> 'required',
+                'id_role'=> 'required',
+                'perkiraan_harga'=> 'required',
+            ]);
+            $data = TabelPengajuan::create([
+                'nama_barang' => $this->nama_barang,
+                'nama_kegiatan'=> $this->nama_kegiatan,
+                'volume'=> $this->volume,
+                'satuan'=> $this->satuan,
+                'bulan_pengajuan'=> $this->bulan_pengajuan,
+                'jenis'=> $this->jenis,
+                'tahun_arkas'=> $this->tahun_arkas,
+                'id_role'=> $this->id_role,
+                'perkiraan_harga'=> $this->perkiraan_harga,
+            ]) ;
+        } else {
+            $this->validate([
+                'nama_barang' => 'required',
+                'nama_kegiatan'=> 'required',
+                'volume'=> 'required',
+                'satuan'=> 'required',
+                'bulan_pengajuan'=> 'required',
+                'jenis'=> 'required',
+                'tahun_arkas'=> 'required',
+                'perkiraan_harga'=> 'required',
+            ]);
+            $data = TabelPengajuan::create([
+                'nama_barang' => $this->nama_barang,
+                'nama_kegiatan'=> $this->nama_kegiatan,
+                'volume'=> $this->volume,
+                'satuan'=> $this->satuan,
+                'bulan_pengajuan'=> $this->bulan_pengajuan,
+                'jenis'=> $this->jenis,
+                'tahun_arkas'=> $this->tahun_arkas,
+                'id_role'=> Auth::user()->id_role,
+                'perkiraan_harga'=> $this->perkiraan_harga,
+            ]) ;
+        }
+
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
