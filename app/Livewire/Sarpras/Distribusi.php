@@ -22,7 +22,7 @@ class Distribusi extends Component
 
         $ruangan = Ruangan::all();
         $role = Role::all();
-        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
             $data  = TabelDistribusi::leftJoin('roles','roles.id_role','distribusi.id_role')
             ->leftJoin('bos_realisasi','bos_realisasi.id_realisasi','distribusi.id_realisasi')
             ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')

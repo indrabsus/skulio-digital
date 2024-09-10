@@ -27,7 +27,7 @@ class BosRealisasi extends Component
         $bos = new Controller;
 
         $role = Role::all();
-        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
         $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
         ->orderBy('bos_realisasi.id_pengajuan','desc')->
