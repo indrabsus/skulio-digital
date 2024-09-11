@@ -21,6 +21,7 @@ class BosRealisasi extends Component
     use WithPagination;
     public $show = false;
     public $cari = '';
+    public $cari_unit = '';
     public $result = 10;
     public function render()
     {
@@ -32,6 +33,7 @@ class BosRealisasi extends Component
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
         ->orderBy('bos_realisasi.id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
+        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
         ->paginate($this->result);
         } else {
             $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
@@ -39,6 +41,7 @@ class BosRealisasi extends Component
         ->orderBy('bos_realisasi.id_pengajuan','desc')->
         where('nama_barang', 'like','%'.$this->cari.'%')
         ->where('pengajuan.id_role', Auth::user()->id_role)
+        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
         ->paginate($this->result);
         }
         return view('livewire.sarpras.bos-realisasi', compact('data','role','bos'));

@@ -15,19 +15,23 @@ class Pengajuan extends Component
     use WithPagination;
 
     public $cari = '';
+    public $cari_unit = '';
     public $result = 10;
     public function render()
     {
 
         $role = Role::all();
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
-        $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')->
-        where('nama_barang', 'like','%'.$this->cari.'%')
+        $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
+        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+        ->where('nama_barang', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
         } else {
             $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
             ->where('pengajuan.id_role', Auth::user()->id_role)
-            ->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+            ->where('nama_barang', 'like','%'.$this->cari.'%')
+            ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+            ->paginate($this->result);
         }
         return view('livewire.sarpras.pengajuan', compact('data','role'));
     }

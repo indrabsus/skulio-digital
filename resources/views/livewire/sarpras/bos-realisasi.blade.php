@@ -24,8 +24,16 @@
                         Tampilkan pengajuan
                     </button>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
+                        <div class="col-3">
+                            <select class="form-control" wire:model.live="cari_unit">
+                                <option value="">Pilih Unit</option>
+                                @foreach ($role as $dr)
+                                    <option value="{{ $dr->nama_role }}">{{ $dr->nama_role }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
