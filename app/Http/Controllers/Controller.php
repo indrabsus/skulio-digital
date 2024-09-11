@@ -102,11 +102,11 @@ class Controller extends BaseController
 
 public function statusBos($id){
     if($id == 1){
-        return 'Disetujui';
+        return '<span class="badge bg-primary">Disetujui</span>';
     }elseif($id == 2){
-        return 'Realisasi';
+        return '<span class="badge bg-success">Realisasi</span>';
     }elseif($id == 3){
-        return 'Distribusi';
+        return '<span class="badge bg-danger">Ditolak</span>';
     }
 }
 }

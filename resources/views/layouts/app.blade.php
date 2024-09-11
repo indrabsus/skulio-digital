@@ -160,7 +160,7 @@ License: For each use you must have a valid license purchased only from above li
 			<!-- partial:partials/_footer.html -->
 			<footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
 				<p class="text-muted mb-1 mb-md-0">Copyright © <?= date('Y') ?> <a href="https://www.batara.art" target="_blank">Skulio Pro</a>.</p>
-				<p class="text-muted">Powered by Zakola Sakuci</p>
+				<p class="text-muted">Powered by Indra Batara</p>
 			</footer>
 			<!-- partial -->
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AbsenBulanan;
+use App\Exports\Pengajuan;
 use App\Imports\SiswaImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,6 +13,10 @@ class ExcelController extends Controller
     public function absen($bln, $jbtn)
     {
         return Excel::download(new AbsenBulanan($bln, $jbtn), 'persentase-'.$jbtn.'-'.$bln.'.xlsx');
+    }
+    public function pengajuan($thn)
+    {
+        return Excel::download(new Pengajuan($thn), 'pengajuan-'.$thn.'.xlsx');
     }
 
     public function importSiswa(Request $request)

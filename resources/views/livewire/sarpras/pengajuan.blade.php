@@ -18,6 +18,8 @@
             @endif
         </div>
         <div class="col">
+            <h3>Total pengajuan : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
+            <hr>
             <div class="row justify-content-between mt-2">
                 <div class="col-lg-6">
                     <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal"
@@ -105,7 +107,7 @@
                                     @endif
                                 @else
                                 <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_pengajuan}}")'><i class="fa-solid fa-edit"></i></i></a>
-                                    <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
+                                <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_pengajuan}}')"><i class="fa-solid fa-trash"></i></a>
                                 @endif
 
                             </td>
@@ -565,7 +567,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click='realisasi()'>Save changes</button>
+                    <button type="button" class="btn btn-danger" wire:click='tolak()'>Tolak</button>
+                    <button type="button" class="btn btn-primary" wire:click='realisasi()'>Setujui</button>
                 </div>
             </div>
         </div>

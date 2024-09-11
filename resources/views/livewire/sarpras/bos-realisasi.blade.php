@@ -18,13 +18,30 @@
             @endif
         </div>
         <div class="col">
+            <h3>Total Disetujui : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
+            <hr>
             <div class="row justify-content-between mt-2">
                 <div class="col-lg-6">
                     <button type="button" class="btn btn-primary btn-xs mb-3" wire:click="showKolom()">
                         Tampilkan pengajuan
                     </button>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
+                    <form action="{{ route('pengajuanxls',['thn' => $this->thn]) }}" method="get">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="col-3">
+                                <select class="form-control" wire:model.live="thn">
+                                    <option value="">Pilih Tahun</option>
+                                    <option value="{{ date('Y') - 1}}">{{ date('Y') - 1 }}</option>
+                                    <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                                    <option value="{{ date('Y') + 1}}">{{ date('Y') + 1 }}</option>
+                                </select>
+                            </div>
+                            <button class="input-group-text" id="basic-addon1">Print</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-3">
                         <div class="col-3">
                             <select class="form-control" wire:model.live="cari_unit">
@@ -93,7 +110,7 @@
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->nama_role }}</td>
-                                <td><span class="badge bg-primary">{{ $bos->statusBos($d->status) }}</span></td>
+                                <td>{!! $bos->statusBos($d->status) !!}</td>
                                 @php
                                     $vol_d = App\Models\Distribusi::where('id_realisasi', $d->id_realisasi)->sum('volume_distribusi');
                                 @endphp
@@ -101,13 +118,16 @@
                                 <td>{{ $d->volume_realisasi - $vol_d }} {{ $d->satuan }}</td>
                                 @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 3)
                                 <td>
-                                    @if ($d->status == '1')
+                                    @if ($d->status == '1' || $d->status == '3')
                                         <button class="btn btn-warning btn-xs" disabled><i class="fa-solid fa-forward"></i></button>
                                     @else
                                     <button class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#c_distribusi" wire:click='cx_distribusi("{{$d->id_realisasi}}")'><i class="fa-solid fa-forward"></i></button>
                                     @endif
                                 @if(Auth::user()->id_role != 3)
-                                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_realisasi}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    @if ($d->status != '3')
+                                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_realisasi}}")'><i class="fa-solid fa-edit"></i></i></a>
+                                    @endif
+
                                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_realisasi}}')"><i class="fa-solid fa-trash"></i></a>
                                 @endif
                                 </td>

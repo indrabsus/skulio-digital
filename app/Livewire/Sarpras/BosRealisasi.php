@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
 class BosRealisasi extends Component
@@ -22,11 +23,17 @@ class BosRealisasi extends Component
     public $show = false;
     public $cari = '';
     public $cari_unit = '';
+    public $thn = '';
     public $result = 10;
+
+
     public function render()
     {
         $bos = new Controller;
-
+        $total = DB::table('bos_realisasi')
+                ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
+                ->where('status', '!=', 3)
+                ->value('total');
         $role = Role::all();
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
         $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
@@ -44,7 +51,7 @@ class BosRealisasi extends Component
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
         ->paginate($this->result);
         }
-        return view('livewire.sarpras.bos-realisasi', compact('data','role','bos'));
+        return view('livewire.sarpras.bos-realisasi', compact('data','role','bos','total'));
     }
 
     public function clearForm(){

@@ -8,6 +8,7 @@ use App\Models\Pengajuan as TabelPengajuan;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class Pengajuan extends Component
 {
@@ -21,6 +22,9 @@ class Pengajuan extends Component
     {
 
         $role = Role::all();
+        $total = DB::table('pengajuan')
+                ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
+                ->value('total');
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
         $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
@@ -33,7 +37,7 @@ class Pengajuan extends Component
             ->where('nama_role', 'like','%'.$this->cari_unit.'%')
             ->paginate($this->result);
         }
-        return view('livewire.sarpras.pengajuan', compact('data','role'));
+        return view('livewire.sarpras.pengajuan', compact('data','role','total'));
     }
     public function insert(){
 
@@ -140,6 +144,23 @@ class Pengajuan extends Component
             'bulan_pengajuan_realisasi'=> $this->bulan_pengajuan_realisasi,
             'perkiraan_harga_realisasi'=> $this->perkiraan_harga_realisasi,
             'status' => 1
+        ]) ;
+        session()->flash('sukses','Data berhasil ditambahkan');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
+    public function tolak(){
+        $this->validate([
+            'volume_realisasi'=> 'required',
+            'bulan_pengajuan_realisasi'=> 'required',
+            'perkiraan_harga_realisasi'=> 'required'
+        ]);
+        $data = BosRealisasi::create([
+            'id_pengajuan'=> $this->id_pengajuan,
+            'volume_realisasi'=> 0,
+            'bulan_pengajuan_realisasi'=> '-',
+            'perkiraan_harga_realisasi'=> 0,
+            'status' => 3
         ]) ;
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
