@@ -26,6 +26,7 @@
                         Tampilkan pengajuan
                     </button>
                 </div>
+                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 3)
                 <div class="col-lg-3">
                     <form action="{{ route('pengajuanxls',['thn' => $this->thn]) }}" method="get">
                         <div class="input-group input-group-sm mb-3">
@@ -41,6 +42,7 @@
                         </div>
                     </form>
                 </div>
+                @endif
                 <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-3">
                         <div class="col-3">
