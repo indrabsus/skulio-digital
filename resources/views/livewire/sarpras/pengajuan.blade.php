@@ -167,6 +167,9 @@
                             <option value="set">Set</option>
                             <option value="pack">Pack</option>
                             <option value="dus">Dus</option>
+                            <option value="pcs">Pcs</option>
+                            <option value="buah">Buah</option>
+                            <option value="Rim">Rim"></option>
                         </select>
                         <div class="text-danger">
                             @error('satuan')
@@ -297,21 +300,16 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="">Satuan</label>
-                        <select class="form-control" wire:model.live="satuan">
-                            <option value="">Pilih Satuan</option>
-                            <option value="unit">Unit</option>
-                            <option value="set">Set</option>
-                            <option value="pack">Pack</option>
-                            <option value="dus">Dus</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('satuan')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
+                    <select class="form-control" wire:model.live="satuan">
+                        <option value="">Pilih Satuan</option>
+                        <option value="unit">Unit</option>
+                        <option value="set">Set</option>
+                        <option value="pack">Pack</option>
+                        <option value="dus">Dus</option>
+                        <option value="pcs">Pcs</option>
+                        <option value="buah">Buah</option>
+                        <option value="Rim">Rim"></option>
+                    </select>
                     <div class="form-group mb-3">
                         <label for="">Perkiraan Harga Satuan</label>
                         <input type="number" wire:model.live="perkiraan_harga" class="form-control">
@@ -444,21 +442,16 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="">Satuan</label>
-                        <select class="form-control" wire:model.live="satuan" disabled>
-                            <option value="">Pilih Satuan</option>
-                            <option value="unit">Unit</option>
-                            <option value="set">Set</option>
-                            <option value="pack">Pack</option>
-                            <option value="dus">Dus</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('satuan')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
+                    <select class="form-control" wire:model.live="satuan">
+                        <option value="">Pilih Satuan</option>
+                        <option value="unit">Unit</option>
+                        <option value="set">Set</option>
+                        <option value="pack">Pack</option>
+                        <option value="dus">Dus</option>
+                        <option value="pcs">Pcs</option>
+                        <option value="buah">Buah</option>
+                        <option value="Rim">Rim"></option>
+                    </select>
                     <div class="form-group mb-3">
                         <label for="">Perkiraan Harga</label>
                         <input type="number" wire:model.live="perkiraan_harga" class="form-control" disabled>
