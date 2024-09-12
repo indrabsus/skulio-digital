@@ -22,6 +22,7 @@ class BosRealisasi extends Component
     use WithPagination;
     public $show = false;
     public $cari = '';
+    public $centang = [];
     public $cari_unit = '';
     public $thn = '';
     public $result = 10;
@@ -63,6 +64,7 @@ class BosRealisasi extends Component
         $this->jenis = '';
         $this->tahun_arkas = '';
         $this->perkiraan_harga = '';
+        $this->centang = [];
     }
     public function edit($id){
         $data = ModelRealisasi::where('id_realisasi', $id)->first();
@@ -126,11 +128,31 @@ class BosRealisasi extends Component
         }
         Distribusi::create([
             'id_realisasi'=> $this->id_realisasi,
-            'id_role'=> $this->id_role,
+            'id_role_distribusi'=> $this->id_role,
             'volume_distribusi'=> $this->volume_distribusi
         ]);
         session()->flash('sukses','Data berhasil ditambahkan');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+
+    public function realSelect()
+{
+    // Loop melalui checkbox yang dicentang
+    foreach ($this->centang as $id_realisasi) {
+        // Lakukan insert untuk setiap id_pengajuan yang dipilih
+        ModelRealisasi::where('id_realisasi', $id_realisasi)->update([
+            'status' => 2
+        ]);
+    }
+
+    // Flash message untuk notifikasi sukses jika tidak ada data ganda
+    session()->flash('sukses', 'Data berhasil ditambahkan');
+
+    // Kosongkan form setelah sukses
+    $this->clearForm();
+
+    // Tutup modal jika ada
+    $this->dispatch('closeModal');
+}
 }

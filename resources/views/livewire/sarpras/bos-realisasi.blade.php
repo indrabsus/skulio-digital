@@ -45,6 +45,7 @@
                 @endif
                 <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-3">
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                         <div class="col-3">
                             <select class="form-control" wire:model.live="cari_unit">
                                 <option value="">Pilih Unit</option>
@@ -53,6 +54,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -82,7 +84,8 @@
                             <th>Jumlah Realisasi</th>
                             <th>Bulan Realisasi</th>
                             <th>Harga Realisasi</th>
-                            <th>Total</th>
+                            <th>Total Asli</th>
+                            <th>Total Harga Tayang</th>
                             <th>Jenis</th>
                             <th>Tahun Arkas</th>
                             <th>Unit</th>
@@ -96,9 +99,19 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $d)
+                        @php
+                            $hitung = App\Models\BosRealisasi::where('id_realisasi', $d->id_realisasi)
+                            ->where('status','!=', 1)
+                            ->count();
+                        @endphp
                             <tr>
+                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                                <td>
+                                    <input class="form-check-input" type="checkbox" wire:model.live="centang" value="{{ $d->id_realisasi }}" {{ $hitung > 0 ? 'disabled' : '' }}>
+                                </td>
+                                @else
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                                <td>{{ $d->nama_barang }}</td>
+                                @endif<td>{{ $d->nama_barang }}</td>
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 @if ($show)
                                 <td class="bg-primary">{{ $d->volume }} {{ $d->satuan }}</td>
@@ -109,6 +122,8 @@
                                 <td>{{ $d->bulan_pengajuan_realisasi }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi,0,',','.') }}</td>
+                                <td>Rp.{{ number_format(($d->perkiraan_harga_realisasi * $d->volume_realisasi) * 1.35, 0, ',', '.') }}</td>
+
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->nama_role }}</td>
@@ -139,6 +154,12 @@
                     </tbody>
                 </table>
             </div>
+            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+            <div class="mt-3">
+                <button class="btn btn-success btn-xs" data-bs-toggle="modal"
+                data-bs-target="#k_konfSelect">Konfirmasi</button>
+            </div>
+            @endif
             {{ $data->links() }}
         </div>
     </div>
@@ -589,6 +610,24 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="k_konfSelect" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin mengkonfirmasi data ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" wire:click='realSelect()'>Realisasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -604,6 +643,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#c_distribusi').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#k_konfSelect').modal('hide');
         })
     </script>
 

@@ -23,6 +23,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                         <div class="col-3">
                             <select class="form-control" wire:model.live="cari_unit">
                                 <option value="">Pilih Unit</option>
@@ -31,6 +32,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -70,7 +72,7 @@
                                <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
                                 <td>{{ date('d F Y H:i A', strtotime($d->created_at)) }}</td>
-                                <td>{{ $d->nama_role}}</td>
+                                <td>{{ $d->nama_role_pengajuan}} - {{ $d->nama_role_distribusi }}</td>
                                 @if (auth()->user()->id_role == 1 || auth()->user()->id_role == 3)
                                 <td>
                                     <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_distribusi}}')"><i class="fa-solid fa-trash"></i></a>

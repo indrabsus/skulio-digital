@@ -18,7 +18,7 @@
             @endif
         </div>
         <div class="col">
-            <h3>Total pengajuan : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
+            <h3>Total Pengajuan SIPLAH : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
             <hr>
             <div class="row justify-content-between mt-2">
                 <div class="col-lg-6">
@@ -29,6 +29,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                         <div class="col-3">
                             <select class="form-control" wire:model.live="cari_unit">
                                 <option value="">Pilih Unit</option>
@@ -37,6 +38,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -51,6 +53,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="table-responsive">
                 <table class="table table-stripped">
                     <thead>
@@ -63,7 +66,8 @@
                             <th>Jenis</th>
                             <th>Tahun Arkas</th>
                             <th>Harga Satuan</th>
-                            <th>Total</th>
+                            <th>Total Harga Asli</th>
+                            <th>Total Harga Tayang</th>
                             <th>Unit</th>
                             @if (Auth::user()->id_role != 17)
                             <th>Aksi</th>
@@ -72,8 +76,19 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $d)
+                        @php
+                                    $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
+                                @endphp
                             <tr>
+                                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                                <td>
+                                    <input class="form-check-input" type="checkbox" wire:model.live="centang" value="{{ $d->id_pengajuan }}|{{ $d->volume }}|{{ $d->perkiraan_harga }}|{{ $d->bulan_pengajuan }}" {{ $hitung > 0 ? 'disabled' : '' }}>
+                                </td>
+                                @else
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                                @endif
+
+
                                 <td>{{ $d->nama_barang }}</td>
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 <td>{{ $d->volume }} {{ $d->satuan }}</td>
@@ -82,18 +97,17 @@
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
+                                <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume * 1.35 ,0,',','.') }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                @if (Auth::user()->id_role != 17)
                                <td>
-                                @php
-                                    $hitung = App\Models\BosRealisasi::where('id_pengajuan', $d->id_pengajuan)->count();
-                                @endphp
+
                                 @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                                 @if ($hitung > 0)
-                                <button class="btn btn-primary btn-xs" disabled>Disetujui</button>
+                                <button class="btn btn-primary btn-xs" disabled>Confirmed</button>
 
                                 @else
-                                <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Konfirmasi</a>
+                                <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#konf" wire:click='konf("{{$d->id_pengajuan}}")'>Confirm</a>
 
                                 @endif
                                 @endif
@@ -116,7 +130,14 @@
                         @endforeach
                     </tbody>
                 </table>
+                <hr>
             </div>
+            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+            <div class="mt-3">
+                <button class="btn btn-success btn-xs" data-bs-toggle="modal"
+                data-bs-target="#k_konfSelect">Konfirmasi</button>
+            </div>
+            @endif
             {{ $data->links() }}
         </div>
     </div>
@@ -170,6 +191,15 @@
                             <option value="pcs">Pcs</option>
                             <option value="buah">Buah</option>
                             <option value="Rim">Rim</option>
+                            <option value="jam/orang">Jam/Orang</option>
+                            <option value="lembar">Lembar</option>
+                            <option value="orang/hari">Orang/Hari</option>
+                            <option value="kegiatan">Kegiatan</option>
+                            <option value="meter">Meter</option>
+                            <option value="lusin">Lusin</option>
+                            <option value="eksemplar">Eksemplar</option>
+                            <option value="bulan">Bulan</option>
+                            <option value="roll">Roll</option>
                         </select>
                         <div class="text-danger">
                             @error('satuan')
@@ -178,7 +208,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Perkiraan Harga Satuan</label>
+                        <label for="">Perkiraan Harga Asli Satuan</label>
                         <input type="number" wire:model.live="perkiraan_harga" class="form-control">
                         <div class="text-danger">
                             @error('perkiraan_harga')
@@ -215,20 +245,6 @@
                             <option value="">Pilih Jenis Barang</option>
                             <option value="ab">Barang Habis Pakai</option>
                             <option value="b">Barang Modal</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jenis')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Tahun Arkas</label>
-                        <select class="form-control" wire:model.live ="tahun_arkas">
-                            <option value="">Pilih Tahun Arkas</option>
-                            <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
-                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                            <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -309,9 +325,18 @@
                         <option value="pcs">Pcs</option>
                         <option value="buah">Buah</option>
                         <option value="Rim">Rim</option>
+                        <option value="jam/orang">Jam/Orang</option>
+                        <option value="lembar">Lembar</option>
+                        <option value="orang/hari">Orang/Hari</option>
+                        <option value="kegiatan">Kegiatan</option>
+                        <option value="meter">Meter</option>
+                        <option value="lusin">Lusin</option>
+                        <option value="eksemplar">Eksemplar</option>
+                        <option value="bulan">Bulan</option>
+                        <option value="roll">Roll</option>
                     </select>
                     <div class="form-group mb-3">
-                        <label for="">Perkiraan Harga Satuan</label>
+                        <label for="">Perkiraan Harga Asli Satuan</label>
                         <input type="number" wire:model.live="perkiraan_harga" class="form-control">
                         <div class="text-danger">
                             @error('perkiraan_harga')
@@ -348,20 +373,6 @@
                             <option value="">Pilih Jenis Barang</option>
                             <option value="ab">Barang Habis Pakai</option>
                             <option value="b">Barang Modal</option>
-                        </select>
-                        <div class="text-danger">
-                            @error('jenis')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="">Tahun Arkas</label>
-                        <select class="form-control" wire:model.live ="tahun_arkas">
-                            <option value="">Pilih Tahun Arkas</option>
-                            <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
-                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                            <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -451,6 +462,15 @@
                         <option value="pcs">Pcs</option>
                         <option value="buah">Buah</option>
                         <option value="Rim">Rim</option>
+                        <option value="jam/orang">Jam/Orang</option>
+                        <option value="lembar">Lembar</option>
+                        <option value="orang/hari">Orang/Hari</option>
+                        <option value="kegiatan">Kegiatan</option>
+                        <option value="meter">Meter</option>
+                        <option value="lusin">Lusin</option>
+                        <option value="eksemplar">Eksemplar</option>
+                        <option value="bulan">Bulan</option>
+                        <option value="roll">Roll</option>
                     </select>
                     <div class="form-group mb-3">
                         <label for="">Perkiraan Harga</label>
@@ -585,6 +605,27 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="k_konfSelect" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Silakan pilih Setujui atau Tolak
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" wire:click='tolakSelect()'>Tolak</button>
+                    <button type="button" class="btn btn-primary" wire:click='konfSelect()'>Setujui</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -597,6 +638,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#konf').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#k_konfSelect').modal('hide');
         })
     </script>
 

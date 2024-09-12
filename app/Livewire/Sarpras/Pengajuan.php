@@ -16,15 +16,25 @@ class Pengajuan extends Component
     use WithPagination;
 
     public $cari = '';
+    public $centang = [];
     public $cari_unit = '';
     public $result = 10;
     public function render()
     {
 
         $role = Role::all();
-        $total = DB::table('pengajuan')
-                ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
-                ->value('total');
+        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16){
+            $total = DB::table('pengajuan')->leftJoin('roles','roles.id_role','pengajuan.id_role')
+            ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
+            ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+            ->value('total') * 1.35;
+        } else {
+            $total = DB::table('pengajuan')
+            ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
+            ->where('id_role', Auth::user()->id_role)
+            ->value('total') * 1.35;
+        }
+
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
         $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
@@ -49,7 +59,6 @@ class Pengajuan extends Component
                 'satuan'=> 'required',
                 'bulan_pengajuan'=> 'required',
                 'jenis'=> 'required',
-                'tahun_arkas'=> 'required',
                 'id_role'=> 'required',
                 'perkiraan_harga'=> 'required',
             ]);
@@ -60,7 +69,7 @@ class Pengajuan extends Component
                 'satuan'=> $this->satuan,
                 'bulan_pengajuan'=> $this->bulan_pengajuan,
                 'jenis'=> $this->jenis,
-                'tahun_arkas'=> $this->tahun_arkas,
+                'tahun_arkas'=> date('Y') + 1,
                 'id_role'=> $this->id_role,
                 'perkiraan_harga'=> $this->perkiraan_harga,
             ]) ;
@@ -72,7 +81,6 @@ class Pengajuan extends Component
                 'satuan'=> 'required',
                 'bulan_pengajuan'=> 'required',
                 'jenis'=> 'required',
-                'tahun_arkas'=> 'required',
                 'perkiraan_harga'=> 'required',
             ]);
             $data = TabelPengajuan::create([
@@ -82,7 +90,7 @@ class Pengajuan extends Component
                 'satuan'=> $this->satuan,
                 'bulan_pengajuan'=> $this->bulan_pengajuan,
                 'jenis'=> $this->jenis,
-                'tahun_arkas'=> $this->tahun_arkas,
+                'tahun_arkas'=> date('Y') + 1,
                 'id_role'=> Auth::user()->id_role,
                 'perkiraan_harga'=> $this->perkiraan_harga,
             ]) ;
@@ -102,6 +110,7 @@ class Pengajuan extends Component
         $this->tahun_arkas = '';
         $this->id_role = '';
         $this->perkiraan_harga = '';
+        $this->centang = [];
     }
     public function edit($id){
         $data = TabelPengajuan::where('id_pengajuan', $id)->first();
@@ -203,4 +212,89 @@ class Pengajuan extends Component
         $this->clearForm();
         $this->dispatch('closeModal');
     }
+    public function konfSelect()
+{
+
+
+    // Loop melalui checkbox yang dicentang
+    foreach ($this->centang as $item) {
+        // Cek apakah nilai mengandung pemisah '|'
+        if (strpos($item, '|') !== false) {
+            // Pisahkan nilai yang digabungkan menggunakan '|' sebagai pemisah
+            list($id_pengajuan, $volume, $perkiraan_harga, $bulan) = explode('|', $item);
+
+            // Cek apakah data ganda ada di tabel BosRealisasi
+            $existingRecord = BosRealisasi::where('id_pengajuan', $id_pengajuan)
+                ->first();
+
+            // Jika sudah ada, beri pesan error
+            if ($existingRecord) {
+                session()->flash('error', 'Data ganda ditemukan untuk pengajuan: ' . $id_pengajuan);
+                continue; // Lewati proses insert untuk data yang sudah ada
+            }
+
+            // Jika tidak ada data ganda, lakukan insert
+            BosRealisasi::create([
+                'id_pengajuan' => $id_pengajuan,
+                'volume_realisasi' => $volume,
+                'bulan_pengajuan_realisasi' => $bulan,
+                'perkiraan_harga_realisasi' => $perkiraan_harga,
+                'status' => 1
+            ]);
+        } else {
+            session()->flash('error', 'Data tidak valid untuk item: ' . $item);
+        }
+    }
+
+    // Flash message untuk notifikasi sukses jika tidak ada data ganda
+    session()->flash('sukses', 'Data berhasil ditambahkan');
+
+    // Kosongkan form setelah sukses
+    $this->clearForm();
+
+    // Tutup modal jika ada
+    $this->dispatch('closeModal');
+}
+    public function tolakSelect()
+{
+    // Loop melalui checkbox yang dicentang
+    foreach ($this->centang as $item) {
+        // Cek apakah nilai mengandung pemisah '|'
+        if (strpos($item, '|') !== false) {
+            // Pisahkan nilai yang digabungkan menggunakan '|' sebagai pemisah
+            list($id_pengajuan, $volume, $perkiraan_harga, $bulan) = explode('|', $item);
+
+            // Cek apakah data ganda ada di tabel BosRealisasi
+            $existingRecord = BosRealisasi::where('id_pengajuan', $id_pengajuan)
+                ->first();
+
+            // Jika sudah ada, beri pesan error
+            if ($existingRecord) {
+                session()->flash('error', 'Data ganda ditemukan untuk pengajuan: ' . $id_pengajuan);
+                continue; // Lewati proses insert untuk data yang sudah ada
+            }
+
+            // Jika tidak ada data ganda, lakukan insert
+            BosRealisasi::create([
+                'id_pengajuan' => $id_pengajuan,
+                'volume_realisasi' => 0,
+                'bulan_pengajuan_realisasi' => '-',
+                'perkiraan_harga_realisasi' => 0,
+                'status' => 3
+            ]);
+        } else {
+            session()->flash('error', 'Data tidak valid untuk item: ' . $item);
+        }
+    }
+
+    // Flash message untuk notifikasi sukses jika tidak ada data ganda
+    session()->flash('sukses', 'Data berhasil ditambahkan');
+
+    // Kosongkan form setelah sukses
+    $this->clearForm();
+
+    // Tutup modal jika ada
+    $this->dispatch('closeModal');
+}
+
 }

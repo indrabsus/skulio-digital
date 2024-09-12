@@ -24,21 +24,51 @@ class Distribusi extends Component
         $ruangan = Ruangan::all();
         $role = Role::all();
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
-            $data  = TabelDistribusi::leftJoin('roles','roles.id_role','distribusi.id_role')
-            ->leftJoin('bos_realisasi','bos_realisasi.id_realisasi','distribusi.id_realisasi')
-            ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
-            ->select('distribusi.*','roles.nama_role','bos_realisasi.id_realisasi','pengajuan.id_pengajuan','pengajuan.nama_barang','pengajuan.nama_kegiatan','pengajuan.tahun_arkas','pengajuan.satuan','pengajuan.jenis','volume_realisasi')
-            ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-            ->orderBy('id_distribusi','desc')->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+            $data  = TabelDistribusi::leftJoin('roles as roles_distribusi', 'roles_distribusi.id_role', '=', 'distribusi.id_role_distribusi')
+            ->leftJoin('bos_realisasi', 'bos_realisasi.id_realisasi', '=', 'distribusi.id_realisasi')
+            ->leftJoin('pengajuan', 'pengajuan.id_pengajuan', '=', 'bos_realisasi.id_pengajuan')
+            ->leftJoin('roles as roles_pengajuan', 'roles_pengajuan.id_role', '=', 'pengajuan.id_role') // Join untuk roles dari pengajuan
+            ->select(
+                'distribusi.*',
+                'roles_distribusi.nama_role as nama_role_distribusi', // Alias untuk roles di distribusi
+                'roles_pengajuan.nama_role as nama_role_pengajuan',   // Alias untuk roles di pengajuan
+                'bos_realisasi.id_realisasi',
+                'pengajuan.id_pengajuan',
+                'pengajuan.nama_barang',
+                'pengajuan.nama_kegiatan',
+                'pengajuan.tahun_arkas',
+                'pengajuan.satuan',
+                'pengajuan.jenis',
+                'volume_realisasi'
+            )
+            ->orderBy('id_distribusi', 'desc')
+            ->where('roles_distribusi.nama_role', 'like', '%' . $this->cari_unit . '%') // Gunakan alias roles_distribusi
+            ->where('pengajuan.nama_barang', 'like', '%' . $this->cari . '%') // Pastikan nama_barang berasal dari pengajuan
+            ->paginate($this->result);
         } else {
-            $data  = TabelDistribusi::leftJoin('roles','roles.id_role','distribusi.id_role')
-            ->leftJoin('bos_realisasi','bos_realisasi.id_realisasi','distribusi.id_realisasi')
-            ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
-            ->select('distribusi.*','roles.nama_role','bos_realisasi.id_realisasi','pengajuan.id_pengajuan','pengajuan.nama_barang','pengajuan.nama_kegiatan','pengajuan.tahun_arkas','pengajuan.satuan','pengajuan.jenis','volume_realisasi')
-            ->orderBy('id_distribusi','desc')
-            ->where('pengajuan.id_role', Auth::user()->id_role)
-            ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-            ->where('nama_barang', 'like','%'.$this->cari.'%')->paginate($this->result);
+            $data  = TabelDistribusi::leftJoin('roles as roles_distribusi', 'roles_distribusi.id_role', '=', 'distribusi.id_role_distribusi')
+            ->leftJoin('bos_realisasi', 'bos_realisasi.id_realisasi', '=', 'distribusi.id_realisasi')
+            ->leftJoin('pengajuan', 'pengajuan.id_pengajuan', '=', 'bos_realisasi.id_pengajuan')
+            ->leftJoin('roles as roles_pengajuan', 'roles_pengajuan.id_role', '=', 'pengajuan.id_role') // Join untuk roles dari pengajuan
+            ->select(
+                'distribusi.*',
+                'roles_distribusi.nama_role as nama_role_distribusi', // Alias untuk roles di distribusi
+                'roles_pengajuan.nama_role as nama_role_pengajuan',   // Alias untuk roles di pengajuan
+                'bos_realisasi.id_realisasi',
+                'pengajuan.id_pengajuan',
+                'pengajuan.nama_barang',
+                'pengajuan.nama_kegiatan',
+                'pengajuan.tahun_arkas',
+                'pengajuan.satuan',
+                'pengajuan.jenis',
+                'volume_realisasi'
+            )
+            ->orderBy('id_distribusi', 'desc')
+            ->where('distribusi.id_role_distribusi', Auth::user()->id_role)
+            ->where('roles_distribusi.nama_role', 'like', '%' . $this->cari_unit . '%') // Gunakan alias roles_distribusi
+            ->where('pengajuan.nama_barang', 'like', '%' . $this->cari . '%') // Pastikan nama_barang berasal dari pengajuan
+            ->paginate($this->result);
+
         }
 
         return view('livewire.sarpras.distribusi', compact('data','ruangan','role'));
