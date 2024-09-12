@@ -169,7 +169,7 @@
                             <option value="dus">Dus</option>
                             <option value="pcs">Pcs</option>
                             <option value="buah">Buah</option>
-                            <option value="Rim">Rim"></option>
+                            <option value="Rim">Rim</option>
                         </select>
                         <div class="text-danger">
                             @error('satuan')
@@ -308,7 +308,7 @@
                         <option value="dus">Dus</option>
                         <option value="pcs">Pcs</option>
                         <option value="buah">Buah</option>
-                        <option value="Rim">Rim"></option>
+                        <option value="Rim">Rim</option>
                     </select>
                     <div class="form-group mb-3">
                         <label for="">Perkiraan Harga Satuan</label>
@@ -450,7 +450,7 @@
                         <option value="dus">Dus</option>
                         <option value="pcs">Pcs</option>
                         <option value="buah">Buah</option>
-                        <option value="Rim">Rim"></option>
+                        <option value="Rim">Rim</option>
                     </select>
                     <div class="form-group mb-3">
                         <label for="">Perkiraan Harga</label>
