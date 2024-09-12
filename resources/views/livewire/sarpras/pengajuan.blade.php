@@ -130,14 +130,14 @@
                         @endforeach
                     </tbody>
                 </table>
-                <hr>
+                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                <div class="mt-3 mb-3">
+                    <button class="btn btn-success btn-xs" data-bs-toggle="modal"
+                    data-bs-target="#k_konfSelect">Konfirmasi</button>
+                </div>
+                @endif
             </div>
-            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
-            <div class="mt-3">
-                <button class="btn btn-success btn-xs" data-bs-toggle="modal"
-                data-bs-target="#k_konfSelect">Konfirmasi</button>
-            </div>
-            @endif
+
             {{ $data->links() }}
         </div>
     </div>
