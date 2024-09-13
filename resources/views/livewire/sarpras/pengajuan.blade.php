@@ -89,7 +89,11 @@
                                 @endif
 
 
-                                <td>{{ $d->nama_barang }}</td>
+                                <td>@if ($d->link)
+                                    <a href="{{$d->link}}" target="_blank">{{ $d->nama_barang }}</a>
+                                @else
+                                {{ $d->nama_barang }}
+                                @endif</td>
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 <td>{{ $d->volume }} {{ $d->satuan }}</td>
                                 <td>{{ $d->bulan_pengajuan }}</td>
@@ -167,6 +171,15 @@
                         <input type="text" wire:model.live="nama_kegiatan" class="form-control">
                         <div class="text-danger">
                             @error('nama_kegiatan')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Link Barang</label>
+                        <input type="text" wire:model.live="link" class="form-control" placeholder="Kosongkan jika tidak ada">
+                        <div class="text-danger">
+                            @error('link')
                                 {{ $message }}
                             @enderror
                         </div>
@@ -303,6 +316,15 @@
                         <input type="text" wire:model.live="nama_kegiatan" class="form-control">
                         <div class="text-danger">
                             @error('nama_kegiatan')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Link Barang</label>
+                        <input type="text" wire:model.live="link" class="form-control">
+                        <div class="text-danger">
+                            @error('link')
                                 {{ $message }}
                             @enderror
                         </div>

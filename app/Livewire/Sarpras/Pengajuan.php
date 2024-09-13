@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class Pengajuan extends Component
 {
-    public $id_pengajuan, $nama_barang, $volume,$volume_realisasi, $satuan, $bulan_pengajuan, $bulan_pengajuan_realisasi, $tahun_arkas ,$id_role, $jenis, $perkiraan_harga, $perkiraan_harga_realisasi, $nama_kegiatan;
+    public $id_pengajuan, $nama_barang, $volume,$volume_realisasi, $satuan, $bulan_pengajuan, $bulan_pengajuan_realisasi, $tahun_arkas ,$id_role, $jenis, $perkiraan_harga, $perkiraan_harga_realisasi, $nama_kegiatan, $link;
     use WithPagination;
 
     public $cari = '';
@@ -72,6 +72,7 @@ class Pengajuan extends Component
                 'tahun_arkas'=> date('Y') + 1,
                 'id_role'=> $this->id_role,
                 'perkiraan_harga'=> $this->perkiraan_harga,
+                'link'=> $this->link
             ]) ;
         } else {
             $this->validate([
@@ -111,6 +112,7 @@ class Pengajuan extends Component
         $this->id_role = '';
         $this->perkiraan_harga = '';
         $this->centang = [];
+        $this->link = '';
     }
     public function edit($id){
         $data = TabelPengajuan::where('id_pengajuan', $id)->first();
@@ -124,6 +126,7 @@ class Pengajuan extends Component
         $this->tahun_arkas = $data->tahun_arkas;
         $this->id_role = $data->id_role;
         $this->perkiraan_harga = $data->perkiraan_harga;
+        $this->link = $data->link;
     }
     public function konf($id){
         $data = TabelPengajuan::where('id_pengajuan', $id)->first();
@@ -140,6 +143,7 @@ class Pengajuan extends Component
         $this->volume_realisasi =  $data->volume;
         $this->bulan_pengajuan_realisasi = $data->bulan_pengajuan;
         $this->perkiraan_harga_realisasi = $data->perkiraan_harga;
+
     }
     public function realisasi(){
         $this->validate([
