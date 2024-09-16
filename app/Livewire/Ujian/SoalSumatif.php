@@ -17,6 +17,7 @@ class SoalSumatif extends Component
     public $id_mapel, $kelas, $nama_soal, $id_kategori, $token, $tahun, $semester, $waktu, $aktif;
     use WithPagination;
     public $cari = '';
+    public $id_soalujian;
     public $centang = [];
     public $kelasku = [];
     public $result = 10;
@@ -90,47 +91,26 @@ class SoalSumatif extends Component
         $this->kelasku = [];
     }
     public function edit($id){
-        $data = ModelsKategoriSoal::where('id_kategori', $id)->first();
-        $this->nama_kategori = $data->nama_kategori;
-        $this->id_mapel = $data->id_mapel;
-        $this->kelas = $data->kelas;
-        $this->id_kategori = $id;
-        $this->waktu = $data->waktu;
-        $this->token = $data->token;
-        $this->semester = $data->semester;
-        $this->tahun = $data->tahun;
-        $this->aktif = $data->aktif;
+        $data = SoalUjian::where('id_soalujian', $id)->first();
+        $this->nama_soal = $data->nama_soal;
+        $this->id_soalujian = $id;
     }
     public function update(){
         $this->validate([
-            'nama_kategori' => 'required',
-            'id_mapel' => 'required',
-            'kelas' => 'required',
-            'waktu' => 'required',
-            'token' => 'required',
-            'semester' => 'required',
-            'tahun' => 'required',
-            'aktif' => 'required'
+            'nama_soal' => 'required',
         ]);
-        $data = ModelsKategoriSoal::where('id_kategori', $this->id_kategori)->update([
-            'nama_kategori' => $this->nama_kategori,
-            'id_mapel' => $this->id_mapel,
-            'kelas' => $this->kelas,
-            'waktu' => $this->waktu,
-            'token' => $this->token,
-            'semester' => $this->semester,
-            'tahun' => $this->tahun,
-            'aktif' => $this->aktif
+        $data = SoalUjian::where('id_soalujian', $this->id_soalujian)->update([
+            'nama_soal' => $this->nama_soal,
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
         $this->dispatch('closeModal');
     }
     public function c_delete($id){
-        $this->id_kategori = $id;
+        $this->id_soalujian = $id;
     }
     public function delete(){
-        ModelsKategoriSoal::where('id_kategori',$this->id_kategori)->delete();
+        SoalUjian::where('id_soalujian',$this->id_soalujian)->delete();
         session()->flash('sukses','Data berhasil dihapus');
         $this->clearForm();
         $this->dispatch('closeModal');
