@@ -44,12 +44,8 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Nama Sumatif</th>
-                          <th>Kelas</th>
-                          <th>Token</th>
-                          <th>Tahun</th>
-                          <th>Waktu</th>
-                          <th>Soal</th>
+                          <th>Nama Soal</th>
+                          <th>Jumlah</th>
                           <th>Aksi</th>
                       </tr>
                   </thead>
@@ -57,15 +53,14 @@
                   @foreach ($data as $d)
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_sumatif}}</td>
-                          <td>{{ $d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas }}</td>
-                          <td>{{$d->token}}</td>
-                          <td>{{$d->tahun}}</td>
-                          <td>{{$d->waktu}} Menit</td>
-                          <td>{{ $d->nama_soal }}</td>
+                          <td><a href="" data-bs-toggle="modal" data-bs-target="#lihatsoal" wire:click='lihatsoal("{{$d->id_soalujian}}")'>{{$d->nama_soal}}</a></td>
+                          @php
+                              $jml = App\Models\TampungSoal::where('id_soalujian', $d->id_soalujian)->count();
+                          @endphp
+                          <td>{{$jml}}</td>
                           <td>
-                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_sumatif}}")'><i class="fa-solid fa-edit"></i></i></a>
-                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_sumatif}}')"><i class="fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kategori}}")'><i class="fa-solid fa-edit"></i></i></a>
+                            <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_kategori}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
                       </tr>
                   @endforeach
@@ -87,15 +82,43 @@
             </div>
             <div class="modal-body">
                 <div class="form-group mb-3">
-                    <label for="">Nama Sumatif</label>
-                    <input type="text" wire:model.live="nama_sumatif" class="form-control">
+                    <label for="">Nama Soal</label>
+                    <input type="text" wire:model.live="nama_soal" class="form-control">
                     <div class="text-danger">
-                        @error('nama_sumatif')
+                        @error('nama_soal')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    {{-- Edit Modal --}}
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Nama Kategori</label>
+                    <input type="text" wire:model.live="nama_kategori" class="form-control">
+                    <div class="text-danger">
+                        @error('nama_kategori')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
                     <label for="">Token</label>
                     <input type="number" wire:model.live="token" class="form-control">
                     <div class="text-danger">
@@ -104,7 +127,16 @@
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
+                <div class="form-group">
+                    <label for="">Tahun Pelajaran</label>
+                    <input type="number" wire:model.live="tahun" class="form-control">
+                    <div class="text-danger">
+                        @error('tahun')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
                     <label for="">Waktu</label>
                     <input type="number" wire:model.live="waktu" class="form-control">
                     <div class="text-danger">
@@ -113,42 +145,83 @@
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="">Kategori Soal</label>
-                    <select class="form-control" wire:model="id_soalujian">
-                        <option value="">Pilih Soal</option>
-                        @foreach ($tampung as $t)
-                            <option value="{{ $t->id_soalujian }}">{{ $t->nama_soal }}</option>
+                <div class="form-group">
+                    <label for="">Kelas</label>
+                    <select wire:model.live="kelas" class="form-control" disabled>
+                        <option value="">Pilih Kelas</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('kelas')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="">Semester</label>
+                    <select wire:model.live="semester" class="form-control">
+                        <option value="">Pilih Semester</option>
+                        <option value="ganjil">Ganjil</option>
+                        <option value="genap">Genap</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('semester')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="">Mata Pelajaran</label>
+                    <select wire:model.live="id_mapel" class="form-control">
+                        <option value="">Pilih Mapel</option>
+                        @foreach ($mapel as $m)
+                            <option value="{{ $m->id_mapel }}">{{ $m->nama_pelajaran }}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_soalujian')
+                        @error('id_mapel')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                <div class="form-group mb-3">
-                    <label for="">Tahun</label>
-                    <select wire:model.live="tahun" class="form-control">
-                        <option value="">Pilih Tahun</option>
-                        <option value="{{ date('Y') - 1}}">{{ date('Y') -1}}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') + 1}}">{{ date('Y') + 1}}</option>
+                  <div class="form-group">
+                    <label for="">Aktif?</label>
+                    <select wire:model.live="aktif" class="form-control">
+                        <option value="">Pilih Opsi</option>
+                        <option value="y">Ya</option>
+                        <option value="n">Tidak</option>
                     </select>
                     <div class="text-danger">
-                        @error('tahun')
+                        @error('aktif')
                             {{$message}}
                         @enderror
                     </div>
                   </div>
-                  @php
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="k_kelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Kelas Sumatif</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @php
                     $kls = App\Models\Kelas::leftJoin('jurusan', 'jurusan.id_jurusan', '=', 'kelas.id_jurusan')
                     ->leftJoin('mapel_kelas', 'mapel_kelas.id_kelas', '=', 'kelas.id_kelas')
                     ->where('mapel_kelas.id_user', Auth::user()->id)
-                    ->orderBy('tingkat', 'asc')
-                    ->orderBy('singkatan', 'asc')
-                    ->orderBy('nama_kelas', 'asc')
-                    ->get();
+                    ->where('tingkat',$kelas)->get();
                 @endphp
 
                   <div class="form-group mb-3">
@@ -170,73 +243,11 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
+              <button type="button" class="btn btn-primary" wire:click='ujiankelas()'>Save changes</button>
             </div>
           </div>
         </div>
       </div>
-
-
-    {{-- Edit Modal --}}
-    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="">Nama Sumatif</label>
-                    <input type="text" wire:model.live="nama_sumatif" class="form-control">
-                    <div class="text-danger">
-                        @error('nama_sumatif')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Token</label>
-                    <input type="number" wire:model.live="token" class="form-control">
-                    <div class="text-danger">
-                        @error('token')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Waktu</label>
-                    <input type="number" wire:model.live="waktu" class="form-control">
-                    <div class="text-danger">
-                        @error('waktu')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group mb-3">
-                    <label for="">Tahun</label>
-                    <select wire:model.live="tahun" class="form-control">
-                        <option value="">Pilih Tahun</option>
-                        <option value="{{ date('Y') - 1}}">{{ date('Y') -1}}</option>
-                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="{{ date('Y') + 1}}">{{ date('Y') + 1}}</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('tahun')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" wire:click='update()'>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
 
 
     {{-- Delete Modal --}}
@@ -257,6 +268,32 @@
           </div>
         </div>
       </div>
+    <div class="modal fade" id="lihatsoal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Lihat Soal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php $no=1; ?>
+                <table class="table table-bordered">
+                    @foreach ($tampung as $t)
+                    <tr>
+                        <td><input class="form-check-input" type="checkbox" wire:model="centang" value="{{ $t->id_tampung }}"></td>
+                        <td>{{ $no++.". ".$t->soal }}</td>
+                    </tr>
+                    @endforeach
+                </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" wire:click='hapusTampung()'>Hapus</button>
+              <button type="button" class="btn btn-primary" wire:click='delete()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -269,6 +306,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#k_kelas').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#lihatsoal').modal('hide');
         })
       </script>
 

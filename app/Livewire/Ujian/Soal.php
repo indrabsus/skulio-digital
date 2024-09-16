@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Ujian;
 
+use App\Models\TampungSoal;
 use Livewire\Component;
 use App\Models\KategoriSoal as ModelsKategoriSoal;
 use App\Models\MataPelajaran;
 use App\Models\Soal as ModelsSoal;
 use App\Models\SoalSumatif;
+use App\Models\SoalUjian;
 use App\Models\Sumatif;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
@@ -15,8 +17,9 @@ use Intervention\Image\Facades\Image;
 
 class Soal extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2, $id_sumatif;
+    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2, $id_sumatif, $id_soalujian;
     public $id_kategori ='';
+    public $centang = [];
     public $gambar;
     public $soal;
     public $pilihan_a;
@@ -34,6 +37,7 @@ class Soal extends Component
     {
         $kategori = ModelsKategoriSoal::where('id_user', Auth::user()->id)->get();
         $mapel = MataPelajaran::all();
+        $soalujian = SoalUjian::where('id_user', Auth::user()->id)->get();
         $data  = ModelsSoal::
         leftJoin('kategori_soal','kategori_soal.id_kategori','soal.id_kategori')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
@@ -43,7 +47,7 @@ class Soal extends Component
         ->orderBy('id_soal','desc')
         ->paginate($this->result);
         // dd($data);
-        return view('livewire.ujian.soal', compact('data','mapel','kategori'));
+        return view('livewire.ujian.soal', compact('data','mapel','kategori','soalujian'));
     }
     public function insert(){
         $this->validate([
@@ -202,6 +206,33 @@ class Soal extends Component
             $this->clearForm();
         $this->dispatch('closeModal');
         }
+    }
+
+    public function c_soal(){
+
+    }
+    public function kirimSoal() {
+        $this->validate([
+            'id_soalujian' => 'required'
+        ]);
+        foreach($this->centang as $item){
+            $count = TampungSoal::where('id_soal', $item)->where('id_soalujian', $this->id_soalujian)->count();
+            $count = TampungSoal::where('id_soal', $item)->where('id_soalujian', $this->id_soalujian)->count();
+        if ($count > 0) {
+            session()->flash('gagal', 'Soal sudah ditambahkan');
+            $this->clearForm();
+        $this->dispatch('closeModal');
+        } else {
+            TampungSoal::create([
+                'id_soal' => $item,
+                'id_soalujian' => $this->id_soalujian,
+            ]);
+            session()->flash('sukses', 'Soal berhasil ditampung');
+                $this->clearForm();
+            $this->dispatch('closeModal');
+        }
+        }
+
     }
 
 }

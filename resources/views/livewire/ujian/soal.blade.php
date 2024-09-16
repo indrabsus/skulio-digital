@@ -76,7 +76,7 @@
                @if ($d->gambar)
                <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="300px" class="mb-3 mt-3">
                @endif
-               <p>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {!!$d->soal!!}</p>
+               <p><td><input class="form-check-input" type="checkbox" wire:model="centang" value="{{ $d->id_soal }}"></td> {{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {!!$d->soal!!}</p>
                 <ol type="a">
                     <li>{{ $d->pilihan_a }} {{ $d->pilihan_a == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
                     <li>{{ $d->pilihan_b }} {{ $d->pilihan_b == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
@@ -86,8 +86,13 @@
                 </ol>
                 <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_soal}}")'><i class="fa-solid fa-edit"></i></i></a>
                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_soal}}')"><i class="fa-solid fa-trash"></i></a>
+
                 <hr>
                             @endforeach
+
+                <div class="mb-3 mt-3">
+                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#c_kirimsoal" wire:click="c_soal('{{$d->id_soal}}')">Kirim Soal</a>
+                </div>
                 {{$data->links()}}
         </div>
     </div>
@@ -281,6 +286,34 @@
         </div>
       </div>
 
+    <div class="modal fade" id="c_kirimsoal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tampung Soal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <select class="form-control" wire:model="id_soalujian">
+                        <option value="">Pilih Kategori</option>
+                        @foreach ($soalujian as $s)
+                            <option value="{{ $s->id_soalujian }}">{{ $s->nama_soal }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('id_soalujian') {{$message}} @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='kirimSoal()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
 
 
@@ -296,6 +329,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#c_sumatif').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_kirimsoal').modal('hide');
         })
       </script>
       <script>

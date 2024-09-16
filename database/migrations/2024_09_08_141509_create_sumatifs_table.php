@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sumatif', function (Blueprint $table) {
             $table->uuid('id_sumatif');
             $table->foreignUuid('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('id_soalujian')->references('id_soalujian')->on('soal_ujian')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama_sumatif');
             $table->string('token');
             $table->bigInteger('waktu');
