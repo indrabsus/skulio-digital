@@ -124,7 +124,7 @@
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi,0,',','.') }}</td>
                                 <td>Rp.{{ number_format(($d->perkiraan_harga_realisasi * $d->volume_realisasi) * 1.35, 0, ',', '.') }}</td>
 
-                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
+                                <td>{{ $d->jenis }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>{!! $bos->statusBos($d->status) !!}</td>

@@ -70,7 +70,7 @@
                                 <td>{{ $d->nama_barang }}</td>
                                 <td>{{ $d->volume_distribusi }} {{ $d->satuan }}</td>
                                <td>{{ $d->tahun_arkas }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
+                                <td>{{ $d->jenis }}</td>
                                 <td>{{ date('d F Y H:i A', strtotime($d->created_at)) }}</td>
                                 <td>{{ $d->nama_role_pengajuan}} - {{ $d->nama_role_distribusi }}</td>
                                 @if (auth()->user()->id_role == 1 || auth()->user()->id_role == 3)
