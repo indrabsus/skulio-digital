@@ -97,7 +97,7 @@
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 <td>{{ $d->volume }} {{ $d->satuan }}</td>
                                 <td>{{ $d->bulan_pengajuan }}</td>
-                                <td>{{ $d->jenis == 'ab' ? 'Barang Habis Pakai' : 'Barang Modal' }}</td>
+                                <td>{{ $d->jenis }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
@@ -256,8 +256,9 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis">
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Barang Habis Pakai</option>
-                            <option value="b">Barang Modal</option>
+                            <option value="Barang Habis Pakai">Barang Habis Pakai</option>
+                            <option value="Barang Modal">Barang Modal</option>
+                            <option value="Jasa">Jasa</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -393,8 +394,9 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis">
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Barang Habis Pakai</option>
-                            <option value="b">Barang Modal</option>
+                            <option value="Barang Habis Pakai">Barang Habis Pakai</option>
+                            <option value="Barang Modal">Barang Modal</option>
+                            <option value="Jasa">Jasa</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -562,8 +564,9 @@
                         <label for="">Jenis Barang</label>
                         <select class="form-control" wire:model.live ="jenis" disabled>
                             <option value="">Pilih Jenis Barang</option>
-                            <option value="ab">Barang Habis Pakai</option>
-                            <option value="b">Barang Modal</option>
+                            <option value="Barang Habis Pakai">Barang Habis Pakai</option>
+                            <option value="Barang Modal">Barang Modal</option>
+                            <option value="Jasa">Jasa</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
