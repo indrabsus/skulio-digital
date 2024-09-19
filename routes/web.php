@@ -41,7 +41,7 @@ Route::get('/{id_kelas}/kelasppdbprint', [PdfController::class, 'kelasppdb'])->n
 
 //Excel Controller
 Route::get('exportabsen/{bln?}/{jbtn?}', [ExcelController::class, 'absen'])->name('absenxls');
-Route::get('exportpengajuan/{thn?}', [ExcelController::class, 'pengajuan'])->name('pengajuanxls');
+Route::get('exportpengajuan/{thn?}/{sts?}', [ExcelController::class, 'pengajuan'])->name('pengajuanxls');
 Route::post('importsiswa', [ExcelController::class, 'importSiswa'])->name('importsiswa');
 
 //RFID Controller

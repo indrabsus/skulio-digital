@@ -10,10 +10,11 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class Pengajuan implements FromView
 {
-    public $thn;
-    public function __construct($thn)
+    public $thn, $sts;
+    public function __construct($thn, $sts)
     {
         $this->thn = $thn;
+        $this->sts = $sts;
     }
 
     public function view(): View
@@ -23,6 +24,7 @@ class Pengajuan implements FromView
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
         ->orderBy('bos_realisasi.id_pengajuan','desc')
         ->where('tahun_arkas', $this->thn)
+        ->where('status', $this->sts)
         ->get()
         ]);
     }
