@@ -38,7 +38,11 @@ class Pengajuan extends Component
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
         $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-        ->where('nama_barang', 'like','%'.$this->cari.'%')
+        ->where(function ($query) {
+            $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+        })
         ->paginate($this->result);
         } else {
             $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
