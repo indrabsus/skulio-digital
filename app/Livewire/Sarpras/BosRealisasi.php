@@ -23,10 +23,15 @@ class BosRealisasi extends Component
     public $show = false;
     public $cari = '';
     public $persen = 1.35;
+    public $sts = 1;
     public $centang = [];
     public $cari_unit = '';
     public $thn = '';
     public $result = 10;
+
+    public function mount(){
+        $this->thn = date('Y') + 1;
+    }
 
 
     public function render()

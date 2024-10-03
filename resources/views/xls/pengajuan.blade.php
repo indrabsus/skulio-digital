@@ -32,7 +32,7 @@
             @else
             {{ $d->perkiraan_harga_realisasi * $d->volume_realisasi }}
             @endif</td>
-            <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->jenis }}</td>
+            <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->jenis == 'Jasa' ? 'Harga Tayang' : $d->jenis }}</td>
             <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->tahun_arkas }}</td>
             <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->nama_role }}</td>
             <td style="border: 1px solid black; word-wrap: break-word;">

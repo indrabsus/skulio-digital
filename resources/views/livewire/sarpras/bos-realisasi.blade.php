@@ -28,7 +28,7 @@
                 </div>
                 @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 3)
                 <div class="col-lg-3">
-                    <form action="{{ route('pengajuanxls',['thn' => $this->thn]) }}" method="get">
+                    <form action="{{ route('pengajuanxls',['thn' => $this->thn, 'sts' => $this->sts, 'prsn' => $this->persen]) }}" method="get">
                         <div class="input-group input-group-sm mb-3">
                             <div class="col-3">
                                 <select class="form-control" wire:model.live="thn">
@@ -36,6 +36,23 @@
                                     <option value="{{ date('Y') - 1}}">{{ date('Y') - 1 }}</option>
                                     <option value="{{ date('Y') }}">{{ date('Y') }}</option>
                                     <option value="{{ date('Y') + 1}}">{{ date('Y') + 1 }}</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-control" wire:model.live="sts">
+                                    <option value="">Pilih Status</option>
+                                    <option value="1">Disetujui</option>
+                                    <option value="2">Realisasi</option>
+                                    <option value="3">Ditolak</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-control" wire:model.live="persen">
+                                    <option value="">Pilih Persen</option>
+                                    <option value="1.20">20%</option>
+                                    <option value="1.25">25%</option>
+                                    <option value="1.30">30%</option>
+                                    <option value="1.35">35%</option>
                                 </select>
                             </div>
                             <button class="input-group-text" id="basic-addon1">Print</button>
@@ -137,7 +154,7 @@
                                 Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi * $this->persen ,0,',','.') }}
                                 @endif
                                     </td>
-                                <td>{{ $d->jenis }}</td>
+                                    <td>{{ $d->jenis == 'Jasa' ? 'Harga Tayang' : $d->jenis }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>{{ $d->nama_role }}</td>
                                 <td>{!! $bos->statusBos($d->status) !!}</td>
