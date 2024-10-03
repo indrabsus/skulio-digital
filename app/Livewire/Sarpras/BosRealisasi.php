@@ -66,6 +66,7 @@ class BosRealisasi extends Component
             ->where('pengajuan.id_role', Auth::user()->id_role)
             ->where('jenis','jasa')
             ->value('total');
+            $total = $nonjasa + $jasa;
         }
         $role = Role::all();
         if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3) {
