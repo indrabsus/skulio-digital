@@ -265,7 +265,7 @@
                             <option value="">Pilih Jenis Barang</option>
                             <option value="Barang Habis Pakai">Barang Habis Pakai</option>
                             <option value="Barang Modal">Barang Modal</option>
-                            <option value="Jasa">Jasa</option>
+                            <option value="Jasa">Sudah Harga Tayang</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -403,7 +403,7 @@
                             <option value="">Pilih Jenis Barang</option>
                             <option value="Barang Habis Pakai">Barang Habis Pakai</option>
                             <option value="Barang Modal">Barang Modal</option>
-                            <option value="Jasa">Jasa</option>
+                            <option value="Jasa">Sudah Harga Tayang</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
@@ -573,7 +573,7 @@
                             <option value="">Pilih Jenis Barang</option>
                             <option value="Barang Habis Pakai">Barang Habis Pakai</option>
                             <option value="Barang Modal">Barang Modal</option>
-                            <option value="Jasa">Jasa</option>
+                            <option value="Jasa">Sudah Harga Tayang</option>
                         </select>
                         <div class="text-danger">
                             @error('jenis')
