@@ -32,21 +32,40 @@ class BosRealisasi extends Component
     {
         $bos = new Controller;
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16){
-        $total = DB::table('bos_realisasi')
+        $nonjasa = DB::table('bos_realisasi')
         ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
-                ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
-                ->where('status', '!=', 3)
-                ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-                ->value('total') * 1.35;
+        ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
+        ->where('status', '!=', 3)
+        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+        ->where('jenis','!=', 'jasa')
+        ->value('total') * 1.35;
+        $jasa = DB::table('bos_realisasi')
+        ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
+        ->leftJoin('roles','roles.id_role','pengajuan.id_role')
+        ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
+        ->where('status', '!=', 3)
+        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+        ->where('jenis', 'jasa')
+        ->value('total');
+        $total = $nonjasa + $jasa;
         } else {
-            $total = DB::table('bos_realisasi')
+            $nonjasa = DB::table('bos_realisasi')
             ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
             ->leftJoin('roles','roles.id_role','pengajuan.id_role')
             ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
             ->where('status', '!=', 3)
             ->where('pengajuan.id_role', Auth::user()->id_role)
+            ->where('jenis','!=', 'jasa')
             ->value('total') * 1.35;
+            $jasa = DB::table('bos_realisasi')
+            ->leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
+            ->leftJoin('roles','roles.id_role','pengajuan.id_role')
+            ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
+            ->where('status', '!=', 3)
+            ->where('pengajuan.id_role', Auth::user()->id_role)
+            ->where('jenis','jasa')
+            ->value('total');
         }
         $role = Role::all();
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
