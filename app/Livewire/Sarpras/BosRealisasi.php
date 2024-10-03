@@ -71,8 +71,13 @@ class BosRealisasi extends Component
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
         $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
         ->leftJoin('roles','roles.id_role','pengajuan.id_role')
-        ->orderBy('bos_realisasi.id_pengajuan','desc')->
-        where('nama_barang', 'like','%'.$this->cari.'%')
+        ->orderBy('bos_realisasi.perkiraan_harga_realisasi','desc')
+        ->where(function ($query) {
+            $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                ->orWhere('jenis', 'like', '%' . $this->cari . '%')
+                ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+        })
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
         ->paginate($this->result);
         } else {
