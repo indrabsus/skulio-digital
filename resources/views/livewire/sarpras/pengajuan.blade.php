@@ -99,7 +99,7 @@
                                 <td>{{ $d->nama_kegiatan }}</td>
                                 <td>{{ $d->volume }} {{ $d->satuan }}</td>
                                 <td>{{ $d->bulan_pengajuan }}</td>
-                                <td>{{ $d->jenis }}</td>
+                                <td>{{ $d->jenis == 'Jasa' ? 'Harga Tayang' : $d->jenis }}</td>
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
