@@ -14,9 +14,9 @@ class ExcelController extends Controller
     {
         return Excel::download(new AbsenBulanan($bln, $jbtn), 'persentase-'.$jbtn.'-'.$bln.'.xlsx');
     }
-    public function pengajuan($thn, $sts)
+    public function pengajuan($thn, $sts, $prsn)
     {
-        return Excel::download(new Pengajuan($thn, $sts), 'pengajuan-'.$thn.'.xlsx');
+        return Excel::download(new Pengajuan($thn, $sts, $prsn), 'pengajuan-'.$thn.'.xlsx');
     }
 
     public function importSiswa(Request $request)

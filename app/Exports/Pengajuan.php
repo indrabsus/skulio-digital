@@ -11,10 +11,11 @@ use Maatwebsite\Excel\Concerns\FromView;
 class Pengajuan implements FromView
 {
     public $thn, $sts;
-    public function __construct($thn, $sts)
+    public function __construct($thn, $sts, $prsn)
     {
         $this->thn = $thn;
         $this->sts = $sts;
+        $this->prsn = $prsn;
     }
 
     public function view(): View
@@ -25,7 +26,9 @@ class Pengajuan implements FromView
         ->orderBy('bos_realisasi.id_pengajuan','desc')
         ->where('tahun_arkas', $this->thn)
         ->where('status', $this->sts)
-        ->get()
-        ]);
+        ->get(),
+        'persen' => $this->prsn
+        ]
+    );
     }
 }

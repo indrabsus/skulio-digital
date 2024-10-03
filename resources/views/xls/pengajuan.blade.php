@@ -27,7 +27,11 @@
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->volume_realisasi }}</td>
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->perkiraan_harga_realisasi }}</td>
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->bulan_pengajuan_realisasi }}</td>
-            <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->perkiraan_harga_realisasi * $d->volume_realisasi }}</td>
+            <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">@if ($d->jenis != "Jasa")
+                {{ $d->perkiraan_harga_realisasi * $d->volume_realisasi * $persen }}
+            @else
+            {{ $d->perkiraan_harga_realisasi * $d->volume_realisasi }}
+            @endif</td>
             <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->jenis }}</td>
             <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->tahun_arkas }}</td>
             <td style="border: 1px solid black; word-wrap: break-word;">{{ $d->nama_role }}</td>
