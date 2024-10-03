@@ -68,28 +68,29 @@ class BosRealisasi extends Component
             ->value('total');
         }
         $role = Role::all();
-        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3){
-        $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
-        ->leftJoin('roles','roles.id_role','pengajuan.id_role')
-        ->orderBy('bos_realisasi.perkiraan_harga_realisasi','desc')
-        ->where(function ($query) {
-            $query->where('nama_barang', 'like', '%' . $this->cari . '%')
-                ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
-                ->orWhere('jenis', 'like', '%' . $this->cari . '%')
-                ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
-        })
-        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-        ->paginate($this->result);
+        if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3) {
+            $data  = ModelRealisasi::leftJoin('pengajuan', 'pengajuan.id_pengajuan', 'bos_realisasi.id_pengajuan')
+                ->leftJoin('roles', 'roles.id_role', 'pengajuan.id_role')
+                ->orderByRaw('bos_realisasi.perkiraan_harga_realisasi * bos_realisasi.volume_realisasi DESC')
+                ->where(function ($query) {
+                    $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                        ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                        ->orWhere('jenis', 'like', '%' . $this->cari . '%')
+                        ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+                })
+                ->where('nama_role', 'like', '%' . $this->cari_unit . '%')
+                ->paginate($this->result);
         } else {
-            $data  = ModelRealisasi::leftJoin('pengajuan','pengajuan.id_pengajuan','bos_realisasi.id_pengajuan')
-        ->leftJoin('roles','roles.id_role','pengajuan.id_role')
-        ->orderBy('bos_realisasi.id_pengajuan','desc')->
-        where('nama_barang', 'like','%'.$this->cari.'%')
-        ->where('pengajuan.id_role', Auth::user()->id_role)
-        ->where('nama_role', 'like','%'.$this->cari_unit.'%')
-        ->paginate($this->result);
+            $data  = ModelRealisasi::leftJoin('pengajuan', 'pengajuan.id_pengajuan', 'bos_realisasi.id_pengajuan')
+                ->leftJoin('roles', 'roles.id_role', 'pengajuan.id_role')
+                ->orderByRaw('bos_realisasi.perkiraan_harga_realisasi * bos_realisasi.volume_realisasi DESC')
+                ->where('nama_barang', 'like', '%' . $this->cari . '%')
+                ->where('pengajuan.id_role', Auth::user()->id_role)
+                ->where('nama_role', 'like', '%' . $this->cari_unit . '%')
+                ->paginate($this->result);
         }
-        return view('livewire.sarpras.bos-realisasi', compact('data','role','bos','total'));
+
+        return view('livewire.sarpras.bos-realisasi', compact('data', 'role', 'bos', 'total'));
     }
 
     public function clearForm(){
