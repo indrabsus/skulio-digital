@@ -123,9 +123,9 @@
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi,0,',','.') }}</td>
                                 <td>@if ($d->jenis == 'Jasa')
-                                    Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume ,0,',','.') }}
+                                    Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi ,0,',','.') }}
                                 @else
-                                Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume * 1.35 ,0,',','.') }}
+                                Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi * 1.35 ,0,',','.') }}
                                 @endif
                                     </td>
                                 <td>{{ $d->jenis }}</td>
