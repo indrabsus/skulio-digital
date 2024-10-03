@@ -63,6 +63,15 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
+                        <div class="col-3">
+                            <select class="form-control" wire:model.live="persen">
+                                <option value="0">Harga Asli</option>
+                                <option value="1.20">20%</option>
+                                <option value="1.25">25%</option>
+                                <option value="1.30">30%</option>
+                                <option value="1.35">35%</option>
+                            </select>
+                        </div>
                         <input type="text" class="form-control" placeholder="Cari..." aria-label="Username"
                             aria-describedby="basic-addon1" wire:model.live="cari">
                         <span class="input-group-text" id="basic-addon1">Cari</span>
@@ -125,7 +134,7 @@
                                 <td>@if ($d->jenis == 'Jasa')
                                     Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi ,0,',','.') }}
                                 @else
-                                Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi * 1.35 ,0,',','.') }}
+                                Rp.{{ number_format($d->perkiraan_harga_realisasi * $d->volume_realisasi * $this->persen ,0,',','.') }}
                                 @endif
                                     </td>
                                 <td>{{ $d->jenis }}</td>
