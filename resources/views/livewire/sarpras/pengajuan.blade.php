@@ -103,7 +103,12 @@
                                 <td>{{ $d->tahun_arkas }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga,0,',','.') }}</td>
                                 <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume,0,',','.') }}</td>
-                                <td>Rp.{{ number_format($d->perkiraan_harga * $d->volume * 1.35 ,0,',','.') }}</td>
+                                <td>@if ($d->jenis == 'Jasa')
+                                    Rp.{{ number_format($d->perkiraan_harga * $d->volume ,0,',','.') }}
+                                @else
+                                Rp.{{ number_format($d->perkiraan_harga * $d->volume * 1.35 ,0,',','.') }}
+                                @endif
+                                    </td>
                                 <td>{{ $d->nama_role }}</td>
                                @if (Auth::user()->id_role != 17)
                                <td>

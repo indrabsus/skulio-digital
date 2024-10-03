@@ -24,15 +24,30 @@ class Pengajuan extends Component
 
         $role = Role::all();
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16){
-            $total = DB::table('pengajuan')->leftJoin('roles','roles.id_role','pengajuan.id_role')
+            $nonjasa = DB::table('pengajuan')->leftJoin('roles','roles.id_role','pengajuan.id_role')
             ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
             ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+            ->where('jenis','!=', 'jasa')
             ->value('total') * 1.35;
+            $jasa = DB::table('pengajuan')->leftJoin('roles','roles.id_role','pengajuan.id_role')
+            ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
+            ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+            ->where('jenis', 'jasa')
+            ->value('total');
+            $total = $nonjasa + $jasa;
+
         } else {
-            $total = DB::table('pengajuan')
+            $nonjasa = DB::table('pengajuan')
             ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
             ->where('id_role', Auth::user()->id_role)
+            ->where('jenis','!=', 'jasa')
             ->value('total') * 1.35;
+            $jasa = DB::table('pengajuan')
+            ->select(DB::raw('SUM(volume * perkiraan_harga) as total'))
+            ->where('id_role', Auth::user()->id_role)
+            ->where('jenis', 'jasa')
+            ->value('total');
+            $total = $nonjasa + $jasa;
         }
 
         if(Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17){
