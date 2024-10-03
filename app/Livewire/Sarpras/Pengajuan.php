@@ -64,6 +64,11 @@ class Pengajuan extends Component
             ->where('pengajuan.id_role', Auth::user()->id_role)
             ->where('nama_barang', 'like','%'.$this->cari.'%')
             ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+            ->where(function ($query) {
+                $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                    ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                    ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+            })
             ->paginate($this->result);
         }
         return view('livewire.sarpras.pengajuan', compact('data','role','total'));
