@@ -62,7 +62,6 @@ class Pengajuan extends Component
         } else {
             $data  = TabelPengajuan::leftJoin('roles','roles.id_role','pengajuan.id_role')->orderBy('id_pengajuan','desc')
             ->where('pengajuan.id_role', Auth::user()->id_role)
-            ->where('nama_barang', 'like','%'.$this->cari.'%')
             ->where('nama_role', 'like','%'.$this->cari_unit.'%')
             ->where(function ($query) {
                 $query->where('nama_barang', 'like', '%' . $this->cari . '%')
