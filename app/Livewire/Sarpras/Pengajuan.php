@@ -113,6 +113,7 @@ class Pengajuan extends Component
                 'tahun_arkas'=> date('Y') + 1,
                 'id_role'=> Auth::user()->id_role,
                 'perkiraan_harga'=> $this->perkiraan_harga,
+                'link'=> $this->link
             ]) ;
         }
 
@@ -162,6 +163,7 @@ class Pengajuan extends Component
         $this->volume_realisasi =  $data->volume;
         $this->bulan_pengajuan_realisasi = $data->bulan_pengajuan;
         $this->perkiraan_harga_realisasi = $data->perkiraan_harga;
+        $this->link = $data->link;
 
     }
     public function realisasi(){
@@ -220,6 +222,7 @@ class Pengajuan extends Component
             'jenis'=> $this->jenis,
             'tahun_arkas'=> $this->tahun_arkas,
             'perkiraan_harga'=> $this->perkiraan_harga,
+            'link'=> $this->link
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
