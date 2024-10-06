@@ -21,7 +21,7 @@
             <h3>Total Disetujui : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
             <hr>
             <div class="row justify-content-between mt-2">
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                     <button type="button" class="btn btn-primary btn-xs mb-3" wire:click="showKolom()">
                         Tampilkan pengajuan
                     </button>
@@ -60,7 +60,7 @@
                     </form>
                 </div>
                 @endif
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
                         @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
                         <div class="col-3">
@@ -78,15 +78,6 @@
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <select class="form-control" wire:model.live="persen">
-                                <option value="0">Harga Asli</option>
-                                <option value="1.20">20%</option>
-                                <option value="1.25">25%</option>
-                                <option value="1.30">30%</option>
-                                <option value="1.35">35%</option>
                             </select>
                         </div>
                         <input type="text" class="form-control" placeholder="Cari..." aria-label="Username"

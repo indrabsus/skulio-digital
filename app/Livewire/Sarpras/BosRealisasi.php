@@ -44,6 +44,12 @@ class BosRealisasi extends Component
         ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
         ->where('status', '!=', 3)
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+        ->where(function ($query) {
+            $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                ->orWhere('jenis', 'like', '%' . $this->cari . '%')
+                ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+        })
         ->where('jenis','!=', 'jasa')
         ->value('total');
         if ($this->persen != "0") {
@@ -55,6 +61,12 @@ class BosRealisasi extends Component
         ->select(DB::raw('SUM(volume_realisasi * perkiraan_harga_realisasi) as total'))
         ->where('status', '!=', 3)
         ->where('nama_role', 'like','%'.$this->cari_unit.'%')
+        ->where(function ($query) {
+            $query->where('nama_barang', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama_kegiatan', 'like', '%' . $this->cari . '%')
+                ->orWhere('jenis', 'like', '%' . $this->cari . '%')
+                ->orWhere('bulan_pengajuan', 'like', '%' . $this->cari . '%');
+        })
         ->where('jenis', 'jasa')
         ->value('total');
         $total = $nonjasa + $jasa;
