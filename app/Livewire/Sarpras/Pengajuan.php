@@ -226,7 +226,8 @@ class Pengajuan extends Component
             'jenis'=> $this->jenis,
             'tahun_arkas'=> $this->tahun_arkas,
             'perkiraan_harga'=> $this->perkiraan_harga,
-            'link'=> $this->link
+            'link'=> $this->link,
+            'id_role'=> $this->id_role
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();
