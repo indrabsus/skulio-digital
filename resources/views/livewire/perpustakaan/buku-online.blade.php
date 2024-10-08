@@ -56,7 +56,6 @@
                     <td>
                         <a href="{{$d->link_buku}}" target="_blank">{{$d->nama_buku}}</a>
                     </td>
-                    <td>{{$d->link_buku}}</td>
                     <td>
                         <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_buku_online}}")'><i class="fa-solid fa-edit"></i></a>
                         <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_buku_online}}')"><i class="fa-solid fa-trash"></i></a>
