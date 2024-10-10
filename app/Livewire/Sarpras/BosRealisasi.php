@@ -93,7 +93,7 @@ class BosRealisasi extends Component
             $total = $nonjasa + $jasa;
         }
         $role = Role::all();
-        if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17 || Auth::user()->id_role == 3) {
+        if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16 || Auth::user()->id_role == 17) {
             $data  = ModelRealisasi::leftJoin('pengajuan', 'pengajuan.id_pengajuan', 'bos_realisasi.id_pengajuan')
                 ->leftJoin('roles', 'roles.id_role', 'pengajuan.id_role')
                 ->orderByRaw('bos_realisasi.perkiraan_harga_realisasi * bos_realisasi.volume_realisasi DESC')
@@ -112,7 +112,6 @@ class BosRealisasi extends Component
                 ->where('nama_barang', 'like', '%' . $this->cari . '%')
                 ->where('pengajuan.id_role', Auth::user()->id_role)
                 ->where('nama_role', 'like', '%' . $this->cari_unit . '%')
-                ->where('pengajuan.id_role', Auth::user()->id_role)
                 ->paginate($this->result);
         }
 
