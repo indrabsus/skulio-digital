@@ -21,14 +21,14 @@
             <h3>Total Pengajuan SIPLAH : Rp. {{ number_format($total, 0, ',', '.') }}</h3>
             <hr>
             <div class="row justify-content-between mt-2">
-                @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
+                {{-- @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16) --}}
                 <div class="col-lg-6">
                     <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal"
                         data-bs-target="#add">
                         Tambah
                     </button>
                 </div>
-                @endif
+                {{-- @endif --}}
                 <div class="col-lg-6">
                     <div class="input-group input-group-sm mb-3">
                         @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 16)
