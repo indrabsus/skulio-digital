@@ -112,6 +112,7 @@ class BosRealisasi extends Component
                 ->where('nama_barang', 'like', '%' . $this->cari . '%')
                 ->where('pengajuan.id_role', Auth::user()->id_role)
                 ->where('nama_role', 'like', '%' . $this->cari_unit . '%')
+                ->where('pengajuan.id_role', Auth::user()->id_role)
                 ->paginate($this->result);
         }
 
