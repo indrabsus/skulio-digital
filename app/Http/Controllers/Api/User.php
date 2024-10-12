@@ -106,4 +106,13 @@ class User extends Controller
         ]);
     }
 
+    public function cariGuru(Request $request){
+        $guru = ModelsUser::where('username', $request->username)->first();
+        return response()->json([
+            'data' => $guru,
+            'status' => 200,
+            'message' => 'success'
+        ]);
+    }
+
 }
