@@ -27,7 +27,11 @@ if(!$cek){
 } else if ($count < 1) {
     return response()->json(['message' => 'Belum ada pembayaran'], 404);
 } else if ($count > 0) {
-    return response()->json($siswa);
+    return response()->json([
+        'data' => $siswa,
+        'message' => 'success',
+        'status' => 200
+    ]);
 }
 
 }
