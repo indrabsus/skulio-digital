@@ -111,7 +111,7 @@ class User extends Controller
 {
 
     // Mengambil data guru dari database
-    $guru = User::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
+    $guru = ModelsUser::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
                 ->where('users.id_role', 6)
                 ->where('users.username', $request->username)
                 ->select('users.*', 'data_user.*') // Pilih kolom yang diperlukan
