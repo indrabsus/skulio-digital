@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/login', [App\Http\Controllers\Api\User::class, 'login']);
 Route::post('/daftarppdb', [App\Http\Controllers\Api\User::class, 'daftarPpdb']);
-Route::get('/spp-log/{username}', [App\Http\Controllers\Api\SPPController::class, 'sppCek']);
-Route::get('/cariguru/{username}', [App\Http\Controllers\Api\User::class, 'cariGuru']);
+Route::get('/spplog/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'sppCek']);
 
 
 Route::get('/kegiatan', [App\Http\Controllers\Api\KegiatanController::class, 'viewKegiatan']);
