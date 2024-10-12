@@ -109,18 +109,6 @@ class User extends Controller
 
     public function cariGuru(Request $request)
 {
-    // Validasi input
-    $validator = Validator::make($request->all(), [
-        'username' => 'required|string',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json([
-            'status' => 400,
-            'message' => 'Input tidak valid.',
-            'errors' => $validator->errors(),
-        ], 400);
-    }
 
     // Mengambil data guru dari database
     $guru = User::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
