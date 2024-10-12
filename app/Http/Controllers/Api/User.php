@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class User extends Controller
 {
@@ -106,13 +107,42 @@ class User extends Controller
         ]);
     }
 
-    public function cariGuru(Request $request){
-        $guru = ModelsUser::where('username', $request->username)->first();
+    public function cariGuru(Request $request)
+{
+    // Validasi input
+    $validator = Validator::make($request->all(), [
+        'username' => 'required|string',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 400,
+            'message' => 'Input tidak valid.',
+            'errors' => $validator->errors(),
+        ], 400);
+    }
+
+    // Mengambil data guru dari database
+    $guru = User::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
+                ->where('users.id_role', 6)
+                ->where('users.username', $request->username)
+                ->select('users.*', 'data_user.*') // Pilih kolom yang diperlukan
+                ->first();
+
+    // Cek apakah guru ditemukan
+    if ($guru) {
         return response()->json([
             'data' => $guru,
             'status' => 200,
-            'message' => 'success'
-        ]);
+            'message' => 'Guru ditemukan.',
+        ], 200);
+    } else {
+        return response()->json([
+            'data' => null,
+            'status' => 404,
+            'message' => 'Guru tidak ditemukan.',
+        ], 404);
     }
+}
 
 }
