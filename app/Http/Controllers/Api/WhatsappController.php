@@ -9,30 +9,26 @@ use Illuminate\Http\Request;
 
 class WhatsappController extends Controller
 {
-    public function sppCek($username)
-{
-    $cek = User::where('username', $username)->first();
-    // Cari siswa berdasarkan username
-    $siswa = LogSpp::leftJoin('data_siswa', 'data_siswa.id_siswa', '=', 'log_spp.id_siswa')
-        ->leftJoin('users', 'users.id', '=', 'data_siswa.id_user')
-        ->where('users.username', $username)
-        ->get();
-    $count = LogSpp::leftJoin('data_siswa', 'data_siswa.id_siswa', '=', 'log_spp.id_siswa')
-        ->leftJoin('users', 'users.id', '=', 'data_siswa.id_user')
-        ->where('users.username', $username)
-        ->count();
+    public function cariSpp($username) {
+        $siswa = User::leftJoin('data_siswa', 'data_siswa.id_user', 'users.id')
+            ->leftJoin('log_spp', 'log_spp.id_siswa', 'data_siswa.id_siswa') // Gabungkan dengan log_spp jika ada
+            ->where('users.username', $username)
+            ->select('data_siswa.nama_lengkap', 'log_spp.keterangan', 'log_spp.nominal', 'log_spp.bayar', 'log_spp.updated_at')
+            ->first();
 
-if(!$cek){
-    return response()->json(['message' => 'username tidak ditemukan'], 404);
-} else if ($count < 1) {
-    return response()->json(['message' => 'Belum ada pembayaran'], 404);
-} else if ($count > 0) {
-    return response()->json([
-        'data' => $siswa,
-        'message' => 'success',
-        'status' => 200
-    ]);
-}
+        // Cek jika data siswa ada
+        if ($siswa) {
+            return response()->json([
+                'data' => $siswa,
+                'message' => 'success',
+                'status' => 200
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+                'status' => 404
+            ]);
+        }
+    }
 
-}
 }
