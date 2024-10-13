@@ -14,7 +14,8 @@ class WhatsappController extends Controller
             ->leftJoin('log_spp', 'log_spp.id_siswa', 'data_siswa.id_siswa') // Gabungkan dengan log_spp jika ada
             ->where('users.username', $username)
             ->select('data_siswa.nama_lengkap', 'log_spp.keterangan', 'log_spp.nominal', 'log_spp.bayar', 'log_spp.updated_at','log_spp.status')
-            ->first();
+            ->orderBy('log_spp.updated_at', 'desc')
+            ->limit(3)->get();
 
         // Cek jika data siswa ada
         if ($siswa) {
