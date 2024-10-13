@@ -13,7 +13,7 @@ class WhatsappController extends Controller
         $siswa = User::leftJoin('data_siswa', 'data_siswa.id_user', 'users.id')
             ->leftJoin('log_spp', 'log_spp.id_siswa', 'data_siswa.id_siswa') // Gabungkan dengan log_spp jika ada
             ->where('users.username', $username)
-            ->select('data_siswa.nama_lengkap', 'log_spp.keterangan', 'log_spp.nominal', 'log_spp.bayar', 'log_spp.updated_at')
+            ->select('data_siswa.nama_lengkap', 'log_spp.keterangan', 'log_spp.nominal', 'log_spp.bayar', 'log_spp.updated_at','log_spp.status')
             ->first();
 
         // Cek jika data siswa ada
