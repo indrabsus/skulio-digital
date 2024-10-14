@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\AbsenSiswa;
 use App\Models\LogSpp;
+use App\Models\Nilai;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,5 +57,32 @@ class WhatsappController extends Controller
             'status' => 200
         ]);
     }
+
+    public function logNilai($username)
+{
+    $data = Nilai::leftJoin('materi', 'materi.id_materi', 'nilai.id_materi')
+        ->leftJoin('mapel_kelas', 'mapel_kelas.id_mapelkelas', 'materi.id_mapelkelas')
+        ->leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', 'mapel_kelas.id_mapel')
+        ->leftJoin('data_siswa', 'data_siswa.id_user', 'nilai.id_user')
+        ->leftJoin('users', 'users.id', 'data_siswa.id_user')
+        ->where('users.username', $username)
+        ->groupBy('mata_pelajaran.id_mapel', 'mata_pelajaran.nama_pelajaran', 'data_siswa.nama_lengkap')
+        ->select(
+            'mata_pelajaran.id_mapel',
+            'mata_pelajaran.nama_pelajaran',
+            'data_siswa.nama_lengkap', // Memasukkan nama lengkap siswa
+            DB::raw('AVG(nilai.nilai) as rata_rata_nilai') // Menghitung rata-rata nilai
+        )
+        ->orderBy('mata_pelajaran.nama_pelajaran', 'asc')
+        ->get();
+
+    return response()->json([
+        'data' => $data,
+        'message' => 'success',
+        'status' => 200
+    ]);
+}
+
+
 
 }
