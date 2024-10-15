@@ -16,7 +16,7 @@ use Livewire\WithPagination;
 
 class JadwalPelajaran extends Component
 {
-    public $id_mapelkelas ,$id_mapel, $id_kelas, $id_user, $semester, $materi, $konfirmasi ;
+    public $id_mapelkelas ,$id_mapel, $id_kelas, $id_user, $semester, $materi, $konfirmasi, $id_materi ;
     use WithPagination;
 
     public $cari = '';
@@ -138,13 +138,9 @@ class JadwalPelajaran extends Component
         $this->materi = '';
     }
     public function edit($id){
-        $data = TabelMapelKelas::where('id_mapelkelas', $id)->first();
-        $this->id_mapel = $data->id_mapel;
-        $this->id_kelas = $data->id_kelas;
-        $this->id_user = $data->id_user;
-        $this->id_mapelkelas = $id;
-        $this->tahun =  $data -> tahun;
-        $this->aktif =  $data -> aktif;
+        $data = Materi::where('id_mapelkelas', $id)->first();
+        $this->id_materi = $id;
+        $this->materi = $data->materi;
     }
     public function update(){
         $this->validate([
@@ -198,9 +194,14 @@ class JadwalPelajaran extends Component
         $hitung = Materi::where('id_mapelkelas', $this->id_mapelkelas)
         ->whereDate('created_at', now()->format('Y-m-d'))->count();
         if($hitung > 0){
-            session()->flash('gagal','Data Ganda');
-        $this->clearForm();
-        $this->dispatch('closeModal');
+            $data = Materi::where('id_mapelkelas', $this->id_mapelkelas)
+            ->whereDate('created_at', now()->format('Y-m-d'))
+            ->update([
+                'materi' => $this->materi
+            ]) ;
+            session()->flash('sukses','Data berhasil ditambahkan');
+            $this->clearForm();
+            $this->dispatch('closeModal');
         } else {
             $data = Materi::create([
                 'id_mapelkelas' => $this->id_mapelkelas,
@@ -250,7 +251,7 @@ class JadwalPelajaran extends Component
                 'semester' => $this->semester,
                 'penilaian' => 'n',
                 'tingkatan' => $kelas->tingkat,
-                'keterangan' => 3
+                'keterangan' => $this->konfirmasi
             ]) ;
         }
         session()->flash('sukses','Data berhasil dikirim');

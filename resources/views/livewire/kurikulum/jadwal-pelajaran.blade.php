@@ -56,7 +56,7 @@
                             @endphp
                            @if (Auth::user()->id_role == 6)
                            @if ($cek  > 0)
-                           <button class="btn btn-warning btn-xs" disabled>Sudah Terisi</button>
+                           <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#isi" wire:click='isi("{{$d->id_mapelkelas}}")'>Edit Agenda</a>
                            @else
                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#isi" wire:click='isi("{{$d->id_mapelkelas}}")'>Isi Agenda</a>
                            @endif
@@ -258,7 +258,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Isi Materi</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -279,6 +279,32 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <label for="">Materi</label>
+                  <input type="text" class="form-control" wire:model='materi'>
+                  <div class="text-danger">
+                      @error('materi')
+                          {{$message}}
+                      @enderror
+                  </div>
+              </div>
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='prosesagenda()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     {{-- Delete Modal --}}
