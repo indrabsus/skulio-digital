@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Karyawan;
+namespace App\Livewire\Extend;
 
 use App\Http\Controllers\Controller;
 use App\Models\AbsenSiswa;
@@ -12,6 +12,7 @@ use Livewire\Component;
 use App\Models\DataSiswa as TabelSiswa;
 use App\Models\MapelKelas;
 use App\Models\Materi;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -24,24 +25,29 @@ class SiswaKelas extends Component
     public $carisemester ='';
     public $caritahun ='';
     public $cari = '';
-    public $result = 10;
+    public $result = 50;
     public $id_materi = '';
 
-    
+    public function mount($id_materi){
+        $this->id_materi = $id_materi;
+    }
+    public function penilaian($id){
+        // dd($id);
+        $tes = Materi::where('id_materi', $id)->first();
+        if($tes->penilaian == 'n'){
+            Materi::where('id_materi', $id)->update([
+                'penilaian' => 'y'
+            ]);
+        } else {
+            Materi::where('id_materi', $id)->update([
+                'penilaian' => 'n'
+            ]);
+        }
+    }
+
     public function render()
     {
-        $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
-        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->orderBy('kelas.tingkat','asc')
-        ->orderBy('kelas.id_jurusan','asc')
-        ->orderBy('kelas.nama_kelas','asc')
-        ->get();
-        $materi = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
-        ->where('mapel_kelas.id_kelas', $this->cari_kelas)
-        ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('tahun', $this->caritahun)->get();
-        if($this->cari_kelas == ''){
+
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
@@ -55,35 +61,13 @@ class SiswaKelas extends Component
 
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('users.acc', 'y')
-        ->whereNotNull('materi.id_materi')
+        ->where('materi.id_materi', $this->id_materi)
         ->orderBy('nama_lengkap','asc')
         ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user','penilaian')
         ->paginate($this->result);
         // dd($data);
-        } else {
-            $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
-        ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
-        ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
-        ->leftJoin('users','users.id','=','data_siswa.id_user')
-        ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
-        ->where('data_siswa.id_kelas', $this->cari_kelas)
-        ->where(function ($query) {
-            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
-                ->orWhere('materi', 'like', '%' . $this->cari . '%');
-        })
-        ->where('tahun', 'like', '%' . $this->caritahun . '%')
-        ->where('materi.id_materi', 'like', '%' . $this->id_materi . '%')
-        ->where('mapel_kelas.id_user', Auth::user()->id)
-        ->where('users.acc', 'y')
-        ->whereNotNull('materi.id_materi')
-        ->orderBy('nama_lengkap','asc')
-        ->select('nama_lengkap','tingkat','singkatan','nama_kelas','materi','materi.created_at AS waktu_agenda','materi.id_materi','data_siswa.id_user','penilaian')
-        ->paginate($this->result);
 
-        }
-
-        return view('livewire.karyawan.siswa-kelas', compact('data','kelas','materi'));
+        return view('livewire.extend.siswa-kelas', compact('data'));
     }
     public function tugas($id, $id_user){
         $this->id_materi = $id;

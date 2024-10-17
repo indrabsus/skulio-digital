@@ -20,14 +20,14 @@ class DataLogFingerprint extends Component
     public $result = 10;
     public function render()
     {
-        $zk = new ZKTeco('192.168.107.99');
+        $zk = new ZKTeco('24.0.0.99');
         $konek = $zk->connect();
         $data = $zk->getAttendance();
 
         return view('livewire.manajemen.data-log-fingerprint', compact('data'));
     }
     public function tarik(){
-        $zk = new ZKTeco('192.168.107.99');
+        $zk = new ZKTeco('24.0.0.99');
         $zk->connect();
 
         foreach($zk->getAttendance() as $g => $d){

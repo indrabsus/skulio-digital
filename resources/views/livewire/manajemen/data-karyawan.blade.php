@@ -1,5 +1,5 @@
 <div>
-    Kode Mesin : {{ Session::get('kode_mesin') }}
+    Kode Mesin : {{ Session::get('kode_mesin') }} {{ $konek ? "Mesin Fingerprint Terhubung" : "Mesin Fingerprint Tidak Terhubung" }}
     <hr>
 
     <div class="row">
@@ -56,7 +56,7 @@
                     </form>
                 </div>
                 @endif --}}
-                {{ $konek ? "Mesin Fingerprint Terhubung" : "Mesin Fingerprint Tidak Terhubung" }}
+
                <div class="table-responsive">
                 <table class="table table-stripped">
                   <thead>

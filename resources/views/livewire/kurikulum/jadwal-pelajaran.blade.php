@@ -57,6 +57,11 @@
                            @if (Auth::user()->id_role == 6)
                            @if ($cek  > 0)
                            <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#isi" wire:click='isi("{{$d->id_mapelkelas}}")'>Edit Agenda</a>
+                           @php
+                               $abs = \App\Models\Materi::where('id_mapelkelas', $d->id_mapelkelas)
+                               ->whereDate('created_at', now()->format('Y-m-d'))->first();
+                           @endphp
+                           <a href="{{ route('extend.siswakelas', ['id_materi' => $abs->id_materi]) }}" class="btn btn-warning btn-xs">{{ $abs->materi }} | Absen Siswa</a>
                            @else
                            <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#isi" wire:click='isi("{{$d->id_mapelkelas}}")'>Isi Agenda</a>
                            @endif

@@ -21,7 +21,7 @@ class DataKaryawan extends Component
     public $result = 10;
     public function render()
     {
-        $zk = new ZKTeco('192.168.107.99');
+        $zk = new ZKTeco('24.0.0.99');
         $konek = $zk->connect();
         $role = Role::where('id_role','<>', 1)->get();
         $data  = TabelDataUser::orderBy('id_data','desc')->

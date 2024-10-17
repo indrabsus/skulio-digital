@@ -14,10 +14,13 @@ use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\UserController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
+use App\Livewire\Extend\SiswaKelas;
 use App\Livewire\Kurikulum\TambahKartuSiswa;
 use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
+
 
 //Detail PPDB
 Route::get('detailppdb',[PPDBController::class,'detailppdb'])->name('detailppdb');
@@ -32,6 +35,7 @@ Route::get('insertuser/{id_fp}/{uid_fp}/{nama}/{password}/{id_role}/{card_no}',[
 
 //PDF
 Route::get('/{id_kelas}/kelasprint', [PdfController::class, 'kelasprint'])->name('printkelas');
+
 
 
 //PPDB
@@ -100,6 +104,13 @@ Route::post('regproses',[AuthController::class,'register'])->name('register');
 
 
 Route::group(['middleware' => ['auth']], function(){
+
+    //extend
+Route::get('extend/siswakelas/{id_materi}',SiswaKelas::class)->name('extend.siswakelas');
+//nilai
+Route::any('postnilai',[NilaiController::class,'postNilai'])->name('postNilai');
+
+
     // Ujian 2
     Route::get('{id}/token2/',[Exam2Controller::class,'token'])->name('token2');
     Route::any('cektoken2', [Exam2Controller::class,'masukUjian'])->name('cektoken2');
