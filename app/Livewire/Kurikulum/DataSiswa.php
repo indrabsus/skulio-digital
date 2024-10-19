@@ -21,7 +21,11 @@ class DataSiswa extends Component
     public function render()
     {
 
-        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')->get();
+        $kelas = Kelas::leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
+        ->get();
         if($this->cari_kelas != ''){
         $data  = TabelSiswa::leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
