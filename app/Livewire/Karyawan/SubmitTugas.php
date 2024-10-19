@@ -30,18 +30,20 @@ class SubmitTugas extends Component
         if(Auth::user()->id_role == 6){
             $data  = ModelsSubmitTugas::orderBy('id_submit','desc')
         ->leftJoin('tugas','tugas.id_tugas','=','submit_tugas.id_tugas')
+        ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','tugas.id_mapelkelas')
         ->leftJoin('data_siswa','data_siswa.id_user','=','submit_tugas.id_user')
         ->leftJoin('kelas','kelas.id_kelas','=','data_siswa.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('tugas.id_user', Auth::user()->id)
-        ->where('tugas.id_kelas', 'like','%'.$this->carikelas.'%')
+        ->where('mapel_kelas.id_kelas', 'like','%'.$this->carikelas.'%')
         ->where('nama_tugas', 'like','%'.$this->cari.'%')->paginate($this->result);
         } else {
             $data  = ModelsSubmitTugas::orderBy('id_submit','desc')
             ->leftJoin('tugas','tugas.id_tugas','=','submit_tugas.id_tugas')
+            ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','tugas.id_mapelkelas')
             ->leftJoin('data_user','data_user.id_user','=','tugas.id_user')
             ->where('submit_tugas.id_user', Auth::user()->id)
-            ->where('tugas.id_kelas', 'like','%'.$this->carikelas.'%')
+            ->where('mapel_kelas.id_kelas', 'like','%'.$this->carikelas.'%')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')->paginate($this->result);
         }
         return view('livewire.karyawan.submit-tugas', compact('data','kelas'));

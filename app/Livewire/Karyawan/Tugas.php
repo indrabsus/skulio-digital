@@ -14,9 +14,9 @@ use Livewire\WithPagination;
 
 class Tugas extends Component
 {
-    public $id_tugas, $id_user, $id_kelas, $nama_tugas, $link_youtube, $deskripsi, $jawaban;
+    public $id_tugas, $id_user, $id_mapelkelas, $nama_tugas, $link_youtube, $deskripsi, $jawaban;
     use WithPagination;
-
+    public $cari_kelas ='';
     public $cari = '';
     public $result = 10;
     public function render()
@@ -28,10 +28,13 @@ class Tugas extends Component
         ->where('mapel_kelas.id_user', Auth::user()->id)->get();
         if(Auth::user()->id_role == 6){
             $data  = ModelsTugas::orderBy('id_tugas','desc')
-            ->leftJoin('kelas','kelas.id_kelas','=','tugas.id_kelas')
+            ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','tugas.id_mapelkelas')
+            ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+            ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')
             ->where('tugas.id_user', Auth::user()->id)
+            ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
         } else {
             $data  = ModelsTugas::orderBy('id_tugas','desc')
@@ -39,6 +42,7 @@ class Tugas extends Component
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')
             ->where('tugas.id_kelas', $kls->id_kelas)
+            ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
         }
         return view('livewire.karyawan.tugas', compact('data','kelas'));
@@ -46,13 +50,13 @@ class Tugas extends Component
     public function insert(){
         $this->validate([
             'nama_tugas' => 'required',
-            'id_kelas' => 'required',
+            'id_mapelkelas' => 'required',
             'deskripsi' => 'required',
         ]);
         $data = ModelsTugas::create([
             'nama_tugas' => $this->nama_tugas,
             'link_youtube' => $this->link_youtube,
-            'id_kelas' => $this->id_kelas,
+            'id_mapelkelas' => $this->id_mapelkelas,
             'deskripsi' => $this->deskripsi,
             'id_user' => Auth::user()->id
         ]) ;
@@ -63,7 +67,7 @@ class Tugas extends Component
     public function clearForm(){
         $this->nama_tugas = '';
         $this->link_youtube = '';
-        $this->id_kelas = '';
+        $this->id_mapelkelas = '';
         $this->deskripsi = '';
     }
     public function edit($id){
@@ -71,7 +75,7 @@ class Tugas extends Component
         $this->nama_tugas = $data->nama_tugas;
         $this->link_youtube = $data->link_youtube;
         $this->id_tugas = $id;
-        $this->id_kelas = $data->id_kelas;
+        $this->id_mapelkelas = $data->id_mapelkelas;
         $this->deskripsi = $data->deskripsi;
 
     }
@@ -80,7 +84,7 @@ class Tugas extends Component
         $this->nama_tugas = $data->nama_tugas;
         $this->link_youtube = $data->link_youtube;
         $this->id_tugas = $id;
-        $this->id_kelas = $data->id_kelas;
+        $this->id_mapelkelas = $data->id_mapelkelas;
         $this->deskripsi = $data->deskripsi;
     }
     public function submitTugas(){
@@ -96,13 +100,13 @@ class Tugas extends Component
     public function update(){
         $this->validate([
             'nama_tugas' => 'required',
-            'id_kelas' => 'required',
+            'id_mapelkelas' => 'required',
             'deskripsi' => 'required',
         ]);
         $data = ModelsTugas::where('id_tugas', $this->id_tugas)->update([
            'nama_tugas' => $this->nama_tugas,
             'link_youtube' => $this->link_youtube,
-            'id_kelas' => $this->id_kelas,
+            'id_mapelkelas' => $this->id_mapelkelas,
             'deskripsi' => $this->deskripsi,
         ]);
         session()->flash('sukses','Data berhasil diedit');

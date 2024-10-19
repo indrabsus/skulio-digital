@@ -28,6 +28,14 @@
                     @endif
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                            <div class="form-group">
+                                <select class="form-control" wire:model.live="cari_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                    @foreach($kelas as $k)
+                                    <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
                                 <option value="10">10</option>
@@ -49,6 +57,7 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Tugas</th>
+                          <th>Mapel</th>
                           <th>Kelas</th>
                           <th>Aksi</th>
                       </tr>
@@ -58,6 +67,7 @@
                   <tr>
                     <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                     <td>{{$d->nama_tugas}}</td>
+                    <td>{{$d->nama_pelajaran}}</td>
                     <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                     <td>
 
@@ -137,14 +147,14 @@
                 </div>
                   <div class="form-group mb-3">
                     <label for="soal">Kelas</label>
-                    <select class="form-control" wire:model="id_kelas">
+                    <select class="form-control" wire:model="id_mapelkelas">
                         <option value="">Pilih Kelas</option>
                         @foreach ($kelas as $k)
-                            <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                            <option value="{{$k->id_mapelkelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}} - {{$k->nama_pelajaran}}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_kelas') {{$message}} @enderror
+                        @error('id_mapelkelas') {{$message}} @enderror
                     </div>
                 </div>
             </div>
@@ -204,14 +214,14 @@
                 </div>
                   <div class="form-group mb-3">
                     <label for="soal">Kelas</label>
-                    <select class="form-control" wire:model="id_kelas">
+                    <select class="form-control" wire:model="id_mapelkelas">
                         <option value="">Pilih Kelas</option>
                         @foreach ($kelas as $k)
-                            <option value="{{$k->id_kelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}}</option>
+                        <option value="{{$k->id_mapelkelas}}">{{$k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas}} - {{$k->nama_pelajaran}}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
-                        @error('id_kelas') {{$message}} @enderror
+                        @error('id_mapelkelas') {{$message}} @enderror
                     </div>
                 </div>
             </div>
