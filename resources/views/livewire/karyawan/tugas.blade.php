@@ -224,6 +224,7 @@
                         @error('id_mapelkelas') {{$message}} @enderror
                     </div>
                 </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -278,6 +279,12 @@
                 </div>
                 <div class="mb-3">
                     <textarea id="jawaban" cols="30" rows="10" class="form-control" wire:model="jawaban"></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="checkbox" wire:model="selesai"> Saya yakin ini jawaban saya sendiri dan tidak melakukan kecurangan apapun
+                    <div class="text-danger">
+                        @error('selesai') {{$message}} @enderror
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

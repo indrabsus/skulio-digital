@@ -36,7 +36,7 @@ class SubmitTugas extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->where('tugas.id_user', Auth::user()->id)
         ->where('mapel_kelas.id_kelas', 'like','%'.$this->carikelas.'%')
-        ->where('nama_tugas', 'like','%'.$this->cari.'%')->paginate($this->result);
+        ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
         } else {
             $data  = ModelsSubmitTugas::orderBy('id_submit','desc')
             ->leftJoin('tugas','tugas.id_tugas','=','submit_tugas.id_tugas')
@@ -44,7 +44,7 @@ class SubmitTugas extends Component
             ->leftJoin('data_user','data_user.id_user','=','tugas.id_user')
             ->where('submit_tugas.id_user', Auth::user()->id)
             ->where('mapel_kelas.id_kelas', 'like','%'.$this->carikelas.'%')
-            ->where('nama_tugas', 'like','%'.$this->cari.'%')->paginate($this->result);
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')->paginate($this->result);
         }
         return view('livewire.karyawan.submit-tugas', compact('data','kelas'));
     }

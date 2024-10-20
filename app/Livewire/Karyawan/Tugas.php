@@ -18,6 +18,7 @@ class Tugas extends Component
     use WithPagination;
     public $cari_kelas ='';
     public $cari = '';
+    public $selesai = false;
     public $result = 10;
     public function render()
     {
@@ -34,14 +35,15 @@ class Tugas extends Component
             ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')
             ->where('tugas.id_user', Auth::user()->id)
-            ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
+            ->where('mapel_kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
         } else {
             $data  = ModelsTugas::orderBy('id_tugas','desc')
-            ->leftJoin('kelas','kelas.id_kelas','=','tugas.id_kelas')
+            ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','tugas.id_mapelkelas')
+            ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')
-            ->where('tugas.id_kelas', $kls->id_kelas)
+            ->where('kelas.id_kelas', $kls->id_kelas)
             ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
         }
@@ -88,6 +90,13 @@ class Tugas extends Component
         $this->deskripsi = $data->deskripsi;
     }
     public function submitTugas(){
+        // dd($this->selesai);
+        $this->validate([
+            'selesai' => 'accepted',
+        ], [
+            'selesai.accepted' => 'Harus dicentang dulu sebelum mengumpulkan jawaban.',
+        ]);
+
         SubmitTugas::create([
             'id_tugas' => $this->id_tugas,
             'id_user' => Auth::user()->id,

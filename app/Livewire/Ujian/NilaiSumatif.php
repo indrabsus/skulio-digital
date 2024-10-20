@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\Setingan;
+use App\Models\Sumatif;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\DataSiswa as TabelSiswa;
@@ -20,6 +21,7 @@ class NilaiSumatif extends Component
     public $id_materi, $nilai, $jenkel, $id_user, $id_mapelkelas, $id_nilai, $keterangan, $waktu_agenda;
     use WithPagination;
     public $material = [];
+    public $id_sumatif = '';
     public $cari_kelas ='';
     public $carisemester ='';
     public $caritahun ='';
@@ -28,10 +30,15 @@ class NilaiSumatif extends Component
     public $id_kategori = '';
     public function render()
     {
-        $kat = KategoriSoal::leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','kategori_soal.id_mapel')
-        ->where('id_user', Auth::user()->id)->get();
+        $kat = Sumatif::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','sumatif.id_mapelkelas')
+        ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','mapel_kelas.id_mapel')
+        ->where('id_kelas', $this->cari_kelas)
+        ->where('mapel_kelas.id_user', Auth::user()->id)->get();
         $kelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+        ->orderBy('kelas.tingkat','asc')
+        ->orderBy('kelas.id_jurusan','asc')
+        ->orderBy('kelas.nama_kelas','asc')
         ->where('mapel_kelas.id_user', Auth::user()->id)->get();
         if($this->cari_kelas == ''){
             $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')

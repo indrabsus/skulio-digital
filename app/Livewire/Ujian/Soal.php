@@ -165,7 +165,6 @@ class Soal extends Component
 
         // Update the quiz question data
         $data->update([
-            'id_kategori' => $this->id_kategori,
             'soal' => $this->soal,
             'pilihan_a' => $this->pilihan_a,
             'pilihan_b' => $this->pilihan_b,

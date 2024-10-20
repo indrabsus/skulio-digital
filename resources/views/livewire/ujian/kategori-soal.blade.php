@@ -120,65 +120,11 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="">Nama Kategori</label>
                     <input type="text" wire:model.live="nama_kategori" class="form-control">
                     <div class="text-danger">
                         @error('nama_kategori')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Token</label>
-                    <input type="number" wire:model.live="token" class="form-control">
-                    <div class="text-danger">
-                        @error('token')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Tahun Pelajaran</label>
-                    <input type="number" wire:model.live="tahun" class="form-control">
-                    <div class="text-danger">
-                        @error('tahun')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Waktu</label>
-                    <input type="number" wire:model.live="waktu" class="form-control">
-                    <div class="text-danger">
-                        @error('waktu')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Kelas</label>
-                    <select wire:model.live="kelas" class="form-control" disabled>
-                        <option value="">Pilih Kelas</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('kelas')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                <div class="form-group">
-                    <label for="">Semester</label>
-                    <select wire:model.live="semester" class="form-control">
-                        <option value="">Pilih Semester</option>
-                        <option value="ganjil">Ganjil</option>
-                        <option value="genap">Genap</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('semester')
                             {{$message}}
                         @enderror
                     </div>
@@ -193,19 +139,6 @@
                     </select>
                     <div class="text-danger">
                         @error('id_mapel')
-                            {{$message}}
-                        @enderror
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">Aktif?</label>
-                    <select wire:model.live="aktif" class="form-control">
-                        <option value="">Pilih Opsi</option>
-                        <option value="y">Ya</option>
-                        <option value="n">Tidak</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('aktif')
                             {{$message}}
                         @enderror
                     </div>

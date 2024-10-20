@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Ujian;
 
+use App\Models\DataSiswa;
 use App\Models\SoalUjian;
 use App\Models\TampungSoal;
 use Livewire\Component;
@@ -28,11 +29,25 @@ class Sumatif extends Component
     ->distinct()
     ->get(['mapel_kelas.id_mapel', 'mata_pelajaran.nama_pelajaran']);  // Kolom yang dibutuhkan
         $tampung = SoalUjian::where('id_user',Auth::user()->id)->get();
-        $data  = ModelsSumatif::leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
-        ->leftJoin('kelas','kelas.id_kelas','sumatif.id_kelas')
+        if(Auth::user()->id_role == 8){
+        $aku = DataSiswa::where('id_user', Auth::user()->id)->first();
+        $data  = ModelsSumatif::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','sumatif.id_mapelkelas')
+        ->leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
+        ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','mapel_kelas.id_mapel')
+        ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
+        ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+        ->where('nama_sumatif', 'like','%'.$this->cari.'%')
+        ->where('mapel_kelas.id_kelas', $aku->id_kelas)
+        ->paginate($this->result);
+        } else {
+        $data  = ModelsSumatif::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','sumatif.id_mapelkelas')
+        ->leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
+        ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','mapel_kelas.id_mapel')
+        ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('nama_sumatif', 'like','%'.$this->cari.'%')
         ->paginate($this->result);
+        }
         return view('livewire.ujian.sumatif', compact('data','mapel', 'tampung'));
     }
     public function insert(){
@@ -57,8 +72,8 @@ class Sumatif extends Component
 
         $isDuplicate = false;
 
-        foreach ($this->kelasku as $id_kelas) {
-            $exists = ModelsSumatif::where('id_kelas', $id_kelas)
+        foreach ($this->kelasku as $id_mapelkelas) {
+            $exists = ModelsSumatif::where('id_mapelkelas', $id_mapelkelas)
                                   ->where('id_sumatif', $this->id_sumatif)
                                   ->exists();
 
@@ -66,7 +81,7 @@ class Sumatif extends Component
                 $data = ModelsSumatif::create([
                     'nama_sumatif' => $this->nama_sumatif,
                     'id_soalujian' => $this->id_soalujian,
-                    'id_kelas' => $id_kelas,
+                    'id_mapelkelas' => $id_mapelkelas,
                     'token' => $this->token,
                     'waktu' => $this->waktu,
                     'tahun' => $this->tahun,

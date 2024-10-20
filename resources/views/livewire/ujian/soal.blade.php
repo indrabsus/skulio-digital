@@ -91,7 +91,7 @@
                             @endforeach
 
                 <div class="mb-3 mt-3">
-                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#c_kirimsoal" wire:click="c_soal('{{$d->id_soal}}')">Kirim Soal</a>
+                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#c_kirimsoal" wire:click="c_soal('{{$d->id_soal ?? ''}}')">Kirim Soal</a>
                 </div>
                 {{$data->links()}}
         </div>

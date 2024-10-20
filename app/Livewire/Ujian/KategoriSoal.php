@@ -93,34 +93,16 @@ class KategoriSoal extends Component
         $data = ModelsKategoriSoal::where('id_kategori', $id)->first();
         $this->nama_kategori = $data->nama_kategori;
         $this->id_mapel = $data->id_mapel;
-        $this->kelas = $data->kelas;
         $this->id_kategori = $id;
-        $this->waktu = $data->waktu;
-        $this->token = $data->token;
-        $this->semester = $data->semester;
-        $this->tahun = $data->tahun;
-        $this->aktif = $data->aktif;
     }
     public function update(){
         $this->validate([
             'nama_kategori' => 'required',
-            'id_mapel' => 'required',
-            'kelas' => 'required',
-            'waktu' => 'required',
-            'token' => 'required',
-            'semester' => 'required',
-            'tahun' => 'required',
-            'aktif' => 'required'
+            'id_mapel' => 'required'
         ]);
         $data = ModelsKategoriSoal::where('id_kategori', $this->id_kategori)->update([
             'nama_kategori' => $this->nama_kategori,
-            'id_mapel' => $this->id_mapel,
-            'kelas' => $this->kelas,
-            'waktu' => $this->waktu,
-            'token' => $this->token,
-            'semester' => $this->semester,
-            'tahun' => $this->tahun,
-            'aktif' => $this->aktif
+            'id_mapel' => $this->id_mapel
         ]);
         session()->flash('sukses','Data berhasil diedit');
         $this->clearForm();

@@ -45,12 +45,16 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Sumatif</th>
+                          <th>Mapel</th>
                           <th>Kelas</th>
+                          <th>Aksi</th>
+                          @if (Auth::user()->id_role == 6)
                           <th>Token</th>
                           <th>Tahun</th>
                           <th>Waktu</th>
-                          <th>Soal</th>
                           <th>Aksi</th>
+                          @endif
+
                       </tr>
                   </thead>
                   <tbody>
@@ -58,7 +62,29 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_sumatif}}</td>
+                          <td>{{ $d->nama_pelajaran }}</td>
                           <td>{{ $d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas }}</td>
+
+                          @php
+                          if (Auth::user()->id_role == 8) {
+                            $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
+                              $jml = App\Models\LogUjian2::where('id_sumatif', $d->id_sumatif)
+                              ->where('id_user', $us->id_user)
+                              ->where('status', 'done')
+                              ->count();
+                          }
+                          @endphp
+
+                          @if (Auth::user()->id_role == 8)
+                          <td>
+                            @if ($jml > 0)
+                            <button disabled class="btn btn-primary btn-xs"><i class="fa-solid fa-share"></i></button>
+                            @else
+                            <a href="{{ route('token2',['id' => $d->id_sumatif]) }}" class="btn btn-primary btn-xs"><i class="fa-solid fa-share"></i></a>
+                            @endif
+                            </td>
+                          @endif
+                          @if (Auth::user()->id_role == 6)
                           <td>{{$d->token}}</td>
                           <td>{{$d->tahun}}</td>
                           <td>{{$d->waktu}} Menit</td>
@@ -67,6 +93,7 @@
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_sumatif}}")'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_sumatif}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>
+                          @endif
                       </tr>
                   @endforeach
                   </tbody>
@@ -144,6 +171,7 @@
                   @php
                     $kls = App\Models\Kelas::leftJoin('jurusan', 'jurusan.id_jurusan', '=', 'kelas.id_jurusan')
                     ->leftJoin('mapel_kelas', 'mapel_kelas.id_kelas', '=', 'kelas.id_kelas')
+                    ->leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', '=', 'mapel_kelas.id_mapel')
                     ->where('mapel_kelas.id_user', Auth::user()->id)
                     ->orderBy('tingkat', 'asc')
                     ->orderBy('singkatan', 'asc')
@@ -155,8 +183,8 @@
                     <label for="">Pilih Kelas</label>
                     @foreach ($kls as $k)
                     <div class="form-check">
-                    <input class="form-check-input" type="checkbox" wire:model="kelasku" value="{{ $k->id_kelas }}">
-                    <label class="form-check-label">{{ $k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas }}</label>
+                    <input class="form-check-input" type="checkbox" wire:model="kelasku" value="{{ $k->id_mapelkelas }}">
+                    <label class="form-check-label">{{ $k->tingkat.' '.$k->singkatan.' '.$k->nama_kelas }} - {{ $k->nama_pelajaran }}</label>
                     </div>
                     @endforeach
 

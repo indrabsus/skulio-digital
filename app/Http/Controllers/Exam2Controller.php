@@ -8,6 +8,7 @@ use App\Models\KelasSumatif;
 use App\Models\LogUjian2;
 use App\Models\NilaiUjian;
 use App\Models\Soal;
+use App\Models\Sumatif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,8 @@ use Illuminate\Support\Facades\Session;
 class Exam2Controller extends Controller
 {
     public function token($id){
-        $data = KelasSumatif::leftJoin('kategori_soal','kategori_soal.id_kategori','kelas_sumatif.id_kategori')
-            ->where('id_kelassumatif', $id)
+        $data = Sumatif::leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
+            ->where('id_sumatif', $id)
         ->first();
         // dd($data);
         return view('ujian2.token', compact('data'));
@@ -26,11 +27,10 @@ class Exam2Controller extends Controller
     public function masukUjian(Request $request){
         $tokenini = $request->ctoken;
         $rtoken = $request->token;
-        $id_kelassumatif = $request->id_kelassumatif;
+        $id_sumatif = $request->id_sumatif;
 
         if($rtoken == $tokenini){
-            $test = DB::table('kelas_sumatif')->leftJoin('kategori_soal','kategori_soal.id_kategori','kelas_sumatif.id_kategori')
-            ->where('id_kelassumatif',$id_kelassumatif)->first();
+            $test = Sumatif::where('id_sumatif',$id_sumatif)->first();
             // dd($test->waktu);
             $data = DB::table('data_siswa')
             ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
@@ -40,18 +40,18 @@ class Exam2Controller extends Controller
             if(Session::get('start') == null){
                 Session::put('start', time());
             }
-            Session::put('id_kelassumatif', $id_kelassumatif);
+            Session::put('id_sumatif', $id_sumatif);
             $end = Session::get('start') + $test->waktu * 60 *1000;
             $sisa = $end - time();
             $us = DataSiswa::where('id_user', Auth::user()->id)->first();
-            $cek = LogUjian2::where('id_kelassumatif', Session::get('id_kelassumatif'))
+            $cek = LogUjian2::where('id_sumatif', Session::get('id_sumatif'))
             ->where('id_user', Auth::user()->id)
             ->where('status','done')
             ->count();
 
         if( $cek < 1){
             LogUjian2::create([
-            'id_kelassumatif' => Session::get('id_kelassumatif'),
+            'id_sumatif' => Session::get('id_sumatif'),
             'id_user' => $us->id_user,
             'status' => 'proses'
         ]);
@@ -71,19 +71,17 @@ class Exam2Controller extends Controller
     }
     public function test()
 {
-    $idKelassumatif = Session::get('id_kelassumatif');
+    $id_sumatif = Session::get('id_sumatif');
 
     // Ambil data dari tabel kelas_sumatif dan kategori_soal
-    $test = DB::table('kelas_sumatif')
-        ->leftJoin('kategori_soal', 'kategori_soal.id_kategori', '=', 'kelas_sumatif.id_kategori')
-        ->where('kelas_sumatif.id_kelassumatif', $idKelassumatif)
+    $test = Sumatif::where('sumatif.id_sumatif', $id_sumatif)
         ->first();
 
     // Ambil data dari kelas_sumatif, kategori_soal, dan soal
-    $data = KelasSumatif::leftJoin('kategori_soal', 'kategori_soal.id_kategori', '=', 'kelas_sumatif.id_kategori')
-        ->leftJoin('soal', 'soal.id_kategori', '=', 'kategori_soal.id_kategori')
-        ->where('kelas_sumatif.id_kelassumatif', $idKelassumatif)
-        ->select('kelas_sumatif.*', 'kategori_soal.nama_kategori', 'soal.*') // Pilih kolom yang dibutuhkan
+    $data = Sumatif::where('sumatif.id_sumatif', $id_sumatif)
+    ->leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
+    ->leftJoin('tampung_soal','tampung_soal.id_soalujian','soal_ujian.id_soalujian')
+    ->leftJoin('soal','soal.id_soal','tampung_soal.id_soal')
         ->get();
 
     // Acak soal
@@ -122,6 +120,18 @@ class Exam2Controller extends Controller
 {
     $jumlahBenar = 0;
 
+    // Validasi jawaban yang dikirimkan oleh user
+    $request->validate([
+        'pilihan_*' => 'required|in:a,b,c,d,e', // Sesuaikan dengan pilihan jawaban yang tersedia
+    ]);
+
+    // Cegah pengiriman ganda menggunakan session token
+    if (Session::has('form_token_used')) {
+        return redirect()->route('dashboard')->with('gagal', 'Form ini sudah pernah dikirim.');
+    }
+    // Simpan token agar tidak bisa dikirim ulang
+    Session::put('form_token_used', true);
+
     // Ambil semua nama input yang dikirimkan, kecuali _token
     $inputNames = array_keys($request->except('_token'));
 
@@ -133,8 +143,8 @@ class Exam2Controller extends Controller
     // Ambil data soal dari database berdasarkan ID yang diterima dari form
     $soals = Soal::whereIn('id_soal', $soalIds)->get();
 
-    // Hitung jumlah soal
-    $totalSoal = $soals->count();
+    // Hitung jumlah soal yang valid dari database
+    $validSoalCount = $soals->count();
 
     // Loop setiap soal dan cek apakah jawaban benar
     foreach ($soals as $soal) {
@@ -145,30 +155,55 @@ class Exam2Controller extends Controller
             $jumlahBenar++;
         }
     }
-    $nilaiAkhir = $totalSoal > 0 ? ($jumlahBenar / $totalSoal) * 100 : 0;
-    $hitung = NilaiUjian::where('id_kelassumatif', Session::get('id_kelassumatif'))
-    ->where('id_user_siswa', Auth::user()->id)->count();
-    // Simpan hasil ujian
-    if($hitung > 0){
-        return redirect()->route('dashboard')->with('gagal', 'Terdeteksi test ganda!');
-    } else {
-        NilaiUjian::create([
-            'id_kelassumatif' => Session::get('id_kelassumatif'),
-            'id_user_siswa' => Auth::user()->id,
-            'nilai_ujian' => $nilaiAkhir,
-        ]);
 
-        LogUjian2::where('id_kelassumatif', Session::get('id_kelassumatif'))
-        ->where('id_user', Auth::user()->id)
-        ->update([
-            'status' => 'done'
-        ]);
-
-        Auth::logout();
-        Session::flush();
-        return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
+    // Hitung nilai akhir, pastikan nilai tidak lebih dari 100
+    $nilaiAkhir = $validSoalCount > 0 ? ($jumlahBenar / $validSoalCount) * 100 : 0;
+    if ($nilaiAkhir > 100) {
+        $nilaiAkhir = 100;
     }
 
+    // Cek apakah sudah ada nilai ujian sebelumnya untuk user dan ujian ini
+    $hitung = NilaiUjian::where('id_sumatif', Session::get('id_sumatif'))
+                ->where('id_user_siswa', Auth::user()->id)
+                ->count();
+
+    // Gunakan DB Transaction untuk menjaga integritas data
+    DB::beginTransaction();
+
+    try {
+        // Simpan hasil ujian hanya jika belum ada nilai sebelumnya
+        if ($hitung > 0) {
+            return redirect()->route('dashboard')->with('gagal', 'Terdeteksi test ganda!');
+        } else {
+            // Simpan nilai ujian ke database
+            NilaiUjian::create([
+                'id_sumatif' => Session::get('id_sumatif'),
+                'id_user_siswa' => Auth::user()->id,
+                'nilai_ujian' => $nilaiAkhir,
+            ]);
+
+            // Update status ujian di LogUjian2 menjadi 'done'
+            LogUjian2::where('id_sumatif', Session::get('id_sumatif'))
+                ->where('id_user', Auth::user()->id)
+                ->update([
+                    'status' => 'done'
+                ]);
+
+            // Commit transaction jika semuanya sukses
+            DB::commit();
+        }
+
+        // Logout user setelah selesai ujian
+        Auth::logout();
+        Session::flush();
+
+        return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
+    } catch (\Exception $e) {
+        // Rollback jika ada error
+        DB::rollBack();
+
+        return redirect()->route('dashboard')->with('gagal', 'Terjadi kesalahan, silakan coba lagi.');
+    }
 }
 
 }

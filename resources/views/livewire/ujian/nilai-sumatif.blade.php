@@ -31,10 +31,10 @@
                                     @endforeach
                                 </select>
 
-                                <select wire:model.live="id_kategori" class="form-control">
+                                <select wire:model.live="id_sumatif" class="form-control">
                                     <option value="">Pilih Sumatif</option>
                                     @foreach ($kat as $k)
-                                        <option value="{{$k->id_kategori}}">{{ $k->nama_kategori }} - {{ $k->nama_pelajaran }}</option>
+                                        <option value="{{$k->id_sumatif}}">{{ $k->nama_sumatif }} - {{ $k->nama_pelajaran }}</option>
                                     @endforeach
                                 </select>
                           <div class="col-3">
@@ -59,7 +59,7 @@
                           <th>Nama Lengkap</th>
                           <th>Kelas</th>
                           <th>Mata Pelajaran</th>
-                          <th>Tingkat/Semester</th>
+                          <th>Tingkat/Tahun Pelajaran</th>
                           <th>Nilai Sumatif</th>
                       </tr>
                   </thead>
@@ -70,18 +70,21 @@
                           <td>{{$d->nama_lengkap}}</td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           @php
-                          $ts = App\Models\KategoriSoal::where('id_kategori', $id_kategori)
-                          ->leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', 'kategori_soal.id_mapel')
+                          $ts = App\Models\Sumatif::leftJoin('mapel_kelas', 'mapel_kelas.id_mapelkelas', 'sumatif.id_mapelkelas')
+                          ->leftJoin('mata_pelajaran', 'mata_pelajaran.id_mapel', 'mapel_kelas.id_mapel')
+                          ->leftJoin('kelas', 'kelas.id_kelas', 'mapel_kelas.id_kelas')
+                        //   ->where('id_user', $d->id)
+                          ->where('id_sumatif', $this->id_sumatif)
                           ->first();
                       @endphp
                           <td>{{ $ts->nama_pelajaran ?? ''}}</td>
 
-                          <td> {{ $ts->kelas ?? '' }}/{{ $ts->semester ?? '' }} {{ $ts->tahun ?? '' }}</td>
+                          <td> {{ $ts->tingkat ?? '' }}/{{ $ts->tahun ?? '' }}</td>
                           @php
 
-                              $sum = App\Models\NilaiUjian::leftJoin('kelas_sumatif', 'kelas_sumatif.id_kelassumatif','nilai_ujian.id_kelassumatif')
+                              $sum = App\Models\NilaiUjian::leftJoin('sumatif', 'sumatif.id_sumatif','nilai_ujian.id_sumatif')
                               ->where('id_user_siswa', $d->id)
-                              ->where('kelas_sumatif.id_kategori', $id_kategori)
+                              ->where('sumatif.id_sumatif', $this->id_sumatif)
                               ->first();
 
                           @endphp
