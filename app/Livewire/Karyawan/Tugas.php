@@ -42,6 +42,7 @@ class Tugas extends Component
             ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','tugas.id_mapelkelas')
             ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
+            ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
             ->where('nama_tugas', 'like','%'.$this->cari.'%')
             ->where('kelas.id_kelas', $kls->id_kelas)
             ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')

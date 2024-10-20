@@ -47,11 +47,14 @@
                           <th>Nama Sumatif</th>
                           <th>Mapel</th>
                           <th>Kelas</th>
+                          @if (Auth::user()->id_role == 8)
                           <th>Aksi</th>
+                          @endif
                           @if (Auth::user()->id_role == 6)
                           <th>Token</th>
                           <th>Tahun</th>
                           <th>Waktu</th>
+                          <th>Soal</th>
                           <th>Aksi</th>
                           @endif
 

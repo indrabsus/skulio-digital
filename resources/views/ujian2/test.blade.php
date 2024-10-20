@@ -47,7 +47,7 @@
             </ul>
             <hr>
         @endforeach
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-5 mt-3"><button type="submit" class="btn btn-primary">Submit</button></div>
     </form>
 </div>
 
