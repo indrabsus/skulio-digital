@@ -13,6 +13,14 @@
     ul.no-bullets li {
         margin-bottom: 5px; /* Atur jarak sesuai kebutuhan */
     }
+
+    body {
+  user-select: none;
+  -webkit-user-select: none; /* Untuk browser berbasis WebKit seperti Safari dan Chrome */
+  -moz-user-select: none;    /* Untuk Firefox */
+  -ms-user-select: none;     /* Untuk Internet Explorer dan Edge */
+}
+
 </style>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
    <div class="container">
@@ -212,6 +220,22 @@ var x = setInterval(function() {
 }, 1000);
 
 </script>
+<script>
+    // Menonaktifkan klik kanan
+    document.addEventListener('contextmenu', function(event) {
+      event.preventDefault();
+    });
+
+    // Menonaktifkan copy
+    document.addEventListener('copy', function(event) {
+      event.preventDefault();
+    });
+
+    // Menonaktifkan paste
+    document.addEventListener('paste', function(event) {
+      event.preventDefault();
+    });
+  </script>
 
 
 @endsection
