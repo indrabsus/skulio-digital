@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataSiswa;
+use App\Models\JawabanSiswa;
 use App\Models\KategoriSoal;
 use App\Models\KelasSumatif;
 use App\Models\LogUjian2;
@@ -118,92 +119,121 @@ class Exam2Controller extends Controller
     }
     public function submitTest(Request $request)
 {
-    $jumlahBenar = 0;
+    $id_sumatif = Session::get('id_sumatif');
+    $id_user = Auth::user()->id;
+    $all_answers = [];
 
-    // Validasi jawaban yang dikirimkan oleh user
-    $request->validate([
-        'pilihan_*' => 'required|in:a,b,c,d,e', // Sesuaikan dengan pilihan jawaban yang tersedia
-    ]);
+        // Loop setiap input jawaban
+        foreach ($request->all() as $key => $value) {
+            // Cek apakah key merupakan pilihan soal (misalnya 'pilihan_1', 'pilihan_2', dst.)
+            if (strpos($key, 'pilihan_') === 0) {
+                // Dapatkan id_soal dari key 'pilihan_1' -> id_soal = 1
+                $id_soal = str_replace('pilihan_', '', $key);
 
-    // Cegah pengiriman ganda menggunakan session token
-    if (Session::has('form_token_used')) {
-        return redirect()->route('dashboard')->with('gagal', 'Form ini sudah pernah dikirim.');
-    }
-    // Simpan token agar tidak bisa dikirim ulang
-    Session::put('form_token_used', true);
-
-    // Ambil semua nama input yang dikirimkan, kecuali _token
-    $inputNames = array_keys($request->except('_token'));
-
-    // Ekstrak ID soal dari nama input
-    $soalIds = array_map(function($name) {
-        return str_replace('pilihan_', '', $name);
-    }, $inputNames);
-
-    // Ambil data soal dari database berdasarkan ID yang diterima dari form
-    $soals = Soal::whereIn('id_soal', $soalIds)->get();
-
-    // Hitung jumlah soal yang valid dari database
-    $validSoalCount = $soals->count();
-
-    // Loop setiap soal dan cek apakah jawaban benar
-    foreach ($soals as $soal) {
-        $userAnswer = $request->input('pilihan_' . $soal->id_soal);
-
-        // Cek apakah jawaban pengguna sama dengan jawaban yang benar
-        if ($userAnswer === $soal->jawaban) {
-            $jumlahBenar++;
-        }
-    }
-
-    // Hitung nilai akhir, pastikan nilai tidak lebih dari 100
-    $nilaiAkhir = $validSoalCount > 0 ? ($jumlahBenar / $validSoalCount) * 100 : 0;
-    if ($nilaiAkhir > 100) {
-        $nilaiAkhir = 100;
-    }
-
-    // Cek apakah sudah ada nilai ujian sebelumnya untuk user dan ujian ini
-    $hitung = NilaiUjian::where('id_sumatif', Session::get('id_sumatif'))
-                ->where('id_user_siswa', Auth::user()->id)
-                ->count();
-
-    // Gunakan DB Transaction untuk menjaga integritas data
-    DB::beginTransaction();
-
-    try {
-        // Simpan hasil ujian hanya jika belum ada nilai sebelumnya
-        if ($hitung > 0) {
-            return redirect()->route('dashboard')->with('gagal', 'Terdeteksi test ganda!');
-        } else {
-            // Simpan nilai ujian ke database
-            NilaiUjian::create([
-                'id_sumatif' => Session::get('id_sumatif'),
-                'id_user_siswa' => Auth::user()->id,
-                'nilai_ujian' => $nilaiAkhir,
-            ]);
-
-            // Update status ujian di LogUjian2 menjadi 'done'
-            LogUjian2::where('id_sumatif', Session::get('id_sumatif'))
-                ->where('id_user', Auth::user()->id)
-                ->update([
-                    'status' => 'done'
-                ]);
-
-            // Commit transaction jika semuanya sukses
-            DB::commit();
+                // Format jawaban: misalnya "id_soal: pilihan"
+                $all_answers[] = $id_soal . ':' . $value;
+            }
         }
 
-        // Logout user setelah selesai ujian
-        Auth::logout();
-        Session::flush();
+        // Gabungkan semua jawaban menjadi satu string atau JSON
+        $all_answers_string = implode(', ', $all_answers);
 
+        // Simpan ke dalam satu baris di database
+        JawabanSiswa::create([
+            'id_sumatif' => $id_sumatif,
+            'id_user'    => $id_user,
+            'pilihan'    => $all_answers_string, // Simpan semua jawaban ke kolom pilihan
+        ]);
+
+        // Redirect atau tampilkan pesan sukses
         return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
-    } catch (\Exception $e) {
-        // Rollback jika ada error
-        DB::rollBack();
 
-        return redirect()->route('dashboard')->with('gagal', 'Terjadi kesalahan, silakan coba lagi.');
-    }
+    // $jumlahBenar = 0;
+
+    // // Validasi jawaban yang dikirimkan oleh user
+    // $request->validate([
+    //     'pilihan_*' => 'required|in:a,b,c,d,e', // Sesuaikan dengan pilihan jawaban yang tersedia
+    // ]);
+
+    // // Cegah pengiriman ganda menggunakan session token
+    // if (Session::has('form_token_used')) {
+    //     return redirect()->route('dashboard')->with('gagal', 'Form ini sudah pernah dikirim.');
+    // }
+    // // Simpan token agar tidak bisa dikirim ulang
+    // Session::put('form_token_used', true);
+
+    // // Ambil semua nama input yang dikirimkan, kecuali _token
+    // $inputNames = array_keys($request->except('_token'));
+
+    // // Ekstrak ID soal dari nama input
+    // $soalIds = array_map(function($name) {
+    //     return str_replace('pilihan_', '', $name);
+    // }, $inputNames);
+
+    // // Ambil data soal dari database berdasarkan ID yang diterima dari form
+    // $soals = Soal::whereIn('id_soal', $soalIds)->get();
+
+    // // Hitung jumlah soal yang valid dari database
+    // $validSoalCount = $soals->count();
+
+    // // Loop setiap soal dan cek apakah jawaban benar
+    // foreach ($soals as $soal) {
+    //     $userAnswer = $request->input('pilihan_' . $soal->id_soal);
+
+    //     // Cek apakah jawaban pengguna sama dengan jawaban yang benar
+    //     if ($userAnswer === $soal->jawaban) {
+    //         $jumlahBenar++;
+    //     }
+    // }
+
+    // // Hitung nilai akhir, pastikan nilai tidak lebih dari 100
+    // $nilaiAkhir = $validSoalCount > 0 ? ($jumlahBenar / $validSoalCount) * 100 : 0;
+    // if ($nilaiAkhir > 100) {
+    //     $nilaiAkhir = 100;
+    // }
+
+    // // Cek apakah sudah ada nilai ujian sebelumnya untuk user dan ujian ini
+    // $hitung = NilaiUjian::where('id_sumatif', Session::get('id_sumatif'))
+    //             ->where('id_user_siswa', Auth::user()->id)
+    //             ->count();
+
+    // // Gunakan DB Transaction untuk menjaga integritas data
+    // DB::beginTransaction();
+
+    // try {
+    //     // Simpan hasil ujian hanya jika belum ada nilai sebelumnya
+    //     if ($hitung > 0) {
+    //         return redirect()->route('dashboard')->with('gagal', 'Terdeteksi test ganda!');
+    //     } else {
+    //         // Simpan nilai ujian ke database
+    //         NilaiUjian::create([
+    //             'id_sumatif' => Session::get('id_sumatif'),
+    //             'id_user_siswa' => Auth::user()->id,
+    //             'nilai_ujian' => $nilaiAkhir,
+    //         ]);
+
+    //         // Update status ujian di LogUjian2 menjadi 'done'
+    //         LogUjian2::where('id_sumatif', Session::get('id_sumatif'))
+    //             ->where('id_user', Auth::user()->id)
+    //             ->update([
+    //                 'status' => 'done'
+    //             ]);
+
+    //         // Commit transaction jika semuanya sukses
+    //         DB::commit();
+    //     }
+
+    //     // Logout user setelah selesai ujian
+    //     Auth::logout();
+    //     Session::flush();
+
+    //     return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
+    // } catch (\Exception $e) {
+    //     // Rollback jika ada error
+    //     DB::rollBack();
+
+    //     return redirect()->route('dashboard')->with('gagal', 'Terjadi kesalahan, silakan coba lagi.');
+    // }
 }
 
 }
