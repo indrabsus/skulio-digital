@@ -71,9 +71,9 @@
                           @php
                           if (Auth::user()->id_role == 8) {
                             $us = App\Models\DataSiswa::where('id_user',Auth::user()->id)->first();
-                              $jml = App\Models\LogUjian2::where('id_sumatif', $d->id_sumatif)
-                              ->where('id_user', $us->id_user)
-                              ->where('status', 'done')
+                              $jml = App\Models\NilaiUjian::where('id_sumatif', $d->id_sumatif)
+                              ->where('id_user_siswa', $us->id_user)
+                              ->where('jawaban_siswa', '!=', null)
                               ->count();
                           }
                           @endphp
