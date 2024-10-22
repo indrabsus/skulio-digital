@@ -88,7 +88,8 @@
                               ->first();
 
                           @endphp
-                          <td>{{ $sum->nilai_ujian ?? 'Belum Test' }}</td>
+                          <td>{{ $exam->hitungNilai($this->id_sumatif, $d->id) }}</td>
+
 
                     </tr>
                   @endforeach

@@ -3,6 +3,7 @@
 namespace App\Livewire\Ujian;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exam2Controller;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\Setingan;
@@ -28,8 +29,10 @@ class NilaiSumatif extends Component
     public $cari = '';
     public $result = 10;
     public $id_kategori = '';
+
     public function render()
     {
+        $exam = new Exam2Controller;
         $kat = Sumatif::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','sumatif.id_mapelkelas')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','mapel_kelas.id_mapel')
         ->where('id_kelas', $this->cari_kelas)
@@ -72,7 +75,7 @@ class NilaiSumatif extends Component
 
         }
 
-        return view('livewire.ujian.nilai-sumatif', compact('data','kelas','kat'));
+        return view('livewire.ujian.nilai-sumatif', compact('exam','data','kelas','kat'));
     }
     public function tugas($id, $id_user){
         $this->id_materi = $id;

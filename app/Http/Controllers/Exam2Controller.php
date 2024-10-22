@@ -117,6 +117,47 @@ class Exam2Controller extends Controller
         Session::flush();
         return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
     }
+    public function hitungNilai($id_sumatif, $id_user)
+{
+    // Ambil jawaban siswa berdasarkan id_sumatif dan id_user
+    $nilaiUjian = NilaiUjian::where('id_sumatif', $id_sumatif)
+                            ->where('id_user_siswa', $id_user)
+                            ->first();
+
+    // Jika tidak ada data jawaban siswa, kembalikan skor 0
+    if (!$nilaiUjian) {
+        return 0;
+    }
+
+    // Pecah jawaban siswa yang disimpan sebagai string (misalnya: '1:pilihan_a, 2:pilihan_b') menjadi array
+    $jawabanSiswa = explode(', ', $nilaiUjian->jawaban_siswa);
+
+    // Variabel untuk menyimpan total skor
+    $totalSkor = 0;
+
+    // Loop setiap jawaban siswa
+    foreach ($jawabanSiswa as $jawaban) {
+        // Pisahkan id_soal dan jawaban siswa, misalnya '1:pilihan_a' -> ['1', 'pilihan_a']
+        list($id_soal, $pilihan_siswa) = explode(':', $jawaban);
+
+        // Ambil jawaban benar dari tabel soal berdasarkan id_soal
+        $soal = Soal::find($id_soal);
+
+        // Cek apakah jawaban siswa sama dengan jawaban benar
+        if ($soal && $pilihan_siswa == $soal->jawaban) {
+            // Jika sama, tambahkan 1 ke skor
+            $totalSkor++;
+        }
+    }
+    if($soal->count() == 0){
+        return 0;
+    } else {
+        return ($totalSkor/$soal->count())*100;
+    }
+    // Kembalikan skor total
+
+}
+
     public function submitTest(Request $request)
 {
     $id_sumatif = Session::get('id_sumatif');
@@ -138,15 +179,23 @@ class Exam2Controller extends Controller
         // Gabungkan semua jawaban menjadi satu string atau JSON
         $all_answers_string = implode(', ', $all_answers);
 
+        $hitung = NilaiUjian::where('id_sumatif', $id_sumatif)
+        ->where('id_user_siswa', $id_user)
+        ->count();
         // Simpan ke dalam satu baris di database
-        JawabanSiswa::create([
-            'id_sumatif' => $id_sumatif,
-            'id_user'    => $id_user,
-            'pilihan'    => $all_answers_string, // Simpan semua jawaban ke kolom pilihan
-        ]);
+        if($hitung > 0){
+            return redirect()->route('loginpage')->with('gagal', 'Anda sudah menyelesaikan test!');
+        } else {
+            NilaiUjian::create([
+                'id_sumatif' => $id_sumatif,
+                'id_user_siswa'    => $id_user,
+                'jawaban_siswa'    => $all_answers_string, // Simpan semua jawaban ke kolom pilihan
+            ]);
+            dd($this->hitungNilai($id_sumatif, $id_user));
+            // Redirect atau tampilkan pesan sukses
+            return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
+        }
 
-        // Redirect atau tampilkan pesan sukses
-        return redirect()->route('loginpage')->with('sukses', 'Anda sudah menyelesaikan test!');
 
     // $jumlahBenar = 0;
 
