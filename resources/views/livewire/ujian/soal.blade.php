@@ -94,6 +94,11 @@
                     <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#c_kirimsoal" wire:click="c_soal('{{$d->id_soal ?? ''}}')">Kirim Soal</a>
                 </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 

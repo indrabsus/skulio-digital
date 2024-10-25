@@ -65,6 +65,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -80,7 +85,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Kategori</label>
-                    <input type="text" wire:model.live="nama_kategori" class="form-control">
+                    <input type="text" wire:model="nama_kategori" class="form-control">
                     <div class="text-danger">
                         @error('nama_kategori')
                             {{$message}}
@@ -89,7 +94,7 @@
                   </div>
                 <div class="form-group">
                     <label for="">Mata Pelajaran</label>
-                    <select wire:model.live="id_mapel" class="form-control">
+                    <select wire:model="id_mapel" class="form-control">
                         <option value="">Pilih Mapel</option>
                         @foreach ($mapel as $m)
                             <option value="{{ $m->id_mapel }}">{{ $m->nama_pelajaran }}</option>
@@ -122,7 +127,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Kategori</label>
-                    <input type="text" wire:model.live="nama_kategori" class="form-control">
+                    <input type="text" wire:model="nama_kategori" class="form-control">
                     <div class="text-danger">
                         @error('nama_kategori')
                             {{$message}}
@@ -131,7 +136,7 @@
                   </div>
                 <div class="form-group">
                     <label for="">Mata Pelajaran</label>
-                    <select wire:model.live="id_mapel" class="form-control">
+                    <select wire:model="id_mapel" class="form-control">
                         <option value="">Pilih Mapel</option>
                         @foreach ($mapel as $m)
                             <option value="{{ $m->id_mapel }}">{{ $m->nama_pelajaran }}</option>

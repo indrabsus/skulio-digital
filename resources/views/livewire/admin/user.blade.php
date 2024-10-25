@@ -72,6 +72,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -87,7 +92,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Username</label>
-                    <input type="text" wire:model.live="username" class="form-control">
+                    <input type="text" wire:model="username" class="form-control">
                     <div class="text-danger">
                         @error('username')
                             {{$message}}
@@ -98,7 +103,7 @@
 
                 <div class="form-group mb-3">
                     <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
+                    <select class="form-control" wire:model="id_role">
                         <option value="">Pilih Role</option>
                         @foreach ($role as $r)
                             <option value="{{$r->id_role}}">{{$r->nama_role}}</option>
@@ -131,7 +136,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Username</label>
-                    <input type="text" wire:model.live="username" class="form-control">
+                    <input type="text" wire:model="username" class="form-control">
                     <div class="text-danger">
                         @error('username')
                             {{$message}}
@@ -142,7 +147,7 @@
 
                 <div class="form-group mb-3">
                     <label for="">Role</label>
-                    <select class="form-control" wire:model.live="id_role">
+                    <select class="form-control" wire:model="id_role">
                         <option value="">Pilih Role</option>
                         @foreach ($role as $r)
                             <option value="{{$r->id_role}}">{{$r->nama_role}}</option>

@@ -103,6 +103,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -118,7 +123,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Sumatif</label>
-                    <input type="text" wire:model.live="nama_sumatif" class="form-control">
+                    <input type="text" wire:model="nama_sumatif" class="form-control">
                     <div class="text-danger">
                         @error('nama_sumatif')
                             {{$message}}
@@ -127,7 +132,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Token</label>
-                    <input type="number" wire:model.live="token" class="form-control">
+                    <input type="number" wire:model="token" class="form-control">
                     <div class="text-danger">
                         @error('token')
                             {{$message}}
@@ -136,7 +141,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Waktu</label>
-                    <input type="number" wire:model.live="waktu" class="form-control">
+                    <input type="number" wire:model="waktu" class="form-control">
                     <div class="text-danger">
                         @error('waktu')
                             {{$message}}
@@ -159,7 +164,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Tahun</label>
-                    <select wire:model.live="tahun" class="form-control">
+                    <select wire:model="tahun" class="form-control">
                         <option value="">Pilih Tahun</option>
                         <option value="{{ date('Y') - 1}}">{{ date('Y') -1}}</option>
                         <option value="{{ date('Y') }}">{{ date('Y') }}</option>
@@ -202,7 +207,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='insert()'>Save changes</button>
-              
+
             </div>
           </div>
         </div>
@@ -220,7 +225,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Sumatif</label>
-                    <input type="text" wire:model.live="nama_sumatif" class="form-control">
+                    <input type="text" wire:model="nama_sumatif" class="form-control">
                     <div class="text-danger">
                         @error('nama_sumatif')
                             {{$message}}
@@ -229,7 +234,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Token</label>
-                    <input type="number" wire:model.live="token" class="form-control">
+                    <input type="number" wire:model="token" class="form-control">
                     <div class="text-danger">
                         @error('token')
                             {{$message}}
@@ -238,7 +243,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Waktu</label>
-                    <input type="number" wire:model.live="waktu" class="form-control">
+                    <input type="number" wire:model="waktu" class="form-control">
                     <div class="text-danger">
                         @error('waktu')
                             {{$message}}
@@ -247,7 +252,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Tahun</label>
-                    <select wire:model.live="tahun" class="form-control">
+                    <select wire:model="tahun" class="form-control">
                         <option value="">Pilih Tahun</option>
                         <option value="{{ date('Y') - 1}}">{{ date('Y') -1}}</option>
                         <option value="{{ date('Y') }}">{{ date('Y') }}</option>

@@ -77,6 +77,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -91,7 +96,7 @@
             <div class="modal-body mb-3">
               <div class="form-group">
                 <label for="">Nama Lengkap</label>
-                <input type="text" wire:model.live="nama_lengkap" class="form-control" disabled>
+                <input type="text" wire:model="nama_lengkap" class="form-control" disabled>
                 <div class="text-danger">
                     @error('nama_lengkap')
                         {{$message}}
@@ -129,7 +134,7 @@
             <div class="modal-body">
               <div class="form-group mb-3">
                 <label for="">nama_lengkap</label>
-                <input type="text" wire:model.live="nama_lengkap" class="form-control" disabled>
+                <input type="text" wire:model="nama_lengkap" class="form-control" disabled>
                 <div class="text-danger">
                     @error('nama_lengkap')
                         {{$message}}

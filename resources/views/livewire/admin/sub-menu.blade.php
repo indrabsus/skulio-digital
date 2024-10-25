@@ -65,6 +65,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -80,7 +85,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Menu</label>
-                    <input type="text" wire:model.live="nama_menu" class="form-control">
+                    <input type="text" wire:model="nama_menu" class="form-control">
                     <div class="text-danger">
                         @error('nama_menu')
                             {{$message}}
@@ -89,7 +94,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Nama Class</label>
-                    <input type="text" wire:model.live="class" class="form-control">
+                    <input type="text" wire:model="class" class="form-control">
                     <div class="text-danger">
                         @error('class')
                             {{$message}}
@@ -98,7 +103,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Parent Menu</label>
-                    <select class="form-control" wire:model.live="parent_menu">
+                    <select class="form-control" wire:model="parent_menu">
                         <option value="">Pilih Parent</option>
                         @foreach ($parent as $p)
                             <option value="{{$p->id_parent}}">{{$p->parent_menu}}</option>
@@ -112,7 +117,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Akses Role</label>
-                    <select class="form-control" wire:model.live="akses_role">
+                    <select class="form-control" wire:model="akses_role">
                         <option value="">Pilih Role</option>
                         @foreach ($role as $r)
                             <option value="{{$r->id_role}}">{{$r->nama_role}}</option>
@@ -145,7 +150,7 @@
             <div class="modal-body">
                 <div class="form-group mb-3">
                     <label for="">Nama Menu</label>
-                    <input type="text" wire:model.live="nama_menu" class="form-control">
+                    <input type="text" wire:model="nama_menu" class="form-control">
                     <div class="text-danger">
                         @error('nama_menu')
                             {{$message}}
@@ -154,7 +159,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="">Nama Class</label>
-                    <input type="text" wire:model.live="class" class="form-control">
+                    <input type="text" wire:model="class" class="form-control">
                     <div class="text-danger">
                         @error('class')
                             {{$message}}
@@ -163,7 +168,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Parent Menu</label>
-                    <select class="form-control" wire:model.live="parent_menu">
+                    <select class="form-control" wire:model="parent_menu">
                         <option value="">Pilih Parent</option>
                         @foreach ($parent as $p)
                             <option value="{{$p->id_parent}}">{{$p->parent_menu}}</option>
@@ -177,7 +182,7 @@
                   </div>
                 <div class="form-group mb-3">
                     <label for="">Akses Role</label>
-                    <select class="form-control" wire:model.live="akses_role">
+                    <select class="form-control" wire:model="akses_role">
                         <option value="">Pilih Role</option>
                         @foreach ($role as $r)
                             <option value="{{$r->id_role}}">{{$r->nama_role}}</option>

@@ -38,6 +38,7 @@ class Sumatif extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('nama_sumatif', 'like','%'.$this->cari.'%')
         ->where('mapel_kelas.id_kelas', $aku->id_kelas)
+        ->orderBy('sumatif.created_at', 'desc')
         ->paginate($this->result);
         } else {
         $data  = ModelsSumatif::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','sumatif.id_mapelkelas')
@@ -46,6 +47,7 @@ class Sumatif extends Component
         ->leftJoin('kelas','kelas.id_kelas','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('nama_sumatif', 'like','%'.$this->cari.'%')
+        ->orderBy('sumatif.created_at', 'desc')
         ->paginate($this->result);
         }
         return view('livewire.ujian.sumatif', compact('data','mapel', 'tampung'));

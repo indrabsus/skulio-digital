@@ -65,6 +65,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -80,7 +85,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">Parent Menu</label>
-                    <input type="text" wire:model.live="parent_menu" class="form-control">
+                    <input type="text" wire:model="parent_menu" class="form-control">
                     <div class="text-danger">
                         @error('parent_menu')
                             {{$message}}
@@ -90,7 +95,7 @@
 
                 <div class="form-group">
                     <label for="">Icon</label>
-                    <input type="text" wire:model.live="icon" class="form-control">
+                    <input type="text" wire:model="icon" class="form-control">
                     <div class="text-danger">
                         @error('icon')
                             {{$message}}
@@ -119,7 +124,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Parent Menu</label>
-                        <input type="text" wire:model.live="parent_menu" class="form-control">
+                        <input type="text" wire:model="parent_menu" class="form-control">
                         <div class="text-danger">
                             @error('parent_menu')
                                 {{$message}}
@@ -129,7 +134,7 @@
 
                     <div class="form-group">
                         <label for="">Icon</label>
-                        <input type="text" wire:model.live="icon" class="form-control">
+                        <input type="text" wire:model="icon" class="form-control">
                         <div class="text-danger">
                             @error('icon')
                                 {{$message}}

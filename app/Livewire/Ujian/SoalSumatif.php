@@ -31,6 +31,7 @@ class SoalSumatif extends Component
 
         $data  = SoalUjian::where('nama_soal', 'like','%'.$this->cari.'%')
         ->where('id_user', Auth::user()->id)
+        ->orderBy('soal_ujian.created_at', 'desc')
         ->paginate($this->result);
         return view('livewire.ujian.soal-sumatif', compact('data','mapel'));
     }
