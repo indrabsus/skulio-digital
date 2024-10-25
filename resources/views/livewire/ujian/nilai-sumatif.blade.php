@@ -97,6 +97,12 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
+
         </div>
     </div>
 
