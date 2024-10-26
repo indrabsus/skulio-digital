@@ -141,8 +141,8 @@ class PdfController extends Controller
              return $pdf->stream($request->bln.'-'.$request->thn.'-spp.pdf');
             }
 
-            public function agendaGuru(Request $request){
-                $date = $request->bulantahun;
+            public function agendaGuru($bulan){
+                $date = $bulan;
                 $data = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
                 ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
                 ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
@@ -150,11 +150,11 @@ class PdfController extends Controller
                 ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
                 ->orderBy('materi.created_at','desc')
                 ->select('tahun','semester','materi.materi','materi.id_materi','kelas.nama_kelas','singkatan','tingkat','materi.created_at','nama_pelajaran','tingkatan','penilaian','nama_lengkap','keterangan')
-                ->where('materi.created_at', 'like','%'.$request->bulantahun.'%')
+                ->where('materi.created_at', 'like','%'.$bulan.'%')
                 ->get();
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.agendaguru', compact('data','date'));
              //return $pdf->download('test.pdf');
-             return $pdf->stream($request->bulantahun.'-spp.pdf');
+             return $pdf->stream($bulan.'-spp.pdf');
             }
 
             public function rekapharianagenda(Request $request){

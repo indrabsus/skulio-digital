@@ -15,9 +15,14 @@ class Materi extends Component
     public $materi, $id_mapelkelas,$id_materi, $semester, $tahun, $tingkatan, $penilaian = "n", $konfirmasi, $keterangan;
     use WithPagination;
     public $carisemester = '';
+    public $bulan = '2024-01';
     public $caritahun = '';
     public $cari = '';
-    public $result = 10;
+    public $kelas = '';
+    public $result = 300;
+    public function mount(){
+        $this->bulan = date('Y-m');
+    }
     public function render()
     {
         if(Auth::user()->id_role == 5){
@@ -28,6 +33,7 @@ class Materi extends Component
         ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
         ->where('mapel_kelas.id_kelas', $aku->id_kelas)
         ->where('aktif', 'y')
+
         ->get();
         }
         $mapelkelas = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
@@ -58,6 +64,7 @@ class Materi extends Component
 
         }
         elseif(Auth::user()->id_role != 6){
+
             $data  = ModelsMateri::orderBy('id_materi','desc')
             ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
             ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
@@ -70,10 +77,14 @@ class Materi extends Component
                     ->orWhere('materi', 'like','%'.$this->cari.'%');
             })
             ->where('tahun', 'like','%'.$this->caritahun.'%')
+            ->where('kelas.id_kelas', 'like','%'.$this->kelas.'%')
+            ->where('data_user.nama_lengkap', 'not like', '%(ASN)%')
+            ->where('materi.created_at', 'like','%'.$this->bulan.'%')
             ->where('semester', 'like','%'.$this->carisemester.'%')
             ->paginate($this->result);
         }
         else {
+
             $data  = ModelsMateri::orderBy('id_materi','desc')
         ->leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
         ->leftJoin('data_user','data_user.id_user','mapel_kelas.id_user')
@@ -87,13 +98,21 @@ class Materi extends Component
                 ->orWhere('materi', 'like','%'.$this->cari.'%');
         })
         ->where('tahun', 'like','%'.$this->caritahun.'%')
+        ->where('data_user.nama_lengkap', 'not like', '%(ASN)%')
         ->where('semester', 'like','%'.$this->carisemester.'%')
+        ->where('materi.created_at', 'like','%'.$this->bulan.'%')
+
         ->paginate($this->result);
         }
         if(Auth::user()->id_role == 5){
             return view('livewire.karyawan.materi', compact('data','mapelkelas','mapelv'));
         } else {
-            return view('livewire.karyawan.materi', compact('data','mapelkelas'));
+            $kelas2 = Kelas::leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->orderBy('kelas.tingkat','asc')
+            ->orderBy('kelas.id_jurusan','asc')
+            ->orderBy('kelas.id_kelas','asc')
+            ->get();
+            return view('livewire.karyawan.materi', compact('data','mapelkelas','kelas2'));
         }
     }
     public function insert() {

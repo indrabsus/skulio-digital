@@ -82,7 +82,7 @@ Route::get('/{id_logspp}/sppsiswa', [PdfController::class, 'printSppSiswa'])->na
 Route::get('rekapharianspp',[PdfController::class,'rekapharianspp'])->name('rekapharianspp');
 Route::any('rekapharianagenda',[PdfController::class,'rekapharianagenda'])->name('rekapharianagenda');
 Route::get('printsppbulanan',[PdfController::class,'printSppBulanan'])->name('printsppbulanan');
-Route::any('agendaguru',[PdfController::class,'agendaguru'])->name('agendaguru');
+Route::get('agendaguru/{bulan}',[PdfController::class,'agendaguru'])->name('agendaguru');
 
 // Wa Me
 Route::get('wame',[PPDBController::class,'wameform'])->name('wame');

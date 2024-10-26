@@ -38,7 +38,10 @@ class MapelKelas extends Component
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
         ->orderBy('hari','asc')
-        ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
+        ->where(function ($query) {
+            $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama_pelajaran', 'like', '%' . $this->cari . '%');
+        })
         ->where('mapel_kelas.id_user', Auth::user()->id)
         ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
         ->paginate($this->result);
@@ -48,7 +51,10 @@ class MapelKelas extends Component
             ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
             ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
             ->orderBy('hari','asc')
-            ->where('nama_pelajaran', 'like','%'.$this->cari.'%')
+            ->where(function ($query) {
+                $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                    ->orWhere('nama_pelajaran', 'like', '%' . $this->cari . '%');
+            })
             ->where('mapel_kelas.id_kelas', $ver->id_kelas)
             ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
             ->paginate($this->result);
@@ -59,7 +65,11 @@ class MapelKelas extends Component
             ->leftJoin('data_user','data_user.id_user','=','mapel_kelas.id_user')
             ->orderBy('hari','asc')
             ->where('kelas.id_kelas', 'like','%'.$this->cari_kelas.'%')
-            ->where('nama_pelajaran', 'like','%'.$this->cari.'%')->paginate($this->result);
+            ->where(function ($query) {
+                $query->where('nama_lengkap', 'like', '%' . $this->cari . '%')
+                    ->orWhere('nama_pelajaran', 'like', '%' . $this->cari . '%');
+            })
+            ->paginate($this->result);
         }
 
         return view('livewire.kurikulum.mapel-kelas', compact('data','mapel','kelas','guru','fungsi'));

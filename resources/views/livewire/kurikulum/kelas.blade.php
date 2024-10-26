@@ -26,6 +26,21 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="input-group input-group-sm mb-3">
+                            <select class="form-control" wire:model.live="bulan">
+                                <option value="">Pilih Bulan</option>
+                                <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-04">April {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-05">Mei {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-06">Juni {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-07">Juli {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-08">Agustus {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-09">September {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-10">Oktober {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
+                                <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
+                            </select>
                             <div class="col-3">
                                 <select class="form-control" wire:model.live="result">
                                     <option value="10">10</option>
@@ -50,6 +65,7 @@
                             <th>Jurusan</th>
                             <th>Tahun Masuk</th>
                             <th>Verifikator</th>
+                            <th>Agenda/Konfirmasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -67,6 +83,18 @@
                             <td>{{$d->nama_jurusan}}</td>
                             <td>{{$d->tahun_masuk}}</td>
                             <td>{{$d->username}}</td>
+                            @php
+                                $jmlagenda = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                                ->where('mapel_kelas.id_kelas', $d->id_kelas)
+                                ->where('materi.created_at', 'like','%'.$this->bulan.'%')
+                                ->count();
+                                $konf = App\Models\Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','materi.id_mapelkelas')
+                                ->where('mapel_kelas.id_kelas', $d->id_kelas)
+                                ->where('materi.created_at', 'like','%'.$this->bulan.'%')
+                                ->where('materi.keterangan', '!=', null)
+                                ->count();
+                            @endphp
+                            <td>{{ $jmlagenda }}/{{ $konf }}</td>
                             <td>
                                 <a href="{{ route('printkelas', ['id_kelas' => $d->id_kelas]) }}" class="btn btn-primary btn-xs"  target="_blank"><i class="fa-solid fa-print"></i></a>
                               <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_kelas}}")'><i class="fa-solid fa-edit"></i></i></a>

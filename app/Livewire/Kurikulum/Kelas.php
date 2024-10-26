@@ -17,6 +17,7 @@ class Kelas extends Component
 
     public $cari = '';
     public $result = 10;
+    public $bulan = '';
     public function render()
     {
         $angkatan = Angkatan::all();

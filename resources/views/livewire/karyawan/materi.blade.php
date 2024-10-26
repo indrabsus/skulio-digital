@@ -2,6 +2,12 @@
     <div class="row justify-content-between">
         <div class="col-lg-8">
             <div class="input-group input-group-sm mb-3">
+                <select class="form-control" wire:model.live="kelas">
+                    <option value="">Pilih Kelas</option>
+                    @foreach ($kelas2 as $z)
+                        <option value="{{$z->id_kelas}}">{{$z->tingkat.' '.$z->singkatan.' '.$z->nama_kelas}}</option>
+                    @endforeach
+                </select>
                 <select wire:model.live="carisemester" class="form-control">
                     <option value="">Semua</option>
                     <option value="ganjil">Ganjil</option>
@@ -19,6 +25,7 @@
                     <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
+                    <option value="300">300</option>
                 </select>
             </div>
                 <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
@@ -28,9 +35,9 @@
         @if (Auth::user()->id_role == 1)
 
         <div class="col-lg-2">
-            <form action="{{ route('agendaguru') }}" method="post" target="_blank">
+
                 <div class="input-group input-group-sm mb-3">
-                        <select class="form-control" name="bulantahun">
+                        <select class="form-control" wire:model.live="bulan">
                             <option value="">Pilih Bulan</option>
                             <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
                             <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
@@ -45,9 +52,9 @@
                             <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
                             <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
                         </select>
-                        <button class="input-group-text" id="basic-addon1" type="submit">Print</button>
+                        <a href="{{ route('agendaguru',['bulan' => $this->bulan ?? '']) }}" class="input-group-text" id="basic-addon1" type="submit">Print</a>
                       </div>
-                    </form>
+
         </div>
         <div class="col-lg-2">
             <form action="{{ route('rekapharianagenda') }}" method="post" target="_blank">
@@ -124,15 +131,20 @@
                           @endif
                           @if (Auth::user()->id_role == 1)
                           <td>
-                            @if ($d->keterangan == 1)
-                            Hadir
-                            @elseif($d->keterangan == 2)
-                            Tidak Hadir (Penugasan)
-                            @elseif($d->keterangan == 3)
-                            Tidak Hadir (Tanpa Keterangan)
+                            @if ($d->materi == 'Tidak Mengisi AGENDA!')
+                                -
                             @else
-                            Belum dikonfirmasi
+                                @if ($d->keterangan == 1)
+                                Hadir
+                                @elseif($d->keterangan == 2)
+                                Tidak Hadir (Penugasan)
+                                @elseif($d->keterangan == 3)
+                                Tidak Hadir (Tanpa Keterangan)
+                                @else
+                                Belum dikonfirmasi
+                                @endif
                             @endif
+
                           </td>
                           @endif
                           <td>
@@ -147,6 +159,11 @@
               </table>
                </div>
                 {{$data->links()}}
+                <div wire:loading.class="show-overlay" class="loading-overlay">
+                    <div class="loading-text">
+                        Loading data...
+                    </div>
+                </div>
         </div>
     </div>
 
