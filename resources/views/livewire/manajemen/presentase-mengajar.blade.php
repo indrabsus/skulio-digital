@@ -22,8 +22,8 @@
         <div class="col">
                 <div class="row justify-content-between mt-2">
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-primary btn-xs mb-3" data-bs-toggle="modal" data-bs-target="#add">
-                            Tambah
+                        <button type="button" class="btn btn-primary btn-xs mb-3" wire:click="tampilkan">
+                            Tampil
                           </button>
                     </div>
                     <div class="col-lg-3">
@@ -64,10 +64,13 @@
                           <th>Nama Lengkap</th>
                           <th>Jumlah Agenda/terisi</th>
                           <th>Presentasi Mengisi Agenda</th>
-                          {{-- <th>Hadir dikelas</th>
-                          <th>Izin/Penugasan</th>
-                          <th>Tidak Hadir Tanpa Keterangan</th>
-                          <th>Belum dikonfirmasi</th> --}}
+                          @if ($this->tampil == true)
+                            <th>Hadir dikelas</th>
+                            <th>Izin/Penugasan</th>
+                            <th>Tidak Hadir Tanpa Keterangan</th>
+                            <th>Belum dikonfirmasi</th>
+                          @endif
+
 
                       </tr>
                   </thead>
@@ -118,11 +121,12 @@
                                 ->where('keterangan', null)
                                 ->count();
                         @endphp
-                        {{-- <td>{{ $jml == 0 ? 0 : round($hadirdikelas / $jml * 100, 0) }} %</td>
+                        @if ($this->tampil == true)
+                        <td>{{ $jml == 0 ? 0 : round($hadirdikelas / $jml * 100, 0) }} %</td>
                         <td>{{ $jml == 0 ? 0 : round($izin / $jml * 100, 0) }} %</td>
                         <td>{{ $jml == 0 ? 0 : round($alfa / $jml * 100, 0) }} %</td>
-                        <td>{{ $jml == 0 ? 0 : round($nc / $jml * 100, 0) }} %</td> --}}
-
+                        <td>{{ $jml == 0 ? 0 : round($nc / $jml * 100, 0) }} %</td>
+                        @endif
 
                       </tr>
                   @endforeach

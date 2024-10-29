@@ -16,10 +16,14 @@ class PresentaseMengajar extends Component
 {
     public $id_role, $id_data, $nama_lengkap, $jenkel, $no_hp, $alamat, $id_user, $kode_mesin;
     use WithPagination;
+    public $tampil = false;
 
     public $cari = '';
     public $result = 100;
     public $bulan = '';
+    public function tampilkan(){
+        $this->tampil = !$this->tampil;
+    }
     public function render()
     {
         $data  = TabelDataUser::
