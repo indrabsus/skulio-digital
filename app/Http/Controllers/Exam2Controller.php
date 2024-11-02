@@ -135,28 +135,39 @@ class Exam2Controller extends Controller
     $jawabanSiswa = explode(', ', $nilaiUjian->jawaban_siswa);
 
     // Variabel untuk menyimpan total skor
-    $totalSkor = 0;
+    // Variabel untuk menyimpan total skor dan jumlah soal
+$totalSkor = 0;
+$jumlahSoal = 0;
 
-    // Loop setiap jawaban siswa
-    foreach ($jawabanSiswa as $jawaban) {
-        // Pisahkan id_soal dan jawaban siswa, misalnya '1:pilihan_a' -> ['1', 'pilihan_a']
-        list($id_soal, $pilihan_siswa) = explode(':', $jawaban);
+foreach ($jawabanSiswa as $jawaban) {
+    // Periksa apakah jawaban tidak kosong dan mengandung karakter ':'
+    if (!empty($jawaban) && strpos($jawaban, ':') !== false) {
+        // Pisahkan `id_soal` dan `pilihan_siswa`, misalnya '1:pilihan_a' -> ['1', 'pilihan_a']
+        list($id_soal, $pilihan_siswa) = explode(':', $jawaban, 2);
 
-        // Ambil jawaban benar dari tabel soal berdasarkan id_soal
+        // Ambil jawaban benar dari tabel soal berdasarkan `id_soal`
         $soal = Soal::find($id_soal);
 
-        // Cek apakah jawaban siswa sama dengan jawaban benar
-        if ($soal && $pilihan_siswa == $soal->jawaban) {
-            // Jika sama, tambahkan 1 ke skor
-            $totalSkor++;
+        // Jika soal ditemukan, tingkatkan jumlah soal
+        if ($soal) {
+            $jumlahSoal++;
+
+            // Cek apakah jawaban siswa sama dengan jawaban benar
+            if ($pilihan_siswa == $soal->jawaban) {
+                // Jika benar, tambahkan 1 ke skor
+                $totalSkor++;
+            }
         }
     }
-    if($soal->count() == 0){
-        return 0;
-    } else {
-        return ($totalSkor/$soal->count())*100;
-    }
-    // Kembalikan skor total
+}
+
+// Pastikan `jumlahSoal` tidak nol untuk menghindari pembagian dengan nol
+if ($jumlahSoal == 0) {
+    return 0;
+} else {
+    return round(($totalSkor / $jumlahSoal) * 100);
+}
+
 
 }
 
