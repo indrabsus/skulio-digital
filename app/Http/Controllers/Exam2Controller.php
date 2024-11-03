@@ -9,7 +9,9 @@ use App\Models\KelasSumatif;
 use App\Models\LogUjian2;
 use App\Models\NilaiUjian;
 use App\Models\Soal;
+use App\Models\SoalUjian;
 use App\Models\Sumatif;
+use App\Models\TampungSoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -122,22 +124,24 @@ class Exam2Controller extends Controller
     public function hitungNilai($id_sumatif, $id_user)
 {
     // Ambil jawaban siswa berdasarkan id_sumatif dan id_user
-    $nilaiUjian = NilaiUjian::where('id_sumatif', $id_sumatif)
+    $nilaiUjian = NilaiUjian::leftJoin('sumatif', 'sumatif.id_sumatif', 'nilai_ujian.id_sumatif')->
+    where('nilai_ujian.id_sumatif', $id_sumatif)
                             ->where('id_user_siswa', $id_user)
                             ->first();
+
+
 
     // Jika tidak ada data jawaban siswa, kembalikan skor 0
     if (!$nilaiUjian) {
         return 0;
     }
-
+    $jmlSoal = TampungSoal::where('id_soalujian', $nilaiUjian->id_soalujian)->count();
     // Pecah jawaban siswa yang disimpan sebagai string (misalnya: '1:pilihan_a, 2:pilihan_b') menjadi array
     $jawabanSiswa = explode(', ', $nilaiUjian->jawaban_siswa);
 
     // Variabel untuk menyimpan total skor
     // Variabel untuk menyimpan total skor dan jumlah soal
 $totalSkor = 0;
-$jumlahSoal = 0;
 
 foreach ($jawabanSiswa as $jawaban) {
     // Periksa apakah jawaban tidak kosong dan mengandung karakter ':'
@@ -150,8 +154,6 @@ foreach ($jawabanSiswa as $jawaban) {
 
         // Jika soal ditemukan, tingkatkan jumlah soal
         if ($soal) {
-            $jumlahSoal++;
-
             // Cek apakah jawaban siswa sama dengan jawaban benar
             if ($pilihan_siswa == $soal->jawaban) {
                 // Jika benar, tambahkan 1 ke skor
@@ -162,10 +164,10 @@ foreach ($jawabanSiswa as $jawaban) {
 }
 
 // Pastikan `jumlahSoal` tidak nol untuk menghindari pembagian dengan nol
-if ($jumlahSoal == 0) {
+if ($jmlSoal == 0) {
     return 0;
 } else {
-    return round(($totalSkor / $jumlahSoal) * 100);
+    return round(($totalSkor / $jmlSoal) * 100);
 }
 
 
