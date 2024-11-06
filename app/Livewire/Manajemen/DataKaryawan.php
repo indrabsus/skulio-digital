@@ -109,7 +109,7 @@ class DataKaryawan extends Component
     public function insertUser($id)
 {
         $data = TabelDataUser::where('id_data', $id)->first();
-        $zk = new ZKTeco('192.168.107.99');
+        $zk = new ZKTeco('24.0.0.99');
         $zk->connect();
         $zk->setUser($data->uid_fp, $data->uid_fp, $data->nama_singkat,'',0,0);
         $zk->disconnect();
