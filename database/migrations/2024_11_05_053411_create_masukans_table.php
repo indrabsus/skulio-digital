@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('kategori');
             $table->string('gambar')->nullable();
             $table->string('status');
+            $table->enum('anonim', ['y', 'n']);
             $table->timestamps();
         });
     }

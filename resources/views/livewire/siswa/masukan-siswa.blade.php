@@ -46,7 +46,12 @@
                           <th>No</th>
                           <th>Masukan</th>
                           <th>Kategori</th>
+                          <th>foto</th>
+                          
+                          <th>Status</th>
+                          @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
+                          @endif
                       </tr>
                   </thead>
                   <tbody>
@@ -54,13 +59,38 @@
                   <tr>
                     <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                     <td>
-                        <a href="{{$d->link_buku}}" target="_blank">{{$d->nama_buku}}</a>
+                       {{ $d->masukan }}
                     </td>
-                    <td></td>
+                    <td>{{ ucwords($d->kategori) }}</td>
+                    <td>@if ($d->gambar)
+                        <a href="" data-bs-toggle="modal" data-bs-target="#lihat" wire:click='lihat("{{$d->id_masukan}}")'>View Image</a>
+                        @else
+                        No Image
+                        @endif</td>
                     <td>
-                        <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_buku_online}}")'><i class="fa-solid fa-edit"></i></a>
-                        <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_buku_online}}')"><i class="fa-solid fa-trash"></i></a>
+                        @if (Auth::user()->id_role == 1)
+                        @if ($d->status == '0')
+                        <button wire:click="c_status('{{$d->id_masukan}}')" class="badge bg-warning">Menunggu</button>
+                            @elseif($d->status == '1')
+                                <button wire:click="c_status('{{$d->id_masukan}}')" class="badge bg-primary">Diproses</button>
+                            @else
+                                <button wire:click="c_status('{{$d->id_masukan}}')" class="badge bg-success">Selesai</button>
+                        @endif
+                        @else
+                        @if ($d->status == '0')
+                        <span class="badge bg-warning">Menunggu</span>
+                            @elseif($d->status == '1')
+                                <span class="badge bg-primary">Diproses</span>
+                            @else
+                                <span class="badge bg-success">Selesai</span>
+                        @endif
+                        @endif
                     </td>
+                    @if (Auth::user()->id_role == 1)
+                    <td>
+                        <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_masukan}}')"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                    @endif
                 </tr>
 
                   @endforeach
@@ -91,6 +121,23 @@
                     </div>
                   </div>
                 <div class="form-group mb-3">
+                    <label for="">Kategori</label>
+                    <select wire:model="kategori" class="form-control">
+                        <option value="">Pilih Kategori</option>
+                        <option value="sarpras">Fasilitas Sekolah</option>
+                        <option value="guru">Kualitas Pengajaran</option>
+                        <option value="bk">Layanan Bimbingan Konseling</option>
+                        <option value="perpustakaan">Manajemen Perpustakaan</option>
+                        <option value="keamanan">Keamanan Sekolah</option>
+                        <option value="lain">Layanan Umum</option>
+                    </select>
+                    <div class="text-danger">
+                        @error('kategori')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                <div class="form-group mb-3">
                     <input type="file" wire:model="gambar" class="form-control">
                     <i>Jika tidak ada foto, dikosongkan saja!</i>
                     <div class="text-danger">
@@ -98,6 +145,9 @@
                             {{$message}}
                         @enderror
                     </div>
+                </div>
+                <div>
+                    <input type="checkbox" wire:model="anonim"> Anonim?
                 </div>
             </div>
             <div class="modal-footer">
@@ -158,6 +208,22 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" wire:click='delete()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="lihat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Lihat</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="{{ asset('storage/'.$this->gambar2) }}" width="100%">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
