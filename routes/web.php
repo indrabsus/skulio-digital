@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\UbahPassword;
 use App\Livewire\Extend\SiswaKelas;
+use App\Livewire\Extend\SiswaSumatif;
 use App\Livewire\Kurikulum\TambahKartuSiswa;
 use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +108,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     //extend
 Route::get('extend/siswakelas/{id_materi}',SiswaKelas::class)->name('extend.siswakelas');
+Route::get('extend/siswasumatif/{id_sumatif}/{id_kelas}',SiswaSumatif::class)->name('extend.siswasumatif');
+Route::get('pratinjau/{id_nilaiujian?}', [Exam2Controller::class,'pratinjau'])->name('pratinjau');
+
 //nilai
 Route::any('postnilai',[NilaiController::class,'postNilai'])->name('postNilai');
 
@@ -135,6 +139,7 @@ Route::any('postnilai',[NilaiController::class,'postNilai'])->name('postNilai');
 
     Route::group(['middleware' => ['test']], function(){
     Route::get('siswa/test', [ExamController::class,'test'])->name('test');
+
 
 
     });

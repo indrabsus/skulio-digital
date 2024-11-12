@@ -93,6 +93,7 @@
                           <td>{{$d->waktu}} Menit</td>
                           <td>{{ $d->nama_soal }}</td>
                           <td>
+                            <a href="{{ route('extend.siswasumatif', ['id_sumatif' => $d->id_sumatif, 'id_kelas' => $d->id_kelas]) }}" class="btn btn-primary btn-xs">Lihat</a>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_sumatif}}")'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_sumatif}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>

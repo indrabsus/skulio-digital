@@ -214,5 +214,19 @@ if ($jmlSoal == 0) {
 
 
 }
+public function pratinjau($id_nilaiujian){
+    $test = NilaiUjian::where('id_nilaiujian', $id_nilaiujian)
+        ->first();
+
+    // Ambil data dari kelas_sumatif, kategori_soal, dan soal
+    $data = Sumatif::where('sumatif.id_sumatif', $test->id_sumatif)
+    ->leftJoin('soal_ujian','soal_ujian.id_soalujian','sumatif.id_soalujian')
+    ->leftJoin('tampung_soal','tampung_soal.id_soalujian','soal_ujian.id_soalujian')
+    ->leftJoin('soal','soal.id_soal','tampung_soal.id_soal')
+        ->get();
+
+    return view('ujian2.pratinjau', compact('data', 'test'));
+
+}
 
 }
