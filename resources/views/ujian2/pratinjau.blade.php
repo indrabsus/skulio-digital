@@ -21,7 +21,7 @@
 </style>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
    <div class="container">
-   <span class="navbar-brand" id="timer">Timer</span>
+   <span class="navbar-brand" id="timer">{{ $test->nama_lengkap }} - {{ $test->nama_sumatif }}</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -36,7 +36,6 @@
   </nav>
 
   <div class="container mt-3">
-    <form action="{{ route('submitTest') }}" method="post">
         @csrf
         @php
         // Ambil data soal dan jawaban siswa
@@ -68,7 +67,7 @@
                 @foreach (['a', 'b', 'c', 'd', 'e'] as $option)
                     <li>
                         <input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_{{ $option }}"
-                               {{ isset($parsedJawaban[$d->id_soal]) && $parsedJawaban[$d->id_soal] === 'pilihan_' . $option ? 'checked' : '' }}>
+                               {{ isset($parsedJawaban[$d->id_soal]) && $parsedJawaban[$d->id_soal] === 'pilihan_' . $option ? 'checked' : '' }} disabled>
                         {{ $d->{'pilihan_' . $option} }}
                         @if ('pilihan_' . $option === $d->jawaban)
                             <span class="text-success"><strong>(Kunci Jawaban)</strong></span>
@@ -78,11 +77,6 @@
             </ul>
             <hr>
         @endforeach
-
-        <div class="mb-5 mt-3">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
 </div>
 
 

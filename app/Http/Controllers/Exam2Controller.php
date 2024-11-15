@@ -216,6 +216,8 @@ if ($jmlSoal == 0) {
 }
 public function pratinjau($id_nilaiujian){
     $test = NilaiUjian::where('id_nilaiujian', $id_nilaiujian)
+        ->leftJoin('data_siswa','data_siswa.id_user','nilai_ujian.id_user_siswa')
+        ->leftJoin('sumatif','sumatif.id_sumatif','nilai_ujian.id_sumatif')
         ->first();
 
     // Ambil data dari kelas_sumatif, kategori_soal, dan soal
