@@ -6,7 +6,6 @@
         {{-- <th style="border: 1px solid black; background-color: #d3d3d3; word-wrap: break-word;">Volume Pengajuan</th>
         <th style="border: 1px solid black; background-color: #d3d3d3; word-wrap: break-word;">Harga Pengajuan</th>
         <th style="border: 1px solid black; background-color: #d3d3d3; word-wrap: break-word;">Bulan Pengajuan</th> --}}
-        <th style="border: 1px solid black; background-color: #f0f0f0; word-wrap: break-word;">Harga Satuan</th>
         <th style="border: 1px solid black; background-color: #f0f0f0; word-wrap: break-word;">Volume Realisasi</th>
         <th style="border: 1px solid black; background-color: #f0f0f0; word-wrap: break-word;">Harga Realisasi</th>
         <th style="border: 1px solid black; background-color: #f0f0f0; word-wrap: break-word;">Bulan Realisasi</th>
@@ -25,13 +24,13 @@
             {{-- <td style="border: 1px solid black; background-color: #e0e0e0; word-wrap: break-word;">{{ $d->volume }}</td>
             <td style="border: 1px solid black; background-color: #e0e0e0; word-wrap: break-word;">{{ $d->perkiraan_harga }}</td>
             <td style="border: 1px solid black; background-color: #e0e0e0; word-wrap: break-word;">{{ $d->bulan_pengajuan }}</td> --}}
+
+            <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->volume_realisasi }} {{ $d->satuan }}</td>
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">@if ($d->jenis != "Jasa")
                 {{ $d->perkiraan_harga_realisasi * $persen }}
             @else
             {{ $d->perkiraan_harga_realisasi }}
             @endif</td>
-            <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->volume_realisasi }}</td>
-            <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->perkiraan_harga_realisasi }}</td>
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">{{ $d->bulan_pengajuan_realisasi }}</td>
             <td style="border: 1px solid black; background-color: #f7f7f7; word-wrap: break-word;">@if ($d->jenis != "Jasa")
                 {{ $d->perkiraan_harga_realisasi * $d->volume_realisasi * $persen }}
