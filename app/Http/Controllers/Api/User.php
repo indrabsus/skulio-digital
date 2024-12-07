@@ -59,6 +59,31 @@ class User extends Controller
         ]);
     }
 
+    public function dataGuru($id){
+        $data = ModelsUser::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
+        ->where('users.id_role', 6)
+        ->where('users.id', $id)
+        ->select('users.*', 'data_user.*') // Pilih kolom yang diperlukan
+        ->first();
+        return response()->json([
+            'data' => $data,
+            'status' => 200,
+            'message' => 'success'
+        ]);
+    }
+    public function dataSiswa($id){
+        $data = ModelsUser::leftJoin('data_siswa', 'data_siswa.id_user', '=', 'users.id')
+        ->where('users.id_role', 8)
+        ->where('users.id', $id)
+        ->select('users.*', 'data_siswa.*') // Pilih kolom yang diperlukan
+        ->first();
+        return response()->json([
+            'data' => $data,
+            'status' => 200,
+            'message' => 'success'
+        ]);
+    }
+
     public function daftarPpdb(Request $request){
         $request->validate([
             'nisn' => 'required|unique:siswa_ppdb|numeric',
