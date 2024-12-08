@@ -22,9 +22,11 @@ Route::get('/lognilai/{username}', [App\Http\Controllers\Api\WhatsappController:
 
 Route::get('/kegiatan', [App\Http\Controllers\Api\KegiatanController::class, 'viewKegiatan']);
 
-Route::get('/datasiswa/{id}', [App\Http\Controllers\Api\User::class, 'dataSiswa']);
 Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/dataguru', [App\Http\Controllers\Api\User::class, 'allGuru']);
     Route::get('/dataguru/{id}', [App\Http\Controllers\Api\User::class, 'dataGuru']);
+    Route::get('/datasiswa', [App\Http\Controllers\Api\User::class, 'allSiswa']);
+    Route::get('/datasiswa/{id}', [App\Http\Controllers\Api\User::class, 'dataSiswa']);
     Route::get('/userdata', [App\Http\Controllers\Api\User::class, 'userData']);
     Route::get('/logout', [App\Http\Controllers\Api\User::class, 'logout']);
 });
