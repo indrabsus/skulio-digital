@@ -63,7 +63,7 @@ class User extends Controller
         $data = ModelsUser::leftJoin('data_user', 'data_user.id_user', '=', 'users.id')
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 6)
-        ->select('users.*', 'data_user.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_user.*', 'roles.*') // Pilih kolom yang diperlukan
         ->first();
         return response()->json([
             'data' => $data,
@@ -77,7 +77,7 @@ class User extends Controller
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 6)
         ->where('users.id', $id)
-        ->select('users.*', 'data_user.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_user.*', 'roles.*') // Pilih kolom yang diperlukan
         ->first();
         return response()->json([
             'data' => $data,
@@ -89,7 +89,7 @@ class User extends Controller
         $data = ModelsUser::leftJoin('data_siswa', 'data_siswa.id_user', '=', 'users.id')
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 8)
-        ->select('users.*', 'data_siswa.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_siswa.*', 'roles.*') // Pilih kolom yang diperlukan
         ->first();
         return response()->json([
             'data' => $data,
@@ -102,7 +102,7 @@ class User extends Controller
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 8)
         ->where('users.id', $id)
-        ->select('users.*', 'data_siswa.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_siswa.*', 'roles.*') // Pilih kolom yang diperlukan
         ->first();
         return response()->json([
             'data' => $data,
