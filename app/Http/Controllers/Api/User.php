@@ -28,7 +28,14 @@ class User extends Controller
                 'message' => 'Invalid username or password'
             ]);
         } else {
-            $token = $user->createToken($request->username)->plainTextToken;
+            if($user->acc == 'n'){
+                return response()->json([
+                    'data' => [],
+                    'status' => 401,
+                    'message' => 'Akun belum di Konfirmasi Admin'
+                ]);
+            } else {
+                $token = $user->createToken($request->username)->plainTextToken;
             return response()->json([
                 'data' => [
                     'token' => $token,
@@ -37,9 +44,8 @@ class User extends Controller
                 'status' => 200,
                 'message' => 'success'
             ]);
+            }
         }
-
-
     }
 
     public function logout(){
