@@ -66,6 +66,28 @@
                     </div>
             </form>
         </div>
+        @else
+        <div class="col-lg-2">
+
+            <div class="input-group input-group-sm mb-3">
+                    <select class="form-control" wire:model.live="bulan">
+                        <option value="">Pilih Bulan</option>
+                        <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-04">April {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-05">Mei {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-06">Juni {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-07">Juli {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-08">Agustus {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-09">September {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-10">Oktober {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-11">November {{ date('Y') }}</option>
+                        <option value="{{ date('Y') }}-12">Desember {{ date('Y') }}</option>
+                    </select>
+                </div>
+
+    </div>
         @endif
     </div>
     <div class="row">
