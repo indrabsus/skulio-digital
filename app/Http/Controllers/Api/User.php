@@ -70,7 +70,7 @@ class User extends Controller
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 6)
         ->select('users.*', 'data_user.*', 'roles.*') // Pilih kolom yang diperlukan
-        ->first();
+        ->get();
         return response()->json([
             'data' => $data,
             'status' => 200,
@@ -96,7 +96,7 @@ class User extends Controller
         ->leftJoin('roles','roles.id_role','users.id_role')
         ->where('users.id_role', 8)
         ->select('users.*', 'data_siswa.*', 'roles.*') // Pilih kolom yang diperlukan
-        ->first();
+        ->get();
         return response()->json([
             'data' => $data,
             'status' => 200,
