@@ -6,6 +6,7 @@ use App\Models\TampungSoal;
 use Livewire\Component;
 use App\Models\KategoriSoal as ModelsKategoriSoal;
 use App\Models\MataPelajaran;
+use App\Models\Opsi;
 use App\Models\Soal as ModelsSoal;
 use App\Models\SoalSumatif;
 use App\Models\SoalUjian;
@@ -17,17 +18,16 @@ use Intervention\Image\Facades\Image;
 
 class Soal extends Component
 {
-    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2, $id_sumatif, $id_soalujian;
+    public $id_mapel, $kelas, $nama_kategori, $id_soal, $gambar2, $id_sumatif, $id_soalujian, $id_opsi;
     public $id_kategori ='';
     public $centang = [];
     public $gambar;
+    public $gambarOpsi = [];
     public $soal;
-    public $pilihan_a;
-    public $pilihan_b;
-    public $pilihan_c;
-    public $pilihan_d;
-    public $pilihan_e;
-    public $jawaban;
+    public $jml_opsi = 5;
+    public $withImage = false;
+    public $opsi = [];
+    public $benar = []; // Array kebenaran opsi
     use WithPagination;
 
     public $cari = '';
@@ -53,13 +53,7 @@ class Soal extends Component
         $this->validate([
         'gambar' => 'nullable|image|max:5024',
         'soal' => 'required|string',
-        'id_kategori' => 'required',
-        'pilihan_a' => 'required|string',
-        'pilihan_b' => 'required|string',
-        'pilihan_c' => 'required|string',
-        'pilihan_d' => 'required|string',
-        'pilihan_e' => 'required|string',
-        'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
+        'id_kategori' => 'required'
         ]);
         $imageName = null;
         if ($this->gambar) {
@@ -82,12 +76,6 @@ class Soal extends Component
             ModelsSoal::create([
                 'id_kategori' => $this->id_kategori,
                 'soal' => $this->soal,
-                'pilihan_a' => $this->pilihan_a,
-                'pilihan_b' => $this->pilihan_b,
-                'pilihan_c' => $this->pilihan_c,
-                'pilihan_d' => $this->pilihan_d,
-                'pilihan_e' => $this->pilihan_e,
-                'jawaban' => $this->jawaban,
                 'gambar' => $imageName
             ]);
 
@@ -99,22 +87,11 @@ class Soal extends Component
     }
     public function clearForm(){
         $this->soal = '';
-        $this->pilihan_a = '';
-        $this->pilihan_b = '';
-        $this->pilihan_c = '';
-        $this->pilihan_d = '';
-        $this->pilihan_e = '';
-        $this->jawaban = '';
+
     }
     public function edit($id){
         $data = ModelsSoal::where('id_soal', $id)->first();
         $this->soal = $data->soal;
-        $this->pilihan_a = $data->pilihan_a;
-        $this->pilihan_b = $data->pilihan_b;
-        $this->pilihan_c = $data->pilihan_c;
-        $this->pilihan_d = $data->pilihan_d;
-        $this->pilihan_e = $data->pilihan_e;
-        $this->jawaban = $data->jawaban;
         $this->id_soal = $id;
         $this->gambar2 = $data->gambar;
     }
@@ -122,24 +99,12 @@ class Soal extends Component
     public function update() {
         if($this->gambar == null){
             $this->validate([
-                'soal' => 'required|string',
-                'pilihan_a' => 'required|string',
-                'pilihan_b' => 'required|string',
-                'pilihan_c' => 'required|string',
-                'pilihan_d' => 'required|string',
-                'pilihan_e' => 'required|string',
-                'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
+                'soal' => 'required|string'
             ]);
         } else {
             $this->validate([
                 'gambar' => 'nullable|image|max:5024',
-                'soal' => 'required|string',
-                'pilihan_a' => 'required|string',
-                'pilihan_b' => 'required|string',
-                'pilihan_c' => 'required|string',
-                'pilihan_d' => 'required|string',
-                'pilihan_e' => 'required|string',
-                'jawaban' => 'required|string|in:pilihan_a,pilihan_b,pilihan_c,pilihan_d,pilihan_e',
+                'soal' => 'required|string'
             ]);
         }
 
@@ -166,13 +131,7 @@ class Soal extends Component
         // Update the quiz question data
         $data->update([
             'soal' => $this->soal,
-            'pilihan_a' => $this->pilihan_a,
-            'pilihan_b' => $this->pilihan_b,
-            'pilihan_c' => $this->pilihan_c,
-            'pilihan_d' => $this->pilihan_d,
-            'pilihan_e' => $this->pilihan_e,
-            'jawaban' => $this->jawaban,
-            'gambar' => $imageName,
+            'gambar' => $imageName
         ]);
 
         session()->flash('sukses', 'Data berhasil diperbarui');
@@ -232,6 +191,65 @@ class Soal extends Component
         }
         }
 
+    }
+
+    public function c_opsi($id){
+        $this->id_soal = $id;
+    }
+
+    public function insertOpsi(){
+        $this->validate([
+            'opsi.*' => 'required|string|max:255',
+            // 'benar' => 'required|array',
+            'gambarOpsi.*' => 'nullable|image|max:5024',
+        ]);
+        if (!in_array(true, $this->benar)) {
+            session()->flash('gagal', 'Minimal satu opsi harus benar.');
+            $this->dispatch('closeModal');
+        }
+        foreach ($this->opsi as $index => $text) {
+            $imagePath = null;
+            if ($this->withImage && isset($this->gambarOpsi[$index])) {
+                $imagePath = $this->gambarOpsi[$index]->store('opsi-images', 'public');
+            }
+
+            Opsi::create([
+                'id_soal' => $this->id_soal,
+                'opsi' => $text,
+                'benar' => isset($this->benar[$index]) && $this->benar[$index] === true,
+                'opsi_gambar' => $imagePath,
+            ]);
+        }
+
+        // Reset form
+        $this->reset(['soal', 'opsi', 'benar', 'gambar', 'withImage']);
+
+        session()->flash('sukses', 'Soal berhasil ditampung');
+                $this->clearForm();
+            $this->dispatch('closeModal');
+    }
+
+    public function c_hapusOpsi($id){
+        $data = Opsi::where('id_opsi', $id)->first();
+        $this->id_opsi = $id;
+        $this->opsi_gambar =$data->opsi_gambar;
+    }
+    public function hapusOpsi() {
+        $data = Opsi::find($this->id_opsi);
+        if ($data) {
+            // Hapus gambar jika ada
+            if ($data->opsi_gambar && \Storage::disk('public')->exists($data->opsi_gambar)) {
+                \Storage::disk('public')->delete($data->opsi_gambar);
+            }
+            $data->delete();
+            session()->flash('sukses', 'Data berhasil dihapus');
+            $this->clearForm();
+        $this->dispatch('closeModal');
+        } else {
+            session()->flash('error', 'Data tidak ditemukan');
+            $this->clearForm();
+        $this->dispatch('closeModal');
+        }
     }
 
 }

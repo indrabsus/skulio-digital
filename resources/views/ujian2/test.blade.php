@@ -46,29 +46,26 @@
                 <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="300px" class="mb-3 mt-3">
             @endif
             <p><strong>{{ $loop->iteration }}</strong>. {!! $d->soal !!}</p>
+            @php
+            $option = App\Models\Opsi::where('id_soal', $d->id_soal)->get()->shuffle(); // Mengacak opsi
+        @endphp
+        @foreach ($option as $o)
             <ul class="no-bullets" id="options-{{ $d->id_soal }}">
-                <li><input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_a"> {{ $d->pilihan_a }} </li>
-                <li><input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_b"> {{ $d->pilihan_b }} </li>
-                <li><input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_c"> {{ $d->pilihan_c }} </li>
-                <li><input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_d"> {{ $d->pilihan_d }} </li>
-                <li><input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_e"> {{ $d->pilihan_e }} </li>
+                <li>
+                    @if ($o->opsi_gambar)
+                        <img src="{{ asset('storage/'.$o->opsi_gambar) }}" width="200px">
+                    @endif
+                    <input type="radio" name="opsi_{{ $d->id_soal }}" value="{{ $o->id_opsi }}"> {{ $o->opsi }}
+                </li>
             </ul>
+        @endforeach
+
+
             <hr>
         @endforeach
         <div class="mb-5 mt-3"><button type="submit" class="btn btn-primary">Submit</button></div>
     </form>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('ul.no-bullets').forEach(function(ul) {
-        let items = Array.from(ul.querySelectorAll('li'));
-        items.sort(() => Math.random() - 0.5); // Acak urutan
-        ul.innerHTML = ''; // Kosongkan daftar
-        items.forEach(item => ul.appendChild(item)); // Tambahkan item yang sudah diacak
-    });
-});
-</script>
 
 
 

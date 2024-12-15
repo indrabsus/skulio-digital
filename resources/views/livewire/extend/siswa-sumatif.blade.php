@@ -78,8 +78,11 @@
                           <td>{{ $exam->hitungNilai($this->id_sumatif, $d->id) }}</td>
                           <td>
                             @if ($sum && $sum->id_nilaiujian)
-                                <a href="{{ route('pratinjau', ['id_nilaiujian' => $sum->id_nilaiujian]) }}" target="_blank">Lihat</a>
-                            @else
+                                <a href="{{ route('pratinjau', ['id_nilaiujian' => $sum->id_nilaiujian]) }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_hapus('{{ $sum->id_nilaiujian }}')">
+                                    Reset
+                                  </button>
+                                @else
                                 Belum Mengerjakan
                             @endif
                         </td>

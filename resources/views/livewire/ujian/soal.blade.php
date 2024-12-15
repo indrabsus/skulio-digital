@@ -76,17 +76,33 @@
                @if ($d->gambar)
                <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="300px" class="mb-3 mt-3">
                @endif
-               <p><td><input class="form-check-input" type="checkbox" wire:model="centang" value="{{ $d->id_soal }}"></td> {{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {!!$d->soal!!}</p>
-                <ol type="a">
-                    <li>{{ $d->pilihan_a }} {{ $d->pilihan_a == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
-                    <li>{{ $d->pilihan_b }} {{ $d->pilihan_b == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
-                    <li>{{ $d->pilihan_c }} {{ $d->pilihan_c == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
-                    <li>{{ $d->pilihan_d }} {{ $d->pilihan_d == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
-                    <li>{{ $d->pilihan_e }} {{ $d->pilihan_e == $d->{$d->jawaban} ? '(Jawaban)' : ''}}</li>
+
+              <div class="mb-3">
+                <p><td>
+                    <input class="form-check-input" type="checkbox" wire:model="centang" value="{{ $d->id_soal }}"></td>
+                    {{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}. {!!$d->soal!!}</p>
+              </div>
+              <div>
+                @php
+                    $option = App\Models\Opsi::where('id_soal', $d->id_soal)->get();
+                @endphp
+                <ol type="A">
+                    @foreach ($option as $o)
+                    <li>
+                        @if ($o->opsi_gambar)
+                        <img src="{{ asset('storage/'.$o->opsi_gambar) }}" width="200px">
+                        @endif
+                        {{$o->opsi}} {{ $o->benar ? '(Benar)' : '' }} <a href="" data-bs-toggle="modal" data-bs-target="#c_hapusOpsi" wire:click="c_hapusOpsi('{{$o->id_opsi}}')"><i class="fa-solid fa-times"></i></a></li>
+                    @endforeach
                 </ol>
-                <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_soal}}")'><i class="fa-solid fa-edit"></i></i></a>
+              </div>
+
+                <div>
+                    <a href="" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#opsi" wire:click="c_opsi('{{$d->id_soal}}')">Masukan Opsi</a>
+                    <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_soal}}")'><i class="fa-solid fa-edit"></i></i></a>
                 <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_soal}}')"><i class="fa-solid fa-trash"></i></a>
 
+                </div>
                 <hr>
                             @endforeach
 
@@ -103,7 +119,61 @@
     </div>
 
 
-    {{-- Add Modal --}}
+
+    <div class="modal fade" id="opsi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <select wire:model="jml_opsi" class="form-control">
+                            <option value="2">2 Opsi</option>
+                            <option value="3">3 Opsi</option>
+                            <option value="4">4 Opsi</option>
+                            <option value="5">5 Opsi</option>
+                        </select>
+                    </div>
+                    <div class="mt-2">
+                        <input type="checkbox" wire:model.live="withImage"> Soal bergambar?
+                    </div>
+                    <hr>
+                    @for ($i = 0; $i < $jml_opsi; $i++)
+                        @if ($withImage)
+                            <div class="form-group mb-3">
+                                <label for="gambar">Gambar {{ $i + 1 }}</label>
+                                <input type="file" class="form-control" wire:model="gambarOpsi.{{ $i }}">
+                                <div class="text-danger">
+                                    @error("gambarOpsi.{$i}") {{ $message }} @enderror
+                                </div>
+                            </div>
+                        @endif
+                        <div class="form-group mb-3">
+                            <label for="soal">Opsi {{ $i + 1 }}</label>
+                            <input type="text" class="form-control" wire:model="opsi.{{ $i }}">
+                            <div class="mt-2">
+                                <input type="checkbox" wire:model="benar.{{ $i }}"> Benar
+                                <div class="text-danger">
+                                    @error("benar.{$i}") {{ $message }} @enderror
+                                </div>
+                            </div>
+                            <div class="text-danger">
+                                @error("opsi.{$i}") {{ $message }} @enderror
+                            </div>
+                        </div>
+                        <hr>
+                    @endfor
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" wire:click="insertOpsi()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -124,56 +194,6 @@
                     <textarea id="soal" cols="30" rows="10" class="form-control" wire:model="soal"></textarea>
                     <div class="text-danger">
                         @error('soal') {{$message}} @enderror
-                    </div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="pilihan_a">Pilihan A</label>
-                    <input type="text" class="form-control" wire:model="pilihan_a">
-                    <div class="text-danger">
-                        @error('pilihan_a') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_b">Pilihan B</label>
-                    <input type="text" class="form-control" wire:model="pilihan_b">
-                    <div class="text-danger">
-                        @error('pilihan_b') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_c">Pilihan C</label>
-                    <input type="text" class="form-control" wire:model="pilihan_c">
-                    <div class="text-danger">
-                        @error('pilihan_c') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_d">Pilihan D</label>
-                    <input type="text" class="form-control" wire:model="pilihan_d">
-                    <div class="text-danger">
-                        @error('pilihan_d') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_e">Pilihan E</label>
-                    <input type="text" class="form-control" wire:model="pilihan_e">
-                    <div class="text-danger">
-                        @error('pilihan_e') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="jawaban">Kunci Jawaban</label>
-                    <select wire:model="jawaban" class="form-control">
-                        <option value="">Pilih Kunci Jawaban</option>
-                        <option value="pilihan_a">A</option>
-                        <option value="pilihan_b">B</option>
-                        <option value="pilihan_c">C</option>
-                        <option value="pilihan_d">D</option>
-                        <option value="pilihan_e">E</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jawaban') {{$message}} @enderror
                     </div>
                 </div>
 
@@ -212,55 +232,6 @@
                     <textarea id="soal" cols="30" rows="10" class="form-control" wire:model="soal"></textarea>
                     <div class="text-danger">
                         @error('soal') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_a">Pilihan A</label>
-                    <input type="text" class="form-control" wire:model="pilihan_a">
-                    <div class="text-danger">
-                        @error('pilihan_a') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_b">Pilihan B</label>
-                    <input type="text" class="form-control" wire:model="pilihan_b">
-                    <div class="text-danger">
-                        @error('pilihan_b') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_c">Pilihan C</label>
-                    <input type="text" class="form-control" wire:model="pilihan_c">
-                    <div class="text-danger">
-                        @error('pilihan_c') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_d">Pilihan D</label>
-                    <input type="text" class="form-control" wire:model="pilihan_d">
-                    <div class="text-danger">
-                        @error('pilihan_d') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="pilihan_e">Pilihan E</label>
-                    <input type="text" class="form-control" wire:model="pilihan_e">
-                    <div class="text-danger">
-                        @error('pilihan_e') {{$message}} @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="jawaban">Kunci Jawaban</label>
-                    <select wire:model="jawaban" class="form-control">
-                        <option value="">Pilih Kunci Jawaban</option>
-                        <option value="pilihan_a">A</option>
-                        <option value="pilihan_b">B</option>
-                        <option value="pilihan_c">C</option>
-                        <option value="pilihan_d">D</option>
-                        <option value="pilihan_e">E</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('jawaban') {{$message}} @enderror
                     </div>
                 </div>
 
@@ -321,6 +292,26 @@
 
 
 
+    <div class="modal fade" id="c_hapusOpsi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Hapus data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah anda yakin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='hapusOpsi()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
 
       <script>
         window.addEventListener('closeModal', event => {
@@ -337,6 +328,12 @@
         })
         window.addEventListener('closeModal', event => {
             $('#c_kirimsoal').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#opsi').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_hapusOpsi').modal('hide');
         })
       </script>
       <script>

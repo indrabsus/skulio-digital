@@ -14,6 +14,7 @@ use App\Models\DataSiswa as TabelSiswa;
 use App\Models\KategoriSoal;
 use App\Models\MapelKelas;
 use App\Models\Materi;
+use App\Models\NilaiUjian;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -30,6 +31,7 @@ class SiswaSumatif extends Component
     public $result = 50;
     public $id_kategori = '';
     public $id_kelas = '';
+    public $id_nilaiujian;
 
     public function render()
     {
@@ -79,11 +81,11 @@ class SiswaSumatif extends Component
     public function clearForm(){
         $this->nilai = '';
     }
-    public function chapus($id){
-        $this->id_nilai = $id;
+    public function c_hapus($id){
+        $this->id_nilaiujian = $id;
     }
     public function delete(){
-        Nilai::where('id', $this->id_nilai)->delete();
+        NilaiUjian::where('id_nilaiujian', $this->id_nilaiujian)->delete();
         session()->flash('sukses','Data berhasil dihapus');
             $this->clearForm();
             $this->dispatch('closeModal');
@@ -93,27 +95,6 @@ class SiswaSumatif extends Component
         $this->id_materi = $id_materi;
         $this->waktu_agenda = $waktu_agenda;
     }
-    public function absen(){
-        $this->validate([
-            'keterangan' => 'required',
-        ]);
-        $count = AbsenSiswa::where('id_user', $this->id_user)->where('waktu', 'like','%'.date('Y-m-d',strtotime($this->waktu_agenda)).'%')->count();
-        if($count > 0){
-            session()->flash('gagal','Data Ganda');
-            $this->clearForm();
-            $this->dispatch('closeModal');
-        } else {
-            AbsenSiswa::create([
-                'id_user' => $this->id_user,
-                'keterangan' => $this->keterangan,
-                'id_materi' => $this->id_materi,
-                'waktu' => now()
-            ]);
-            session()->flash('sukses','Data berhasil ditambahkan');
-                $this->clearForm();
-                $this->dispatch('closeModal');
-        }
 
-    }
 
 }

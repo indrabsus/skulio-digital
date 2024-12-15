@@ -44,35 +44,35 @@
             ->where('sumatif.id_sumatif', $test->id_sumatif)
             ->get();
 
-        $jawaban = App\Models\NilaiUjian::where('id_nilaiujian', $test->id_nilaiujian)->first();
 
-        // Parsing jawaban siswa jika ada, dengan menghilangkan spasi
-        $parsedJawaban = [];
-        if ($jawaban && $jawaban->jawaban_siswa) {
-            $answers = explode(',', $jawaban->jawaban_siswa);
-            foreach ($answers as $answer) {
-                list($id_soal, $response) = explode(':', $answer);
-                $parsedJawaban[trim($id_soal)] = $response; // Gunakan trim() di sini
+            $jawaban = App\Models\NilaiUjian::where('id_nilaiujian', $test->id_nilaiujian)->first();
+
+            // Parsing jawaban siswa jika ada (dengan format JSON)
+            $parsedJawaban = [];
+            if ($jawaban && $jawaban->jawaban_siswa) {
+                $parsedJawaban = json_decode($jawaban->jawaban_siswa, true) ?? [];
             }
-        }
         @endphp
 
         @foreach ($soal as $d)
+        @php
+            $opsi = App\Models\Opsi::where('id_soal', $d->id_soal)->get();
+        @endphp
             @if ($d->gambar)
                 <img src="{{ asset('storage/'.$d->gambar) }}" alt="" width="300px" class="mb-3 mt-3">
             @endif
             <p><strong>{{ $loop->iteration }}</strong>. {!! $d->soal !!}</p>
 
             <ul class="no-bullets" id="options-{{ $d->id_soal }}">
-                @foreach (['a', 'b', 'c', 'd', 'e'] as $option)
-                    <li>
-                        <input type="radio" name="pilihan_{{ $d->id_soal }}" value="pilihan_{{ $option }}"
-                               {{ isset($parsedJawaban[$d->id_soal]) && $parsedJawaban[$d->id_soal] === 'pilihan_' . $option ? 'checked' : '' }} disabled>
-                        {{ $d->{'pilihan_' . $option} }}
-                        @if ('pilihan_' . $option === $d->jawaban)
-                            <span class="text-success"><strong>(Kunci Jawaban)</strong></span>
-                        @endif
-                    </li>
+                @foreach ($opsi as $o)
+                <li>
+                    @if ($o->opsi_gambar)
+                        <img src="{{ asset('storage/'.$o->opsi_gambar) }}" width="200px">
+                    @endif
+                    <input type="radio" name="opsi_{{ $d->id_soal }}" value="{{ $o->id_opsi }}"
+                           {{ isset($parsedJawaban[$d->id_soal]) && $parsedJawaban[$d->id_soal] == $o->id_opsi ? 'checked' : '' }}>
+                    {{ $o->opsi }} {!! $o->benar ? '<strong>(Benar)</strong>' : '' !!}
+                </li>
                 @endforeach
             </ul>
             <hr>

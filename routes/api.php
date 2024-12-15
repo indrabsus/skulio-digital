@@ -20,7 +20,12 @@ Route::get('/logkehadiran/{username}', [App\Http\Controllers\Api\WhatsappControl
 Route::get('/lognilai/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'logNilai']);
 
 
-Route::get('/kegiatan', [App\Http\Controllers\Api\KegiatanController::class, 'viewKegiatan']);
+Route::get('/sumatif/{id_kelas}', [App\Http\Controllers\Api\ExamController::class, 'sumatif']);
+Route::get('/sumatif/cekujian/{id_sumatif}/{id_user}', [App\Http\Controllers\Api\ExamController::class, 'cekUjian']);
+Route::get('/sumatif/test/{id_sumatif}', [App\Http\Controllers\Api\ExamController::class, 'testSumatif']);
+Route::get('/sumatif/tampungsoal/{id_soalujian}', [App\Http\Controllers\Api\ExamController::class, 'tampungSoal']);
+Route::get('/sumatif/opsisoal/{id_soal}', [App\Http\Controllers\Api\ExamController::class, 'opsiSoal']);
+Route::post('/sumatif/jawabsoal', [App\Http\Controllers\Api\ExamController::class, 'jawabSoal']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/dataguru', [App\Http\Controllers\Api\User::class, 'allGuru']);
