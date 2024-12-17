@@ -69,43 +69,52 @@ class ExamController extends Controller
         ]);
     }
 
-public function jawabSoal(Request $request)
-{
-  
+    public function jawabSoal(Request $request)
+    {
+        try {
+            // Cek apakah data sudah ada
+            $existingAnswer = NilaiUjian::where('id_sumatif', $request->id_sumatif)
+                                        ->where('id_user_siswa', $request->id_user_siswa)
+                                        ->first();
 
-    // Cek apakah data sudah ada (menghindari duplikasi jawaban)
-    $existingAnswer = NilaiUjian::where('id_sumatif', $request->id_sumatif)
-                                ->where('id_user_siswa', $request->id_user_siswa)
-                                ->exists();
+            if ($existingAnswer) {
+                // Update jawaban yang sudah ada
+                $existingJawaban = json_decode($existingAnswer->jawaban_siswa, true) ?? [];
+                $newJawaban = $request->jawaban_siswa;
 
-    if ($existingAnswer) {
-        return response()->json([
-            'status' => 400,
-            'message' => 'Jawaban sudah ada',
-        ], 400);
+                // Gabungkan jawaban lama dan baru
+                $mergedJawaban = array_merge($existingJawaban, $newJawaban);
+
+                $existingAnswer->update([
+                    'jawaban_siswa' => json_encode($mergedJawaban),
+                ]);
+
+                return response()->json([
+                    'data' => $existingAnswer,
+                    'status' => 200,
+                    'message' => 'Jawaban berhasil diperbarui',
+                ], 200);
+            }
+
+            // Simpan data baru jika belum ada
+            $data = NilaiUjian::create([
+                'id_sumatif' => $request->id_sumatif,
+                'id_user_siswa' => $request->id_user_siswa,
+                'jawaban_siswa' => json_encode($request->jawaban_siswa),
+            ]);
+
+            return response()->json([
+                'data' => $data,
+                'status' => 201,
+                'message' => 'Jawaban berhasil disimpan',
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-
-    // Simpan data
-    try {
-        $data = NilaiUjian::create([
-            'id_sumatif' => $request->id_sumatif,
-            'id_user_siswa' => $request->id_user_siswa,
-            'jawaban_siswa' => json_encode($request->jawaban_siswa), // Encode jawaban siswa sebagai JSON jika berupa array
-        ]);
-
-        return response()->json([
-            'data' => $data,
-            'status' => 201,
-            'message' => 'Jawaban berhasil disimpan',
-        ], 201);
-    } catch (\Exception $e) {
-        // Menangani error jika ada masalah dalam penyimpanan
-        return response()->json([
-            'status' => 500,
-            'message' => 'Terjadi kesalahan pada server',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-}
-
 }
