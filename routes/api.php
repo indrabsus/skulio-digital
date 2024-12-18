@@ -26,12 +26,14 @@ Route::get('/sumatif/test/{id_sumatif}', [App\Http\Controllers\Api\ExamControlle
 Route::get('/sumatif/tampungsoal/{id_soalujian}', [App\Http\Controllers\Api\ExamController::class, 'tampungSoal']);
 Route::get('/sumatif/opsisoal/{id_soal}', [App\Http\Controllers\Api\ExamController::class, 'opsiSoal']);
 Route::post('/sumatif/jawabsoal', [App\Http\Controllers\Api\ExamController::class, 'jawabSoal']);
+Route::get('/sumatif/jawabsoal/{id_sumatif}/{id_user_siswa}', [App\Http\Controllers\Api\ExamController::class, 'getJawaban']);
+Route::get('/datasiswa/{id}', [App\Http\Controllers\Api\User::class, 'dataSiswa']);
+Route::get('/sumatif/selesaitest/{id_sumatif}/{id_user_siswa}', [App\Http\Controllers\Api\ExamController::class, 'selesaiTest']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/dataguru', [App\Http\Controllers\Api\User::class, 'allGuru']);
     Route::get('/dataguru/{id}', [App\Http\Controllers\Api\User::class, 'dataGuru']);
     Route::get('/datasiswa', [App\Http\Controllers\Api\User::class, 'allSiswa']);
-    Route::get('/datasiswa/{id}', [App\Http\Controllers\Api\User::class, 'dataSiswa']);
     Route::get('/userdata', [App\Http\Controllers\Api\User::class, 'userData']);
     Route::get('/logout', [App\Http\Controllers\Api\User::class, 'logout']);
 });

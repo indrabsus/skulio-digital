@@ -30,13 +30,11 @@ class ExamController extends Controller
     }
 
     public function cekUjian($id_sumatif, $id_user){
-        $jml = 0;
-        $jml = NilaiUjian::where('id_sumatif', $id_sumatif)
+        $cek = NilaiUjian::where('id_sumatif', $id_sumatif)
                               ->where('id_user_siswa', $id_user)
-                              ->where('jawaban_siswa', '!=', null)
-                              ->count();
+                              ->first();
         return response()->json([
-            'data' => $jml,
+            'data' => $cek,
             'status' => 200,
             'message' => 'success'
         ]);
@@ -116,5 +114,42 @@ class ExamController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+    public function getJawaban($id_sumatif, $id_user_siswa)
+    {
+        try {
+            // Ambil data jawaban dari tabel jawaban sumatif
+            $jawaban = NilaiUjian::where('id_sumatif', $id_sumatif)
+                ->where('id_user_siswa', $id_user_siswa)
+                ->first();
+
+            if (!$jawaban) {
+                return response()->json([
+                    'message' => 'Jawaban tidak ditemukan',
+                    'jawaban_siswa' => null,
+                ], 404);
+            }
+
+            return response()->json([
+                'message' => 'Jawaban berhasil diambil',
+                'jawaban_siswa' => $jawaban->jawaban_siswa, // Pastikan kolom ini benar di database
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil jawaban',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function selesaiTest($id_sumatif, $id_user_siswa){
+        NilaiUjian::where('id_sumatif', $id_sumatif)
+        ->where('id_user_siswa', $id_user_siswa)
+        ->update([
+            'selesai' => true
+        ]);
+        return response()->json([
+            'status' => 200,
+            'message' => 'success'
+        ]);
     }
 }

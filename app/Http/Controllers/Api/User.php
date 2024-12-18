@@ -94,8 +94,9 @@ class User extends Controller
     public function allSiswa(){
         $data = ModelsUser::leftJoin('data_siswa', 'data_siswa.id_user', '=', 'users.id')
         ->leftJoin('roles','roles.id_role','users.id_role')
+        ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
         ->where('users.id_role', 8)
-        ->select('users.*', 'data_siswa.*', 'roles.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_siswa.*', 'roles.*', 'kelas.*') // Pilih kolom yang diperlukan
         ->get();
         return response()->json([
             'data' => $data,
@@ -106,9 +107,11 @@ class User extends Controller
     public function dataSiswa($id){
         $data = ModelsUser::leftJoin('data_siswa', 'data_siswa.id_user', '=', 'users.id')
         ->leftJoin('roles','roles.id_role','users.id_role')
+        ->leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+        ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
         ->where('users.id_role', 8)
         ->where('users.id', $id)
-        ->select('users.*', 'data_siswa.*', 'roles.*') // Pilih kolom yang diperlukan
+        ->select('users.*', 'data_siswa.*', 'roles.*','kelas.*','jurusan.*') // Pilih kolom yang diperlukan
         ->first();
         return response()->json([
             'data' => $data,
