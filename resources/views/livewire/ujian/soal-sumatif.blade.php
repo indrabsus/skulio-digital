@@ -59,6 +59,7 @@
                           @endphp
                           <td>{{$jml}}</td>
                           <td>
+                            <a href="{{ route('printSoal',['id_soalujian' => $d->id_soalujian]) }}" class="btn btn-primary btn-xs" target="_blank">Print</a>
                             <a href="" class="btn btn-success btn-xs" data-bs-toggle="modal" data-bs-target="#edit" wire:click='edit("{{$d->id_soalujian}}")'><i class="fa-solid fa-edit"></i></i></a>
                             <a href="" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#k_hapus" wire:click="c_delete('{{$d->id_soalujian}}')"><i class="fa-solid fa-trash"></i></a>
                           </td>

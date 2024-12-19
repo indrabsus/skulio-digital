@@ -11,6 +11,9 @@ use App\Models\LogTabungan;
 use App\Models\Materi;
 use App\Models\Setingan;
 use App\Models\SiswaBaru;
+use App\Models\Soal;
+use App\Models\SoalUjian;
+use App\Models\TampungSoal;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -175,5 +178,16 @@ class PdfController extends Controller
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->date.'-agenda-harian.pdf');
             }
+    public function printSoal($id_soalujian){
+        $soal = TampungSoal::leftJoin('soal','soal.id_soal','tampung_soal.id_soal')
+        ->where('id_soalujian', $id_soalujian)
+        ->get();
+        $detail = SoalUjian::leftJoin('data_user','data_user.id_user','soal_ujian.id_user')
+        ->where('id_soalujian', $id_soalujian)->first();
+
+        $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.soalujian', compact('soal','detail'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($detail->nama_soal.'.pdf');
+    }
 }
 
