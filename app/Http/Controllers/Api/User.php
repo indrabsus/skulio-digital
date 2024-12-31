@@ -120,53 +120,113 @@ class User extends Controller
         ]);
     }
 
-    public function daftarPpdb(Request $request){
-        $request->validate([
-            'nisn' => 'required|unique:siswa_ppdb|numeric',
-            'nama_lengkap' => 'required',
-            'jenkel' => 'required',
-            'asal_sekolah' => 'required',
-            'nohp' => 'required|numeric',
-            'tanggal_lahir' => 'required',
-            'agama' => 'required',
-            'ayah' => 'required',
-            'nik_siswa' => 'required',
-            'ibu' => 'required',
-            'tempat_lahir' => 'required',
-            'alamat' => 'required',
-            'minat_jurusan1' => 'required',
-            'minat_jurusan2' => 'required',
 
-        ]);
+    public function daftarPpdb(Request $request)
+    {
+        try {
+            // Validasi data dengan pesan error dalam bahasa Indonesia
+            $validatedData = $request->validate([
+                'nisn' => 'required|unique:siswa_ppdb|numeric',
+                'nama_lengkap' => 'required',
+                'jenkel' => 'required',
+                'asal_sekolah' => 'required',
+                'nohp' => 'required|numeric',
+                'tanggal_lahir' => 'required|date',
+                'agama' => 'required',
+                'ayah' => 'required',
+                'nik_siswa' => 'required|numeric|unique:siswa_ppdb',
+                'ibu' => 'required',
+                'tempat_lahir' => 'required',
+                'alamat' => 'required',
+                'minat_jurusan1' => 'required',
+                'minat_jurusan2' => 'required',
+            ],[
+                'required' => ':attribute wajib diisi.',
+    'unique' => ':attribute sudah dipakai.',
+    'numeric' => ':attribute harus berupa angka.',
+    'date' => ':attribute harus berupa tanggal yang valid.',
+    'attributes' => [
+        'nisn' => 'NISN',
+        'nama_lengkap' => 'Nama Lengkap',
+        'jenkel' => 'Jenis Kelamin',
+        'asal_sekolah' => 'Asal Sekolah',
+        'nohp' => 'Nomor HP',
+        'tanggal_lahir' => 'Tanggal Lahir',
+        'agama' => 'Agama',
+        'ayah' => 'Nama Ayah',
+        'ibu' => 'Nama Ibu',
+        'tempat_lahir' => 'Tempat Lahir',
+        'alamat' => 'Alamat',
+        'nik_siswa' => 'NIK Siswa',
+        'minat_jurusan1' => 'Minat Jurusan 1',
+        'minat_jurusan2' => 'Minat Jurusan 2',
+    ],
+            ]);
 
-        $siswa = [
-            'nisn' => $request->nisn,
-            'nama_lengkap' => $request->nama_lengkap,
-            'nik_siswa' => $request->nik_siswa,
-            'jenkel' => $request->jenkel,
-            'asal_sekolah' => $request->asal_sekolah,
-            'minat_jurusan1' => $request->minat_jurusan1,
-            'minat_jurusan2' => $request->minat_jurusan2,
-            'no_hp' => $request->nohp,
-            'tempat_lahir' => "$request->tempat_lahir",
-            'tanggal_lahir' => "$request->tanggal_lahir",
-            'alamat' => $request->alamat,
-            'agama' => $request->agama,
-            'nama_ayah' => $request->ayah,
-            'nama_ibu' => $request->ibu,
-            'bayar_daftar' => 'n'
-        ];
-        $set = MasterPpdb::where('tahun', date('Y'))->first();
-        $input = SiswaPpdb::create($siswa);
-        $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $request->nama_lengkap . ', dan asal sekolah dari ' . $request->asal_sekolah . ', no Whatsapp : https://wa.me/62'. substr($request->nohp, 1);
-        $response = Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
+            // Data siswa yang akan disimpan
+            $siswa = [
+                'nisn' => $validatedData['nisn'],
+                'nama_lengkap' => $validatedData['nama_lengkap'],
+                'nik_siswa' => $validatedData['nik_siswa'],
+                'jenkel' => $validatedData['jenkel'],
+                'asal_sekolah' => $validatedData['asal_sekolah'],
+                'minat_jurusan1' => $validatedData['minat_jurusan1'],
+                'minat_jurusan2' => $validatedData['minat_jurusan2'],
+                'no_hp' => $validatedData['nohp'],
+                'tempat_lahir' => $validatedData['tempat_lahir'],
+                'tanggal_lahir' => $validatedData['tanggal_lahir'],
+                'alamat' => $validatedData['alamat'],
+                'agama' => $validatedData['agama'],
+                'nama_ayah' => $validatedData['ayah'],
+                'nama_ibu' => $validatedData['ibu'],
+                'bayar_daftar' => 'n'
+            ];
 
-        return response()->json([
-            'data' => $input,
-            'status' => 200,
-            'message' => 'success'
-        ]);
+            // Ambil data konfigurasi Telegram
+            $set = MasterPpdb::where('tahun', date('Y'))->first();
+
+            // Simpan data siswa ke database
+            $input = SiswaPpdb::create($siswa);
+
+            // Kirim notifikasi Telegram
+            $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $validatedData['nama_lengkap'] .
+                ', dan asal sekolah dari ' . $validatedData['asal_sekolah'] .
+                ', no Whatsapp : https://wa.me/62' . substr($validatedData['nohp'], 1);
+
+            $response = Http::get('https://api.telegram.org/bot' . $set->token_telegram . '/sendMessage?chat_id=' . $set->chat_id . '&text=' . urlencode($teks));
+
+            // Periksa apakah notifikasi berhasil
+            if ($response->successful()) {
+                return response()->json([
+                    'data' => $input,
+                    'status' => 200,
+                    'message' => 'success'
+                ]);
+            } else {
+                return response()->json([
+                    'data' => [],
+                    'status' => 500,
+                    'message' => 'Telegram notification failed'
+                ]);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            return response()->json([
+                'errors' => $e->errors(),
+                'status' => 422,
+                'message' => 'Validasi gagal'
+            ]);
+        } catch (\Exception $e) {
+            // Tangani error lain
+            return response()->json([
+                'error' => $e->getMessage(),
+                'status' => 500,
+                'message' => 'Terjadi kesalahan tak terduga'
+            ]);
+        }
     }
+
+
 
     public function cariGuru(Request $request)
 {
