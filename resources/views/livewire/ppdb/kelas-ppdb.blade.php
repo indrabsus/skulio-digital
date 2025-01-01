@@ -24,7 +24,7 @@
                             Tambah
                           </button>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
@@ -32,6 +32,14 @@
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
+                            </select>
+                        </div>
+                          <div class="col-3">
+                            <select class="form-control" wire:model.live="thn_ppdb">
+                                <option value="">Pilih Tahun</option>
+                                <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+                                <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                                <option value="{{ date('Y') +1 }}">{{ date('Y')+1 }}</option>
                             </select>
                         </div>
                             <input type="text" class="form-control" placeholder="Cari..." aria-label="Username" aria-describedby="basic-addon1" wire:model.live="cari">
@@ -45,6 +53,7 @@
                       <tr>
                           <th>No</th>
                           <th>Nama Kelas</th>
+                          <th>Tahun</th>
                           <th>Jurusan</th>
                           <th>Max</th>
                           <th>Terisi</th>
@@ -58,6 +67,7 @@
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
                           <td>{{$d->nama_kelas}}</td>
+                          <td>{{$d->tahun}}</td>
                           <td>{{$d->nama_jurusan}}</td>
                           <td>{{$d->max}}</td>
                           <td>

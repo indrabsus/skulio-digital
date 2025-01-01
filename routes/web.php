@@ -80,9 +80,12 @@ Route::get('rekapharianppdb',[PdfController::class,'rekapharianppdb'])->name('re
 
 //PDF SPP
 Route::get('/{id_logspp}/sppsiswa', [PdfController::class, 'printSppSiswa'])->name('printsppsiswa');
+Route::get('/{id_logluar}/struk', [PdfController::class, 'printStrukKeuangan'])->name('printstruk');
 Route::get('rekapharianspp',[PdfController::class,'rekapharianspp'])->name('rekapharianspp');
+Route::get('rekaphariankeuangan',[PdfController::class,'rekaphariankeuangan'])->name('rekaphariankeuangan');
 Route::any('rekapharianagenda',[PdfController::class,'rekapharianagenda'])->name('rekapharianagenda');
 Route::get('printsppbulanan',[PdfController::class,'printSppBulanan'])->name('printsppbulanan');
+Route::get('printkeuanganbulanan',[PdfController::class,'printKeuanganBulanan'])->name('printkeuanganbulanan');
 Route::get('agendaguru/{bulan}',[PdfController::class,'agendaguru'])->name('agendaguru');
 //PDF
 Route::get('printsoal/{id_soalujian}',[PdfController::class,'printSoal'])->name('printSoal');
@@ -98,7 +101,7 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/{id_log}/printLog', [PdfController::class, 'printLog'])->name('printLog');
 Route::get('/{id_log}/ppdbLog', [PdfController::class, 'siswaPpdb'])->name('ppdbLog');
 
-Route::get('ppdb2',[PPDBController::class,'formppdb'])->name('formppdb');
+Route::get('ppdb',[PPDBController::class,'formppdb'])->name('formppdb');
 Route::post('postppdb',[PPDBController::class,'postppdb'])->name('postppdb');
 //Proses Login
 Route::post('loginauth',[AuthController::class,'login'])->name('loginauth');

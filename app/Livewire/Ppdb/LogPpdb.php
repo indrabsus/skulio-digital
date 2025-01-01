@@ -15,10 +15,17 @@ class LogPpdb extends Component
 
     public $cari = '';
     public $result = 10;
+    public $thn_ppdb;
+
+    public function mount(){
+        $this->thn_ppdb = date('Y');
+    }
     public function render()
     {
         $siswa_ppdb = SiswaPpdb::all();
-        $data  = TabelLogPpdb ::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->orderBy('id_log','desc')->where('nama_lengkap', 'like','%'.$this->cari.'%')
+        $data  = TabelLogPpdb ::leftJoin('siswa_ppdb','siswa_ppdb.id_siswa','log_ppdb.id_siswa')->orderBy('id_log','desc')
+        ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+        ->where('log_ppdb.created_at', 'like','%'.$this->thn_ppdb.'%')
         ->select('nama_lengkap','nominal','jenis','log_ppdb.created_at','id_log','no_invoice')
         ->paginate($this->result);
         return view('livewire.ppdb.log-ppdb', compact('data','siswa_ppdb'));

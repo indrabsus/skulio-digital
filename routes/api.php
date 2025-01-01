@@ -18,6 +18,7 @@ Route::post('/daftarppdb', [App\Http\Controllers\Api\User::class, 'daftarPpdb'])
 Route::get('/logspp/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'cariSpp']);
 Route::get('/logkehadiran/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'kehadiran']);
 Route::get('/lognilai/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'logNilai']);
+Route::get('/jurusanppdb', [App\Http\Controllers\Api\User::class, 'jurusanPpdb']);
 
 
 Route::get('/sumatif/{id_kelas}', [App\Http\Controllers\Api\ExamController::class, 'sumatif']);

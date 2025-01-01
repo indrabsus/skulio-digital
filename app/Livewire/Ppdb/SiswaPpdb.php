@@ -19,22 +19,23 @@ class SiswaPpdb extends Component
 {
     public $jenis, $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
     use WithPagination;
-    public $filter = 'all';
+    public $filter = 'n';
 
     public $cari = '';
+    public $thn_ppdb;
     public $result = 10;
+    public function mount(){
+        $this->thn_ppdb = date('Y');
+    }
     public function render()
     {
-        if($this->filter == 'all'){
-            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
-            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
-            ->paginate($this->result);
-        } else{
+
             $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('bayar_daftar', $this->filter)
+            ->where('tahun', $this->thn_ppdb)
             ->paginate($this->result);
-        }
+
         $jurusan = JurusanPpdb::all();
         $master_ppdb = MasterPpdb::all();
         $kelas_ppdb = KelasPpdb::all();

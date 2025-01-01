@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataSiswa;
 use App\Models\Kelas;
 use App\Models\KelasPpdb;
+use App\Models\LogLuarSpp;
 use App\Models\LogPpdb;
 use App\Models\LogSpp;
 use App\Models\LogTabungan;
@@ -114,6 +115,12 @@ class PdfController extends Controller
              //return $pdf->download('test.pdf');
              return $pdf->stream('bulan-'.$data->bulan.'-'.str_replace(' ','',strtolower($data->nama_lengkap)).'.pdf');
             }
+        public function printStrukKeuangan($id){
+            $data = LogLuarSpp::where('id_logluar', $id)->first();
+            $pdf = Pdf::loadView('pdf.keuanganstruk', compact('data'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream('bukti-keuangan.pdf');
+            }
 
             public function rekapharianspp(Request $request){
                 $date = $request->date;
@@ -129,6 +136,16 @@ class PdfController extends Controller
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->date.'-spp.pdf');
             }
+            public function rekaphariankeuangan(Request $request){
+                $date = $request->date;
+
+                $data = LogLuarSpp::where('created_at', 'like','%'.$request->date.'%')
+                ->get();
+
+                $pdf = Pdf::setPaper('a4', 'portrait')->loadView('pdf.rekaphariankeuangan', compact('data','date'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->date.'-keuangan.pdf');
+            }
             public function printSppBulanan(Request $request){
                 $bln = $request->bln;
                 $thn = $request->thn;
@@ -142,6 +159,16 @@ class PdfController extends Controller
                 $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.logsppbulanan', compact('data','bln','thn'));
              //return $pdf->download('test.pdf');
              return $pdf->stream($request->bln.'-'.$request->thn.'-spp.pdf');
+            }
+            public function printKeuanganBulanan(Request $request){
+                $bln = $request->bln;
+                $thn = $request->thn;
+
+                $data = LogLuarSpp::where('created_at', 'like','%'.$request->thn.'-'.$request->bln.'%')
+                ->get();
+                $pdf = Pdf::setPaper('a4', 'landscape')->loadView('pdf.rekapbulanankeuangan', compact('data','bln','thn'));
+             //return $pdf->download('test.pdf');
+             return $pdf->stream($request->bln.'-'.$request->thn.'-keuangan.pdf');
             }
 
             public function agendaGuru($bulan){

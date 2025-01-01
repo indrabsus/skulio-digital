@@ -13,12 +13,19 @@ class KelasPpdb extends Component
     use WithPagination;
 
     public $cari = '';
+    public $thn_ppdb;
     public $result = 10;
+    public function mount(){
+        $this->thn_ppdb = date('Y');
+    }
     public function render()
     {
-        $jurusan = JurusanPpdb::all();
+        $jurusan = JurusanPpdb::leftJoin('master_ppdb','master_ppdb.id_ppdb','jurusan_ppdb.id_ppdb')
+        ->where('master_ppdb.tahun', $this->thn_ppdb)->get();
         $data  =  TabelKelasPpdb::orderBy('id_kelas','desc')
         ->leftJoin('jurusan_ppdb','jurusan_ppdb.id_jurusan','kelas_ppdb.id_jurusan',)
+        ->leftJoin('master_ppdb','master_ppdb.id_ppdb','jurusan_ppdb.id_ppdb')
+        ->where('master_ppdb.tahun', $this->thn_ppdb)
         ->where('nama_kelas', 'like','%'.$this->cari.'%')->paginate($this->result);
         return view('livewire.ppdb.kelas-ppdb', compact('data','jurusan'));
     }

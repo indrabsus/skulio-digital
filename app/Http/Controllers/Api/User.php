@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\JurusanPpdb;
 use App\Models\MasterPpdb;
 use App\Models\SiswaPpdb;
 use App\Models\User as ModelsUser;
@@ -179,7 +180,8 @@ class User extends Controller
                 'agama' => $validatedData['agama'],
                 'nama_ayah' => $validatedData['ayah'],
                 'nama_ibu' => $validatedData['ibu'],
-                'bayar_daftar' => 'n'
+                'bayar_daftar' => 'n',
+                'tahun' => date('Y')
             ];
 
             // Ambil data konfigurasi Telegram
@@ -252,6 +254,15 @@ class User extends Controller
             'message' => 'Guru tidak ditemukan.',
         ], 404);
     }
+}
+public function jurusanPpdb(){
+    $data = JurusanPpdb::leftJoin('master_ppdb','master_ppdb.id_ppdb','jurusan_ppdb.id_ppdb')
+    ->where('tahun', date('Y'))->get();
+    return response()->json([
+        'data' => $data,
+        'status' => 200,
+        'message' => 'success'
+    ]);
 }
 
 }

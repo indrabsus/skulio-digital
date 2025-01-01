@@ -19,7 +19,7 @@
         </div>
         <div class="col">
                 <div class="row justify-content-between mt-2">
-                    <div class="col-8">
+                    <div class="col-6">
                         <form action="{{ route('rekapharianppdb') }}" method="get" target="_blank">
                             <div class="input-group input-group-sm mb-3">
                                 <div class="col-3">
@@ -29,7 +29,7 @@
                                 </div>
                         </form>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-3">
                             <select class="form-control" wire:model.live="result">
@@ -37,6 +37,15 @@
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
+                            </select>
+                        </div>
+                          <div class="col-3">
+                            <select class="form-control" wire:model.live="thn_ppdb">
+                                <option value="">Pilih Tahun</option>
+                                <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+                                <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                                <option value="{{ date('Y') +1 }}">{{ date('Y') +1 }}</option>
+
                             </select>
                         </div>
 

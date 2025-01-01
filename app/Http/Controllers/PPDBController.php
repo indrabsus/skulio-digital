@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Http;
 class PPDBController extends Controller
 {
     public function formppdb(){
-        $jurusan = JurusanPpdb::all();
+        $jurusan = JurusanPpdb::leftJoin('master_ppdb','master_ppdb.id_ppdb','jurusan_ppdb.id_ppdb')
+        ->where('tahun', date('Y'))
+        ->get();
         return view('ppdb.formppdb',compact('jurusan'));
     }
 
@@ -56,7 +58,8 @@ class PPDBController extends Controller
             'agama' => $request->agama,
             'nama_ayah' => $request->ayah,
             'nama_ibu' => $request->ibu,
-            'bayar_daftar' => 'n'
+            'bayar_daftar' => 'n',
+            'tahun' => date('Y')
         ];
         $set = MasterPpdb::where('tahun', date('Y'))->first();
         $input = SiswaPpdb::create($siswa);

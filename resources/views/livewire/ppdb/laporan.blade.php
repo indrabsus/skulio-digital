@@ -1,4 +1,16 @@
 <div>
+   <div class="row mb-3">
+    <div class="col-6">
+        <select class="form-control" wire:model.live="thn_ppdb">
+            <option value="">Pilih Tahun</option>
+            <option value="{{ date('Y') -1}}">{{ date('Y') -1}}</option>
+            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+            <option value="{{ date('Y') +1 }}">{{ date('Y') +1 }}</option>
+
+        </select>
+    </div>
+
+   </div>
     <h3>Laporan PPDB</h3>
     <div class="row mt-3">
         <div class="col-lg-6">
