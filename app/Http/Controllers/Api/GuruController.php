@@ -57,4 +57,16 @@ class GuruController extends Controller
         return response()->json(['message' => 'Data berhasil ditambahkan'], 200);
     }
 
+    public function absenWa($username){
+        $abs = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','materi.id_mapelkelas')
+        ->leftJoin('users','users.id','=','mapel_kelas.id_user')
+        ->where('users.username', $username)
+        ->whereDate('materi.created_at', now()->format('Y-m-d'))->first();
+
+        return response()->json([
+            'data' => $abs,
+            'status' => 200
+        ]);
+    }
+
 }
