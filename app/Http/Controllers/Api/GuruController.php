@@ -61,7 +61,7 @@ class GuruController extends Controller
         $abs = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','materi.id_mapelkelas')
         ->leftJoin('users','users.id','=','mapel_kelas.id_user')
         ->where('users.username', $username)
-        ->whereDate('materi.created_at', now()->format('Y-m-d'))->first();
+        ->whereDate('materi.created_at', now()->format('Y-m-d'))->get();
 
         return response()->json([
             'data' => $abs,
