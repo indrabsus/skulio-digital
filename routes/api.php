@@ -21,6 +21,7 @@ Route::get('/lognilai/{username}', [App\Http\Controllers\Api\WhatsappController:
 Route::get('/jurusanppdb', [App\Http\Controllers\Api\User::class, 'jurusanPpdb']);
 
 Route::get('/isiagenda/{username}', [App\Http\Controllers\Api\GuruController::class, 'isiAgenda']);
+Route::get('/prosesagenda/{materi}/{tingkat}/{id_mapelkelas}', [App\Http\Controllers\Api\GuruController::class, 'prosesAgenda']);
 
 
 Route::get('/sumatif/{id_kelas}', [App\Http\Controllers\Api\ExamController::class, 'sumatif']);

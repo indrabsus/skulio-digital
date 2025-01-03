@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\MapelKelas;
+use App\Models\Materi;
 use Illuminate\Http\Request;
 
 class GuruController extends Controller
@@ -25,6 +26,35 @@ class GuruController extends Controller
         } else {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
-
     }
+    public function prosesAgenda($materi, $tingkat, $id_mapelkelas){
+        // $semester='ganjil';
+        $currentMonth = now()->month;
+
+        if (in_array($currentMonth, [7, 8, 9, 10, 11, 12])) {
+            $semester = 'ganjil';
+        } else {
+            $semester = 'genap';
+        }
+        $hitung = Materi::where('id_mapelkelas', $id_mapelkelas)
+        ->whereDate('created_at', now()->format('Y-m-d'))->count();
+        if($hitung > 0){
+            $data = Materi::where('id_mapelkelas', $id_mapelkelas)
+            ->whereDate('created_at', now()->format('Y-m-d'))
+            ->update([
+                'materi' => $materi
+            ]) ;
+        } else {
+            $data = Materi::create([
+                'id_mapelkelas' => $id_mapelkelas,
+                'materi' => $materi,
+                'semester' => $semester,
+                'penilaian' => 'n',
+                'tingkatan' => $tingkat
+            ]) ;
+
+        }
+        return response()->json(['message' => 'Data berhasil ditambahkan'], 200);
+    }
+
 }
