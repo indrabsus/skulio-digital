@@ -23,6 +23,7 @@ Route::get('/jurusanppdb', [App\Http\Controllers\Api\User::class, 'jurusanPpdb']
 Route::get('/isiagenda/{username}', [App\Http\Controllers\Api\GuruController::class, 'isiAgenda']);
 Route::get('/prosesagenda/{materi}/{tingkat}/{id_mapelkelas}', [App\Http\Controllers\Api\GuruController::class, 'prosesAgenda']);
 Route::get('/absenwa/{id_mapelkelas}', [App\Http\Controllers\Api\GuruController::class, 'absenWa']);
+Route::get('/absenlist/{id_materi}', [App\Http\Controllers\Api\GuruController::class, 'absenListsiswa']);
 
 
 Route::get('/sumatif/{id_kelas}', [App\Http\Controllers\Api\ExamController::class, 'sumatif']);
