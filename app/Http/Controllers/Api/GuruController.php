@@ -90,19 +90,36 @@ class GuruController extends Controller
             'status' => 200
         ]);
     }
-    public function prosesAbsen($id_user, $id_materi, $waktu_agenda, $keterangan){
+    public function prosesAbsen($id_user, $id_materi, $waktu_agenda, $keterangan)
+{
+    $existingData = AbsenSiswa::where([
+        'id_materi' => $id_materi,
+        'id_user' => $id_user,
+        'waktu' => $waktu_agenda
+    ])->first();
 
-        $data = AbsenSiswa::updateOrCreate([
+    if ($existingData) {
+        // Update hanya jika keterangan berbeda
+        if ($existingData->keterangan !== $keterangan) {
+            $existingData->update(['keterangan' => $keterangan]);
+        }
+        $data = $existingData; // Tetapkan data yang ada
+    } else {
+        // Create data baru
+        $data = AbsenSiswa::create([
             'id_materi' => $id_materi,
             'id_user' => $id_user,
             'waktu' => $waktu_agenda,
             'keterangan' => $keterangan
         ]);
-        return response()->json([
-            'data' => $data,
-            'status' => 200
-        ]);
     }
+
+    return response()->json([
+        'data' => $data,
+        'status' => 200
+    ]);
+}
+
 
     public function cekUsername($username){
         $data = User::where('username', $username)
