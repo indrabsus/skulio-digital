@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\AbsenSiswa;
 use App\Models\MapelKelas;
 use App\Models\Materi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GuruController extends Controller
 {
@@ -87,5 +89,17 @@ class GuruController extends Controller
             'status' => 200
         ]);
     }
+    public function prosesAbsen($id_user, $id_materi, $waktu_agenda, $keterangan){
 
+        $data = AbsenSiswa::updateOrCreate([
+            'id_materi' => $id_materi,
+            'id_user' => $id_user,
+            'waktu' => $waktu_agenda,
+            'keterangan' => $keterangan
+        ]);
+        return response()->json([
+            'data' => $data,
+            'status' => 200
+        ]);
+    }
 }
