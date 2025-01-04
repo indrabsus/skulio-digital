@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AbsenSiswa;
 use App\Models\MapelKelas;
 use App\Models\Materi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -101,5 +102,19 @@ class GuruController extends Controller
             'data' => $data,
             'status' => 200
         ]);
+    }
+
+    public function cekUsername($username){
+        $data = User::where('username', $username)
+        ->where('id_role', 6)
+        ->first();
+        if($data){
+            return response()->json([
+                'data' => $data,
+                'status' => 200
+            ]);
+        } else {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
     }
 }

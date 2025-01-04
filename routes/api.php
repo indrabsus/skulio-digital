@@ -25,6 +25,7 @@ Route::get('/prosesagenda/{materi}/{tingkat}/{id_mapelkelas}', [App\Http\Control
 Route::get('/absenwa/{id_mapelkelas}', [App\Http\Controllers\Api\GuruController::class, 'absenWa']);
 Route::get('/absenlist/{id_materi}', [App\Http\Controllers\Api\GuruController::class, 'absenListsiswa']);
 Route::get('/prosesabsen/{id_user}/{id_materi}/{waktu_agenda}/{keterangan}', [App\Http\Controllers\Api\GuruController::class, 'prosesAbsen']);
+Route::get('/cekusername/{username}', [App\Http\Controllers\Api\GuruController::class, 'cekUsername']);
 
 
 Route::get('/sumatif/{id_kelas}', [App\Http\Controllers\Api\ExamController::class, 'sumatif']);
