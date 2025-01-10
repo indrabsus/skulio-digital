@@ -20,6 +20,9 @@ Route::get('/logkehadiran/{username}', [App\Http\Controllers\Api\WhatsappControl
 Route::get('/lognilai/{username}', [App\Http\Controllers\Api\WhatsappController::class, 'logNilai']);
 Route::get('/jurusanppdb', [App\Http\Controllers\Api\User::class, 'jurusanPpdb']);
 
+Route::get('/cekhttp', [App\Http\Controllers\Api\WhatsappController::class, 'cekHttp']);
+
+
 Route::get('/isiagenda/{username}', [App\Http\Controllers\Api\GuruController::class, 'isiAgenda']);
 Route::get('/prosesagenda/{materi}/{tingkat}/{id_mapelkelas}', [App\Http\Controllers\Api\GuruController::class, 'prosesAgenda']);
 Route::get('/absenwa/{username}', [App\Http\Controllers\Api\GuruController::class, 'absenWa']);

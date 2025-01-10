@@ -9,6 +9,7 @@ use App\Models\Nilai;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class WhatsappController extends Controller
 {
@@ -81,6 +82,43 @@ class WhatsappController extends Controller
         'message' => 'success',
         'status' => 200
     ]);
+}
+
+public function cekHttp()
+{
+    try {
+        // Set timeout to avoid long delays
+        $response = Http::timeout(5)->get('http://23.0.0.99:3000/ready');
+
+        // Check if the request was successful
+        if ($response->successful()) {
+            return response()->json([
+                'message' => 'Connection successful',
+                'status' => 200,
+                'data' => $response->json() // Include response data if available
+            ]);
+        }
+
+        // Handle non-successful responses
+        return response()->json([
+            'message' => 'HTTP request failed',
+            'status' => $response->status(),
+        ], $response->status());
+    } catch (\Illuminate\Http\Client\ConnectionException $e) {
+        // Handle connection errors
+        return response()->json([
+            'message' => 'Connection timed out or failed',
+            'status' => 408, // HTTP status code for timeout
+            'error' => $e->getMessage(),
+        ], 408);
+    } catch (\Exception $e) {
+        // Handle other exceptions
+        return response()->json([
+            'message' => 'An unexpected error occurred',
+            'status' => 500,
+            'error' => $e->getMessage(),
+        ], 500);
+    }
 }
 
 
