@@ -84,11 +84,15 @@ class WhatsappController extends Controller
     ]);
 }
 
-public function cekHttp()
+public function cekHttp(Request $request)
 {
     try {
         // Set timeout to avoid long delays
-        $response = Http::timeout(5)->get('http://23.0.0.99:3000/ready');
+        $response = Http::timeout(5)->post('http://23.0.0.99:3000/ready',[
+            'nomor' => $request->nomor,
+            'pesan' => $request->pesan
+        ]);
+
 
         // Check if the request was successful
         if ($response->successful()) {

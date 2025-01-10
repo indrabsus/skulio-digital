@@ -20,98 +20,71 @@ class PPDBController extends Controller
         return view('ppdb.formppdb',compact('jurusan'));
     }
 
-    public function postppdb(Request $request){
-        $request->validate([
-            'nisn' => 'required|unique:siswa_ppdb|numeric',
-            'nama_lengkap' => 'required',
-            'jenkel' => 'required',
-            'asal_sekolah' => 'required',
-            'nohp' => 'required|numeric',
-            'tanggal_lahir' => 'required',
-            'agama' => 'required',
-            'ayah' => 'required',
-            'nik_siswa' => 'required',
-            'ibu' => 'required',
-            'tempat_lahir' => 'required',
-            'jalan' => 'required',
-            'rtrw' => 'required',
-            'kelurahan' => 'required',
-            'kecamatan' => 'required',
-            'kota' => 'required',
-            'minat_jurusan1' => 'required',
-            'minat_jurusan2' => 'required',
+    public function postppdb(Request $request)
+{
+    $request->validate([
+        'nisn' => 'required|unique:siswa_ppdb|numeric',
+        'nama_lengkap' => 'required',
+        'jenkel' => 'required',
+        'asal_sekolah' => 'required',
+        'nohp' => 'required|numeric',
+        'tanggal_lahir' => 'required|date',
+        'agama' => 'required',
+        'ayah' => 'required',
+        'nik_siswa' => 'required|numeric',
+        'ibu' => 'required',
+        'tempat_lahir' => 'required',
+        'jalan' => 'required',
+        'rtrw' => 'required',
+        'kelurahan' => 'required',
+        'kecamatan' => 'required',
+        'kota' => 'required',
+        'minat_jurusan1' => 'required',
+        'minat_jurusan2' => 'required',
+    ]);
 
-        ]);
-
-        $siswa = [
-            'nisn' => $request->nisn,
-            'nama_lengkap' => $request->nama_lengkap,
-            'nik_siswa' => $request->nik_siswa,
-            'jenkel' => $request->jenkel,
-            'asal_sekolah' => $request->asal_sekolah,
-            'minat_jurusan1' => $request->minat_jurusan1,
-            'minat_jurusan2' => $request->minat_jurusan2,
-            'no_hp' => $request->nohp,
-            'tempat_lahir' => "$request->tempat_lahir",
-            'tanggal_lahir' => "$request->tanggal_lahir",
-            'alamat' => "Jalan $request->jalan Rt/Rw. $request->rtrw, Kel/Desa. $request->kelurahan, Kec. $request->kecamatan, Kota/Kab. $request->kota",
-            'agama' => $request->agama,
-            'nama_ayah' => $request->ayah,
-            'nama_ibu' => $request->ibu,
-            'bayar_daftar' => 'n',
-            'tahun' => date('Y')
-        ];
-        $set = MasterPpdb::where('tahun', date('Y'))->first();
-        $input = SiswaPpdb::create($siswa);
-        $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $request->nama_lengkap . ', dan asal sekolah dari ' . $request->asal_sekolah . ', no Whatsapp : https://wa.me/62'. substr($request->nohp, 1);
-        $response = Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
-        return redirect()->route('formppdb')->with('status', 'Anda Sudah Berhasil Daftar, untuk pembayaran silakan langsung datang ke Ruang PPDB SMK Sangkuriang 1 Cimahi. Terima Kasih');
+    // Format nomor HP
+    $nohp = preg_replace('/[^0-9]/', '', $request->nohp);
+    if (strpos($nohp, '08') === 0) {
+        $nohp = '62' . substr($nohp, 1);
     }
-    public function laporan(){
-        $daftar = MasterPpdb::where('tahun',date('Y'))->first();
-        $pendaftar = SiswaPpdb::count();
-        $hanyadaftar = LogPpdb::groupBy('id_siswa')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '=', $daftar->daftar)
-        ->count();
-        $mengundurkan = SiswaPpdb::where('bayar_daftar', '=', 'l')
-        ->count();
-        $noaction = SiswaPpdb::where('bayar_daftar', '=', 'n')
-        ->count();
 
-        $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
-        $kurangsejuta = LogPpdb::groupBy('id_siswa')
-        ->where('jenis','p')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '<', 1000000)
-        ->count();
-        $lebihsejuta = LogPpdb::groupBy('id_siswa')
-        ->where('jenis','p')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '>=', 1000000)
-        ->having('total_pembayaran', '<', $daftar->ppdb)
-        ->count();
-        $lunas = LogPpdb::groupBy('id_siswa')
-        ->where('jenis','p')
-        ->select('id_siswa', DB::raw('SUM(nominal) as total_pembayaran'))
-        ->having('total_pembayaran', '=', $daftar->ppdb)
-        ->count();
+    $siswa = [
+        'nisn' => $request->nisn,
+        'nama_lengkap' => $request->nama_lengkap,
+        'nik_siswa' => $request->nik_siswa,
+        'jenkel' => $request->jenkel,
+        'asal_sekolah' => $request->asal_sekolah,
+        'minat_jurusan1' => $request->minat_jurusan1,
+        'minat_jurusan2' => $request->minat_jurusan2,
+        'no_hp' => $nohp,
+        'tempat_lahir' => $request->tempat_lahir,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'alamat' => "Jalan $request->jalan Rt/Rw. $request->rtrw, Kel/Desa. $request->kelurahan, Kec. $request->kecamatan, Kota/Kab. $request->kota",
+        'agama' => $request->agama,
+        'nama_ayah' => $request->ayah,
+        'nama_ibu' => $request->ibu,
+        'bayar_daftar' => 'n',
+        'tahun' => date('Y'),
+    ];
 
-        $set = MasterPpdb::where('tahun', date('Y'))->first();
-        $teks = 'Laporan PPDB SMK Sangkuriang 1 Cimahi, Tanggal '.date('d M Y')."\n".
-'Pendaftar Total sebanyak '.$pendaftar.' orang,'."\n".
-'Pendaftar yang hanya melakukan pembayaran Pendaftaran sebanyak '.$hanyadaftar.' orang,'."\n".
-'Pendaftar yang sudah melakukan pembayaran sebanyak '.$sudahdaftar.' orang,'."\n".
-'Pendaftar yang belum melakukan pembayaran sebanyak '.$noaction.' orang,'."\n".
-'Pendaftar yang sudah Lunas sebanyak '.$lunas.' orang,'."\n".
-'Pendaftar yang sudah bayar lebih dari 1 Juta sebanyak '.$lebihsejuta.' orang,'."\n".
-'Pendaftar yang sudah bayar kurang dari 1 Juta sebanyak '.$kurangsejuta.' orang, '."\n".
-'Pendaftar yang sudah Mengundurkan diri sebanyak '.$mengundurkan.' orang, '."\n".
-'Tim IT SMK Sangkuriang 1 Cimahi';
+    $set = MasterPpdb::where('tahun', date('Y'))->first();
+    $input = SiswaPpdb::create($siswa);
 
-        Http::get('https://api.telegram.org/bot'.$set->token_telegram.'/sendMessage?chat_id='.$set->chat_id.',&text='.$teks);
-        return redirect()->route('loginpage');
-    }
+    // Format teks untuk Telegram
+    $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $request->nama_lengkap . ', dan asal sekolah dari ' . $request->asal_sekolah . ', no Whatsapp: https://wa.me/' . $nohp;
+    Http::post('http://23.0.0.99:3000/notifuser', [
+        'nomor' => $nohp,
+        'pesan' => 'Terima Kasih sudah mendaftar di PPDB SMK Sangkuriang 1 Cimahi, untuk pembayaran silakan langsung datang ke Ruang PPDB SMK Sangkuriang 1 Cimahi. Terima Kasih',
+    ]);
+    $response = Http::get('https://api.telegram.org/bot' . $set->token_telegram . '/sendMessage', [
+        'chat_id' => $set->chat_id,
+        'text' => $teks,
+    ]);
+
+    return redirect()->route('formppdb')->with('status', 'Anda Sudah Berhasil Daftar, untuk pembayaran silakan langsung datang ke Ruang PPDB SMK Sangkuriang 1 Cimahi. Terima Kasih');
+}
+
     public function detailppdb(){
         $sudahdaftar = SiswaPpdb::where('bayar_daftar','y')->count();
         $all = SiswaPpdb::count();
