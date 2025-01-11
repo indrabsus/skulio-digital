@@ -13,13 +13,15 @@ use App\Models\SiswaBaru;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SiswaPpdb as TabelSiswaPpdb;
+use Illuminate\Support\Facades\Http;
 use Livewire\WithPagination;
 
 class SiswaPpdb extends Component
 {
-    public $jenis, $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas;
+    public $jenis, $id_siswa, $id_ppdb, $id_user,$nama_ibu,$nama_ayah,$minat_jurusan1 , $minat_jurusan2 ,$asal_sekolah,$nisn,$bayar_daftar, $jenkel, $no_hp, $nama_lengkap, $nik_siswa, $nom, $nom2, $kelas, $nohp, $pesan;
     use WithPagination;
-    public $filter = 'n';
+    public $filter = 'all';
+    public $centang = [];
 
     public $cari = '';
     public $thn_ppdb;
@@ -29,12 +31,20 @@ class SiswaPpdb extends Component
     }
     public function render()
     {
-
+        if($this->filter == 'all'){
+            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            ->where('nama_lengkap', 'like','%'.$this->cari.'%')
+            ->where('tahun', $this->thn_ppdb)
+            ->paginate($this->result);
+        } else {
             $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('bayar_daftar', $this->filter)
             ->where('tahun', $this->thn_ppdb)
             ->paginate($this->result);
+        }
+
+
 
         $jurusan = JurusanPpdb::all();
         $master_ppdb = MasterPpdb::all();
@@ -193,6 +203,9 @@ class SiswaPpdb extends Component
     }
 
      public function daftar(){
+        $this->validate([
+            'jenis' => 'required',
+        ]);
         $siswa = TabelSiswaPpdb::where('id_siswa', $this->id_siswa)->first();
         $cek = LogPpdb::where('no_invoice', 'D'.date('dmYh').$siswa->id_siswa)->count();
         if($cek < 1){
@@ -278,6 +291,54 @@ class SiswaPpdb extends Component
         session()->flash('sukses','Berhasil Mengundurkan Diri!');
                 $this->clearForm();
                 $this->dispatch('closeModal');
+    }
+
+    public function c_pesan($nohp){
+        $this->nohp = $nohp;
+        $this->pesan = '';
+    }
+    public function kirimWa(){
+        $this->validate([
+            'pesan' => 'required'
+        ]);
+        $apiwa = env('API_WA_BOT');
+        Http::post($apiwa.'/notifuser',[
+            'nomor' => $this->nohp,
+            'pesan' => $this->pesan
+        ]);
+        session()->flash('sukses','Pesan berhasil dikirim!');
+        $this->clearForm();
+        $this->dispatch('closeModal');
+    }
+
+    public function pesanMasal(){
+        try {
+            // Simpan array nomor HP yang dipilih
+            $nomorHpArray = $this->centang;
+            $apiwa = env('API_WA_BOT');
+            // Kirim pesan ke setiap nomor
+            foreach ($nomorHpArray as $noHp) {
+                // Logika pengiriman pesan (misal: API WhatsApp)
+                // Contoh: Menggunakan API WhatsApp
+                Http::post($apiwa.'/notifuser', [
+                    'nomor' => $noHp,
+                    'pesan' => $this->pesan,
+                ]);
+
+            }
+
+            // Berikan feedback ke user
+            session()->flash('sukses','Pesan berhasil dikirim!');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+
+            // Reset data
+            $this->reset(['centang', 'pesan']);
+        } catch (\Exception $e) {
+            session()->flash('gagal','Pesan GAGAL dikirim!');
+            $this->clearForm();
+            $this->dispatch('closeModal');
+        }
     }
 
 }

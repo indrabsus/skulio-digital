@@ -72,8 +72,9 @@ class PPDBController extends Controller
     $input = SiswaPpdb::create($siswa);
 
     // Format teks untuk Telegram
+    $apiwa = env('API_WA_BOT');
     $teks = 'Pemberitahuan, ada siswa baru mendaftar dengan nama ' . $request->nama_lengkap . ', dan asal sekolah dari ' . $request->asal_sekolah . ', no Whatsapp: https://wa.me/' . $nohp;
-    Http::post('http://23.0.0.99:3000/notifuser', [
+    Http::post($apiwa . '/notifuser', [
         'nomor' => $nohp,
         'pesan' => 'Terima Kasih sudah mendaftar di PPDB SMK Sangkuriang 1 Cimahi, untuk pembayaran silakan langsung datang ke Ruang PPDB SMK Sangkuriang 1 Cimahi. Terima Kasih',
     ]);

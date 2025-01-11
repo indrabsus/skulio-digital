@@ -1,4 +1,8 @@
 <div>
+    <div class="mt-3 mb-3">
+        <button class="btn btn-success btn-xs" data-bs-toggle="modal"
+        data-bs-target="#k_wa" {{ !$this->centang ? 'disabled' : '' }}>Kirim WA</button>
+    </div>
     <div class="row">
 
         <div class="container">
@@ -25,7 +29,7 @@
                         <div class="input-group input-group-sm mb-3">
                           <div class="col-2">
                             <select class="form-control" wire:model.live="filter">
-                                <option value="">Semua</option>
+                                <option value="all">Semua</option>
                                 <option value="y">Sudah Bayar</option>
                                 <option value="n">Belum Bayar</option>
                                 <option value="l">Mengundurkan Diri</option>
@@ -72,22 +76,12 @@
                   <tbody>
                   @foreach ($data as $d)
                       <tr>
-                          <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                          <td><input class="form-check-input" type="checkbox" wire:model.live="centang" value="{{ $d->no_hp }}"></td>
                           <td>{{$d->nama_lengkap}} {{ $d->bayar_daftar == 'l' ? ' - Mengundurkan Diri' : '' }}</td>
-                          @php
-    // Process the phone number
-    $phone = $d->no_hp;
-    $phone = str_replace([' ', '-', '+'], '', $phone); // Remove spaces and dashes
-    if (substr($phone, 0, 1) == '0') {
-        $phone = '62' . substr($phone, 1); // Remove leading 0 and add 62
-    } elseif (substr($phone, 0, 2) == '62') {
-        $phone = '62' . substr($phone, 2); // Remove leading 62
-    }
-@endphp
 
-<td>
-    <a href="https://wa.me/{{ $phone }}" target="_blank">{{ $d->no_hp }}</a>
-</td>
+                            <td>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#c_pesan" wire:click="c_pesan('{{ $d->no_hp }}')">{{ $d->no_hp }}</a>
+                            </td>
 
                           <td>{{$d->asal_sekolah}}</td>
                           <td>{{$d->nisn}}</td>
@@ -317,6 +311,59 @@
         </div>
       </div>
 
+    <div class="modal fade" id="c_pesan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Kirim Pesan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="">Pesan</label>
+                    <textarea wire:model.live='pesan' id="" cols="30" rows="10" class="form-control"></textarea>
+                    <div class="text-danger">
+                        @error('pesan')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='kirimWa()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="modal fade" id="k_wa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Kirim Pesan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="">Pesan</label>
+                    <textarea wire:model.live='pesan' id="" cols="30" rows="10" class="form-control"></textarea>
+                    <div class="text-danger">
+                        @error('pesan')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='pesanMasal()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     {{-- Delete Modal --}}
     <div class="modal fade" id="k_hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
@@ -485,6 +532,12 @@
         })
         window.addEventListener('closeModal', event => {
             $('#kdaftar').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_pesan').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#k_wa').modal('hide');
         })
       </script>
 
