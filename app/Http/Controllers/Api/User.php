@@ -163,6 +163,10 @@ class User extends Controller
         'minat_jurusan2' => 'Minat Jurusan 2',
     ],
             ]);
+            $nohp = preg_replace('/[^0-9]/', '', $validatedData['nohp']);
+    if (strpos($nohp, '08') === 0) {
+        $nohp = '62' . substr($nohp, 1);
+    }
 
             // Data siswa yang akan disimpan
             $siswa = [
@@ -173,7 +177,7 @@ class User extends Controller
                 'asal_sekolah' => $validatedData['asal_sekolah'],
                 'minat_jurusan1' => $validatedData['minat_jurusan1'],
                 'minat_jurusan2' => $validatedData['minat_jurusan2'],
-                'no_hp' => $validatedData['nohp'],
+                'no_hp' => $nohp,
                 'tempat_lahir' => $validatedData['tempat_lahir'],
                 'tanggal_lahir' => $validatedData['tanggal_lahir'],
                 'alamat' => $validatedData['alamat'],
