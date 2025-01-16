@@ -32,12 +32,12 @@ class SiswaPpdb extends Component
     public function render()
     {
         if($this->filter == 'all'){
-            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            $data  = TabelSiswaPpdb::orderBy('created_at','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('tahun', $this->thn_ppdb)
             ->paginate($this->result);
         } else {
-            $data  = TabelSiswaPpdb::orderBy('id_siswa','desc')
+            $data  = TabelSiswaPpdb::orderBy('created_at','desc')
             ->where('nama_lengkap', 'like','%'.$this->cari.'%')
             ->where('bayar_daftar', $this->filter)
             ->where('tahun', $this->thn_ppdb)
