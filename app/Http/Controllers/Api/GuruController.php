@@ -73,12 +73,12 @@ class GuruController extends Controller
     }
 
     public function absenListSiswa($id_materi){
-        $data  = MapelKelas::leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
+        $data  = Materi::leftJoin('mapel_kelas','mapel_kelas.id_mapelkelas','=','materi.id_mapelkelas')
+        ->leftJoin('kelas','kelas.id_kelas','=','mapel_kelas.id_kelas')
         ->leftJoin('jurusan','jurusan.id_jurusan','=','kelas.id_jurusan')
         ->leftJoin('data_siswa','data_siswa.id_kelas','=','kelas.id_kelas')
         ->leftJoin('users','users.id','=','data_siswa.id_user')
         ->leftJoin('mata_pelajaran','mata_pelajaran.id_mapel','=','mapel_kelas.id_mapel')
-        ->leftJoin('materi','materi.id_mapelkelas','=','mapel_kelas.id_mapelkelas')
         ->where('users.acc', 'y')
         ->where('materi.id_materi', $id_materi)
         ->orderBy('nama_lengkap','asc')

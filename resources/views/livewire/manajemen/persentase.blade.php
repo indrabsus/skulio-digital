@@ -137,6 +137,7 @@
                     </select>
                         <select class="form-control" wire:model.live="bulan">
                             <option value="">Pilih Bulan</option>
+                            <option value="{{ date('Y') -1 }}-12">Desember {{ date('Y') -1 }}</option>
                             <option value="{{ date('Y') }}-01">Januari {{ date('Y') }}</option>
                             <option value="{{ date('Y') }}-02">Februari {{ date('Y') }}</option>
                             <option value="{{ date('Y') }}-03">Maret {{ date('Y') }}</option>
