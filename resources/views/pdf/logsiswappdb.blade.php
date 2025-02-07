@@ -71,15 +71,7 @@
             <td>:</td>
             <td>{{ $data->jenis == 'p' ? 'PPDB' : 'Pendaftaran' }} - {{ substr($data->no_invoice, 2, 3) == 'TRF' ? 'Transfer' : 'Cash' }}</td>
         </tr>
-        <tr>
-            <td>Catatan</td>
-            <td>:</td>
-            <td>@if ($total == 2350000)
-                Tuntas
-            @else
-                Sisa Rp.{{ number_format(2350000 - $total,0,',','.') }}
-            @endif</td>
-        </tr>
+        
     </table>
     <p class="text-right">Cimahi, {{ date('d M Y', strtotime($data->created_at))}}</p>
     <p class="text-right"><img src="{{ asset('template') }}/assets/img/qr.png" width="50px"> Panitia PPDB</p>
