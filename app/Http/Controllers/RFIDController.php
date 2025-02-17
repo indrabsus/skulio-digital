@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Session;
 class RFIDController extends Controller
 {
     public function inputscan(){
-        $id_mesin = Session::get("kode_mesin");
-        $neww = Temp::where('id_mesin', $id_mesin)->orderBy('created_at','desc')->first();
+        $neww = Temp::where('id_mesin', env('KODE_MESIN'))->orderBy('created_at','desc')->first();
     if($neww){
         $print = $neww->norfid;
     } else {
@@ -30,7 +29,7 @@ class RFIDController extends Controller
 
     public function topup(){
 
-        $neww = Temp::where('id_mesin', Session::get("kode_mesin"))->orderBy('created_at', 'desc')->first();
+        $neww = Temp::where('id_mesin', env('KODE_MESIN'))->orderBy('created_at', 'desc')->first();
         // dd($neww);
         $saldo = 0;
         if($neww){
@@ -60,6 +59,33 @@ class RFIDController extends Controller
             'nama' => $nama,
             'saldo' => $saldo,
             'noref' => $noref,
+            'id_siswa' => $id_siswa
+        ]);
+    }
+    
+    public function sppCek(){
+
+        $neww = Temp::where('id_mesin', env('KODE_MESIN'))->orderBy('created_at', 'desc')->first();
+        // dd($neww);
+        $saldo = 0;
+        if($neww){
+            $data = DataSiswa::where('no_rfid', $neww->norfid)->first();
+
+
+            $print = $data->no_rfid;
+            $id_siswa = $data->id_siswa;
+            $nama = $data->nama_lengkap;
+
+
+        } else {
+            $print = '';
+            $id_siswa = '';
+            $nama = '';
+        }
+
+        return view('load.sppscan', [
+            'scan' => $print,
+            'nama' => $nama,
             'id_siswa' => $id_siswa
         ]);
     }

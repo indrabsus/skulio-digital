@@ -62,7 +62,12 @@
 
                       <tr>
                           <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
-                          <td>{{$d->nama_lengkap}}</td>
+                          <td> @if (Auth::user()->id_role == 1)
+                            <a href="{{ route('admin.spprfid') }}?id_user={{$d->id}}">{{$d->nama_lengkap}}</a>
+                            @else
+                            {{$d->nama_lengkap}}
+                            @endif
+                        </td>
                           <td>{{$d->tingkat.' '.$d->singkatan.' '.$d->nama_kelas}}</td>
                           @php
                               $last = App\Models\LogSpp::where('id_siswa', $d->id_siswa)->orderBy('created_at', 'desc')->first();

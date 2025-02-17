@@ -17,6 +17,7 @@ use App\Livewire\Admin\UbahPassword;
 use App\Livewire\Extend\SiswaKelas;
 use App\Livewire\Extend\SiswaSumatif;
 use App\Livewire\Kurikulum\TambahKartuSiswa;
+use App\Livewire\Keuangan\SppRfid;
 use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ Route::post('importsiswa', [ExcelController::class, 'importSiswa'])->name('impor
 Route::get('/rfid/{norfid}/{id_mesin}',[RFIDController::class,'rfidglobal'])->name('rfidglobal');
 Route::get('/inputscan', [RFIDController::class, 'inputscan'])->name('inputscan');
 Route::get('/topup', [RFIDController::class, 'topup'])->name('topup');
+Route::get('/sppscan', [RFIDController::class, 'sppCek'])->name('sppcek');
 Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
 Route::get('/reset', [RFIDController::class, 'reset'])->name('reset');
 
@@ -128,6 +130,7 @@ Route::any('postnilai',[NilaiController::class,'postNilai'])->name('postNilai');
 
     Route::get('/tambahkartu', TambahKartu::class)->name('admin.tambahkartu');
     Route::get('/tambahkartusiswa', TambahKartuSiswa::class)->name('admin.tambahkartusiswa');
+    Route::get('/spprfid', SppRfid::class)->name('admin.spprfid');
 
     Route::get('deletenilai/{id}',[NilaiController::class,'hapusNilai'])->name('hapusnilai');
     Route::any('/updatepassword',[AuthController::class,'updatePassword'])->name('updatepassword');

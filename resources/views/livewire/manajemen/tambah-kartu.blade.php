@@ -23,7 +23,7 @@
                 <input type="text" name="id_user" class="form-control" value="{{ $data->id_user }}" hidden>
                 <div class="form-group mb-3">
                     <label for="">Kode Mesin</label>
-                    <input type="text" name="kode_mesin" class="form-control" value="{{ Session::get('kode_mesin') }}" readonly>
+                    <input type="text" name="kode_mesin" class="form-control" value="bataraindra2020" readonly>
                 </div>
                 <div class="form-group mb-3">
                     <label for="">Nama Lengkap</label>
