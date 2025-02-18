@@ -200,17 +200,17 @@ class RFIDController extends Controller
         $hitung = DataSiswa::where('no_rfid',$request->no_rfid)->count();
         if($hitung > 0){
             Temp::where('id_mesin', $request->kode_mesin)->delete();
-            return redirect()->route('admin.datasiswa')->with('gagal', 'Kartu Sudah Digunakan');
+            return redirect()->route('admin.datasiswasiswi')->with('gagal', 'Kartu Sudah Digunakan');
         } else {
             $update = DataSiswa::where('id_user', $request->id_user)->update([
                 'no_rfid' => $request->no_rfid
             ]);
             if($update){
                 Temp::where('id_mesin', $request->kode_mesin)->delete();
-                return redirect()->route('admin.datasiswa')->with('sukses', 'Berhasil update data!');
+                return redirect()->route('admin.datasiswasiswi')->with('sukses', 'Berhasil update data!');
             } else {
                 Temp::where('id_mesin', $request->kode_mesin)->delete();
-                return redirect()->route('admin.datasiswa')->with('gagal', 'Gagal menambahkan kartu!');
+                return redirect()->route('admin.datasiswasiswi')->with('gagal', 'Gagal menambahkan kartu!');
             }
         }
     }
