@@ -11,6 +11,8 @@ class SppRfid extends Component
 {
     public function render()
     {
+        $data = [];
+        $nom = null;
         $neww = Temp::where('id_mesin', env('KODE_MESIN'))->orderBy('created_at', 'desc')->first();
         // dd($neww);
         $saldo = 0;

@@ -31,8 +31,8 @@
                     @endphp
                     <select name="kelas" class="form-control">
                         <option value="">Pilih Kelas</option>
-                        @foreach ($kls as $k)
-                            <option value="{{ $k->kelas }}" {{ $data->tingkat == $k->kelas ? 'selected' : '' }}>{{ $k->kelas }}</option>
+                        @foreach ($kls ?? [] as $k)
+                            <option value="{{ $k->kelas ?? '' }}" {{ $data->tingkat ?? '' == $k->kelas ?? '' ? 'selected' : '' }}>{{ $k->kelas }}</option>
                         @endforeach
                     </select>
                     <div class="text-danger">
@@ -43,7 +43,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="">Nominal</label>
-                    <input type="number" name="nominal" class="form-control" value="{{$nom->nominal}}">
+                    <input type="number" name="nominal" class="form-control" value="{{$nom->nominal ?? ''}}">
                     <div class="text-danger">
                         @error('nominal')
                             {{$message}}
