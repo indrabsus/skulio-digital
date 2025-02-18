@@ -17,3 +17,31 @@
                     @enderror
                 </div>
 </div>
+<div class="form-group mb-3">
+    <label for="">Kelas</label>
+    <input type="text" name="kelas" value="{{$kelas}}" class="form-control" readonly>
+    <div class="text-danger">
+                    @error('kelas')
+                        {{$message}}
+                    @enderror
+                </div>
+</div>
+<table class="table table-bordered">
+    <tr>
+        <th>Kelas/Bulan</th>
+        <th>Nominal</th>
+        <th>Status</th>
+    </tr>
+    @php
+        $lst = App\Models\LogSpp::where('id_siswa', $id_siswa)->orderBy('created_at', 'desc')->limit(3)->get();
+    @endphp
+    @foreach ($lst as $l)
+    <tr>
+        <td>{{ $l->keterangan }}</td>
+        <td>{{ 'Rp.'.number_format($l->nominal,0,',','.') }}</td>
+
+        <td>{{ $l->status }}</td>
+    </tr>
+    @endforeach
+</table>
+

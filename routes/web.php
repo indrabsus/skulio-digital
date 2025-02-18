@@ -22,7 +22,9 @@ use App\Livewire\Manajemen\TambahKartu;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-
+    //Reset Temp
+    Route::get('resettemp', [RFIDController::class,'resetTemp'])->name('resettemp');
+    Route::any('sppproses', [RFIDController::class,'sppProses'])->name('sppproses');
 
 //Detail PPDB
 Route::get('detailppdb',[PPDBController::class,'detailppdb'])->name('detailppdb');
@@ -58,7 +60,7 @@ Route::get('/sppscan', [RFIDController::class, 'sppCek'])->name('sppcek');
 Route::get('/payment', [RFIDController::class, 'payment'])->name('payment');
 Route::get('/reset', [RFIDController::class, 'reset'])->name('reset');
 
-Route::get('/absen/{norfid}/{id_mesin}',[RFIDController::class,'absenSiswa'])->name('harian');
+Route::get('/absen/{norfid}/bataraindra2020',[RFIDController::class,'absenSiswa'])->name('harian');
 //Cigalert
 Route::get('/tabelcigalert', function(){
     return view('load.tabelcigalert');

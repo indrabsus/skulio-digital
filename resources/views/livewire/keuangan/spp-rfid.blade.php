@@ -15,26 +15,83 @@
       </div>
       @endif
       </div>
-    <h3>Top Up Saldo</h3>
+    <h3>Bayar SPP</h3>
     <hr>
-<form action="{{ route('topupproses') }}" method="post">
+<a href="{{ route('resettemp') }}" class="btn btn-danger btn-sm mb-3">Reset</a>
+<form action="{{ route('sppproses') }}" method="post">
                 <div class="row">
                 <div class="col-lg-6 mb-3">
                 <div id="cekkartu"></div>
 
                 <div class="form-group mb-3">
-                    <label for="">Top Up</label>
-                    <input type="text" name="saldo" class="form-control" placeholder="Masukan Nominal">
+                    <label for="">Kelas</label>
+                    @php
+                        $kls = App\Models\MasterSpp::all();
+                        // dd($kls);
+                    @endphp
+                    <select name="kelas" class="form-control">
+                        <option value="">Pilih Kelas</option>
+                        @foreach ($kls as $k)
+                            <option value="{{ $k->kelas }}" {{ $data->tingkat == $k->kelas ? 'selected' : '' }}>{{ $k->kelas }}</option>
+                        @endforeach
+                    </select>
                     <div class="text-danger">
-                    @error('saldo')
-                        {{$message}}
-                    @enderror
-                </div>
-                </div>
+                        @error('kelas')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Nominal</label>
+                    <input type="number" name="nominal" class="form-control" value="{{$nom->nominal}}">
+                    <div class="text-danger">
+                        @error('nominal')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Bayar Via : </label>
+                    <input type="radio" name="bayar" value="trf"> Transfer
+                    <input type="radio" name="bayar" value="csh"> Cash
+                    <div class="text-danger">
+                        @error('bayar')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  @php
+                      $bln = \DB::table('master_bulan')->get();
+                  @endphp
+                <div class="form-group mb-3">
+                    <label for="">Bulan</label>
+                    <select name='bulan' class="form-control">
+                        <option value="">Pilih Bulan</option>
+                        @foreach ($bln as $b)
+                            <option value="{{ $b->kode }}">{{ $b->bulan }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger">
+                        @error('bulan')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="">Status : </label>
+                    <input type="radio" name="status" value="cicil"> Cicil
+                    <input type="radio" name="status" value="lunas"> Lunas
+                    <div class="text-danger">
+                        @error('status')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+
 
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary btn-block" type="submit">Top Up</button>
+                        <button class="btn btn-primary btn-block" type="submit">Bayar</button>
                     </div>
                 </div>
                     </div>

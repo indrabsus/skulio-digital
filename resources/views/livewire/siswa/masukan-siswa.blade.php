@@ -46,8 +46,8 @@
                           <th>No</th>
                           <th>Masukan</th>
                           <th>Kategori</th>
-                          <th>foto</th>
-                          
+                          {{-- <th>foto</th> --}}
+
                           <th>Status</th>
                           @if (Auth::user()->id_role == 1)
                           <th>Aksi</th>
@@ -61,12 +61,12 @@
                     <td>
                        {{ $d->masukan }}
                     </td>
-                    <td>{{ ucwords($d->kategori) }}</td>
-                    <td>@if ($d->gambar)
+                    <td>{{ $this->kategori($d->kategori) }}</td>
+                    {{-- <td>@if ($d->gambar)
                         <a href="" data-bs-toggle="modal" data-bs-target="#lihat" wire:click='lihat("{{$d->id_masukan}}")'>View Image</a>
                         @else
                         No Image
-                        @endif</td>
+                        @endif</td> --}}
                     <td>
                         @if (Auth::user()->id_role == 1)
                         @if ($d->status == '0')

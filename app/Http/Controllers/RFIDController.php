@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AbsenHarianSiswa;
 use App\Models\DataSiswa;
 use App\Models\DataUser;
+use App\Models\LogSpp;
 use App\Models\LogTabungan;
+use App\Models\MasterSpp;
 use App\Models\Temp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,32 +64,73 @@ class RFIDController extends Controller
             'id_siswa' => $id_siswa
         ]);
     }
-    
+
     public function sppCek(){
 
         $neww = Temp::where('id_mesin', env('KODE_MESIN'))->orderBy('created_at', 'desc')->first();
         // dd($neww);
         $saldo = 0;
         if($neww){
-            $data = DataSiswa::where('no_rfid', $neww->norfid)->first();
+            $data = DataSiswa::leftJoin('kelas','kelas.id_kelas','data_siswa.id_kelas')
+            ->leftJoin('jurusan','jurusan.id_jurusan','kelas.id_jurusan')
+            ->where('no_rfid', $neww->norfid)->first();
+        $nom = MasterSpp::where('kelas', $data->tingkat)->first();
 
-
-            $print = $data->no_rfid;
-            $id_siswa = $data->id_siswa;
-            $nama = $data->nama_lengkap;
-
-
+            if($data){
+                $print = $data->no_rfid;
+                $id_siswa = $data->id_siswa;
+                $nama = $data->nama_lengkap;
+                $kelas = $data->tingkat.' '.$data->singkatan.' '.$data->nama_kelas;
+                $sppkelas = $data->tingkat;
+                $nominal = $nom->nominal;
+            } else {
+                $print = $neww->norfid;
+            $id_siswa = '';
+            $nama = '';
+            $kelas = '';
+            $sppkelas = '';
+            $nominal = '';
+            }
         } else {
             $print = '';
             $id_siswa = '';
             $nama = '';
+            $kelas = '';
+            $sppkelas = '';
+            $nominal = '';
         }
 
         return view('load.sppscan', [
             'scan' => $print,
             'nama' => $nama,
-            'id_siswa' => $id_siswa
+            'id_siswa' => $id_siswa,
+            'kelas' => $kelas,
+            'sppkelas' => $sppkelas,
+            'nominal'=> $nominal
         ]);
+    }
+    public function sppProses(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'id_siswa'=> 'required',
+            'nominal'=> 'required',
+            'bulan' => 'required',
+            'kelas' => 'required',
+            'status' => 'required',
+            'bayar'=> 'required'
+        ]);
+        $bln = DB::table('master_bulan')->where('kode', $request->bulan)->first();
+
+            LogSpp::create([
+                'id_siswa' => $request->id_siswa,
+                'nominal' => $request->nominal,
+                'bulan' => $request->bulan,
+                'kelas' => $request->kelas,
+                'keterangan' => $request->kelas.'/'.$bln->bulan,
+                'status' => $request->status,
+                'bayar' => $request->bayar,
+            ]);
+        return redirect()->back()->with('sukses', 'Berhasil Bayar SPP!');
     }
     public function payment(){
 
@@ -269,5 +312,11 @@ class RFIDController extends Controller
         return "sukses";
     }
 }
+public function resetTemp(){
+    $id_mesin = env('KODE_MESIN');
+    Temp::where('id_mesin', $id_mesin)->delete();
+    return redirect()->back()->with('sukses', 'Temp data has been reset.');
+}
+
 
 }

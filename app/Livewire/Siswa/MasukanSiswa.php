@@ -136,4 +136,17 @@ class MasukanSiswa extends Component
         $this->dispatch('closeModal');
         }
     }
+    public function kategori($kat){
+        if($kat == 'gr'){
+            echo "Pengaduan terkait guru";
+        } elseif($kat == "td"){
+            echo "Pengaduan terkait tendik";
+        } elseif($kat == "sw"){
+            echo "Pengaduan terkait siswa";
+        } elseif($kat == 'sp'){
+            echo "Pengaduan terkait sarana prasarana";
+        } else {
+            echo "Umum";
+        }
+    }
 }
