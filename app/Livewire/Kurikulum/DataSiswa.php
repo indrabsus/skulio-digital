@@ -10,7 +10,7 @@ use Livewire\Component;
 use App\Models\DataSiswa as TabelSiswa;
 use Livewire\WithPagination;
 
-class DataSiswaSiswi extends Component
+class DataSiswa extends Component
 {
     public $id_siswa, $id_user, $id_kelas, $jenkel, $no_hp, $nis, $nama_lengkap;
     use WithPagination;
