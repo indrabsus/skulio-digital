@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\BukuOnline as TabelBukuOnline;
 use App\Models\Masukan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Livewire\WithPagination;
 use Intervention\Image\Facades\Image;
 use Livewire\WithFileUploads;
@@ -15,7 +16,7 @@ class MasukanSiswa extends Component
     use WithFileUploads;
     public $masukan,
     $kategori,
-     $id_masukan, $gambar, $gambar2;
+     $id_masukan, $gambar, $gambar2, $pesan, $nohp;
      public $anonim = false;
     use WithPagination;
 
@@ -24,12 +25,14 @@ class MasukanSiswa extends Component
     public function render()
     {
         if(Auth::user()->id_role == 8){
-            $data  = Masukan::orderBy('created_at','desc')
+            $data  = Masukan::orderBy('masukan.created_at','desc')
+            ->leftJoin('users','users.id','=','masukan.id_user')
             ->where('masukan', 'like','%'.$this->cari.'%')
             ->where('id_user', Auth::user()->id)
             ->paginate($this->result);
         } else {
-            $data  = Masukan::orderBy('created_at','desc')
+            $data  = Masukan::orderBy('masukan.created_at','desc')
+            ->leftJoin('users','users.id','=','masukan.id_user')
             ->where('masukan', 'like','%'.$this->cari.'%')
             ->paginate($this->result);
         }
@@ -148,5 +151,22 @@ class MasukanSiswa extends Component
         } else {
             echo "Umum";
         }
+    }
+    public function c_pesan($nohp){
+        $this->nohp = $nohp;
+        $this->pesan = '';
+    }
+    public function kirimWa(){
+        $this->validate([
+            'pesan' => 'required'
+        ]);
+        $apiwa = env('API_WA_BOT');
+        Http::post($apiwa.'/notifuser',[
+            'nomor' => $this->nohp,
+            'pesan' => $this->pesan
+        ]);
+        session()->flash('sukses','Pesan berhasil dikirim!');
+        $this->clearForm();
+        $this->dispatch('closeModal');
     }
 }

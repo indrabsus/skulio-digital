@@ -44,6 +44,9 @@
                   <thead>
                       <tr>
                           <th>No</th>
+                          <th>Username</th>
+                          <th>No Whatsapp</th>
+                          <th>Role</th>
                           <th>Masukan</th>
                           <th>Kategori</th>
                           {{-- <th>foto</th> --}}
@@ -58,6 +61,11 @@
                   @foreach ($data as $d)
                   <tr>
                     <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->index + 1 }}</td>
+                    <td>{{ $d->username }}</td>
+                    <td>
+                        <a href="" data-bs-toggle="modal" data-bs-target="#c_pesan" wire:click="c_pesan('{{ $d->no_hp }}')">{{ $d->no_hp }}</a>
+                    </td>
+                    <td>{{ $d->id_role }}</td>
                     <td>
                        {{ $d->masukan }}
                     </td>
@@ -228,6 +236,31 @@
           </div>
         </div>
       </div>
+      <div class="modal fade" id="c_pesan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Kirim Pesan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="">Pesan</label>
+                    <textarea wire:model.live='pesan' id="" cols="30" rows="10" class="form-control"></textarea>
+                    <div class="text-danger">
+                        @error('pesan')
+                            {{$message}}
+                        @enderror
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" wire:click='kirimWa()'>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <script>
         window.addEventListener('closeModal', event => {
             $('#add').modal('hide');
@@ -237,6 +270,9 @@
         })
         window.addEventListener('closeModal', event => {
             $('#k_hapus').modal('hide');
+        })
+        window.addEventListener('closeModal', event => {
+            $('#c_pesan').modal('hide');
         })
       </script>
 
